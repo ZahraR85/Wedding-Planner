@@ -3,6 +3,8 @@ import { createContext, useContext, useReducer } from 'react';
 // Initial State
 const initialState = {
   hoveredDropdown: null,
+  selectedCity: 'All Cities',
+  searchTerm: '',
 };
 
 // Reducer Function
@@ -12,6 +14,10 @@ const appReducer = (state, action) => {
       return { ...state, hoveredDropdown: action.payload };
     case 'CLEAR_HOVERED_DROPDOWN':
       return { ...state, hoveredDropdown: null };
+    case 'SET_SELECTED_CITY':
+      return { ...state, selectedCity: action.payload };
+    case 'SET_SEARCH_TERM':
+      return { ...state, searchTerm: action.payload };
     default:
       return state;
   }
@@ -33,9 +39,21 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: type });
   const clearHoveredDropdown = () =>
     dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
+  const setSelectedCity = (city) =>
+    dispatch({ type: 'SET_SELECTED_CITY', payload: city });
+  const setSearchTerm = (term) =>
+    dispatch({ type: 'SET_SEARCH_TERM', payload: term });
 
   return (
-    <AppContext.Provider value={{ ...state, setHoveredDropdown, clearHoveredDropdown }}>
+    <AppContext.Provider
+      value={{
+        ...state,
+        setHoveredDropdown,
+        clearHoveredDropdown,
+        setSelectedCity,
+        setSearchTerm,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
