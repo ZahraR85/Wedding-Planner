@@ -2,7 +2,10 @@ import daisyui from 'daisyui';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}", // Adjust based on your folder structure
+    "./public/index.html",
+  ],
   theme: {
     extend: { colors: {
       customBg: "#FAF9F5", 
