@@ -1,0 +1,25 @@
+# Node.js dependencies
+node_modules/
+
+# Local environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+build/
+
+# Temporary files and cache
+tmp/
+.cache/
+
+# Editor/IDE-specific files
+.vscode/
+.idea/
+.DS_Store
+
+# Debugging files
+*.swp
