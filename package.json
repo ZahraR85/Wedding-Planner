@@ -1,7 +1,10 @@
 {
   "name": "wedding-planner",
   "version": "1.0.0",
-  "workspaces": ["frontend", "backend"],
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "description": "cd Wedding-Planner/frontend\r npm i",
   "main": "index.js",
   "scripts": {
@@ -13,6 +16,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+  "react-router-dom": "^7.0.2"
+  }
 }
-

@@ -1,3 +1,5 @@
+import daisyui from 'daisyui';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -14,6 +16,6 @@ export default {
       'custom-gradient': 'linear-gradient(90deg, rgba(118,154,110) 0%, rgba(31,66,32) 100%)',
     },},
   },
-  plugins: [],
+  plugins: [daisyui],
 }
 
