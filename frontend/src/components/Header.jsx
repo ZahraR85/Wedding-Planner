@@ -1,7 +1,22 @@
 import { useAppContext } from "../context/AppContext";
 
 const Header = () => {
-  const { hoveredDropdown, setHoveredDropdown, clearHoveredDropdown } = useAppContext();
+  const {
+    selectedCity,
+    searchTerm,
+    setSelectedCity,
+    setSearchTerm,
+    hoveredDropdown,
+    setHoveredDropdown,
+    clearHoveredDropdown,
+  } = useAppContext();
+
+  const cities = ["Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne"];
+
+  const handleSearch = () => {
+    console.log("Search for:", selectedCity, searchTerm);
+    // Add your search logic here
+  };
 
   return (
     <header
@@ -90,6 +105,9 @@ const Header = () => {
             <button className="hover:underline focus:outline-none">
               Login | Register
             </button>
+            <button className="ml-4 font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
+          Let’s Start
+        </button>
           </div>
         </div>
       </nav>
@@ -99,10 +117,53 @@ const Header = () => {
         <p className="text-xl font-light mb-4">
           Welcome to our amazing platform! Explore everything we have to offer.
         </p>
-        <button className="px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
-          Let’s Start
-        </button>
+       {/* Search Section */}
+        <div className="w-full text-gray">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+            {/* Search Input */}
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Enter City..."
+              className="w-full md:w-[400px] px-4 py-2 border rounded-md bg-transparent"
+            />
+            {/* City Dropdown */}
+              <select
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+              className="w-full md:w-[200px] px-4 py-2 border rounded-md bg-transparent"
+            >
+              <option value="All Cities" >All Cities</option>
+              {cities.map((city, index) => (
+                <option key={index} value={city}  className="text-gray-500 bg-transparent" >
+                  {city}
+                </option>
+              ))}
+            </select>
+            {/* Search Button */}
+            <button
+              onClick={handleSearch}
+              className="bg-btnLight text-white px-4 py-2 rounded-md flex items-center hover:bg-btnDark transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM8 14a6 6 0 100-12 6 6 0 000 12z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Search
+            </button>
+          </div>
+          </div>
       </div>
+
     </header>
   );
 };
