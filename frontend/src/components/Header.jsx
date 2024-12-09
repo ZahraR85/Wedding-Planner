@@ -1,10 +1,7 @@
-import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
 const Header = () => {
-  const [hoveredDropdown, setHoveredDropdown] = useState(null);
-
-  const handleHover = (type) => setHoveredDropdown(type);
-  const handleLeave = () => setHoveredDropdown(null);
+  const { hoveredDropdown, setHoveredDropdown, clearHoveredDropdown } = useAppContext();
 
   return (
     <header
@@ -28,8 +25,8 @@ const Header = () => {
             {/* Price Dropdown */}
             <li
               className="relative"
-              onMouseEnter={() => handleHover("price")}
-              onMouseLeave={handleLeave}
+              onMouseEnter={() => setHoveredDropdown("price")}
+              onMouseLeave={clearHoveredDropdown}
             >
               <div className="flex items-center space-x-1 cursor-pointer">
                 <span>Price</span>
@@ -55,8 +52,8 @@ const Header = () => {
             {/* Facilities Dropdown */}
             <li
               className="relative"
-              onMouseEnter={() => handleHover("facilities")}
-              onMouseLeave={handleLeave}
+              onMouseEnter={() => setHoveredDropdown("facilities")}
+              onMouseLeave={clearHoveredDropdown}
             >
               <div className="flex items-center space-x-1 cursor-pointer">
                 <span>Facilities</span>
