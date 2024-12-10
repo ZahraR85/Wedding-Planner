@@ -13,7 +13,13 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-
+// Enable CORS for frontend requests
+/*app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow requests from your frontend
+    credentials: true, // Allow sending cookies if needed
+  })
+); */
 app.use("/users", usersRouter);
 
 app.get("/", (req, res) => {
