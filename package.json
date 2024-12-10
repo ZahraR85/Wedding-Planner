@@ -12,7 +12,7 @@
     "install:all": "npm install",
     "start:backend": "npm --prefix backend start",
     "start:frontend": "npm --prefix frontend start",
-    "start": "npm run start:backend & npm run start:frontend"
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
   },
   "keywords": [],
   "author": "",
@@ -20,5 +20,8 @@
   "dependencies": {
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
   }
 }
