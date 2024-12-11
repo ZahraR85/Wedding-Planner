@@ -1,8 +1,10 @@
 import Features from '../components/features';
+import Header from '../components/Header';
 const Homepage = () => {
   return (
     <div>
-            <Features />
+        <Header />
+        <Features />
     </div>
   );
 };
