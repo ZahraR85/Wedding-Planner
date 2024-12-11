@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import Homepage from './pages/Homepage';
-import Photography from './pages/Photography';
+import Photography from './pages/Photography.jsx';
 import MakeupSelector from './components/MakeupSelector';
 import { AppProvider } from './context/AppContext';
-import SignIn from './components/SignIn';
+import SignIn from './components/SignIn.jsx';
 import './index.css';
 
 function App() {
@@ -15,10 +15,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/signin" element={ <SignIn />} />
-            <Route path="/facilities/photography" element={<Photography />} />
+          {/* <Route path="/register" element={<Register />} />*/}
+            <Route path="/photography" element={<Photography />} />
+            <Route path="/Makeup" element={<MakeupSelector />} />
           </Routes>
         </Layout>
-        <MakeupSelector />
       </Router>
     </AppProvider>
   );

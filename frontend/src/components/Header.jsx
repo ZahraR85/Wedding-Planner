@@ -31,6 +31,11 @@ const Header = () => {
           <ul className="flex font-bold items-center space-x-12">
             <li className="text-2xl font-bold mr-20">I Said Yes!</li>
             <li>
+              <Link to="/" className="hover:underline">
+                Home
+              </Link>
+            </li>
+            <li>
               <Link to="/dashboard" className="hover:underline">
                 Dashboard
               </Link>
@@ -53,19 +58,19 @@ const Header = () => {
               >
                 <ul className="flex flex-col items-start justify-center h-full space-y-4">
                 <li className="text-lg hover:underline">
-                    <Link to="/facilities/Venue">Venue</Link>
+                    <Link to="/Venue">Venue</Link>
                   </li>
                   <li className="text-lg hover:underline">
-                    <Link to="/facilities/Catering">Catering</Link>
+                    <Link to="/Catering">Catering</Link>
                   </li>
                   <li className="text-lg hover:underline">
-                    <Link to="/facilities/photography">Photography</Link>
+                    <Link to="/photography">Photography</Link>
                   </li>
                   <li className="text-lg hover:underline">
-                    <Link to="/facilities/Makeup">Makeup, Hair, Wedding Dress</Link>
+                    <Link to="/Makeup">Makeup, Hair, Wedding Dress</Link>
                   </li>
                   <li className="text-lg hover:underline">
-                    <Link to="/facilities/music">Music Band</Link>
+                    <Link to="/music">Music Band</Link>
                   </li>
                 </ul>
               </div>
