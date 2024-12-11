@@ -76,6 +76,15 @@ const Header = () => {
               </Link>
             </li>
           </ul>
+          {/* Login/Register */}
+          <div className="font-bold">
+            <Link to="/signin" className="hover:underline focus:outline-none">
+            Signin | Register
+            </Link>
+            <button className="ml-4 font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
+          Let’s Start
+        </button>
+          </div>
         </div>
       </nav>
       <div className="flex flex-col items-center justify-center h-full text-center text-white bg-black bg-opacity-50">

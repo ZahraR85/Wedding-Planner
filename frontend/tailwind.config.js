@@ -4,7 +4,7 @@ import daisyui from 'daisyui';
 export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", // Adjust based on your folder structure
-    "./public/index.html",
+    "./index.html",
   ],
   theme: {
     extend: { colors: {

@@ -1,30 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Features from './components/Features';
-import Footer from './components/Footer';
+import Layout from './pages/Layout';
+import Homepage from './pages/Homepage';
 import Photography from './pages/Photography';
 import MakeupSelector from './components/MakeupSelector';
-import ReceptionSelector from './components/ReceptionSelector';
 import { AppProvider } from './context/AppContext';
-
+import SignIn from './components/SignIn';
 import './index.css';
 
 function App() {
   return (
     <AppProvider>
       <Router>
-        <>
-          <Header />
+        <Layout>
           <Routes>
-            <Route path="/" element={<Features />} />
+            <Route path="/" element={<Homepage />} />
+            <Route path="/signin" element={ <SignIn />} />
             <Route path="/facilities/photography" element={<Photography />} />
           </Routes>
-          <Footer />
-          <MakeupSelector />
-              <ReceptionSelector />
-              <Photography />
-              
-        </>
+        </Layout>
+        <MakeupSelector />
       </Router>
     </AppProvider>
   );
