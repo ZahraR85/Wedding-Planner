@@ -4,7 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import "./db.js"; // Import the DB connection
 import usersRouter from "./routes/users.js";
-
+import photographyRoutes from "./routes/photographies.js";
 dotenv.config(); // Load environment variables
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(morgan("dev"));
   })
 ); */
 app.use("/users", usersRouter);
-
+app.use("/photography", photographyRoutes);
 app.get("/", (req, res) => {
   res.status(404).send("Not found");
 });
