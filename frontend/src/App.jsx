@@ -22,12 +22,6 @@ function App() {
           <MakeupSelector />
         </>
       </Router>
-      <>
-        <Header />
-        <Features />
-        <Footer />
-  
-      </>
     </AppProvider>
   );
 }
