@@ -6,6 +6,7 @@ const initialState = {
   selectedCity: 'All Cities',
   searchTerm: '',
   hoveredDropdown: null,
+  isDropdownOpen: false,
 };
 
 const appReducer = (state, action) => {
@@ -18,6 +19,8 @@ const appReducer = (state, action) => {
       return { ...state, hoveredDropdown: action.payload };
     case 'CLEAR_HOVERED_DROPDOWN':
       return { ...state, hoveredDropdown: null };
+    case 'SET_DROPDOWN_OPEN':
+      return { ...state, isDropdownOpen: action.payload };
     default:
       return state;
   }
@@ -30,6 +33,7 @@ export const AppProvider = ({ children }) => {
   const setSearchTerm = (term) => dispatch({ type: 'SET_SEARCH_TERM', payload: term });
   const setHoveredDropdown = (dropdown) => dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: dropdown });
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
+  const setDropdownOpen = (isOpen) => dispatch({ type: 'SET_DROPDOWN_OPEN', payload: isOpen });
 
   return (
     <AppContext.Provider
@@ -39,6 +43,7 @@ export const AppProvider = ({ children }) => {
         setSearchTerm,
         setHoveredDropdown,
         clearHoveredDropdown,
+        setDropdownOpen,
       }}
     >
       {children}
