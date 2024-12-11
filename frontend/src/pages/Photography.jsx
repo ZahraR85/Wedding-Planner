@@ -3,19 +3,32 @@ import { useState } from "react";
 const Photography = () => {
   const [formData, setFormData] = useState({
     userId: "",
-    photography: "",
-    videography: "",
-    clipConstruction: "",
-    physicalAlbum: false, // Boolean default value
-    giftImageSize: "",
+    photography: { number: 0, price: 300 },
+    videography: { number: 0, price: 300 },
+    clipConstruction: { number: 0, price: 200 },
+    physicalAlbum: { selected: false, price: 500 },
+    giftImageSize: { number: 0, price: 10 },
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value, // Handle checkbox
-    }));
+    const { name, value, type, checked, dataset } = e.target;
+
+    if (dataset.category) {
+      // Handle nested fields (e.g., photography.number)
+      setFormData((prev) => ({
+        ...prev,
+        [dataset.category]: {
+          ...prev[dataset.category],
+          [name]: type === "checkbox" ? checked : parseFloat(value),
+        },
+      }));
+    } else {
+      // Handle top-level fields
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
   const handleSubmit = async () => {
@@ -31,12 +44,12 @@ const Photography = () => {
       if (response.ok) {
         alert("Data added successfully!");
         setFormData({
-          userId: formData.userId,
-          photography: "",
-          videography: "",
-          clipConstruction: "",
-          physicalAlbum: false,
-          giftImageSize: "",
+          userId: formData.userId, // Keep userId
+          photography: { number: 0, price: 300 },
+          videography: { number: 0, price: 300 },
+          clipConstruction: { number: 0, price: 200 },
+          physicalAlbum: { selected: false, price: 500 },
+          giftImageSize: { number: 0, price: 10 },
         });
       } else {
         alert("Failed to add data!");
@@ -71,44 +84,57 @@ const Photography = () => {
       <h1 className="text-2xl font-bold mb-4">Photography Services</h1>
       <div className="space-y-4">
         <input
-          type="number"
-          name="photography"
-          value={formData.photography}
+          type="text"
+          name="userId"
+          value={formData.userId}
           onChange={handleChange}
-          placeholder="Photography per 3 hours"
+          placeholder="User ID"
           className="border p-2 rounded w-full"
         />
         <input
           type="number"
-          name="videography"
-          value={formData.videography}
+          name="number"
+          data-category="photography"
+          value={formData.photography.number}
           onChange={handleChange}
-          placeholder="Videography per 3 hours"
+          placeholder="Photography sessions (per 3 hours)"
           className="border p-2 rounded w-full"
         />
         <input
           type="number"
-          name="clipConstruction"
-          value={formData.clipConstruction}
+          name="number"
+          data-category="videography"
+          value={formData.videography.number}
           onChange={handleChange}
-          placeholder="Clip Construction per minute"
+          placeholder="Videography sessions (per 3 hours)"
+          className="border p-2 rounded w-full"
+        />
+        <input
+          type="number"
+          name="number"
+          data-category="clipConstruction"
+          value={formData.clipConstruction.number}
+          onChange={handleChange}
+          placeholder="Clip Construction (per minute)"
           className="border p-2 rounded w-full"
         />
         <label className="flex items-center space-x-2">
           <input
             type="checkbox"
-            name="physicalAlbum"
-            checked={formData.physicalAlbum}
+            name="selected"
+            data-category="physicalAlbum"
+            checked={formData.physicalAlbum.selected}
             onChange={handleChange}
           />
-          <span>Physical Album with 20 photos</span>
+          <span>Include Physical Album with 20 photos</span>
         </label>
         <input
           type="number"
-          name="giftImageSize"
-          value={formData.giftImageSize}
+          name="number"
+          data-category="giftImageSize"
+          value={formData.giftImageSize.number}
           onChange={handleChange}
-          placeholder="Image size of 15x18 as gift for guests"
+          placeholder="Gift Image Size (15x18 for guests)"
           className="border p-2 rounded w-full"
         />
       </div>

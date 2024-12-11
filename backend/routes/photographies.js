@@ -1,10 +1,19 @@
 import express from "express";
-//import validatePhotographyData from "../middleware/validatePhotographyData.js";
-import { createPhotography, updatePhotography } from "../controllers/photographyController.js";
+import { 
+  createPhotographyEntry, 
+  getAllPhotographyEntries, 
+  getPhotographyById, 
+  updatePhotographyEntry, 
+  deletePhotographyEntry 
+} from "../controllers/photographyController.js";
 
 const router = express.Router();
 
-router.post("/", createPhotography);
-router.put("/", updatePhotography);
+// Routes
+router.post("/", createPhotographyEntry);
+router.get("/", getAllPhotographyEntries);
+router.get("/:id", getPhotographyById);
+router.put("/:id", updatePhotographyEntry);
+router.delete("/:id", deletePhotographyEntry);
 
 export default router;
