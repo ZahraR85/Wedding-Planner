@@ -4,7 +4,9 @@ import Features from './components/Features';
 import Footer from './components/Footer';
 import Photography from './pages/Photography';
 import MakeupSelector from './components/MakeupSelector';
+import ReceptionSelector from './components/ReceptionSelector';
 import { AppProvider } from './context/AppContext';
+
 import './index.css';
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
           </Routes>
           <Footer />
           <MakeupSelector />
+              <ReceptionSelector />
         </>
       </Router>
     </AppProvider>
