@@ -52,17 +52,20 @@ const Header = () => {
                 }`}
               >
                 <ul className="flex flex-col items-start justify-center h-full space-y-4">
-                  <li className="text-lg hover:underline">
-                    <Link to="/facilities/food">Catering</Link>
-                  </li>
-                  <li className="text-lg hover:underline">
-                  <Link to="/facilities/photography">Photography</Link>
-                  </li>
-                  <li className="text-lg hover:underline">
+                <li className="text-lg hover:underline">
                     <Link to="/facilities/Venue">Venue</Link>
                   </li>
                   <li className="text-lg hover:underline">
-                    <Link to="/facilities/music">Music</Link>
+                    <Link to="/facilities/Catering">Catering</Link>
+                  </li>
+                  <li className="text-lg hover:underline">
+                    <Link to="/facilities/photography">Photography</Link>
+                  </li>
+                  <li className="text-lg hover:underline">
+                    <Link to="/facilities/Makeup">Makeup, Hair, Wedding Dress</Link>
+                  </li>
+                  <li className="text-lg hover:underline">
+                    <Link to="/facilities/music">Music Band</Link>
                   </li>
                 </ul>
               </div>

@@ -2,8 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Features from './components/Features';
 import Footer from './components/Footer';
-
-import Photography from './pages/Photography.jsx';
+import Photography from './pages/Photography';
 import MakeupSelector from './components/MakeupSelector';
 import { AppProvider } from './context/AppContext';
 import './index.css';
