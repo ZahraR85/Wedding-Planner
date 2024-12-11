@@ -22,6 +22,8 @@ function App() {
           <Footer />
           <MakeupSelector />
               <ReceptionSelector />
+              <Photography />
+              
         </>
       </Router>
     </AppProvider>
