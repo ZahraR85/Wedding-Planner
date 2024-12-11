@@ -1,13 +1,26 @@
-// Navbar.jsx
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
 const Navbar = () => {
   const { isDropdownOpen, setDropdownOpen } = useAppContext();
+  const location = useLocation();
+
+  // Check if the current route is the homepage
+  const isHomepage = location.pathname === '/';
 
   return (
-    <nav className="absolute top-0 left-0 w-full bg-opacity-70 text-white">
-      <div className="container mx-auto flex items-center justify-between px-10 py-4">
+    <nav
+      className={`${
+        isHomepage
+          ? 'absolute top-0 left-0 w-full bg-opacity-70'
+          : 'sticky top-0 bg-btnLight shadow-md'
+      } text-white`}
+    >
+      <div
+        className={`container mx-auto flex items-center justify-between px-10 py-4 ${
+          isHomepage ? '' : 'text-black'
+        }`}
+      >
         <ul className="flex font-bold items-center space-x-12">
           <li className="text-2xl font-bold mr-20">I Said Yes!</li>
           <li>
