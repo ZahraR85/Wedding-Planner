@@ -24,7 +24,9 @@ const appReducer = (state, action) => {
     case 'SET_DROPDOWN_OPEN':
       return { ...state, isDropdownOpen: action.payload };
     case 'SET_AUTH':
-      return { ...state, isAuthenticated: action.payload.isAuthenticated, userId: action.payload.userId };
+      return { ...state, isAuthenticated:
+        action.payload.isAuthenticated, 
+        userId: action.payload.userId };
       default:
       return state;
   }

@@ -8,7 +8,7 @@ const Photography = () => {
 
   // Form data state
   const [formData, setFormData] = useState({
-    userId: userId || "", // Pre-fill userId from context
+    //userId: userId || "", // Pre-fill userId from context
     photography: { number: 0, price: 300 },
     videography: { number: 0, price: 300 },
     clipConstruction: { number: 0, price: 200 },
@@ -87,15 +87,15 @@ const Photography = () => {
         isEditMode ? `/${formData._id}` : ""
       }`;
       const method = isEditMode ? "PUT" : "POST";
-
+  
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, userId }), // Add userId here
       });
-
+  
       if (response.ok) {
         alert(`Data ${isEditMode ? "updated" : "added"} successfully!`);
         if (!isEditMode) {
@@ -109,7 +109,7 @@ const Photography = () => {
     } catch (error) {
       console.error("Error submitting data:", error);
     }
-  };
+  };  
 
   // Render UI
   if (!userId) return null;
@@ -119,22 +119,12 @@ const Photography = () => {
       <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
         <h1 className="text-2xl font-bold m-10">Photography Services</h1>
         <label className="flex items-center space-x-2">
-          UserId:
-          <input
-            type="text"
-            name="userId"
-            value={formData.userId}
-            readOnly
-            className="border mx-2 p-2 rounded w-1/3"
-          />
-        </label>
-        <label className="flex items-center space-x-2">
           Photography sessions (per 3 hours):
           <input
             type="number"
             name="number"
             data-category="photography"
-            value={formData.photography.number}
+            value={formData.photography.number || 0} // Default to 0
             onChange={handleChange}
             className="border mx-2 p-2 rounded w-1/3"
           />
@@ -145,7 +135,7 @@ const Photography = () => {
             type="number"
             name="number"
             data-category="videography"
-            value={formData.videography.number}
+            value={formData.videography.number || 0} // Default to 0
             onChange={handleChange}
             className="border mx-2 p-2 rounded w-1/3"
           />
@@ -156,7 +146,7 @@ const Photography = () => {
             type="number"
             name="number"
             data-category="clipConstruction"
-            value={formData.clipConstruction.number}
+            value={formData.clipConstruction.number || 0} // Default to 0
             onChange={handleChange}
             className="border mx-2 p-2 rounded w-1/3"
           />
@@ -177,7 +167,7 @@ const Photography = () => {
             type="number"
             name="number"
             data-category="giftImageSize"
-            value={formData.giftImageSize.number}
+            value={formData.giftImageSize.number || 0} // Default to 0
             onChange={handleChange}
             className="border mx-2 p-2 rounded w-1/3"
           />
