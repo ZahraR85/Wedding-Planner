@@ -2,25 +2,30 @@ import Makeup from "../models/makeup.js";
 
 // Create a new makeup for a user
 export const createMakeup = async (req, res) => {
-    try {
-      const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
-  
-      // Create a new feature document
-      const feature = await Makeup.create({
-        userID,
-        makeup,
-        dress,
-        nail,
-        hairstyle,
-        shoes,
-        special,
-      });
-  
-      res.status(201).json({ message: "Makeup created successfully", feature });
-    } catch (error) {
-      res.status(500).json({ message: "Error creating feature", error });
+  try {
+    console.log("Request Body:", req.body); // Debugging
+    const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
+
+    if (!userID) {
+      return res.status(400).json({ message: "UserID is required." });
     }
-  };
+
+    const feature = await Makeup.create({
+      userID,
+      makeup,
+      dress,
+      nail,
+      hairstyle,
+      shoes,
+      special,
+    });
+
+    res.status(201).json({ message: "Makeup created successfully", feature });
+  } catch (error) {
+    console.error("Error in createMakeup:", error); // Debugging
+    res.status(500).json({ message: "Error creating feature", error });
+  }
+};
 
 // Get all makeups
 export const getMakeups = async (req, res) => {

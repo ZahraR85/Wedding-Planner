@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import DescriptionBox from "../components/MakeupDescriptionBox";
+import { useAppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const features = [
   { id: "makeup", label: "Makeup", price: 400, description: "Professional makeup for the bride and groom." },
@@ -12,74 +14,132 @@ const features = [
 ];
 
 const MakeupSelector = () => {
+  const { userId, isAuthenticated } = useAppContext();
+  const navigate = useNavigate();
   const [selectedFeatures, setSelectedFeatures] = useState({});
   const [total, setTotal] = useState(0);
   const [currentDescription, setCurrentDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      alert("Please sign in to continue.");
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/makeups?userId=${userId}`);
+        if (response.data && response.data.length > 0) {
+          const existingData = response.data[0];
+          const formattedFeatures = Object.fromEntries(
+            features.map((feature) => [
+              feature.id,
+              { selected: existingData[feature.id]?.selected || false, price: feature.price },
+            ])
+          );
+          setSelectedFeatures(formattedFeatures);
+          setTotal(existingData.total || 0);
+          setFormData(existingData);
+          setIsEditMode(true);
+        }
+      } catch (error) {
+        console.error("Error fetching makeup data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    const calculatedTotal = Object.keys(selectedFeatures).reduce((sum, key) => {
+      const feature = selectedFeatures[key];
+      return feature?.selected ? sum + feature.price : sum;
+    }, 0);
+    setTotal(calculatedTotal);
+  }, [selectedFeatures]);
 
   const handleCheckboxChange = (id) => {
-    setSelectedFeatures((prev) => {
-      const updated = { ...prev, [id]: !prev[id] };
-      calculateTotal(updated);
-      return updated;
-    });
-  };
-
-  const calculateTotal = (selected) => {
-    let newTotal = 0;
-    features.forEach((feature) => {
-      if (selected[feature.id]) {
-        newTotal += feature.price;
-      }
-    });
-    setTotal(newTotal);
+    setSelectedFeatures((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], selected: !prev[id]?.selected },
+    }));
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/makeups", {
-        userID: "6757527a366a20b9c472ea29",
-        ...selectedFeatures,
+      const url = `http://localhost:3001/makeups${isEditMode ? `/${formData._id}` : ""}`;
+      const method = isEditMode ? "PUT" : "POST";
+      const requestData = {
+        userID: userId,
+        ...Object.fromEntries(Object.entries(selectedFeatures).map(([key, value]) => [key, value.selected])),
+        total,
+      };
+
+      const response = await axios({
+        method,
+        url,
+        data: requestData,
+        headers: { "Content-Type": "application/json" },
       });
-      alert("Features saved successfully!");
+
+      alert(`Makeup data ${isEditMode ? "updated" : "saved"} successfully!`);
+      if (!isEditMode) {
+        setFormData((prev) => ({ ...prev, _id: response.data._id }));
+        setIsEditMode(true);
+      }
     } catch (error) {
-      console.error("Error saving features:", error);
-      alert("Failed to save features.");
+      console.error("Error saving makeup data:", error);
+      alert("Failed to save makeup data!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <DescriptionBox description={currentDescription} />
-      <form className="space-y-4">
-        {features.map((feature) => (
-          <div key={feature.id} className="flex items-center justify-between">
-            <div
-              onMouseEnter={() => setCurrentDescription(feature.description)}
-              onMouseLeave={() => setCurrentDescription("")}
-              className="cursor-pointer"
-            >
-              <input
-                type="checkbox"
-                id={feature.id}
-                checked={!!selectedFeatures[feature.id]}
-                onChange={() => handleCheckboxChange(feature.id)}
-                className="mr-2"
-              />
-              <label htmlFor={feature.id} className="text-lg">
-                {feature.label} (${feature.price})
-              </label>
+    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
+      <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
+        <h1 className="text-2xl font-bold m-10">Makeup Features</h1>
+        <DescriptionBox description={currentDescription} />
+        <form className="space-y-4">
+          {features.map((feature) => (
+            <div key={feature.id} className="flex items-center justify-between">
+              <div
+                onMouseEnter={() => setCurrentDescription(feature.description)}
+                onMouseLeave={() => setCurrentDescription("")}
+                className="cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  id={feature.id}
+                  checked={selectedFeatures[feature.id]?.selected || false}
+                  onChange={() => handleCheckboxChange(feature.id)}
+                  className="mr-2"
+                />
+                <label htmlFor={feature.id} className="text-lg">
+                  {feature.label} (${feature.price})
+                </label>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </form>
         <div className="text-right mt-4 font-bold">Total: ${total}</div>
         <button
           type="button"
           onClick={handleSubmit}
           className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          disabled={loading}
         >
-          Submit
+          {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
         </button>
-      </form>
+      </div>
     </div>
   );
 };
