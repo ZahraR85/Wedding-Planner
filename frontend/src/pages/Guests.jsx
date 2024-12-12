@@ -124,7 +124,7 @@ function Guest() {
 
         {/* Statistics */}
         <h3 className="text-xl font-semibold text-gray-800 mt-8">
-          Total Guests with "Yes" Answer: {totalYesGuests}
+          Total Guests with ´&Yes;` Answer: {totalYesGuests}
         </h3>
 
         {/* Guest List */}
