@@ -76,9 +76,9 @@ const ReceptionSelector = () => {
             <p className="text-gray-600 text-center mb-8">{description}</p>
 
             <div>
-      <h1>Facilities</h1>
-      <Outlet />
-    </div>
+        <h1>Facilities</h1>
+        <Outlet />
+        </div>
     
             <div className="overflow-x-auto">
                 <table className="table-auto w-full border-collapse border border-gray-300">

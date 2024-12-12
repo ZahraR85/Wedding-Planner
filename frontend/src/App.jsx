@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import Homepage from './pages/Homepage';
 import Photography from './pages/Photography.jsx';
-import MakeupSelector from './components/MakeupSelector';
+import MakeupSelector from './pages/MakeupSelector.jsx';
 import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
-import ReceptionSelector from './components/ReceptionSelector.jsx';
-import Guests from './components/guest';
+import ReceptionSelector from './pages/ReceptionSelector.jsx';
+import Guests from './pages/Guests.jsx';
 import { AppProvider } from './context/AppContext';
 import SignIn from './components/SignIn.jsx';
 import './index.css';
@@ -22,7 +22,7 @@ function App() {
             <Route path="/Makeup" element={<MakeupSelector />} />
             <Route path="/Makeup" element={<MakeupDescriptionBox />} />
             <Route path="/Catering" element={<ReceptionSelector />} />
-             <Route path="/Catering" element={<Guests />} />
+            <Route path="/Guests" element={<Guests />} />
           </Routes>
         </Layout>
       </Router>

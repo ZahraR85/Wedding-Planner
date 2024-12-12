@@ -45,6 +45,9 @@ const Navbar = () => {
               <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
                 <ul className="flex flex-col items-start p-4 space-y-2">
                   <li className="hover:underline">
+                    <Link to="/Guests">invitation of Guests</Link>
+                  </li>
+                  <li className="hover:underline">
                     <Link to="/Venue">Venue</Link>
                   </li>
                   <li className="hover:underline">

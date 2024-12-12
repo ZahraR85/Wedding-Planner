@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import DescriptionBox from "./MakeupDescriptionBox";
+import DescriptionBox from "../components/MakeupDescriptionBox";
 
 const features = [
   { id: "makeup", label: "Makeup", price: 400, description: "Professional makeup for the bride and groom." },
