@@ -5,10 +5,9 @@ import Footer from './components/Footer';
 import Photography from './pages/Photography';
 import MakeupSelector from './components/MakeupSelector';
 import ReceptionSelector from './components/ReceptionSelector';
+import Guests from './components/guest';
 import { AppProvider } from './context/AppContext';
-
 import './index.css';
-
 function App() {
   return (
     <AppProvider>
@@ -17,17 +16,16 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Features />} />
-            <Route path="/facilities/photography" element={<Photography />} />
-          </Routes>
-          <Footer />
+            <Route path="/reception" element={<ReceptionSelector />} />
+            <Route path="/makeups" element={<MakeupSelector />} />
+          </Routes> 
+          <Footer /> 
           <MakeupSelector />
-              <ReceptionSelector />
-              <Photography />
-              
-        </>
-      </Router>
+          <ReceptionSelector />
+          <Guests />
+          <Photography />
+           </> </Router>
     </AppProvider>
   );
 }
-
 export default App;
