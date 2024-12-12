@@ -8,6 +8,8 @@ import photographyRoutes from "./routes/photographies.js";
 import makeupsRouter from "./routes/makeups.js";
 import receptionssRouter from "./routes/receptions.js";
 import guestRouter from "./routes/guest.js";
+import musicRouter from "./routes/music.js";
+import musicOptionRouter from "./routes/musicOption.js";
 
 dotenv.config(); // Load environment variables
 
@@ -29,6 +31,8 @@ app.use("/photography", photographyRoutes);
 app.use("/makeups", makeupsRouter);
 app.use("/receptions", receptionssRouter);
 app.use("/guests", guestRouter);
+app.use("/musics", musicRouter);
+app.use("/musicoptions", musicOptionRouter);
 
 app.get("/", (req, res) => {
   res.status(404).send("Not found");
