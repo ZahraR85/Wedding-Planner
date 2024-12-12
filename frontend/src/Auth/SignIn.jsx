@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
-  const [formData, setFormData] = useState({
-    identifier: '', // Can be username or email
-    password: '',
-  });
+  const [formData, setFormData] = useState({ identifier: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -16,26 +13,21 @@ const SignIn = () => {
 
   const handleSignIn = async () => {
     try {
-      setError('');
-      const response = await fetch('http://localhost:3001/auth/signin', {
+      const response = await fetch('http://localhost:3001/users/signin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Include cookies
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('currentUser', JSON.stringify(data));
-        window.dispatchEvent(new Event('storage'));
-        navigate('/');
+        navigate('/dashboard'); // Redirect to dashboard or home page
       } else {
-        const errorMessage = await response.text();
-        setError(errorMessage || 'Login failed');
+        const message = await response.text();
+        setError(message || 'Login failed');
       }
     } catch (err) {
-      console.error('Error:', err);
+      console.error(err);
       setError('An error occurred. Please try again later.');
     }
   };
