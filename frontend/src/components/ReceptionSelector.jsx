@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "../App.css";
+import { Outlet } from 'react-router-dom';
 
 const ReceptionSelector = () => {
     const [formData, setFormData] = useState({
@@ -74,6 +75,11 @@ const ReceptionSelector = () => {
             <h1 className="text-3xl font-bold text-center mb-6">Reception Features</h1>
             <p className="text-gray-600 text-center mb-8">{description}</p>
 
+            <div>
+      <h1>Facilities</h1>
+      <Outlet />
+    </div>
+    
             <div className="overflow-x-auto">
                 <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>

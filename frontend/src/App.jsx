@@ -5,10 +5,10 @@ import Photography from './pages/Photography.jsx';
 import MakeupSelector from './components/MakeupSelector';
 import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
 import ReceptionSelector from './components/ReceptionSelector.jsx';
+import Guests from './components/guest';
 import { AppProvider } from './context/AppContext';
 import SignIn from './components/SignIn.jsx';
 import './index.css';
-
 function App() {
   return (
     <AppProvider>
@@ -22,6 +22,7 @@ function App() {
             <Route path="/Makeup" element={<MakeupSelector />} />
             <Route path="/Makeup" element={<MakeupDescriptionBox />} />
             <Route path="/Catering" element={<ReceptionSelector />} />
+             <Route path="/Catering" element={<Guests />} />
           </Routes>
         </Layout>
       </Router>
