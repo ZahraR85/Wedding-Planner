@@ -40,8 +40,9 @@ const Register = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2>Register</h2>
+    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
+      <div className="max-w-5xl w-2/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
+      <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
       <input
@@ -50,6 +51,7 @@ const Register = () => {
         placeholder="First Name"
         value={formData.name}
         onChange={handleChange}
+        className="block w-full p-2 border border-gray-300 rounded"
       />
       <input
         type="text"
@@ -57,6 +59,7 @@ const Register = () => {
         placeholder="Last Name"
         value={formData.family}
         onChange={handleChange}
+        className="block w-full p-2 border border-gray-300 rounded"
       />
       <input
         type="email"
@@ -64,6 +67,7 @@ const Register = () => {
         placeholder="Email"
         value={formData.email}
         onChange={handleChange}
+        className="block w-full p-2 border border-gray-300 rounded"
       />
       <input
         type="text"
@@ -71,6 +75,7 @@ const Register = () => {
         placeholder="Phone"
         value={formData.phone}
         onChange={handleChange}
+        className="block w-full p-2 border border-gray-300 rounded"
       />
       <input
         type="password"
@@ -78,8 +83,12 @@ const Register = () => {
         placeholder="Password"
         value={formData.password}
         onChange={handleChange}
+        className="block w-full p-2 border border-gray-300 rounded"
       />
-      <button onClick={handleRegister}>Register</button>
+      <button onClick={handleRegister}
+      className="bg-btnLight text-white py-2 text-lg hover:bg-btnDark rounded w-full"
+      >Register</button>
+    </div>
     </div>
   );
 };
