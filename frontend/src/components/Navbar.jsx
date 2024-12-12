@@ -60,7 +60,7 @@ const Navbar = () => {
                     <Link to="/Makeup">Makeup, Hair, Wedding Dress</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link to="/music">Music Band</Link>
+                    <Link to="/Musics">Music Band</Link>
                   </li>
                 </ul>
               </div>

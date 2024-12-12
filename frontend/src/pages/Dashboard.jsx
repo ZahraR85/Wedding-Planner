@@ -6,5 +6,5 @@ Hi
     </div>
   );
 };
-
 export default Dashboard;
+

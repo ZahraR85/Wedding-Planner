@@ -7,6 +7,7 @@ import MakeupSelector from './pages/MakeupSelector.jsx';
 import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
 import ReceptionSelector from './pages/ReceptionSelector.jsx';
 import Guests from './pages/Guests.jsx';
+import Musics from './pages/Music.jsx';
 import { AppProvider } from './context/AppContext';
 import SignIn from './Auth/SignIn.jsx';
 import Register from './Auth/Register.jsx';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/Makeup" element={<MakeupDescriptionBox />} />
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
+            <Route path="/Musics" element={<Musics />} />
           </Routes>
         </Layout>
       </Router>
