@@ -6,7 +6,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ identifier: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { setAuth } = useAppContext(); // Access context
+  const { setAuth } = useAppContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,25 +14,26 @@ const SignIn = () => {
   };
 
   const handleSignIn = async () => {
+    setError('');
     try {
       const response = await fetch('http://localhost:3001/users/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Include cookies
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        const data = await response.json(); // Expect userId and role from API
-        setAuth(true, data.userId); // Set user as authenticated
+        const data = await response.json();
+        setAuth(true, data.userId);
         navigate('/dashboard');
       } else {
         const message = await response.text();
-        setError(message || 'Login failed');
+        setError(message || 'Invalid login credentials');
       }
     } catch (err) {
       console.error(err);
-      setError('An error occurred. Please try again later.');
+      setError('Failed to sign in. Please try again later.');
     }
   };
 
@@ -44,7 +45,7 @@ const SignIn = () => {
         <input
           type="text"
           name="identifier"
-          placeholder="Username or Email"
+          placeholder="Name or Email"
           value={formData.identifier}
           onChange={handleChange}
           className="block w-full p-2 border border-gray-300 rounded"
@@ -57,8 +58,8 @@ const SignIn = () => {
           onChange={handleChange}
           className="block w-full p-2 border border-gray-300 rounded"
         />
-        <div className='w-full text-start underline hover:decoration-2'>
-          <Link to="/register" className="btn btn-primary text-sm">Forgot your password?</Link>
+        <div className="w-full text-start underline hover:decoration-2">
+          <Link to="/register" className="text-sm">Forgot your password?</Link>
         </div>
         <button
           onClick={handleSignIn}
@@ -67,7 +68,7 @@ const SignIn = () => {
           Sign In
         </button>
         <div className="m-5 w-full text-center underline hover:decoration-2">
-          <Link to="/register" className="btn btn-primary text-m">Create account / Register</Link>
+          <Link to="/register" className="text-m">Create Account / Register</Link>
         </div>
       </div>
     </div>
