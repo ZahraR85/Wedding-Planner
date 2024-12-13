@@ -1,10 +1,15 @@
+import React from 'react';
+import Countdown from '../components/countdown';
+import Music from '../components/music';
 
-const Dashboard = () => {
+
+const dashboard = () => {
   return (
-    <div>
-Hi
+      <div>
+      <Countdown />
+      <Music />
     </div>
   );
 };
-export default Dashboard;
 
+export default dashboard;

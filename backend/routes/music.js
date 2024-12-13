@@ -5,7 +5,9 @@ import {
   getMusicSelectionById,
   updateMusicSelection,
   deleteMusicSelection,
-} from "../controllers/MusicController.js";
+  getUserSelections,
+  
+} from "../controllers/musicController.js";
 
 const router = express.Router();
 
@@ -14,5 +16,7 @@ router.get("/", getAllMusicSelections); // Get all music selections
 router.get("/:id", getMusicSelectionById); // Get a single user's music selection
 router.put("/:id", updateMusicSelection); // Update a user's music selection
 router.delete("/:id", deleteMusicSelection); // Delete a user's music selection
+router.get("/", getUserSelections);
+
 
 export default router;
