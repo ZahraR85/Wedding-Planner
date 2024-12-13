@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ identifier: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { setAuth } = useAppContext(); // Access context
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +23,9 @@ const SignIn = () => {
       });
 
       if (response.ok) {
-        navigate('/dashboard'); // Redirect to dashboard or home page
+        const data = await response.json(); // Expect userId and role from API
+        setAuth(true, data.userId); // Set user as authenticated
+        navigate('/dashboard');
       } else {
         const message = await response.text();
         setError(message || 'Login failed');

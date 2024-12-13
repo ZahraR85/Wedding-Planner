@@ -7,6 +7,8 @@ const initialState = {
   searchTerm: '',
   hoveredDropdown: null,
   isDropdownOpen: false,
+  userId: null, // Add userId
+  isAuthenticated: false, // Add authentication flag
 };
 
 const appReducer = (state, action) => {
@@ -21,7 +23,11 @@ const appReducer = (state, action) => {
       return { ...state, hoveredDropdown: null };
     case 'SET_DROPDOWN_OPEN':
       return { ...state, isDropdownOpen: action.payload };
-    default:
+    case 'SET_AUTH':
+      return { ...state, isAuthenticated:
+        action.payload.isAuthenticated, 
+        userId: action.payload.userId };
+      default:
       return state;
   }
 };
@@ -35,6 +41,8 @@ export const AppProvider = ({ children }) => {
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
   const setDropdownOpen = (isOpen) => dispatch({ type: 'SET_DROPDOWN_OPEN', payload: isOpen });
 
+  const setAuth = (isAuthenticated, userId) =>
+    dispatch({ type: 'SET_AUTH', payload: { isAuthenticated, userId } });
   return (
     <AppContext.Provider
       value={{
@@ -44,6 +52,7 @@ export const AppProvider = ({ children }) => {
         setHoveredDropdown,
         clearHoveredDropdown,
         setDropdownOpen,
+        setAuth,
       }}
     >
       {children}
