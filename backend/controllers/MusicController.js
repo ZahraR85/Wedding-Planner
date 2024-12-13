@@ -1,4 +1,4 @@
-import Music from "../models/music.js";
+import Music from "../models/Music.js";
 
 // Create a new user music selection
 export const createMusicSelection = async (req, res) => {
@@ -63,5 +63,17 @@ export const deleteMusicSelection = async (req, res) => {
     res.status(200).json({ message: "Selection deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+// Get all user selections with details
+export const getUserSelections = async (req, res) => {
+  try {
+    const userSelections = await Music.find().populate('selections.optionID');
+    res.status(200).json(userSelections);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user selections", error });
   }
 };
