@@ -13,6 +13,21 @@ const Register = () => {
   };
 
   const handleRegister = async () => {
+    if (!/^[a-zA-Z]+$/.test(formData.name)) {
+      return setError("Name must contain only letters.");
+    }
+    if (!/^[a-zA-Z]+$/.test(formData.family)) {
+      return setError("Family name must contain only letters.");
+    }
+    if (!/^\d{10,15}$/.test(formData.phone)) {
+      return setError("Enter a valid phone number (10-15 digits).");
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      return setError("Enter a valid email.");
+    }
+    if (!formData.password) {
+      return setError("Password is required.");
+    }
     setError('');
     try {
       const response = await fetch('http://localhost:3001/users/register', {

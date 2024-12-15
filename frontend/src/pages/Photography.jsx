@@ -93,7 +93,7 @@ const Photography = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...formData, userId }), // Add userId here
+        body: JSON.stringify({ ...formData, userId }), // Send all fields
       });
   
       if (response.ok) {
@@ -109,8 +109,8 @@ const Photography = () => {
     } catch (error) {
       console.error("Error submitting data:", error);
     }
-  };  
-
+  };
+  
   // Render UI
   if (!userId) return null;
 
@@ -119,7 +119,7 @@ const Photography = () => {
       <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
         <h1 className="text-2xl font-bold m-10">Photography Services</h1>
         <label className="flex items-center space-x-2">
-          Photography sessions (per 3 hours):
+          Photography sessions (per 3 hours 300$):
           <input
             type="number"
             name="number"
@@ -130,7 +130,7 @@ const Photography = () => {
           />
         </label>
         <label className="flex items-center space-x-2">
-          Videography sessions (per 3 hours):
+          Videography sessions (per 3 hours 300$):
           <input
             type="number"
             name="number"
@@ -141,7 +141,7 @@ const Photography = () => {
           />
         </label>
         <label className="flex items-center space-x-2">
-          Clip Construction (per 3 minutes):
+          Clip Construction (per 3 minutes 200$):
           <input
             type="number"
             name="number"
@@ -159,10 +159,10 @@ const Photography = () => {
             checked={formData.physicalAlbum.selected}
             onChange={handleChange}
           />
-          <span>Physical Album with 20 photos</span>
+          <span>Physical Album with 20 photos 500$</span>
         </label>
         <label className="flex items-center space-x-2">
-          Gift Image for guests (Size 15x18):
+          Gift Image for guests 10$ (Size 15x18):
           <input
             type="number"
             name="number"
