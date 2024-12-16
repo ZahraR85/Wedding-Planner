@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
+
 const features = [
   { id: "photography", label: "Photography (per 3 hours)", price: 300 },
   { id: "videography", label: "Videography (per 3 hours)", price: 300 },
@@ -9,6 +10,7 @@ const features = [
   { id: "physicalAlbum", label: "Physical Album with 20 photos", price: 500 },
   { id: "giftImageSize", label: "Gift Image for guests (Size 15x18)", price: 10 },
 ];
+
 const Photography = () => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
@@ -34,31 +36,31 @@ const Photography = () => {
 
   // Fetch data if the userId is available
   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`http://localhost:3001/photography?userId=${userId}`);
-          if (response.data) {
-            const existingData = response.data;
-    
-  
-            // Merge the fetched data with the default values
-            setFormData({
-              photography: existingData.photography || { number: 0, price: 300},
-              videography: existingData.videography || { number: 0, price: 300 },
-              clipConstruction: existingData.clipConstruction || { number: 0, price: 200 },
-              physicalAlbum: existingData.physicalAlbum || { selected: false, price: 500},
-              giftImageSize: existingData.giftImageSize|| { number: 0, price: 10 }
-            });
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/photography?userId=${userId}`);
+        if (response.data) {
+          const existingData = response.data;
+
+          // Merge the fetched data with the default values
+          setFormData({
+            photography: existingData.photography || { number: 0, price: 300 },
+            videography: existingData.videography || { number: 0, price: 300 },
+            clipConstruction: existingData.clipConstruction || { number: 0, price: 200 },
+            physicalAlbum: existingData.physicalAlbum || { selected: false, price: 500 },
+            giftImageSize: existingData.giftImageSize || { number: 0, price: 10 },
+          });
         }
-      };
-      if (userId) {
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (userId) {
       fetchData();
     }
   }, [userId]);
-  
+
   // Calculate total price dynamically based on the form data
   useEffect(() => {
     const calculatedTotal = Object.keys(formData).reduce((sum, key) => {
@@ -75,13 +77,12 @@ const Photography = () => {
 
     setTotal(calculatedTotal);
   }, [formData]);
-  //console.log('Form data:', formData);
 
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value, type, checked, dataset } = e.target;
     const category = dataset.category;
-  
+
     setFormData((prevData) => {
       const updatedData = { ...prevData };
       if (type === "checkbox") {
@@ -92,7 +93,7 @@ const Photography = () => {
       return updatedData;
     });
   };
-  
+
   // Submit form data
   const handleSubmit = async () => {
     setLoading(true);
@@ -106,11 +107,11 @@ const Photography = () => {
         physicalAlbum: formData.physicalAlbum?.selected || false,
         giftImageSize: formData.giftImageSize?.number || 0,
       };
-  
+
       const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
       });
-  
+
       alert(response.data.message);  // Show success message
       setIsEditMode(true);  // Enable edit mode after successful submission
     } catch (error) {
@@ -119,7 +120,7 @@ const Photography = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
