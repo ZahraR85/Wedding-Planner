@@ -53,13 +53,13 @@ export const getAllPhotographyEntries = async (req, res) => {
 // Get a specific photography entry by UserID
 export const getPhotographyByUserId = async (req, res) => {
   const { userId } = req.query;
-
   try {
     if (!userId) {
       return res.status(400).json({ message: "UserID is required." });
     }
 
     const entry = await Photography.findOne({ userId: mongoose.Types.ObjectId(userId) });
+    console.log("Fetched photography entry:", entry); // Log fetched data
 
     if (!entry) {
       return res.status(404).json({ message: "No photography data found for this user." });
@@ -73,22 +73,21 @@ export const getPhotographyByUserId = async (req, res) => {
 };
 
 // Update a photography entry by ID
-/*export const updatePhotographyEntry = async (req, res) => {
-  const { id } = req.params;
+export const updatePhotographyEntry = async (req, res) => {
   try {
-    const updatedEntry = await Photography.findOneAndUpdate({ _id: id }, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!updatedEntry) {
-      return res.status(404).json({ error: "Photography entry not found." });
+    const { id } = req.params;
+    const updatedData = req.body;
+    const photography = await photography.findByIdAndUpdate(id, updatedData, { new: true });
+    console.log("Received Data:", req.body);
+    if (!photography) {
+      return res.status(404).json({ message: "photography not found" });
     }
-    res.status(200).json({ message: "Photography entry updated successfully!", data: updatedEntry });
+
+    res.status(200).json({ message: "photography updated successfully", makeup });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update photography entry.", details: error.message });
+    res.status(500).json({ message: "Error updating photography", error });
   }
 };
-*/
 // Delete a photography entry by ID
 export const deletePhotographyEntry = async (req, res) => {
   const { id } = req.params;

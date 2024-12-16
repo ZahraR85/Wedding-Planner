@@ -36,26 +36,28 @@ const Photography = () => {
           const response = await axios.get(`http://localhost:3001/photography?userId=${userId}`);
           if (response.status === 200) {
             const fetchedData = response.data;
-
-            // Merge default values with fetched data
+            console.log("Fetched data:", fetchedData);
+  
+            // Merge the fetched data with the default values
             setFormData({
               photography: { number: 0, price: 300, ...fetchedData.photography },
               videography: { number: 0, price: 300, ...fetchedData.videography },
               clipConstruction: { number: 0, price: 200, ...fetchedData.clipConstruction },
               physicalAlbum: { selected: false, price: 500, ...fetchedData.physicalAlbum },
-              giftImageSize: { number: 0, price: 10, ...fetchedData.giftImageSize },
+              giftImageSize: { number: 0, price: 10, ...fetchedData.giftImageSize }
             });
             setIsEditMode(true);
           }
         } catch (error) {
-          console.error("Error fetching photography data:", error);
+          console.error("Error fetching data:", error);
         }
       };
       fetchData();
     }
   }, [userId]);
+  
 
-  // Calculate total price dynamically
+  // Calculate total price dynamically based on the form data
   useEffect(() => {
     const calculatedTotal = Object.keys(formData).reduce((sum, key) => {
       const feature = formData[key];
@@ -71,21 +73,24 @@ const Photography = () => {
 
     setTotal(calculatedTotal);
   }, [formData]);
+  //console.log('Form data:', formData);
 
   // Handle form field changes
-  const handleChange = (event) => {
-    const { name, value, checked, dataset } = event.target;
+  const handleChange = (e) => {
+    const { name, value, type, checked, dataset } = e.target;
     const category = dataset.category;
-
-    setFormData((prevData) => ({
-      ...prevData,
-      [category]: {
-        ...prevData[category],
-        [name]: name === "selected" ? checked : parseInt(value, 10),
-      },
-    }));
+  
+    setFormData((prevData) => {
+      const updatedData = { ...prevData };
+      if (type === "checkbox") {
+        updatedData[category][name] = checked;
+      } else {
+        updatedData[category][name] = value;
+      }
+      return updatedData;
+    });
   };
-
+  
   // Submit form data
   const handleSubmit = async () => {
     setLoading(true);
