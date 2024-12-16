@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
-
+const features = [
+  { id: "photography", label: "Photography (per 3 hours)", price: 300 },
+  { id: "videography", label: "Videography (per 3 hours)", price: 300 },
+  { id: "clipConstruction", label: "Clip Construction (per 3 minutes)", price: 200 },
+  { id: "physicalAlbum", label: "Physical Album with 20 photos", price: 500 },
+  { id: "giftImageSize", label: "Gift Image for guests (Size 15x18)", price: 10 },
+];
 const Photography = () => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
