@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const generateToken = (userId, role) => {
-  return jwt.sign({ userId, role }, process.env.JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign({ userId, role }, process.env.JWT_SECRET, { expiresIn: '60d' });
 };
 
 // Register User
@@ -15,39 +15,43 @@ export const register = async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: 'Registration successful' });
   } catch (error) {
-    res.status(400).send('Error registering user');
+    if (error.code === 11000) {
+      const duplicateField = Object.keys(error.keyValue)[0];
+      return res.status(400).json({ error: `${duplicateField} already exists.` });
+    }
+    res.status(400).json({ error: 'Error registering user. Ensure all fields are valid.' });
   }
 };
 
 // Sign In User
 export const signin = async (req, res) => {
-  const { identifier, password } = req.body; // Expect identifier (email/phone) and password
+  const { identifier, password } = req.body; // identifier = email or name
 
   try {
-    // Look for a user by email or phone
+    // Find user by email or name
     const user = await User.findOne({
-      $or: [{ email: identifier }, { phone: identifier }],
-    }).select('+password'); // Include password explicitly if it is hidden by default in the schema
+      $or: [{ email: identifier }, { name: identifier }],
+    }).select('+password'); // Explicitly include the password field
 
     if (!user) {
-      return res.status(404).send('User not found'); // Return 404 if no user is found
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    // Compare the provided password with the stored hashed password
+    // Compare provided password with stored hashed password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).send('Invalid credentials'); // Return 401 for incorrect password
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Generate a token (example using JWT)
+    // Generate JWT token
     const token = generateToken(user._id, user.role);
 
-    // Set the token as a secure, HTTP-only cookie
+    // Set token as HTTP-only cookie
     res
       .cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies only in production
-        sameSite: 'strict', // Protect against CSRF attacks
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
         maxAge: 3600000, // 1 hour
       })
       .status(200)
@@ -57,8 +61,8 @@ export const signin = async (req, res) => {
         role: user.role,
       });
   } catch (error) {
-    console.error('Error during sign in:', error); // Log error for debugging
-    res.status(500).send('Error during sign in'); // Return generic error message
+    console.error('Error during sign in:', error);
+    res.status(500).send({ error: 'Error during sign in' });
   }
 };
 

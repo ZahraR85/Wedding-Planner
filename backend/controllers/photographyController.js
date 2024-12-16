@@ -1,4 +1,4 @@
-import Photography from "../models/photograghy.js";
+import Photography from "../models/photography.js";
 
 // Create a new photography entry
 export const createPhotographyEntry = async (req, res) => {
@@ -39,7 +39,7 @@ export const getPhotographyById = async (req, res) => {
 export const updatePhotographyEntry = async (req, res) => {
   const { id } = req.params;
   try {
-    const updatedEntry = await Photography.findByIdAndUpdate(id, req.body, {
+    const updatedEntry = await Photography.findOneAndUpdate({ _id: id }, req.body, {
       new: true,
       runValidators: true,
     });

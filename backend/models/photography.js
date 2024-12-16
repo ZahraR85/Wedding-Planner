@@ -47,6 +47,33 @@ photographySchema.pre("save", function (next) {
 
   next();
 });
+photographySchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+  if (update) {
+    // Fetch the current document
+    const docToUpdate = await this.model.findOne(this.getQuery());
+
+    // Merge existing values with the incoming update
+    const photography = { ...docToUpdate.photography, ...update.photography };
+    const videography = { ...docToUpdate.videography, ...update.videography };
+    const clipConstruction = { ...docToUpdate.clipConstruction, ...update.clipConstruction };
+    const physicalAlbum = { ...docToUpdate.physicalAlbum, ...update.physicalAlbum };
+    const giftImageSize = { ...docToUpdate.giftImageSize, ...update.giftImageSize };
+
+    // Recalculate total
+    const total =
+      (photography.number || 0) * (photography.price || 0) +
+      (videography.number || 0) * (videography.price || 0) +
+      (clipConstruction.number || 0) * (clipConstruction.price || 0) +
+      (physicalAlbum.selected ? (physicalAlbum.price || 0) : 0) +
+      (giftImageSize.number || 0) * (giftImageSize.price || 0);
+
+    // Update the total in the update object
+    this.setUpdate({ ...update, total });
+  }
+  next();
+});
+
 
 const Photography = mongoose.model("Photography", photographySchema);
 
