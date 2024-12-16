@@ -1,41 +1,88 @@
 import Makeup from "../models/makeup.js";
-
+import mongoose from "mongoose";
 // Create a new makeup for a user
-export const createMakeup = async (req, res) => {
+// export const createMakeup = async (req, res) => {
+//   try {
+//     console.log("Request Body:", req.body); // Debugging
+//     const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
+
+//     if (!userID) {
+//       return res.status(400).json({ message: "UserID is required." });
+//     }
+//     console.log("Received Data:", req.body);
+//     const feature = await Makeup.create({
+//       userID,
+//       makeup,
+//       dress,
+//       nail,
+//       hairstyle,
+//       shoes,
+//       special,
+//     });
+
+//     res.status(201).json({ message: "Makeup created successfully", feature });
+//   } catch (error) {
+//     console.error("Error in createMakeup:", error); // Debugging
+//     res.status(500).json({ message: "Error creating feature", error });
+//   }
+// };
+export const createOrUpdateMakeup = async (req, res) => {
   try {
-    console.log("Request Body:", req.body); // Debugging
     const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
+
+    console.log("Received Data:", req.body);
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
     }
 
-    const feature = await Makeup.create({
-      userID,
-      makeup,
-      dress,
-      nail,
-      hairstyle,
-      shoes,
-      special,
-    });
+    // Calculate the total price
+    const total =
+      (makeup ? 400 : 0) +
+      (dress ? 500 : 0) +
+      (nail ? 200 : 0) +
+      (hairstyle ? 400 : 0) +
+      (shoes ? 100 : 0) +
+      (special ? 300 : 0);
 
-    res.status(201).json({ message: "Makeup created successfully", feature });
+    console.log("Calculated Total:", total);
+
+    // Prepare the data to update
+    const updateData = {
+      makeup: { selected: makeup || false, price: 400 },
+      dress: { selected: dress || false, price: 500 },
+      nail: { selected: nail || false, price: 200 },
+      hairstyle: { selected: hairstyle || false, price: 400 },
+      shoes: { selected: shoes || false, price: 100 },
+      special: { selected: special || false, price: 300 },
+      total, // Include the calculated total
+    };
+
+
+
+console.log("Makeup:", makeup ? 400 : 0);
+console.log("Dress:", dress ? 500 : 0);
+console.log("Nail:", nail ? 200 : 0);
+console.log("Hairstyle:", hairstyle ? 400 : 0);
+console.log("Shoes:", shoes ? 100 : 0);
+console.log("Special:", special ? 300 : 0);
+console.log("Calculated Total:", total);
+
+    // Update or create the document
+    const feature = await Makeup.findOneAndUpdate(
+      { userID: new mongoose.Types.ObjectId(userID) },
+      { $set: updateData },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+
+    console.log("Updated Feature:", feature);
+    res.status(200).json({ message: "Makeup updated successfully", feature });
   } catch (error) {
-    console.error("Error in createMakeup:", error); // Debugging
-    res.status(500).json({ message: "Error creating feature", error });
+    console.error("Error in createOrUpdateMakeup:", error);
+    res.status(500).json({ message: "Error saving makeup data", error });
   }
 };
 
-// Get all makeups
-// export const getMakeups = async (req, res) => {
-//   try {
-//     const makeups = await Makeup.find().populate("userID");
-//     res.status(200).json(makeups);
-//   } catch (error) {
-//     res.status(500).json({ message: "Error fetching makeups", error });
-//   }
-// };
 
 
 
@@ -89,7 +136,7 @@ export const updateMakeup = async (req, res) => {
     const updatedData = req.body;
 
     const makeup = await Makeup.findByIdAndUpdate(id, updatedData, { new: true });
-
+    console.log("Received Data:", req.body);
     if (!makeup) {
       return res.status(404).json({ message: "Makeup not found" });
     }

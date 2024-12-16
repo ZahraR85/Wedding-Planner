@@ -26,7 +26,7 @@ const SignIn = () => {
       if (response.ok) {
         const data = await response.json();
         setAuth(true, data.userId);
-        navigate('/dashboard');
+        navigate('/');
       } else {
         const message = await response.text();
         setError(message || 'Invalid login credentials');
