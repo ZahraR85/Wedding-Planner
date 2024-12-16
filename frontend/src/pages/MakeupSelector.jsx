@@ -16,8 +16,15 @@ const features = [
 const MakeupSelector = () => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
-  const [selectedFeatures, setSelectedFeatures] = useState({});
-  const [total, setTotal] = useState(0);
+  const [selectedFeatures, setSelectedFeatures] = useState({
+    makeup: { selected: false, price: 400 },
+    dress: { selected: false, price: 500 },
+    nail: { selected: false, price: 200 },
+    hairstyle: { selected: false, price: 400 },
+    shoes: { selected: false, price: 100 },
+    special: { selected: false, price: 300 },
+  });
+  const [total, setTotal] = useState(0); // Total for UI display
   const [currentDescription, setCurrentDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -33,30 +40,33 @@ const MakeupSelector = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/makeups?userId=${userId}`);
-        if (response.data && response.data.length > 0) {
-          const existingData = response.data[0];
-          const formattedFeatures = Object.fromEntries(
-            features.map((feature) => [
-              feature.id,
-              { selected: existingData[feature.id]?.selected || false, price: feature.price },
-            ])
-          );
-          setSelectedFeatures(formattedFeatures);
-          setTotal(existingData.total || 0);
-          setFormData(existingData);
-          setIsEditMode(true);
+        const response = await axios.get(`http://localhost:3001/makeups?userID=${userId}`);
+        console.log("API Response:", response.data); // Log the response
+  
+        if (response.data) {
+          const existingData = response.data;
+  
+          setSelectedFeatures({
+            makeup: existingData.makeup || { selected: false, price: 400 },
+            dress: existingData.dress || { selected: false, price: 500 },
+            nail: existingData.nail || { selected: false, price: 200 },
+            hairstyle: existingData.hairstyle || { selected: false, price: 400 },
+            shoes: existingData.shoes || { selected: false, price: 100 },
+            special: existingData.special || { selected: false, price: 300 },
+          });
         }
       } catch (error) {
-        console.error("Error fetching makeup data:", error);
+        console.error("Error fetching user data:", error);
       }
     };
-
+  
     if (userId) {
       fetchUserData();
     }
   }, [userId]);
+  
 
+  // Calculate the total dynamically
   useEffect(() => {
     const calculatedTotal = Object.keys(selectedFeatures).reduce((sum, key) => {
       const feature = selectedFeatures[key];
@@ -71,30 +81,26 @@ const MakeupSelector = () => {
       [id]: { ...prev[id], selected: !prev[id]?.selected },
     }));
   };
-
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const url = `http://localhost:3001/makeups${isEditMode ? `/${formData._id}` : ""}`;
-      const method = isEditMode ? "PUT" : "POST";
+      const url = `http://localhost:3001/makeups`;
       const requestData = {
         userID: userId,
-        ...Object.fromEntries(Object.entries(selectedFeatures).map(([key, value]) => [key, value.selected])),
-        total,
+        makeup: selectedFeatures.makeup?.selected || false,
+        dress: selectedFeatures.dress?.selected || false,
+        nail: selectedFeatures.nail?.selected || false,
+        hairstyle: selectedFeatures.hairstyle?.selected || false,
+        shoes: selectedFeatures.shoes?.selected || false,
+        special: selectedFeatures.special?.selected || false,
       };
-
-      const response = await axios({
-        method,
-        url,
-        data: requestData,
+      console.log("Sending data:", requestData);
+  
+      const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
       });
-
-      alert(`Makeup data ${isEditMode ? "updated" : "saved"} successfully!`);
-      if (!isEditMode) {
-        setFormData((prev) => ({ ...prev, _id: response.data._id }));
-        setIsEditMode(true);
-      }
+  
+      alert(response.data.message); // Show success message
     } catch (error) {
       console.error("Error saving makeup data:", error);
       alert("Failed to save makeup data!");
@@ -102,6 +108,38 @@ const MakeupSelector = () => {
       setLoading(false);
     }
   };
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const url = `http://localhost:3001/makeups${isEditMode ? `/${formData._id}` : ""}`;
+  //     const method = isEditMode ? "PUT" : "POST";
+  //     const requestData = {
+  //       userID: userId,
+  //       makeup: { selected: selectedFeatures.makeup?.selected || false },
+  //       dress: { selected: selectedFeatures.dress?.selected || false },
+  //       nail: { selected: selectedFeatures.nail?.selected || false },
+  //       hairstyle: { selected: selectedFeatures.hairstyle?.selected || false },
+  //       shoes: { selected: selectedFeatures.shoes?.selected || false },
+  //       special: { selected: selectedFeatures.special?.selected || false },
+  //     };
+  
+  //     console.log("Request Payload:", requestData); // Debugging the data
+  
+  //     const response = await axios({
+  //       method,
+  //       url,
+  //       data: requestData,
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+  
+  //     alert(`Makeup data ${isEditMode ? "updated" : "saved"} successfully!`);
+  //   } catch (error) {
+  //     console.error("Error saving makeup data:", error);
+  //     alert("Failed to save makeup data!");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
