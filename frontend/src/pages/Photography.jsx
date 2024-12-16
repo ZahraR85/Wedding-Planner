@@ -6,8 +6,6 @@ import axios from "axios";
 const Photography = () => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
-
-  // Form data state
   const [formData, setFormData] = useState({
     photography: { number: 0, price: 300 },
     videography: { number: 0, price: 300 },
@@ -30,33 +28,31 @@ const Photography = () => {
 
   // Fetch data if the userId is available
   useEffect(() => {
-    if (userId) {
       const fetchData = async () => {
         try {
           const response = await axios.get(`http://localhost:3001/photography?userId=${userId}`);
-          if (response.status === 200) {
-            const fetchedData = response.data;
-            console.log("Fetched data:", fetchedData);
+          if (response.data) {
+            const existingData = response.data;
+    
   
             // Merge the fetched data with the default values
             setFormData({
-              photography: { number: 0, price: 300, ...fetchedData.photography },
-              videography: { number: 0, price: 300, ...fetchedData.videography },
-              clipConstruction: { number: 0, price: 200, ...fetchedData.clipConstruction },
-              physicalAlbum: { selected: false, price: 500, ...fetchedData.physicalAlbum },
-              giftImageSize: { number: 0, price: 10, ...fetchedData.giftImageSize }
+              photography: existingData.photography || { number: 0, price: 300},
+              videography: existingData.videography || { number: 0, price: 300 },
+              clipConstruction: existingData.clipConstruction || { number: 0, price: 200 },
+              physicalAlbum: existingData.physicalAlbum || { selected: false, price: 500},
+              giftImageSize: existingData.giftImageSize|| { number: 0, price: 10 }
             });
-            setIsEditMode(true);
           }
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       };
+      if (userId) {
       fetchData();
     }
   }, [userId]);
   
-
   // Calculate total price dynamically based on the form data
   useEffect(() => {
     const calculatedTotal = Object.keys(formData).reduce((sum, key) => {
@@ -95,25 +91,29 @@ const Photography = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/photography", {
-        userId,
-        ...formData,
+      const url = "http://localhost:3001/photography";  // Updated URL for photography
+      const requestData = {
+        userId: userId,
+        photography: formData.photography?.number || 0,
+        videography: formData.videography?.number || 0,
+        clipConstruction: formData.clipConstruction?.number || 0,
+        physicalAlbum: formData.physicalAlbum?.selected || false,
+        giftImageSize: formData.giftImageSize?.number || 0,
+      };
+  
+      const response = await axios.post(url, requestData, {
+        headers: { "Content-Type": "application/json" },
       });
-
-      if (response.status === 200) {
-        alert(response.data.message);
-        setIsEditMode(true);
-      }
+  
+      alert(response.data.message);  // Show success message
+      setIsEditMode(true);  // Enable edit mode after successful submission
     } catch (error) {
       console.error("Error saving photography data:", error);
       alert("Failed to save photography data!");
     } finally {
       setLoading(false);
     }
-  };
-
-  // Render UI
-  if (!userId) return null;
+  };  
 
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">

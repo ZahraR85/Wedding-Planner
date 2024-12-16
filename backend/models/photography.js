@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const photographySchema = new Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId, // Reference to the User schema
+      type: Schema.Types.ObjectId, // Reference to the User schema
       ref: "User",
       required: true,
     },
