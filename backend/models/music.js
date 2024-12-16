@@ -30,9 +30,10 @@ const CustomRequestSchema = new Schema({
 const MusicSchema = new Schema(
   {
     userID: {
-      type: String,
+      type: Schema.Types.ObjectId, // Reference to User model
+      ref: "User",
       required: true,
-      trim: true,
+      // trim: true,
     },
     selections: [SelectionSchema], // Array of selected options
     customRequests: [CustomRequestSchema], // Array of custom requests
