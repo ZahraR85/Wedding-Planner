@@ -1,4 +1,4 @@
-import Photography from "../models/photograghy.js";
+import Photography from "../models/photography.js";
 
 // Create a new photography entry
 export const createPhotographyEntry = async (req, res) => {
