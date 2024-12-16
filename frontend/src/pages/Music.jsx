@@ -1,35 +1,58 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useAppContext } from "../context/AppContext";
 
 const MusicSelectionForm = () => {
   const [musicOptions, setMusicOptions] = useState([]);
-  const [userSelection, setUserSelection] = useState({
-    userID: "6757527a366a20b9c472ea29",
-    selections: [],
-    customRequests: [],
-    totalCost: 0,
-  });
+  const [userSelection, setUserSelection] = useState(null); // Store user data from the database
+  const [hours, setHours] = useState({}); // Track hours for each music option
   const [customRequest, setCustomRequest] = useState("");
-  const [hours, setHours] = useState({});
-  const [hoveredOption, setHoveredOption] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false); // Track edit mode
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/musicoptions")
-      .then((response) => {
-        setMusicOptions(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching music options:", error);
-      });
-  }, []);
+  const userID = "6757527a366a20b9c472ea29"; // Replace with dynamic userID from context
 
+  // Fetch music options and user data on load
   useEffect(() => {
-    const totalCost = musicOptions.reduce((total, option) => {
-      const selectedHours = parseInt(hours[option._id] || 0, 10);
-      return total + selectedHours * option.pricePerHour;
-    }, 0);
-    setUserSelection((prev) => ({ ...prev, totalCost }));
+    const fetchData = async () => {
+      try {
+        // Fetch music options
+        const optionsResponse = await axios.get("http://localhost:3001/musicoptions");
+        setMusicOptions(optionsResponse.data);
+
+        // Fetch user data if it exists
+        const userResponse = await axios.get(`http://localhost:3001/musics?userID=${userID}`);
+        if (userResponse.data) {
+          setUserSelection(userResponse.data);
+          setHours(
+            userResponse.data.selections.reduce((acc, selection) => {
+              acc[selection.optionID] = selection.hours;
+              return acc;
+            }, {})
+          );
+          setIsEditMode(true);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [userID]);
+
+  // Calculate total cost dynamically
+  useEffect(() => {
+    if (musicOptions.length > 0) {
+      const totalCost = musicOptions.reduce((total, option) => {
+        const selectedHours = parseInt(hours[option._id] || 0, 10);
+        return total + selectedHours * option.pricePerHour;
+      }, 0);
+
+      setUserSelection((prev) => ({
+        ...prev,
+        totalCost,
+      }));
+    }
   }, [hours, musicOptions]);
 
   const handleHoursChange = (optionID, value) => {
@@ -43,37 +66,49 @@ const MusicSelectionForm = () => {
     if (customRequest.trim()) {
       setUserSelection((prev) => ({
         ...prev,
-        customRequests: [...prev.customRequests, { description: customRequest }],
+        customRequests: [...(prev?.customRequests || []), { description: customRequest }],
       }));
       setCustomRequest("");
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const selections = musicOptions
-      .filter((option) => hours[option._id] > 0)
-      .map((option) => ({
-        optionID: option._id,
-        hours: parseInt(hours[option._id], 10),
-        totalPrice: parseInt(hours[option._id], 10) * option.pricePerHour,
-      }));
+    try {
+      const selections = musicOptions
+        .filter((option) => hours[option._id] > 0)
+        .map((option) => ({
+          optionID: option._id,
+          hours: parseInt(hours[option._id], 10),
+          totalPrice: parseInt(hours[option._id], 10) * option.pricePerHour,
+        }));
 
-    const newUserSelection = {
-      ...userSelection,
-      selections,
-    };
+      const requestData = {
+        userID,
+        selections,
+        customRequests: userSelection?.customRequests || [],
+        totalCost: userSelection?.totalCost || 0,
+      };
 
-    axios
-      .post("http://localhost:3001/musics", newUserSelection)
-      .then((response) => {
-        alert("Music selection created successfully!");
-      })
-      .catch((error) => {
-        console.error("Error creating music selection:", error);
-        alert("An error occurred. Please try again.");
+      const url = `http://localhost:3001/musics${isEditMode ? `/${userSelection._id}` : ""}`;
+      const method = isEditMode ? "PUT" : "POST";
+
+      await axios({
+        method,
+        url,
+        data: requestData,
+        headers: { "Content-Type": "application/json" },
       });
+
+      alert(`Music selection ${isEditMode ? "updated" : "created"} successfully!`);
+    } catch (error) {
+      console.error("Error saving music selection:", error);
+      alert("Failed to save music selection!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -83,12 +118,7 @@ const MusicSelectionForm = () => {
         <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Select Music Options</h3>
         <div className="grid grid-cols-3 gap-4">
           {musicOptions.map((option) => (
-            <div
-              key={option._id}
-              onMouseEnter={() => setHoveredOption(option._id)}
-              onMouseLeave={() => setHoveredOption(null)}
-              className="relative border p-4 rounded-lg bg-gray-50"
-            >
+            <div key={option._id} className="relative border p-4 rounded-lg bg-gray-50">
               <p className="font-semibold mb-2">{option.name}</p>
               <p className="text-gray-600 mb-2">Price: ${option.pricePerHour}/hour</p>
               <label className="block">
@@ -101,11 +131,6 @@ const MusicSelectionForm = () => {
                   className="w-full p-2 border rounded"
                 />
               </label>
-              {hoveredOption === option._id && (
-                <div className="absolute top-2 left-full ml-4 p-4 bg-red-100 border rounded shadow-lg w-64 z-10">
-                  <p className="text-lg">{option.description}</p>
-                </div>
-              )}
             </div>
           ))}
         </div>
@@ -128,17 +153,20 @@ const MusicSelectionForm = () => {
           </button>
         </div>
         <ul className="mt-4 list-disc pl-6 text-gray-700">
-          {userSelection.customRequests.map((request, index) => (
+          {userSelection?.customRequests?.map((request, index) => (
             <li key={index}>{request.description}</li>
           ))}
         </ul>
 
-        <h3 className="text-xl font-bold text-center text-gray-800 mt-6">Total Cost: <span className="text-blue-600">${userSelection.totalCost}</span></h3>
+        <h3 className="text-xl font-bold text-center text-gray-800 mt-6">
+          Total Cost: <span className="text-blue-600">${userSelection?.totalCost || 0}</span>
+        </h3>
         <button
           type="submit"
           className="block w-full mt-6 p-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+          disabled={loading}
         >
-          Submit Selection
+          {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
         </button>
       </form>
     </div>

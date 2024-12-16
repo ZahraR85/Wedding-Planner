@@ -81,33 +81,34 @@ const MakeupSelector = () => {
       [id]: { ...prev[id], selected: !prev[id]?.selected },
     }));
   };
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      const url = `http://localhost:3001/makeups`;
-      const requestData = {
-        userID: userId,
-        makeup: selectedFeatures.makeup?.selected || false,
-        dress: selectedFeatures.dress?.selected || false,
-        nail: selectedFeatures.nail?.selected || false,
-        hairstyle: selectedFeatures.hairstyle?.selected || false,
-        shoes: selectedFeatures.shoes?.selected || false,
-        special: selectedFeatures.special?.selected || false,
-      };
-      console.log("Sending data:", requestData);
-  
-      const response = await axios.post(url, requestData, {
-        headers: { "Content-Type": "application/json" },
-      });
-  
-      alert(response.data.message); // Show success message
-    } catch (error) {
-      console.error("Error saving makeup data:", error);
-      alert("Failed to save makeup data!");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSubmit = async () => {
+  setLoading(true);
+  try {
+    const url = `http://localhost:3001/makeups`;
+    const requestData = {
+      userID: userId, // Unique userID ensures update
+      makeup: selectedFeatures.makeup?.selected || false,
+      dress: selectedFeatures.dress?.selected || false,
+      nail: selectedFeatures.nail?.selected || false,
+      hairstyle: selectedFeatures.hairstyle?.selected || false,
+      shoes: selectedFeatures.shoes?.selected || false,
+      special: selectedFeatures.special?.selected || false,
+    };
+
+    console.log("Sending data:", requestData);
+
+    const response = await axios.post(url, requestData, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    alert(response.data.message); // Show success message
+  } catch (error) {
+    console.error("Error saving makeup data:", error);
+    alert("Failed to save makeup data!");
+  } finally {
+    setLoading(false);
+  }
+};
   // const handleSubmit = async () => {
   //   setLoading(true);
   //   try {
