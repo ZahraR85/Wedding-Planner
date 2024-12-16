@@ -1,19 +1,19 @@
 import express from "express";
 import { 
-  createPhotographyEntry, 
+  createOrUpdatePhotography, 
   getAllPhotographyEntries, 
-  getPhotographyById, 
-  updatePhotographyEntry, 
+  getPhotographyByUserId, 
+  //updatePhotographyEntry, 
   deletePhotographyEntry 
 } from "../controllers/photographyController.js";
 
 const router = express.Router();
 
 // Routes
-router.post("/", createPhotographyEntry);
+router.post("/", createOrUpdatePhotography);
 router.get("/", getAllPhotographyEntries);
-router.get("/:id", getPhotographyById);
-router.put("/:id", updatePhotographyEntry);
+router.get("/:id", getPhotographyByUserId);
+//router.put("/:id", updatePhotographyEntry);
 router.delete("/:id", deletePhotographyEntry);
 
 export default router;
