@@ -41,7 +41,7 @@ const MakeupSelector = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/makeups?userID=${userId}`);
-        console.log("API Response:", response.data); // Log the response
+        //console.log("API Response:", response.data); // Log the response
   
         if (response.data) {
           const existingData = response.data;
@@ -94,7 +94,6 @@ const MakeupSelector = () => {
         shoes: selectedFeatures.shoes?.selected || false,
         special: selectedFeatures.special?.selected || false,
       };
-      console.log("Sending data:", requestData);
   
       const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
