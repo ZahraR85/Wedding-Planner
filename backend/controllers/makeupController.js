@@ -28,14 +28,43 @@ export const createMakeup = async (req, res) => {
 };
 
 // Get all makeups
+// export const getMakeups = async (req, res) => {
+//   try {
+//     const makeups = await Makeup.find().populate("userID");
+//     res.status(200).json(makeups);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching makeups", error });
+//   }
+// };
+
+
+
 export const getMakeups = async (req, res) => {
   try {
-    const makeups = await Makeup.find().populate("userID");
-    res.status(200).json(makeups);
+    // Get userID from query parameters or request body
+    const userID = req.query.userID || req.body.userID;
+
+    if (!userID) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // Fetch the user's Makeup selections
+    const music = await Makeup.findOne({ userID })
+      .populate('userID', 'name family') // Populate user's name and family
+
+      console.log(music);
+
+    if (!music) {
+      return res.status(404).json({ message: "No selections found for this user" });
+    }
+
+    // Return the entire user's music data
+    res.status(200).json(music);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching makeups", error });
+    res.status(500).json({ message: "Error fetching user selections", error });
   }
 };
+
 
 // Get a makeup by ID
 export const getMakeupById = async (req, res) => {

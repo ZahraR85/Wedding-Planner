@@ -21,20 +21,38 @@ export const getAllMusicSelections = async (req, res) => {
   }
 };
 
-// Get a single user's music selection by ID
-export const getMusicSelectionById = async (req, res) => {
+
+export const getUserSelectionById = async (req, res) => {
   try {
-    const selection = await Music.findById(req.params.id).populate(
-      "selections.optionID"
-    );
-    if (!selection) {
-      return res.status(404).json({ message: "Selection not found" });
+    // Get userID from query parameters or request body
+    const userID = req.query.userID || req.body.userID;
+
+    if (!userID) {
+      return res.status(400).json({ message: "User ID is required" });
     }
-    res.status(200).json(selection);
+
+    // Fetch the user's music selections
+    // Populate user details and music option details
+    const music = await Music.findOne({ userID })
+      .populate('userID', 'name family') // Populate user's name and family
+      .populate('selections.optionID');  // Populate optionID details
+    console.log("Fetching data for userID:", userID);
+    console.log("Populated Music Data:", music);
+
+    if (!music) {
+      return res.status(404).json({ message: "No selections found for this user" });
+    }
+
+    // Return the entire user's music data
+    res.status(200).json(music);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error fetching user selections", error });
   }
 };
+
+
+
+
 
 // Update a user's music selection by ID
 export const updateMusicSelection = async (req, res) => {
@@ -67,13 +85,3 @@ export const deleteMusicSelection = async (req, res) => {
 };
 
 
-
-// Get all user selections with details
-export const getUserSelections = async (req, res) => {
-  try {
-    const userSelections = await Music.find().populate('selections.optionID');
-    res.status(200).json(userSelections);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching user selections", error });
-  }
-};
