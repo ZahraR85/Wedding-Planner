@@ -5,7 +5,7 @@ import {
   getMusicOptionById,
   updateMusicOption,
   deleteMusicOption,
-} from "../controllers/MusicOptionController.js";
+} from "../controllers/musicOptionController.js";
 
 const router = express.Router();
 

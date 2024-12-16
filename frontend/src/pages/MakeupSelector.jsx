@@ -94,6 +94,7 @@ const MakeupSelector = () => {
         shoes: selectedFeatures.shoes?.selected || false,
         special: selectedFeatures.special?.selected || false,
       };
+      console.log("Sending data:", requestData);
   
       const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
