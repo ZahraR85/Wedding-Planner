@@ -32,7 +32,7 @@ const MakeupSelector = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("Please sign in to continue.");
+      alert("You must sign in to access this page.");
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -65,7 +65,6 @@ const MakeupSelector = () => {
     }
   }, [userId]);
   
-
   // Calculate the total dynamically
   useEffect(() => {
     const calculatedTotal = Object.keys(selectedFeatures).reduce((sum, key) => {

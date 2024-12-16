@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const photographySchema = new mongoose.Schema(
+const photographySchema = new Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId, // Reference to the User schema
+      type: Schema.Types.ObjectId, // Reference to the User schema
       ref: "User",
       required: true,
     },
@@ -47,7 +47,7 @@ photographySchema.pre("save", function (next) {
 
   next();
 });
-photographySchema.pre("findOneAndUpdate", async function (next) {
+/*photographySchema.pre("findOneAndUpdate", async function (next) {
   const update = this.getUpdate();
   if (update) {
     // Fetch the current document
@@ -73,8 +73,7 @@ photographySchema.pre("findOneAndUpdate", async function (next) {
   }
   next();
 });
+*/
 
+export default model("Photography", photographySchema);
 
-const Photography = mongoose.model("Photography", photographySchema);
-
-export default Photography;
