@@ -1,48 +1,112 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 function Guest() {
+  const { userId, isAuthenticated } = useAppContext();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     guestName: '',
     numberOfPersons: '',
     phone: '',
     address: '',
+    answerStatus: '',
+    email: '',
   });
 
   const [guestList, setGuestList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [guestsPerPage] = useState(2);
+  const [guestsPerPage] = useState(5);
 
-  // Handle input changes
+  useEffect(() => {
+    if (!isAuthenticated) {
+      alert("You must sign in to access this page.");
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
+  console.log("User ID in Context:", userId);
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-
   // Handle form submission
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     // Ensure numberOfPersons is sent as a number
+  //     const requestData = {
+  //       ...formData,
+  //       numberOfPersons: Number(formData.numberOfPersons), // Convert to number
+  //     };
+
+  //     console.log('Request Data:', requestData); // Debugging
+  //     const response = await axios.post('http://localhost:3001/guests', requestData);
+  //     console.log('Response:', response.data);
+  //     setGuestList([...guestList, response.data.feature]);
+  //     setFormData({ guestName: '', numberOfPersons: '', phone: '', address: '' });
+  //   } catch (error) {
+  //     console.error('Error creating guest:', error.response ? error.response.data : error.message);
+  //     alert('Failed to create guest. Please check the data and try again.');
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Ensure numberOfPersons is sent as a number
       const requestData = {
         ...formData,
-        numberOfPersons: Number(formData.numberOfPersons), // Convert to number
+        numberOfPersons: Number(formData.numberOfPersons),
+        userID: userId,
       };
   
-      console.log('Request Data:', requestData); // Debugging
-      const response = await axios.post('http://localhost:3001/guests', requestData);
-      console.log('Response:', response.data);
-      setGuestList([...guestList, response.data.feature]);
-      setFormData({ guestName: '', numberOfPersons: '', phone: '', address: '' });
+      if (updatingGuestId) {
+        // Update operation
+        const response = await axios.put(
+          `http://localhost:3001/guests/${updatingGuestId}`,
+          requestData
+        );
+        setGuestList(
+          guestList.map((guest) =>
+            guest._id === updatingGuestId ? response.data : guest
+          )
+        );
+        setUpdatingGuestId(null);
+        alert("Guest updated successfully!");
+      } else {
+        // Create operation
+        const response = await axios.post(
+          "http://localhost:3001/guests",
+          requestData
+        );
+        setGuestList([...guestList, response.data.feature]);
+        alert("Guest created successfully!");
+      }
+  
+      setFormData({
+        guestName: "",
+        numberOfPersons: "",
+        phone: "",
+        address: "",
+        answerStatus: "",
+        email: "",
+      });
     } catch (error) {
-      console.error('Error creating guest:', error.response ? error.response.data : error.message);
-      alert('Failed to create guest. Please check the data and try again.');
+      console.error("Error submitting form:", error.message);
+      alert("Failed to save guest.");
     }
   };
+  
 
   // Fetch guests from the backend
   const fetchGuests = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/guests');
+
+      const response = await axios.get(`http://localhost:3001/guests?userID=${userId}`);
       setGuestList(response.data);
     } catch (error) {
       console.error('Error fetching guests:', error.response.data.message);
@@ -57,11 +121,41 @@ function Guest() {
   const indexOfLastGuest = currentPage * guestsPerPage;
   const indexOfFirstGuest = indexOfLastGuest - guestsPerPage;
   const currentGuests = guestList.slice(indexOfFirstGuest, indexOfLastGuest);
+  const [updatingGuestId, setUpdatingGuestId] = useState(null);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Count guests with "Yes" answer status
   const totalYesGuests = guestList.filter((guest) => guest.answerStatus === 'Yes').length;
+  const totalNOGuests = guestList.filter((guest) => guest.answerStatus === 'No').length;
+  const totalNotyetGuests = guestList.filter((guest) => guest.answerStatus === 'Not yet').length;
+
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/guests/${id}`);
+      setGuestList(guestList.filter((guest) => guest._id !== id));
+      alert("Guest deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting guest:", error.message);
+      alert("Failed to delete guest.");
+    }
+  };
+
+  const handleUpdate = (id) => {
+    const guestToUpdate = guestList.find((guest) => guest._id === id);
+    if (guestToUpdate) {
+      setFormData({
+        guestName: guestToUpdate.guestName,
+        numberOfPersons: guestToUpdate.numberOfPersons,
+        phone: guestToUpdate.phone,
+        address: guestToUpdate.address,
+        answerStatus: guestToUpdate.answerStatus,
+        email: guestToUpdate.email,
+      });
+      setUpdatingGuestId(id); // Track which guest is being updated
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -114,6 +208,33 @@ function Guest() {
               required
             />
           </div>
+          <div>
+            <label className="block text-gray-700 font-medium">Answer Status</label>
+            <select
+              name="answerStatus"
+              value={formData.answerStatus || ''}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              required
+            >
+              <option value="Not yet">Not yet</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+
+            </select>
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email || ''}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              required
+            />
+          </div>
+
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
@@ -124,7 +245,12 @@ function Guest() {
 
         {/* Statistics */}
         <h3 className="text-xl font-semibold text-gray-800 mt-8">
-          Total Guests with ´&Yes;` Answer: {totalYesGuests}
+          Total Guests with YES Answer: {totalYesGuests}
+        </h3>
+        <h3 className="text-xl font-semibold text-gray-800 mt-8">
+          Total Guests with NO Answer: {totalNOGuests}
+        </h3>     <h3 className="text-xl font-semibold text-gray-800 mt-8">
+          Total Guests with NOT YET Answer: {totalNotyetGuests}
         </h3>
 
         {/* Guest List */}
@@ -147,6 +273,20 @@ function Guest() {
                   <td className="border px-4 py-2">{guest.phone}</td>
                   <td className="border px-4 py-2">{guest.address}</td>
                   <td className="border px-4 py-2">{guest.answerStatus}</td>
+                  <td className="border px-4 py-2 flex gap-2">
+                    <button
+                      onClick={() => handleUpdate(guest._id)}
+                      className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(guest._id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -158,9 +298,8 @@ function Guest() {
           {Array.from({ length: Math.ceil(guestList.length / guestsPerPage) }).map((_, index) => (
             <button
               key={index + 1}
-              className={`px-3 py-1 rounded-lg ${
-                index + 1 === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
-              }`}
+              className={`px-3 py-1 rounded-lg ${index + 1 === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
               onClick={() => paginate(index + 1)}
             >
               {index + 1}

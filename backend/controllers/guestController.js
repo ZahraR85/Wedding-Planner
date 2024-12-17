@@ -1,54 +1,26 @@
 import Guest from "../models/guest.js";
 
 
-// Create a new guest
-// export const createGuest = async (req, res) => {
-//   try {
-//     const guest = new Guest(req.body);
-//     const savedGuest = await guest.save();
-//     res.status(201).json(savedGuest);
-//   } catch (error) {
-//     res.status(400).json({ error: error.message });
-//   }
-// };
-
-
-// export const createGuest = async (req, res) => {
-//   try {
-//     const sampleData = {
-//       userID: '6759b403fccb9095d583feea',
-//       guestName: 'John Doe',
-//       numberOfPersons: 3,
-//       answerStatus: 'Not yet',
-//       phone: '9876543210',
-//       address: '123 Main Street',
-//       email: 'johndoe@example.com',
-//     };
-
-//     const guest = await Guest.create(sampleData);
-
-//     res.status(201).json({ message: 'Guest created successfully', guest });
-//   } catch (error) {
-//     console.error('Error in createGuest:', error); // Log detailed error
-//     if (error.name === 'ValidationError') {
-//       res.status(400).json({ message: 'Validation Error', errors: error.errors });
-//     } else {
-//       res.status(500).json({ message: 'Error creating guest', error });
-//     }
-//   }
-// };
-
 
 export const createGuest = async (req, res) => {
   try {
     console.log('Incoming Request Body:', req.body);
 
-    const { guestName, numberOfPersons, phone, address } = req.body;
+    const {userID, guestName, numberOfPersons, phone, address,answerStatus, email } = req.body;
 
-    // Hardcoded values
-    const userID = "6759f0b98e91015b5c3759c3";
-    const answerStatus = "Not yet";
-    const email = "azadeh@gmail.com";
+    console.log("Received Data:", req.body);
+
+    if (!userID) {
+      return res.status(400).json({ message: "UserID is required." });
+    }
+
+
+    if (!['Yes', 'No', 'Not yet'].includes(answerStatus)) {
+      return res.status(400).json({ message: "Invalid answerStatus" });
+    }
+    if (!email || !/.+@.+\..+/.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
 
     const feature = await Guest.create({
       userID,
@@ -74,7 +46,13 @@ export const createGuest = async (req, res) => {
 // Get all guests
 export const getGuests = async (req, res) => {
   try {
-    const guests = await Guest.find();
+    const { userID } = req.query;
+
+    if (!userID) {
+      return res.status(400).json({ message: "UserID is required." });
+    }
+
+    const guests = await Guest.find({ userID });
     res.status(200).json(guests);
   } catch (error) {
     res.status(500).json({ error: error.message });
