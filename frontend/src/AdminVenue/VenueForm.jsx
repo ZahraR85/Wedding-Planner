@@ -207,7 +207,7 @@ const VenueForm = () => {
           {loading ? "Processing..." : "Add Venue"}
         </button>
         </div>
-        <h2 className="text-lg font-bold mt-5">Your Venues</h2>
+        <h2 className="text-lg font-bold mt-5">List of our Venues</h2>
         <ul className="space-y-3">
   {venues.map((venue, index) => (
     <li key={index} className="border p-4 rounded">
