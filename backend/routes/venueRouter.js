@@ -1,22 +1,25 @@
-import express from 'express';
+import express from "express";
 import { 
-  createOrUpdateVenue, 
-  getAllVenues, 
-  getVenueById, 
+  createVenue, 
   updateVenue, 
-  deleteVenue 
-} from '../controllers/venueController.js';
-import { isAuthenticated, isAdmin } from '../middleware/RoleAccess.js';
+  deleteVenue, 
+  getAllVenues, 
+  getVenueByVenueId, 
+  getVenuesByUserId 
+} from "../controllers/venueController.js";
+
+import { isAuthenticated, isAdmin } from "../middleware/RoleAccess.js";
 
 const router = express.Router();
 
-// Admin Routes
-router.post('/', /*isAuthenticated, isAdmin,*/ createOrUpdateVenue); // Add venue
-router.put('/:id', isAuthenticated, isAdmin, updateVenue); // Update venue
-router.delete('/:id', isAuthenticated, isAdmin, deleteVenue); // Delete venue
+// Admin Routes - Only for venue management
+router.post("/", createVenue); // Create a new venue
+router.put("/:venueId", isAuthenticated, isAdmin, updateVenue); // Update venue by ID
+router.delete("/:venueId", isAuthenticated, isAdmin, deleteVenue); // Delete venue by ID
 
 // Public/User Routes
-router.get('/', /*isAuthenticated,*/ getAllVenues); // Get all venues
-router.get('/:id', isAuthenticated, getVenueById); // Get a single venue by ID
+router.get("/", getAllVenues); // Get all venues
+router.get("/:venueId", getVenueByVenueId); // Get a single venue by venue ID
+router.get("/user/:userId", isAuthenticated, getVenuesByUserId); // Get venues by user ID
 
 export default router;
