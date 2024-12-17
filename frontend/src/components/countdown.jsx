@@ -38,7 +38,7 @@ const Countdown = () => {
   }, []);
 
   // Debugging the current state being rendered
-  console.log('Rendered TimeLeft State:', timeLeft);
+  // console.log('Rendered TimeLeft State:', timeLeft);
 
   return (
     <div>
