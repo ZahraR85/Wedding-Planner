@@ -117,7 +117,6 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-
 // Get all 
 export const getUsers = async (req, res) => {
   try {
@@ -125,6 +124,30 @@ export const getUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Error fetching users", error });
+  }
+};
+
+// Get user role by userId (or _id)
+export const getUserRole = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    console.log('Incoming userId:', userId);
+
+    // Validate userId format
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: 'Invalid user ID format' });
+    }
+
+    const user = await User.findById(userId, 'role');
+    if (!user) {
+      console.log('No user found for ID:', userId);
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ role: user.role });
+  } catch (error) {
+    console.error('Error fetching user role:', error);
+    res.status(500).json({ error: 'Error fetching user role' });
   }
 };
 

@@ -6,8 +6,7 @@ import axios from "axios";
 const VenueForm = () => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
-  const [userRole, setUserRole] = useState("");
-  const [error, setError] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     city: "",
@@ -21,7 +20,7 @@ const VenueForm = () => {
   const [loading, setLoading] = useState(false);
   const [venues, setVenues] = useState([]);
 
-  // Redirect unauthenticated users
+  // Redirect unauthenticated users to SignIn
   useEffect(() => {
     if (!isAuthenticated) {
       alert("You must sign in to access this page.");
@@ -29,39 +28,21 @@ const VenueForm = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  // Fetch and verify user role
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const { data: users } = await axios.get("http://localhost:3001/users");
-        const user = users.find((u) => u._id === userId);
-
-        if (user) {
-          setUserRole(user.role);
-        } else {
-          setError("User not found");
-        }
-      } catch (err) {
-        setError("Failed to fetch user role");
-      }
-    };
-
-    if (userId) fetchUserRole();
-  }, [userId]);
-
-  // Fetch existing venues
+  // Fetch existing venues for the logged-in user
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3001/venues");
-        setVenues(data);
-      } catch (err) {
-        console.error("Error fetching venues:", err);
+        const response = await axios.get(`http://localhost:3001/venues?userId=${userId}`);
+        setVenues(response.data || []);
+      } catch (error) {
+        console.error("Error fetching venues:", error);
       }
     };
 
-    fetchVenues();
-  }, []);
+    if (userId) {
+      fetchVenues();
+    }
+  }, [userId]);
 
   // Handle changes to form inputs
   const handleChange = (e) => {
@@ -87,25 +68,18 @@ const VenueForm = () => {
     });
   };
 
-  // Submit form data
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Submit venue data
+  const handleSubmit = async () => {
     setLoading(true);
-
     try {
-      const url = "http://localhost:3001/venues";
-      const cleanedData = {
+      const requestData = {
+        userId: userId,
         ...formData,
-        capacity: parseInt(formData.capacity, 10),
-        price: parseFloat(formData.price),
-        discount: parseFloat(formData.discount) || 0,
       };
-
-      await axios.post(url, cleanedData, {
+      const response = await axios.post("http://localhost:3001/venues", requestData, {
         headers: { "Content-Type": "application/json" },
       });
-
-      alert("Venue saved successfully.");
+      alert(response.data.message || "Venue added successfully!");
       setFormData({
         name: "",
         city: "",
@@ -116,36 +90,20 @@ const VenueForm = () => {
         location: { x: "", y: "" },
         images: [],
       });
-    } catch (err) {
-      console.error("Error saving venue:", err);
-      alert("Failed to save venue.");
+      setVenues((prevVenues) => [...prevVenues, requestData]);
+    } catch (error) {
+      console.error("Error adding venue:", error);
+      alert("Failed to add venue.");
     } finally {
       setLoading(false);
     }
   };
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
-  if (userRole && userRole !== "Admin" && userRole !== "Manager") {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-500">You do not have permission to view this page.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-      <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-        <h1 className="text-2xl font-bold mb-4">Venue Management</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
+    <div className="flex justify-center items-start min-h-screen bg-customBg">
+      <div className="w-5/6 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5 ">
+      {/*<h1 className="text-2xl font-bold m-10">Add Venue</h1> */}
+      <div className="flex">
+        <div className="w-1/2 pr-8"><input
             type="text"
             name="name"
             value={formData.name}
@@ -171,8 +129,8 @@ const VenueForm = () => {
             placeholder="Capacity"
             required
             className="input input-bordered w-full mb-2"
-          />
-          <input
+          /></div> 
+            <div className="w-1/2">  <input
             type="number"
             name="price"
             value={formData.price}
@@ -181,7 +139,7 @@ const VenueForm = () => {
             required
             className="input input-bordered w-full mb-2"
           />
-          <input
+        <input
             type="number"
             name="discount"
             value={formData.discount}
@@ -189,16 +147,7 @@ const VenueForm = () => {
             placeholder="Discount (%)"
             className="input input-bordered w-full mb-2"
           />
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address"
-            required
-            className="input input-bordered w-full mb-2"
-          />
-          <div className="flex gap-2">
+        <div className="flex gap-2"> Location:
             <input
               type="number"
               name="x"
@@ -216,8 +165,26 @@ const VenueForm = () => {
               placeholder="Location Y"
               required
               className="input input-bordered w-1/2 mb-2"
-            />
+            /></div>
           </div>
+          </div>
+          <textarea
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            className="border mx-2 p-2 rounded w-full h-20"
+            placeholder="Address"
+          />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="border mx-2 p-2 rounded w-full h-20"
+            rows={5}
+            placeholder="Description"
+          />
+          <div className="flex">
+          <div className="w-1/2 pr-8">
           <input
             type="file"
             multiple
@@ -236,26 +203,29 @@ const VenueForm = () => {
               ))}
             </div>
           )}
-          <button
-            type="submit"
-            className="bg-btnLight text-white hover:bg-btnDark w-full px-4 py-2 rounded"
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Save Venue"}
-          </button>
-        </form>
-        {venues.length > 0 && (
-          <div>
-            <h2 className="text-lg font-bold mt-6">Existing Venues</h2>
-            <ul className="space-y-2">
-              {venues.map((venue) => (
-                <li key={venue.id} className="p-2 border rounded">
-                  {venue.name} - {venue.city} (${venue.price})
-                </li>
-              ))}
-            </ul>
           </div>
-        )}
+          <span className="text-xl font-bold mr-20">total price: $</span>
+        <button
+          onClick={handleSubmit}
+          className="bg-btnLight text-white hover:bg-btnDark w-1/3 px-4 py-2 rounded"
+          disabled={loading}
+        >
+          {loading ? "Processing..." : "Add Venue"}
+        </button>
+        </div>
+        {/* 
+        <h2 className="text-lg font-bold mt-5">List of our Venues</h2>
+        <ul className="space-y-3">
+  {venues.map((venue, index) => (
+    <li key={index} className="border p-4 rounded">
+      <h3 className="font-bold">{venue.name}</h3>
+      <p>City: {venue.city}</p>
+      <p>Capacity: {venue.capacity}</p>
+      <p>Price: ${venue.price}/day</p>
+    </li>
+  ))}
+</ul>
+*/}
       </div>
     </div>
   );

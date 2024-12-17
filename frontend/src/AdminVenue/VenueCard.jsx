@@ -14,26 +14,36 @@ const VenueCard = ({ venue }) => {
 };
 
 export default VenueCard; */
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const VenueCard = ({ venue, onEdit, onDelete, isAdmin, onViewDetails }) => {
-  const { name, city, capacity, price, images } = venue;
+const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/venues/${venue._id}`);
+  };
 
   return (
     <div className="card bg-white shadow-lg p-4 rounded-md">
       <img
-        src={images[0] || 'placeholder.jpg'}
-        alt={name}
+        src={venue.images[0] || 'placeholder.jpg'}
+        alt={venue.name}
         className="h-48 w-full object-cover rounded-md"
       />
       <div className="mt-4">
-        <h2 className="text-xl font-bold">{name}</h2>
-        <p className="text-sm text-gray-600">{city}</p>
-        <p className="text-sm text-gray-600">Capacity: {capacity}</p>
-        <p className="text-sm text-gray-600">Price: ${price}</p>
+        <h2 className="text-xl font-bold">{venue.name}</h2>
+        <p className="text-sm text-gray-600">{venue.city}</p>
+        <p className="text-sm text-gray-600">Capacity: {venue.capacity}</p>
+        <p className="text-sm text-gray-600">Price: ${venue.price}</p>
       </div>
       <div className="mt-4 flex justify-between">
-        {isAdmin ? (
+        <button
+          onClick={handleViewDetails}
+          className="btn btn-secondary text-white"
+        >
+          View Details
+        </button>
+        {isAdmin && (
           <>
             <button
               onClick={() => onEdit(venue)}
@@ -48,18 +58,12 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin, onViewDetails }) => {
               Delete
             </button>
           </>
-        ) : (
-          <button
-            onClick={() => onViewDetails(venue)}
-            className="btn btn-secondary text-white"
-          >
-            View Details
-          </button>
         )}
       </div>
     </div>
+    
   );
+  
 };
 
 export default VenueCard;
-
