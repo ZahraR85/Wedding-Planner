@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import Homepage from './pages/Homepage';
 import Dashboard from './pages/Dashboard.jsx';
+import UserInfo from './pages/UserInfo.jsx';
 import Photography from './pages/Photography.jsx';
 import MakeupSelector from './pages/MakeupSelector.jsx';
 import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/Dashboard" element={ <Dashboard />} />
+            <Route path="/UserInfo" element={ <UserInfo />} />
             <Route path="/signin" element={ <SignIn />} />
             <Route path="/register" element={<Register />} />
             <Route path="/photography" element={<Photography />} />

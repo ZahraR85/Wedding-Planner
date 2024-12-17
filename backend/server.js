@@ -10,6 +10,7 @@ import receptionsRouter from "./routes/receptions.js";
 import guestRouter from "./routes/guest.js";
 import musicRouter from "./routes/music.js";
 import musicOptionRouter from "./routes/musicOption.js";
+import userInfoRoutes from './routes/userinfoes.js';
 
 dotenv.config(); // Load environment variables
 
@@ -33,6 +34,7 @@ app.use("/receptions", receptionsRouter);
 app.use("/guests", guestRouter);
 app.use("/musics", musicRouter);
 app.use("/musicoptions", musicOptionRouter);
+app.use("/userInfoes", userInfoRoutes);
 
 app.get("/", (req, res) => {
   res.status(404).send("Not found");
