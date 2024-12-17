@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserSelections = () => {
+const UserSelections = ({ userId }) => {
   const [userSelections, setUserSelections] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,8 +9,8 @@ const UserSelections = () => {
   useEffect(() => {
     const fetchUserSelections = async () => {
       try {
-        const userID = "6757527a366a20b9c472ea29";
-        const response = await axios.get(`http://localhost:3001/makeups?userID=${userID}`);
+        const x = userId;
+        const response = await axios.get(`http://localhost:3001/makeups?userID=${x}`);
         console.log("API Response:", response.data); // Log API response
         setUserSelections(response.data);
         setLoading(false);
@@ -21,8 +21,8 @@ const UserSelections = () => {
       }
     };
 
-    fetchUserSelections();
-  }, []);
+    if (userId) fetchUserSelections();
+  }, [userId]);
 
   // Handle loading state
   if (loading) {

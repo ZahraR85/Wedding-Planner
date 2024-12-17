@@ -2,16 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserSelections = () => {
+const UserSelections = ({ userId }) => {
   const [userSelections, setUserSelections] = useState(null); // State to store user data
+
+
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [error, setError] = useState(null); // State for error handling
 
   useEffect(() => {
     const fetchUserSelections = async () => {
       try {
-        const userID = "6757527a366a20b9c472ea29"; // Replace with dynamic user ID if needed
-        const response = await axios.get(`http://localhost:3001/musics?userID=${userID}`);
+        const x = userId;
+        const response = await axios.get(`http://localhost:3001/musics?userID=${x}`);
         setUserSelections(response.data); // Update state with fetched data
         setLoading(false);
       } catch (err) {
@@ -19,9 +21,8 @@ const UserSelections = () => {
         setLoading(false);
       }
     };
-
-    fetchUserSelections();
-  }, []);
+    if (userId) fetchUserSelections();
+  }, [userId]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -39,9 +40,9 @@ const UserSelections = () => {
     <div className="user-selections">
       <h2 className="text-2xl font-bold mb-4">Music features</h2>
       <div className="p-4 bg-gray-100 rounded shadow mb-4">
-      <h3 className="text-lg font-semibold">
-        User: {userSelections.userID?.name} {userSelections.userID?.family}
-      </h3>
+        <h3 className="text-lg font-semibold">
+          User: {userSelections.userID?.name} {userSelections.userID?.family}
+        </h3>
         <p>Total Cost: ${userSelections.totalCost}</p>
         <h4 className="mt-2 font-semibold">Selections:</h4>
         <ul className="list-disc pl-5">
