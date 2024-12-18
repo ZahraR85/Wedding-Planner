@@ -1,4 +1,4 @@
-import UserInfo from '../models/userinfo.js';
+import UserInfo from '../models/userInfo.js';
 
 // Create a new record
 export const createUserInfo = async (req, res) => {
@@ -24,8 +24,9 @@ export const getAllUserInfo = async (req, res) => {
 // Get a single record by ID
 export const getUserInfoById = async (req, res) => {
   try {
-    const userInfo = await UserInfo.findById(req.params.id);
-    if (!userInfo) return res.status(404).json({ message: 'User info not found' });
+    // Query by userID instead of _id
+    const userInfo = await UserInfo.findOne({ userID: req.params.id });
+    if (!userInfo) return res.status(404).json({ message: "User info not found ftftftf" });
     res.status(200).json(userInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });

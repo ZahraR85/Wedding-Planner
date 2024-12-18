@@ -1,12 +1,13 @@
+
+
 import React, { useState, useEffect } from 'react';
 
-const Countdown = () => {
-  // Function to calculate the remaining time
+const Countdown = ({ weddingDate }) => {
   const calculateTimeLeft = () => {
-    const targetDate = new Date('2024-12-21T20:00:00'); // Target date
+    const targetDate = new Date(weddingDate); // Use weddingDate from props
     const now = new Date();
     const difference = targetDate - now;
-
+    console.log("tariiikh:",weddingDate);
     let timeLeft = {};
 
     if (difference > 0) {
@@ -23,43 +24,34 @@ const Countdown = () => {
     return timeLeft;
   };
 
-  // State for the remaining time
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
-  // Effect to update the countdown every second
   useEffect(() => {
     const timer = setInterval(() => {
-      const newTimeLeft = calculateTimeLeft();
-      console.log('Updated TimeLeft:', newTimeLeft); // Debugging the updated state
-      setTimeLeft(newTimeLeft); // Update state
+      setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearInterval(timer); // Cleanup timer on component unmount
-  }, []);
+  }, [weddingDate]);
 
-  // Debugging the current state being rendered
-  // console.log('Rendered TimeLeft State:', timeLeft);
+  if (!weddingDate) return <p>Wedding date not set!</p>; // Handle missing weddingDate
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center mb-6">Countdown to 21/12/2024 20:00</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">Countdown to Wedding</h1>
       <div className="flex justify-center gap-4">
-        {/* Days */}
         <div className="p-4 bg-gray-200 rounded text-center w-24">
           <span className="text-4xl font-semibold block">{timeLeft.days ?? '00'}</span>
           <p className="text-xl block">Days</p>
         </div>
-        {/* Hours */}
         <div className="p-4 bg-gray-200 rounded text-center w-24">
           <span className="text-4xl font-semibold block">{timeLeft.hours ?? '00'}</span>
           <p className="text-xl block">Hours</p>
         </div>
-        {/* Minutes */}
         <div className="p-4 bg-gray-200 rounded text-center w-24">
           <span className="text-4xl font-semibold block">{timeLeft.minutes ?? '00'}</span>
           <p className="text-xl block">Minutes</p>
         </div>
-        {/* Seconds */}
         <div className="p-4 bg-gray-200 rounded text-center w-24">
           <span className="text-4xl font-semibold block">{timeLeft.seconds ?? '00'}</span>
           <p className="text-xl block">Seconds</p>
