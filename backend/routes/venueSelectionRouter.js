@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/', createOrUpdateVenueSelection);
 
 // Get venue selections by user ID
-router.get("/:id", getVenueSelectionsByUserId);
+router.get("/:userId", getVenueSelectionsByUserId);
 
 // Delete venue selection
 router.delete('/:id/:venueId', deleteVenueSelection);

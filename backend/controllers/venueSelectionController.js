@@ -2,7 +2,7 @@ import VenueSelection from '../models/venueSelection.js';
 
 // Create or Update a Venue Selection
 export const createOrUpdateVenueSelection = async (req, res) => {
-  const { userId, venueId, date } = req.body; 
+  const { userId, venueId, date } = req.body;
   try {
     // Check if the venue is already booked for the given date by another user
     const isDateOccupied = await VenueSelection.findOne({
@@ -43,22 +43,19 @@ export const createOrUpdateVenueSelection = async (req, res) => {
 };
 
 // Get Venue Selections by User ID
+// venueSelectionController.js
 export const getVenueSelectionsByUserId = async (req, res) => {
   const { userId } = req.params;
-
+  console.log("Fetching bookings for userId:", userId); // Log the userId to verify
   try {
     const bookings = await VenueSelection.find({ userId }).populate('venueId');
     if (!bookings.length) {
-      return res
-        .status(404)
-        .json({ message: 'No bookings found for this user' });
+      return res.status(404).json({ message: 'No bookings found for this user' });
     }
     res.status(200).json(bookings);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'Error fetching bookings', error: error.message });
+    res.status(500).json({ message: 'Error fetching bookings', error: error.message });
   }
 };
 
