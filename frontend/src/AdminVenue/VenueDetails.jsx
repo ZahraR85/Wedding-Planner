@@ -46,7 +46,8 @@ const VenueDetails = () => {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
+    <div className="w-5/6 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5 ">
       <h1 className="text-2xl font-bold my-4">{venue.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {venue.images.map((img, index) => (
@@ -86,6 +87,7 @@ const VenueDetails = () => {
           Back
         </button>
       </div>
+    </div>
     </div>
   );
 };
