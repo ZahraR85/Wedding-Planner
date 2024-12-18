@@ -1,6 +1,7 @@
 import express from 'express';
 import {
-  createOrUpdateVenueSelection,
+  //createOrUpdateVenueSelection,
+  createVenueSelection,
   getVenueSelectionsByUserId,
   deleteVenueSelection,
 } from '../controllers/venueSelectionController.js';
@@ -8,8 +9,8 @@ import {
 const router = express.Router();
 
 // Create or update a venue selection
-router.post('/', createOrUpdateVenueSelection);
-
+//router.post('/', createOrUpdateVenueSelection);
+router.post('/', createVenueSelection);
 // Get venue selections by user ID
 router.get("/:userId", getVenueSelectionsByUserId);
 

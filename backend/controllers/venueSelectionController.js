@@ -1,8 +1,46 @@
 import VenueSelection from '../models/venueSelection.js';
 
+// Create Venue Selection
+export const createVenueSelection = async (req, res) => {
+  const { userId, venueId, date } = req.body;
+
+  try {
+    // Check if the venue is already booked for the given date by another user
+    const isDateOccupied = await VenueSelection.findOne({
+      venueId,
+      date,
+      userId: { $ne: userId }, // Ensure no other user has booked it for the same date
+    });
+
+    if (isDateOccupied) {
+      return res
+        .status(400)
+        .json({ message: 'This venue is already booked on the selected date.' });
+    }
+
+    // Check if the user already has a booking for the venue
+    const existingBooking = await VenueSelection.findOne({ userId, venueId });
+    if (existingBooking) {
+      return res.status(400).json({ message: 'You have already booked this venue.' });
+    }
+
+    // If no booking exists, create a new one
+    const newBooking = new VenueSelection({ userId, venueId, date });
+    await newBooking.save();
+
+    return res
+      .status(201)
+      .json({ message: 'Booking created successfully', data: newBooking });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error processing booking', error: error.message });
+  }
+};
+
 // Create or Update a Venue Selection
 export const createOrUpdateVenueSelection = async (req, res) => {
-  const { userId, venueId, date } = req.body;
+  const { userId, venueId, date } = req.body; 
+
   try {
     // Check if the venue is already booked for the given date by another user
     const isDateOccupied = await VenueSelection.findOne({
@@ -17,6 +55,7 @@ export const createOrUpdateVenueSelection = async (req, res) => {
         .json({ message: 'This venue is already booked on the selected date.' });
     }
 
+    // Check if the user already has a booking for this venue
     const existingBooking = await VenueSelection.findOne({ userId, venueId });
 
     // If the user already has a booking for this venue, update it

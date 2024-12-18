@@ -48,30 +48,25 @@ const VenueSelectionPage = () => {
       navigate('/login'); // Redirect to login if not authenticated
       return;
     }
-
+  
     const date = prompt("Enter the booking date (YYYY-MM-DD):");
-
+  
     if (!date) return; // If no date is provided, return
-
+  
     try {
-      // Check if the user is trying to book or update a venue
+      // Send a request to the backend to create a new booking
       const response = await axios.post('http://localhost:3001/venueSelections', {
         userId,
         venueId,
         date,
       });
-
-      alert(response.data.message);
-      // Refresh the bookings after success
-      const bookingResponse = await axios.get(
-        `http://localhost:3001/venueSelections/${userId}`
-      );
-      setUserBooking(bookingResponse.data[0]); // Update booking info
+  
+      alert(response.data.message); // Alert the user about the booking status
     } catch (error) {
-      alert(error.response.data.message);
+      alert(error.response?.data?.message || 'An error occurred');
     }
   };
-
+  
   return (
     <div>
       {loading && <p>Loading venues...</p>}
@@ -96,13 +91,14 @@ const VenueSelectionPage = () => {
         ))}
       </div>
 
-      {userBooking && (
-        <div>
-          <h2>Your Booking</h2>
-          <p>Venue: {userBooking.venueId.name}</p>
-          <p>Date: {userBooking.date}</p>
-        </div>
-      )}
+      {userBooking && userBooking.venueId && (
+  <div>
+    <h2>Your Booking</h2>
+    <p>Venue: {userBooking.venueId.name}</p>
+    <p>Date: {userBooking.date}</p>
+  </div>
+)}
+
     </div>
   );
 };
