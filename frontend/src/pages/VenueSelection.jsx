@@ -1,99 +1,137 @@
-import { useState, useEffect } from 'react';
-//import axios from 'axios';
-import VenueCard from '../AdminVenue/VenueCard';
-import { getVenues, bookVenue } from '../AdminVenue/venue';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
+import axios from "axios";
 
 const VenueSelection = () => {
+  const { userId, isAuthenticated } = useAppContext();
+  const navigate = useNavigate();
   const [venues, setVenues] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null);
-  const [bookingData, setBookingData] = useState({ hours: '', date: '' });
+  const [hours, setHours] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
+  // Redirect unauthenticated users to SignIn
   useEffect(() => {
-    getVenues().then(setVenues);
-  }, []);
+    if (!isAuthenticated) {
+      alert("You must sign in to access this page.");
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
 
-  const handleBooking = () => {
-    if (selectedVenue) {
-      bookVenue(selectedVenue._id, bookingData).then((res) => {
-        alert('Venue booked successfully!');
-      });
+  // Fetch venues and user's booking data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch all venues
+        const venueResponse = await axios.get("http://localhost:3001/venues");
+        setVenues(venueResponse.data);
+
+        // Fetch user's existing booking if available
+        const bookingResponse = await axios.get(
+          `http://localhost:3001/venueSelections?userId=${userId}`
+        );
+
+        if (bookingResponse.data) {
+          const existingBooking = bookingResponse.data;
+          setSelectedVenue(existingBooking.venueId);
+          setHours(existingBooking.hours || 1);
+          setIsEditMode(true);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
+
+  // Handle venue selection
+  const handleVenueSelect = (venueId) => {
+    setSelectedVenue(venueId);
+  };
+
+  // Submit or update booking
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const url = "http://localhost:3001/venueSelections"; // Update with your API endpoint
+      const requestData = {
+        userId: userId,
+        venueId: selectedVenue,
+        hours: hours,
+      };
+
+      const response = isEditMode
+        ? await axios.put(`${url}/${userId}`, requestData, {
+            headers: { "Content-Type": "application/json" },
+          })
+        : await axios.post(url, requestData, {
+            headers: { "Content-Type": "application/json" },
+          });
+
+      alert(response.data.message); // Show success message
+      setIsEditMode(true); // Enable edit mode after successful submission
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      alert("Failed to process booking!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold my-4">Available Venues</h1>
-      <div className="grid grid-cols-3 gap-4">
-        {venues.map((venue) => (
-          <VenueCard
-            key={venue._id}
-            venue={venue}
-            isAdmin={false}
-            onViewDetails={setSelectedVenue}
-          />
-        ))}
-      </div>
-      {selectedVenue && (
-        <div>
-          <h2 className="text-xl font-bold">Book Venue: {selectedVenue.name}</h2>
+    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
+      <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
+        <h1 className="text-2xl font-bold mb-5">Select and Book a Venue</h1>
+
+        <div className="space-y-4">
+          {venues.map((venue) => (
+            <label
+              key={venue._id}
+              className={`block p-4 border rounded-lg ${
+                selectedVenue === venue._id
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-300"
+              }`}
+            >
+              <input
+                type="radio"
+                name="venue"
+                value={venue._id}
+                checked={selectedVenue === venue._id}
+                onChange={() => handleVenueSelect(venue._id)}
+                className="mr-3"
+              />
+              {venue.name} - Capacity: {venue.capacity} - ${venue.price} per hour
+            </label>
+          ))}
+        </div>
+
+        <label className="flex items-center space-x-3">
+          <span>Number of hours:</span>
           <input
             type="number"
-            value={bookingData.hours}
-            onChange={(e) =>
-              setBookingData({ ...bookingData, hours: e.target.value })
-            }
-            placeholder="Hours"
-            className="input"
+            value={hours}
+            onChange={(e) => setHours(Number(e.target.value))}
+            min={1}
+            className="border rounded p-2 w-20"
           />
-          <input
-            type="date"
-            value={bookingData.date}
-            onChange={(e) =>
-              setBookingData({ ...bookingData, date: e.target.value })
-            }
-            className="input"
-          />
-          <button onClick={handleBooking} className="btn btn-primary">
-            Book Now
-          </button>
-        </div>
-      )}
+        </label>
+
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+          disabled={loading || !selectedVenue}
+        >
+          {loading ? "Processing..." : isEditMode ? "Update Booking" : "Book Venue"}
+        </button>
+      </div>
     </div>
   );
 };
 
 export default VenueSelection;
-
-/* import { useState, useEffect } from 'react';
-import VenueCard from './VenueCard';
-import axios from 'axios';
-
-const VenueSelection = () => {
-  const [venues, setVenues] = useState([]);
-
-  useEffect(() => {
-    const fetchVenues = async () => {
-      try {
-        const response = await axios.get('/api/venues');
-        setVenues(response.data);
-      } catch (error) {
-        console.error('Error fetching venues:', error);
-      }
-    };
-
-    fetchVenues();
-  }, []);
-
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Select a Venue</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {venues.map((venue) => (
-          <VenueCard key={venue._id} venue={venue} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default VenueSelection; */
