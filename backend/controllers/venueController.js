@@ -1,19 +1,14 @@
 import Venue from "../models/venue.js";
 import mongoose from "mongoose";
 
-// Create or update venue
-export const createOrUpdateVenue = async (req, res) => {
+// Create a new venue
+export const createVenue = async (req, res) => {
   try {
     const { userId, name, city, images, capacity, price, discount, address, location } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ message: "UserID is required." });
-    }
+    if (!userId) return res.status(400).json({ message: "User ID is required." });
 
-    // Calculate the total price after discount
-    const total = price - (price * (discount || 0) / 100);  // Total = price - (price * discount)
-
-    const updateData = {
+    const newVenue = new Venue({
       userId,
       name,
       city,
@@ -22,86 +17,88 @@ export const createOrUpdateVenue = async (req, res) => {
       price,
       discount,
       address,
-      location,
-      total, // Store the calculated total
-    };
+      location
+    });
 
-    const venue = await Venue.findOneAndUpdate(
-      { userId: new mongoose.Types.ObjectId(userId) },
-      { $set: updateData },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
-
-    res.status(200).json({ message: "Venue data updated successfully.", venue });
+    await newVenue.save();
+    res.status(201).json({ message: "Venue created successfully.", venue: newVenue });
   } catch (error) {
-    console.error("Error in createOrUpdateVenue:", error);
-    res.status(500).json({ message: "Error saving venue data.", error });
+    console.error("Error in createVenue:", error);
+    res.status(500).json({ message: "Error creating venue.", error });
+  }
+};
+
+// Update an existing venue
+export const updateVenue = async (req, res) => {
+  try {
+    const { venueId } = req.params;
+    const updatedData = req.body;
+
+    const venue = await Venue.findByIdAndUpdate(venueId, updatedData, { new: true });
+
+    if (!venue) return res.status(404).json({ message: "Venue not found." });
+
+    res.status(200).json({ message: "Venue updated successfully.", venue });
+  } catch (error) {
+    console.error("Error in updateVenue:", error);
+    res.status(500).json({ message: "Error updating venue.", error });
+  }
+};
+
+// Delete a venue entry by ID
+export const deleteVenue = async (req, res) => {
+  try {
+    const { venueId } = req.params;
+
+    const deletedVenue = await Venue.findByIdAndDelete(venueId);
+
+    if (!deletedVenue) return res.status(404).json({ message: "Venue not found." });
+
+    res.status(200).json({ message: "Venue deleted successfully." });
+  } catch (error) {
+    console.error("Error in deleteVenue:", error);
+    res.status(500).json({ message: "Error deleting venue.", error });
   }
 };
 
 // Get all venues
 export const getAllVenues = async (req, res) => {
   try {
-    const venues = await Venue.find().populate("userId", "name email"); // Populate user details
+    const venues = await Venue.find().populate("userId", "name email");
     res.status(200).json(venues);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch venue entries.", details: error.message });
+    console.error("Error fetching venues:", error);
+    res.status(500).json({ message: "Failed to fetch venues.", error });
   }
 };
-
-// Get a specific venue by UserID
-export const getVenueById = async (req, res) => {
-  const { userId } = req.query;
+// Get a specific venue by Venue ID
+export const getVenueByVenueId = async (req, res) => {
   try {
-    if (!userId) {
-      return res.status(400).json({ message: "UserID is required." });
-    }
+    const { venueId } = req.params;
 
-    const venue = await Venue.findOne({ userId: mongoose.Types.ObjectId(userId) });
-    console.log("Fetched venue entry:", venue); // Log fetched data
+    const venue = await Venue.findById(venueId);
 
-    if (!venue) {
-      return res.status(404).json({ message: "No venue data found for this user." });
-    }
+    if (!venue) return res.status(404).json({ message: "Venue not found." });
 
     res.status(200).json(venue);
   } catch (error) {
-    console.error("Error in getVenueByUserId:", error);
-    res.status(500).json({ message: "Failed to fetch venue data.", error });
+    console.error("Error fetching venue:", error);
+    res.status(500).json({ message: "Failed to fetch venue.", error });
   }
 };
 
-// Update a venue entry by ID
-export const updateVenue = async (req, res) => {
+export const getVenuesByUserId = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedData = req.body;
+    const { userId } = req.params;
 
-    const venue = await Venue.findByIdAndUpdate(id, updatedData, { new: true });
-    console.log("Received Data:", req.body);
+    const venues = await Venue.find({ userId });
 
-    if (!venue) {
-      return res.status(404).json({ message: "Venue entry not found" });
-    }
+    if (!venues.length) return res.status(404).json({ message: "No venues found for this user." });
 
-    res.status(200).json({ message: "Venue updated successfully", venue });
+    res.status(200).json(venues);
   } catch (error) {
-    res.status(500).json({ message: "Error updating venue", error });
+    console.error("Error fetching venues by user:", error);
+    res.status(500).json({ message: "Failed to fetch venues.", error });
   }
 };
 
-// Delete a venue entry by ID
-export const deleteVenue = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const deletedVenue = await Venue.findByIdAndDelete(id);
-
-    if (!deletedVenue) {
-      return res.status(404).json({ error: "Venue entry not found." });
-    }
-
-    res.status(200).json({ message: "Venue entry deleted successfully!" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete venue entry.", details: error.message });
-  }
-};

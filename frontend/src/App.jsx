@@ -5,8 +5,8 @@ import Dashboard from './pages/Dashboard.jsx';
 import UserInfo from './pages/UserInfo.jsx';
 import AdminVenuePage from './AdminVenue/AdminVenuePage.jsx';
 //import VenueList from './pages/AdminVenue/VenueList.jsx';
-import VenueForm from './AdminVenue/VenueForm.jsx';
-import VenueCard from './AdminVenue/VenueCard.jsx';
+import VenueDetails from './AdminVenue/VenueDetails.jsx';
+//import VenueCard from './AdminVenue/VenueCard.jsx';
 import VenueSelection from './pages/VenueSelection.jsx';
 import Photography from './pages/Photography.jsx';
 import MakeupSelector from './pages/MakeupSelector.jsx';
@@ -33,8 +33,8 @@ function App() {
               {/* Admin Routes */}
             <Route path="/venues" element={<AdminVenuePage />} />
             {/*<Route path="/venues" element={<VenueList />} />*/}
-            <Route path="/venues/:id" element={<VenueCard />} />
-            <Route path="/venues/add" element={<VenueForm />} />
+            {/*<Route path="/venues/:id" element={<VenueCard />} />*/}
+            <Route path="/venues/:id" element={<VenueDetails />} />
              {/* user Routes */}
             <Route path="/venueSelections" element={<VenueSelection />} />
             <Route path="/photography" element={<Photography />} />

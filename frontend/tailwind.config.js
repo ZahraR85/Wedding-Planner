@@ -9,6 +9,7 @@ export default {
   theme: {
     extend: { colors: {
       customBg: "#FAF9F5", 
+      customBg1: "#FFF2F4",
       btnLight: "#DBD084",
       btnDark: "#DBC537",
     },
