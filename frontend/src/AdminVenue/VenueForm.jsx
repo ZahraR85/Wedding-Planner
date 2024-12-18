@@ -162,6 +162,14 @@ const VenueForm = () => {
         </div>
         </div>
         <textarea
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          className="border mx-2 p-2 rounded w-full h-20"
+          rows={5}
+          placeholder="address"
+        />
+        <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
