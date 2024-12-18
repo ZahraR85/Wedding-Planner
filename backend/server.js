@@ -38,8 +38,9 @@ app.use("/musics", musicRouter);
 app.use("/musicoptions", musicOptionRouter);
 app.use("/userInfoes", userInfoRoutes);
 app.use("/venues", venueRouter);
-app.use("venueSelections", venueSelectionRouter);
+app.use("/venueSelections", venueSelectionRouter);
 app.get("/", (req, res) => {
+  console.log(`Unhandled request: ${req.method} ${req.url}`);
   res.status(404).send("Not found");
 });
 
