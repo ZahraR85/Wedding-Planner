@@ -33,6 +33,11 @@ const Navbar = () => {
               Dashboard
             </Link>
           </li>
+          <li>
+            <Link to="/userinfo" className="hover:underline">
+              UserInfo
+            </Link>
+          </li>
           <li className="relative">
             <button
               onClick={() => setDropdownOpen(!isDropdownOpen)}

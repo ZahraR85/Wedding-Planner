@@ -10,6 +10,7 @@ import receptionsRouter from "./routes/receptions.js";
 import guestRouter from "./routes/guest.js";
 import musicRouter from "./routes/music.js";
 import musicOptionRouter from "./routes/musicOption.js";
+import userInfoRoutes from './routes/userinfoes.js';
 import venueRouter from "./routes/venueRouter.js";
 import venueSelectionRouter from './routes/venueSelectionRouter.js';
 
@@ -35,6 +36,7 @@ app.use("/receptions", receptionsRouter);
 app.use("/guests", guestRouter);
 app.use("/musics", musicRouter);
 app.use("/musicoptions", musicOptionRouter);
+app.use("/userInfoes", userInfoRoutes);
 app.use("/venues", venueRouter);
 app.use("venueSelections", venueSelectionRouter);
 app.get("/", (req, res) => {
