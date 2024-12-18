@@ -53,7 +53,16 @@ const Navbar = () => {
                     <Link to="/Guests">invitation of Guests</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link to="/Venue">Venue</Link>
+                    <Link to="/Venues">VenueAdmin</Link>
+                  </li>
+                  <li className="hover:underline">
+                    <Link to="/Venues/:id">VenueCard</Link>
+                  </li>
+                  <li className="hover:underline">
+                    <Link to="/Venues/add">VenueForm</Link>
+                  </li>
+                  <li className="hover:underline">
+                    <Link to="/VenueSelections">VenueSelection</Link>
                   </li>
                   <li className="hover:underline">
                     <Link to="/Catering">Catering</Link>
