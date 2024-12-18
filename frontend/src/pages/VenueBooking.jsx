@@ -145,8 +145,10 @@ const VenueBooking = () => {
         <h1 className="text-3xl font-bold">{venue.name}</h1>
         <p className="text-gray-700">{venue.description}</p>
         <p className="text-gray-500">Capacity: {venue.capacity}</p>
-        <p className="text-gray-500">Price: ${venue.price} per hour</p>
+        <p className="text-gray-500">Address: ${venue.address} </p>
 
+        <p className="text-gray-500">Price: ${venue.price} per day</p>
+        <p className="text-gray-500">Price with our discount: ${venue.total} per day</p>
         <div className="my-4">
           <h2 className="text-xl font-bold">Images</h2>
           <div className="flex items-center space-x-2 overflow-x-auto">
