@@ -11,8 +11,8 @@ const VenueBooking = () => {
   const [images, setImages] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [day, setDay] = useState("");
-  const [hours, setHours] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const imagesPerPage = 3; // Number of images per page
 
@@ -27,12 +27,16 @@ const VenueBooking = () => {
   // Fetch venue details and images
   useEffect(() => {
     const fetchVenueDetails = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`http://localhost:3001/venues/${venueId}`);
         setVenue(response.data);
         setImages(response.data.images || []); // Assume venue data includes an images array
       } catch (error) {
         console.error("Error fetching venue details:", error);
+        setError("Failed to fetch venue details.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -55,39 +59,54 @@ const VenueBooking = () => {
     setCurrentPage((prev) => (prev + 1 < Math.ceil(images.length / imagesPerPage) ? prev + 1 : prev));
   };
 
-  // Submit booking
+  // Handle venue booking
   const handleSubmit = async () => {
-    if (!day || hours < 1) {
-      alert("Please fill in both the day and hours.");
+    if (!isAuthenticated) {
+      alert("Please log in to book a venue.");
+      navigate('/login'); // Redirect to login if not authenticated
       return;
     }
 
-    setLoading(true);
+    if (!day) {
+      alert("Booking date is required.");
+      return; // Exit if no date is provided
+    }
+
     try {
-      const url = "http://localhost:3001/bookings";
-      const requestData = {
+      // Validate the date format
+      const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
+      if (!isValidDate) {
+        alert("Invalid date format. Please use YYYY-MM-DD.");
+        return;
+      }
+
+      setLoading(true);
+      const response = await axios.post('http://localhost:3001/venueSelections', {
         userId,
         venueId,
-        day,
-        hours,
-      };
-
-      const response = await axios.post(url, requestData, {
-        headers: { "Content-Type": "application/json" },
+        date: day,
       });
 
       alert(response.data.message || "Venue booked successfully!");
-      navigate("/venues"); // Redirect to venues list after booking
+      navigate("/"); // Redirect to HomePage list after booking
     } catch (error) {
-      console.error("Error booking venue:", error);
-      alert("Failed to book venue!");
+      console.error("Error during booking:", error);
+      alert(error.response?.data?.message || "An error occurred while booking the venue. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!venue) {
+  if (loading) {
     return <div className="text-center pt-20">Loading venue details...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center pt-20">{error}</div>;
+  }
+
+  if (!venue) {
+    return <div className="text-center pt-20">Venue not found.</div>;
   }
 
   return (
@@ -137,16 +156,6 @@ const VenueBooking = () => {
               type="date"
               value={day}
               onChange={(e) => setDay(e.target.value)}
-              className="w-full p-2 border rounded"
-            />
-          </label>
-          <label className="block mb-2">
-            Number of Hours:
-            <input
-              type="number"
-              value={hours}
-              onChange={(e) => setHours(Number(e.target.value))}
-              min={1}
               className="w-full p-2 border rounded"
             />
           </label>

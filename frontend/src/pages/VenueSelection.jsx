@@ -5,32 +5,21 @@ import { useAppContext } from '../context/AppContext'; // Import the AppContext
 
 const VenueSelectionPage = () => {
   const [venues, setVenues] = useState([]);
-  const [userBooking, setUserBooking] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { userId, isAuthenticated } = useAppContext(); // Access context
   const navigate = useNavigate();
 
-  // Fetch venues and user bookings
+  // Fetch venues data
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Fetch venues data
         const venueResponse = await axios.get('http://localhost:3001/venues');
-        console.log("Fetched venues:", venueResponse.data); // Check data in console
         setVenues(venueResponse.data);
-
-        // Fetch user booking data
-        if (userId) {
-          const bookingResponse = await axios.get(
-            `http://localhost:3001/venueSelections/${userId}`
-          );
-          setUserBooking(bookingResponse.data[0]); // Assuming one booking per user
-        }
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("Failed to fetch venue data.");
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch venue data.');
       } finally {
         setLoading(false);
       }
@@ -39,34 +28,19 @@ const VenueSelectionPage = () => {
     if (userId && isAuthenticated) {
       fetchData();
     }
-  }, [userId, isAuthenticated]); // Rerun effect when userId or isAuthenticated changes
+  }, [userId, isAuthenticated]);
 
-  // Handle booking or updating booking
-  const handleVenueClick = async (venueId) => {
+  // Handle venue selection
+  const handleVenueClick = (venueId) => {
     if (!isAuthenticated) {
-      alert("Please log in to book a venue.");
-      navigate('/login'); // Redirect to login if not authenticated
+      alert('Please log in to book a venue.');
+      navigate('/login');
       return;
     }
-  
-    const date = prompt("Enter the booking date (YYYY-MM-DD):");
-  
-    if (!date) return; // If no date is provided, return
-  
-    try {
-      // Send a request to the backend to create a new booking
-      const response = await axios.post('http://localhost:3001/venueSelections', {
-        userId,
-        venueId,
-        date,
-      });
-  
-      alert(response.data.message); // Alert the user about the booking status
-    } catch (error) {
-      alert(error.response?.data?.message || 'An error occurred');
-    }
+
+    navigate(`/venueBooking/${venueId}`); // Navigate to the booking page for the selected venue
   };
-  
+
   return (
     <div>
       {loading && <p>Loading venues...</p>}
@@ -80,7 +54,7 @@ const VenueSelectionPage = () => {
             onClick={() => handleVenueClick(venue._id)}
           >
             <img
-              src={venue.images?.[0] || "https://via.placeholder.com/150"}
+              src={venue.images?.[0] || 'https://via.placeholder.com/150'}
               alt={venue.name}
               className="w-full h-40 object-cover rounded-lg"
             />
@@ -90,15 +64,6 @@ const VenueSelectionPage = () => {
           </div>
         ))}
       </div>
-
-      {userBooking && userBooking.venueId && (
-  <div>
-    <h2>Your Booking</h2>
-    <p>Venue: {userBooking.venueId.name}</p>
-    <p>Date: {userBooking.date}</p>
-  </div>
-)}
-
     </div>
   );
 };

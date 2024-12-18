@@ -8,6 +8,7 @@ import AdminVenuePage from './AdminVenue/AdminVenuePage.jsx';
 import VenueDetails from './AdminVenue/VenueDetails.jsx';
 //import VenueCard from './AdminVenue/VenueCard.jsx';
 import VenueSelection from './pages/VenueSelection.jsx';
+import VenueBooking from './pages/VenueBooking.jsx';
 import Photography from './pages/Photography.jsx';
 import MakeupSelector from './pages/MakeupSelector.jsx';
 import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
@@ -37,6 +38,7 @@ function App() {
             <Route path="/venues/:id" element={<VenueDetails />} />
              {/* user Routes */}
             <Route path="/venueSelections" element={<VenueSelection />} />
+            <Route path="/venueBooking/:venueId" element={<VenueBooking />} />
             <Route path="/photography" element={<Photography />} />
             <Route path="/Makeup" element={<MakeupSelector />} />
             <Route path="/Makeup" element={<MakeupDescriptionBox />} />
