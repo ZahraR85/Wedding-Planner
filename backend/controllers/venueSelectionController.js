@@ -120,3 +120,15 @@ export const deleteVenueSelection = async (req, res) => {
       .json({ message: 'Error deleting booking', error: error.message });
   }
 };
+// Controller function to check booking conflicts
+export const checkBookingConflict = async (req, res) => {
+  const { venueId, date } = req.params;
+
+  try {
+    const bookings = await VenueSelection.find({ venueId, date });
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error('Error checking bookings:', error);
+    res.status(500).json({ message: 'Error checking bookings' });
+  }
+};

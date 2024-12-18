@@ -13,6 +13,7 @@ const VenueBooking = () => {
   const [day, setDay] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [bookingConflict, setBookingConflict] = useState(false); // Track booking conflicts
 
   const imagesPerPage = 3; // Number of images per page
 
@@ -45,6 +46,30 @@ const VenueBooking = () => {
     }
   }, [venueId]);
 
+  // Check if the venue is already booked on the selected date
+  const checkBookingConflict = async (selectedDate) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/venueSelections/venue/${venueId}/date/${selectedDate}`
+      );
+      if (response.data.length > 0) {
+        setBookingConflict(true); // Conflict found
+      } else {
+        setBookingConflict(false); // No conflict
+      }
+    } catch (error) {
+      console.error("Error checking booking conflict:", error);
+      setError("Failed to check booking availability.");
+    }
+  };
+
+  // Check for conflicts when the day is selected
+  useEffect(() => {
+    if (day) {
+      checkBookingConflict(day);
+    }
+  }, [day]);
+
   // Pagination for images
   const paginatedImages = images.slice(
     currentPage * imagesPerPage,
@@ -63,13 +88,18 @@ const VenueBooking = () => {
   const handleSubmit = async () => {
     if (!isAuthenticated) {
       alert("Please log in to book a venue.");
-      navigate('/login'); // Redirect to login if not authenticated
+      navigate("/signin"); // Redirect to login if not authenticated
       return;
     }
 
     if (!day) {
       alert("Booking date is required.");
       return; // Exit if no date is provided
+    }
+
+    if (bookingConflict) {
+      alert("This venue is already booked on the selected date. Please choose another date.");
+      return; // Exit if there's a booking conflict
     }
 
     try {
@@ -81,7 +111,7 @@ const VenueBooking = () => {
       }
 
       setLoading(true);
-      const response = await axios.post('http://localhost:3001/venueSelections', {
+      const response = await axios.post("http://localhost:3001/venueSelections", {
         userId,
         venueId,
         date: day,
@@ -159,6 +189,9 @@ const VenueBooking = () => {
               className="w-full p-2 border rounded"
             />
           </label>
+          {bookingConflict && (
+            <p className="text-red-500 mt-2">This venue is already booked on the selected date.</p>
+          )}
         </div>
 
         <button

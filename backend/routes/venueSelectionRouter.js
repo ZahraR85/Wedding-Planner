@@ -4,6 +4,7 @@ import {
   createVenueSelection,
   getVenueSelectionsByUserId,
   deleteVenueSelection,
+  checkBookingConflict,
 } from '../controllers/venueSelectionController.js';
 
 const router = express.Router();
@@ -17,4 +18,5 @@ router.get("/:userId", getVenueSelectionsByUserId);
 // Delete venue selection
 router.delete('/:id/:venueId', deleteVenueSelection);
 
+router.get('/venue/:venueId/date/:date', checkBookingConflict);
 export default router;
