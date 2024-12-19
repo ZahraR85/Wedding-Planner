@@ -20,6 +20,8 @@ export default {
       BgFont: "#624e40",
       btnLight: "#DBD084",
       btnDark: "#DBC537",
+      bgfooter: "#b39b81",
+      bgbackground:"#e6e4df"
     },
     backgroundImage: {
       'custom-gradient': 'linear-gradient(90deg, rgba(118,154,110) 0%, rgba(31,66,32) 100%)',
