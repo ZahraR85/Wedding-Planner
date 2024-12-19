@@ -10,6 +10,13 @@ export default {
     extend: { colors: {
       customBg: "#FAF9F5", 
       customBg1: "#FFF2F4",
+      BgPink: "#f5d0cb",
+      BgPinkDark : "#d59d88",
+      BgGray: "#d9dad0",
+      BgCreme: "#e8dfcf",
+      BgKhaki : "#d5c0b5",
+      BgKhakiDark : "#888884",
+      BgFont: "#624e40",
       btnLight: "#DBD084",
       btnDark: "#DBC537",
     },
