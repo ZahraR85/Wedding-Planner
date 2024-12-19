@@ -13,7 +13,7 @@ const Navbar = () => {
       className={`${
         isHomepage
           ? 'absolute top-0 left-0 w-full bg-opacity-70'
-          : 'sticky top-0 bg-btnLight shadow-md'
+          : 'sticky top-0 z-50 bg-btnLight shadow-md'
       } text-white`}
     >
       <div

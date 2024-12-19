@@ -1,14 +1,22 @@
 import express from 'express';
-import { 
-  createVenueSelection, 
-  getUserVenueSelections 
+import {
+  //createOrUpdateVenueSelection,
+  createVenueSelection,
+  getVenueSelectionsByUserId,
+  deleteVenueSelection,
+  checkBookingConflict,
 } from '../controllers/venueSelectionController.js';
-import { isAuthenticated } from '../middleware/RoleAccess.js';
 
 const router = express.Router();
 
-// User Routes
-router.post('/', isAuthenticated, createVenueSelection); // Create a venue selection
-router.get('/', isAuthenticated, getUserVenueSelections); // Get all venue selections for the logged-in user
+// Create or update a venue selection
+//router.post('/', createOrUpdateVenueSelection);
+router.post('/', createVenueSelection);
+// Get venue selections by user ID
+router.get("/:userId", getVenueSelectionsByUserId);
 
+// Delete venue selection
+router.delete('/:id/:venueId', deleteVenueSelection);
+
+router.get('/venue/:venueId/date/:date', checkBookingConflict);
 export default router;

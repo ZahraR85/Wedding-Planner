@@ -54,13 +54,19 @@ const VenueForm = () => {
   };
 
   // Handle image uploads
-  const handleImageUpload = (e) => {
+  /*const handleImageUpload = (e) => {
     const files = Array.from(e.target.files).map((file) =>
       URL.createObjectURL(file)
     );
     setFormData({ ...formData, images: [...formData.images, ...files] });
   };
-
+  */
+// Update the handleImageUpload function to accept URLs directly
+const handleImageUpload = (e) => {
+  const { value } = e.target;
+  const urls = value.split(',').map((url) => url.trim()); // Split by comma and trim whitespace
+  setFormData({ ...formData, images: [...formData.images, ...urls] });
+};
   // Submit new venue
   const handleSubmit = async () => {
     setLoading(true);
@@ -162,6 +168,14 @@ const VenueForm = () => {
         </div>
         </div>
         <textarea
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          className="border mx-2 p-2 rounded w-full h-20"
+          rows={5}
+          placeholder="address"
+        />
+        <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
@@ -171,23 +185,22 @@ const VenueForm = () => {
         />
         <div className="flex">
         <div className="w-1/2 pr-8">
-        <input
-          type="file"
-          multiple
-          onChange={handleImageUpload}
-          className="file-input file-input-bordered w-full mb-2"
+  <textarea
+    placeholder="Enter image URLs, separated by commas"
+    onChange={handleImageUpload}
+    className="textarea textarea-bordered w-full mb-2"
+  />
+  {formData.images.length > 0 && (
+    <div className="flex flex-wrap gap-2">
+      {formData.images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt="Uploaded"
+          className="w-16 h-16 object-cover rounded"
         />
-        {formData.images.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {formData.images.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt="Uploaded"
-                className="w-16 h-16 object-cover rounded"
-              />
-            ))}
-          </div>
+      ))}
+    </div>
         )}
         </div>
         <span className="text-xl font-bold mr-20">total price: $</span>

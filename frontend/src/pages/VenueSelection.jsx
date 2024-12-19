@@ -1,99 +1,71 @@
-import { useState, useEffect } from 'react';
-//import axios from 'axios';
-import VenueCard from '../AdminVenue/VenueCard';
-import { getVenues, bookVenue } from '../AdminVenue/venue';
-
-const VenueSelection = () => {
-  const [venues, setVenues] = useState([]);
-  const [selectedVenue, setSelectedVenue] = useState(null);
-  const [bookingData, setBookingData] = useState({ hours: '', date: '' });
-
-  useEffect(() => {
-    getVenues().then(setVenues);
-  }, []);
-
-  const handleBooking = () => {
-    if (selectedVenue) {
-      bookVenue(selectedVenue._id, bookingData).then((res) => {
-        alert('Venue booked successfully!');
-      });
-    }
-  };
-
-  return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold my-4">Available Venues</h1>
-      <div className="grid grid-cols-3 gap-4">
-        {venues.map((venue) => (
-          <VenueCard
-            key={venue._id}
-            venue={venue}
-            isAdmin={false}
-            onViewDetails={setSelectedVenue}
-          />
-        ))}
-      </div>
-      {selectedVenue && (
-        <div>
-          <h2 className="text-xl font-bold">Book Venue: {selectedVenue.name}</h2>
-          <input
-            type="number"
-            value={bookingData.hours}
-            onChange={(e) =>
-              setBookingData({ ...bookingData, hours: e.target.value })
-            }
-            placeholder="Hours"
-            className="input"
-          />
-          <input
-            type="date"
-            value={bookingData.date}
-            onChange={(e) =>
-              setBookingData({ ...bookingData, date: e.target.value })
-            }
-            className="input"
-          />
-          <button onClick={handleBooking} className="btn btn-primary">
-            Book Now
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default VenueSelection;
-
-/* import { useState, useEffect } from 'react';
-import VenueCard from './VenueCard';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext'; // Import the AppContext
 
-const VenueSelection = () => {
+const VenueSelectionPage = () => {
   const [venues, setVenues] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { userId, isAuthenticated } = useAppContext(); // Access context
+  const navigate = useNavigate();
 
+  // Fetch venues data
   useEffect(() => {
-    const fetchVenues = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get('/api/venues');
-        setVenues(response.data);
+        const venueResponse = await axios.get('http://localhost:3001/venues');
+        setVenues(venueResponse.data);
       } catch (error) {
-        console.error('Error fetching venues:', error);
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch venue data.');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchVenues();
-  }, []);
+    if (userId && isAuthenticated) {
+      fetchData();
+    }
+  }, [userId, isAuthenticated]);
+
+  // Handle venue selection
+  const handleVenueClick = (venueId) => {
+    if (!isAuthenticated) {
+      alert('Please log in to book a venue.');
+      navigate('/login');
+      return;
+    }
+
+    navigate(`/venueBooking/${venueId}`); // Navigate to the booking page for the selected venue
+  };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Select a Venue</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      {loading && <p>Loading venues...</p>}
+      {error && <p>{error}</p>}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {venues.map((venue) => (
-          <VenueCard key={venue._id} venue={venue} />
+          <div
+            key={venue._id}
+            className="p-4 border rounded-lg cursor-pointer hover:shadow-lg"
+            onClick={() => handleVenueClick(venue._id)}
+          >
+            <img
+              src={venue.images?.[0] || 'https://via.placeholder.com/150'}
+              alt={venue.name}
+              className="w-full h-40 object-cover rounded-lg"
+            />
+            <h3 className="text-lg font-semibold mt-2">{venue.name}</h3>
+            <p>Capacity: {venue.capacity}</p>
+            <p>Price: ${venue.price} per hour</p>
+          </div>
         ))}
       </div>
     </div>
   );
 };
 
-export default VenueSelection; */
+export default VenueSelectionPage;
