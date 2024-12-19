@@ -14,6 +14,7 @@ const MusicSelectionForm = () => {
   const [customRequest, setCustomRequest] = useState("");
   const [isEditMode, setIsEditMode] = useState(false); // Track edit mode
   const [loading, setLoading] = useState(false);
+  const [hoveredOption, setHoveredOption] = useState(null);
 
   // Redirect unauthenticated users
   useEffect(() => {
@@ -26,36 +27,36 @@ const MusicSelectionForm = () => {
   // Fetch music options and user data on load
   useEffect(() => {
     if (!userId) return;
-  
+
     const fetchData = async () => {
       try {
 
-         // Fetch music options
-    const optionsResponse = await axios.get("http://localhost:3001/musicoptions");
-    console.log("Fetched Music Options:", optionsResponse.data);
-    setMusicOptions(optionsResponse.data);
+        // Fetch music options
+        const optionsResponse = await axios.get("http://localhost:3001/musicoptions");
+        console.log("Fetched Music Options:", optionsResponse.data);
+        setMusicOptions(optionsResponse.data);
 
         const userResponse = await axios.get(`http://localhost:3001/musics?userID=${userId}`);
         console.log("Fetched User Data:", userResponse.data); // Debugging
-  
+
         if (userResponse.data) {
           // Map fetched selections to hours for pre-filling
           const mappedHours = userResponse.data.selections.reduce((acc, selection) => {
             acc[selection.optionID._id] = selection.hours; // Use optionID._id as the key
             return acc;
           }, {});
-  
+
           // Map selections to hours state
           setHours(mappedHours); // Pre-fill hours
-        setUserSelection(userResponse.data); // Store user data
-  
+          setUserSelection(userResponse.data); // Store user data
+
           setIsEditMode(true);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-  
+
     fetchData();
   }, [userId]);
 
@@ -131,71 +132,87 @@ const MusicSelectionForm = () => {
   };
 
   return (
-      <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
-        {/* Overlay for controlling opacity */}
-        <div className="absolute inset-0 bg-white/50"></div>
-    
-        {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}
-        <div className="relative mx-auto w-full max-w-[calc(100%-80px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Select your Music bands</h2>
-          <form onSubmit={handleSubmit}>
-            <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour</h3>
-            <div className="grid grid-cols-3 gap-4">
-              {musicOptions.map((option) => (
-                <div key={option._id} className="relative border p-4 rounded-lg bg-gray-50">
-                  <p className="font-semibold mb-2">{option.name}</p>
-                  <p className="text-gray-600 mb-2">Price: ${option.pricePerHour}/hour</p>
-                  <label className="block">
-                    <input
-                      type="number"
-                      min="0"
-                      placeholder="Hours"
-                      value={hours[option._id] || ""}
-                      onChange={(e) => handleHoursChange(option._id, e.target.value)}
-                      className="w-full p-2 border rounded"
-                    />
-                  </label>
-                </div>
-              ))}
-            </div>
-    
-            <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
-            <div className="flex gap-2">
-              <textarea
-                type="text"
-                placeholder="Enter a custom request"
-                value={customRequest}
-                onChange={(e) => setCustomRequest(e.target.value)}
-                className="flex-1 p-2 border rounded"
-              />
-              <button
-                type="button"
-                onClick={addCustomRequest}
-                className="p-2 bg-BgPinkMiddle text-BgFont font-bold rounded hover:bg-BgPinkDark"
+    <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
+      {/* Overlay for controlling opacity */}
+      <div className="absolute inset-0 bg-white/50"></div>
+
+      {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}
+      <div className="relative mx-auto w-full max-w-[calc(100%-80px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Select your Music bands</h2>
+        <form onSubmit={handleSubmit}>
+          <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour</h3>
+          <div className="grid grid-cols-3 gap-4">
+
+            {musicOptions.map((option) => (
+              <div
+                key={option._id}
+                onMouseEnter={() => setHoveredOption(option._id)}
+                onMouseLeave={() => setHoveredOption(null)}
+                className="relative border p-4 rounded-lg bg-gray-50"
               >
-                Add Request
-              </button>
+                <p className="font-semibold mb-2">{option.name}</p>
+
+                <p className="text-gray-600 mb-2">Price: ${option.pricePerHour}/hour</p>
+                <label className="block">
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="Hours"
+                    value={hours[option._id] || ""}
+                    onChange={(e) => handleHoursChange(option._id, e.target.value)}
+                    className="w-full p-2 border rounded"
+                  />
+                </label>
+
+                {hoveredOption === option._id && (
+              <div className="absolute top-2 left-full ml-4 p-8 bg-red-100 border rounded shadow-lg w-96 z-10">
+              <p className="text-xl font-semibold">{option.description}</p>
             </div>
-            <ul className="mt-4 list-disc pl-6 text-BgFont">
-              {userSelection?.customRequests?.map((request, index) => (
-                <li key={index}>{request.description}</li>
-              ))}
-            </ul>
-    
-            <h3 className="text-2xl font-bold text-center text-BgFont mt-6">
-              Total Cost: <span className="text-BgFont">${userSelection?.totalCost || 0}</span>
-            </h3>
+              )}
+
+
+
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
+          <div className="flex gap-2">
+            <textarea
+              type="text"
+              placeholder="Enter a custom request"
+              value={customRequest}
+              onChange={(e) => setCustomRequest(e.target.value)}
+              className="flex-1 p-2 border rounded"
+            />
             <button
-              type="submit"
-              className="block w-full mt-6 p-3 bg-BgPinkMiddle text-BgFont font-bold rounded-lg hover:bg-BgPinkDark"
-              disabled={loading}
+              type="button"
+              onClick={addCustomRequest}
+              className="p-2 bg-BgPinkMiddle text-BgFont font-bold rounded hover:bg-BgPinkDark"
             >
-              {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+              Add Request
             </button>
-          </form>
-        </div>
+          </div>
+          <ul className="mt-4 list-disc pl-6 text-BgFont">
+            {userSelection?.customRequests?.map((request, index) => (
+              <li key={index}>{request.description}</li>
+            ))}
+          </ul>
+
+          <h3 className="text-2xl font-bold text-center text-BgFont mt-6">
+            Total Cost: <span className="text-BgFont">${userSelection?.totalCost || 0}</span>
+          </h3>
+          <button
+            type="submit"
+            className="block w-full mt-6 p-3 bg-BgPinkMiddle text-BgFont font-bold rounded-lg hover:bg-BgPinkDark"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+          </button>
+        </form>
       </div>
-    );    
+    </div>
+  );
 };
 
 export default MusicSelectionForm;
