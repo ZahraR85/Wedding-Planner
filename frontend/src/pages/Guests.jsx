@@ -136,10 +136,13 @@ function Guest() {
   };
 
   return (
-    <div className="min-h-screen bg-BgCreme px-20 py-10">
-      <div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-BgFont">Add your Guests here please!</h1>
-
+    <div className="relative min-h-screen bg-cover bg-center p-10 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
+    {/* Overlay for controlling opacity */}
+    <div className="absolute inset-0 bg-white/50"></div>
+    <div className="relative mx-auto w-full max-w-[calc(100%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
+    {/*<div className="min-h-screen bg-BgCreme px-20 py-10">*/}
+      {/*<div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">*/}
+        <h1 className="text-3xl font-bold text-center text-BgFont pt-5">Add your Guests here please!</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -188,14 +191,14 @@ function Guest() {
               className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
             required
           />
-          <div className="flex items-center justify-between">
-            <div className="w-full md:w-1/3">
-              <label className="block text-gray-700 font-medium mb-2">Answer Status:</label>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center md:w-1/3 space-x-2">
+              <label className="text-gray-800 font-medium whitespace-nowrap">Answer Status:</label>
               <select
                 name="answerStatus"
                 value={formData.answerStatus || ''}
                 onChange={handleChange}
-              className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="custom-select px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki w-[calc(100%+20px)]"
                 required
               >
                 <option value="Not yet">Not yet</option>

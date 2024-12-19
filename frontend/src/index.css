@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-select option {
+  background-color: #f8e7e7; /* Light pink background */
+  color: #4a4a4a; /* Gray text */
+}
+.custom-select option:hover {
+  background-color: #fadadd; /* Darker pink when hovered */
+}
