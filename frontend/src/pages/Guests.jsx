@@ -136,13 +136,13 @@ function Guest() {
   };
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-10 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
     {/* Overlay for controlling opacity */}
     <div className="absolute inset-0 bg-white/50"></div>
-    <div className="relative mx-auto w-full max-w-[calc(100%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
+    <div className="relative mx-auto w-full max-w-[calc(90%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
     {/*<div className="min-h-screen bg-BgCreme px-20 py-10">*/}
       {/*<div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">*/}
-        <h1 className="text-3xl font-bold text-center text-BgFont pt-5">Add your Guests here please!</h1>
+        <h1 className="text-3xl font-bold text-center text-BgFont ">Add your Guests here please!</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -214,7 +214,7 @@ function Guest() {
             </button>
           </div>
         </form>
-
+<div><hr /><br /></div>
         <div className="flex flex-col md:flex-row justify-between items-center mt-6">
           <h3 className="text-lg font-semibold text-gray-700">
             Total Guests with YES Answer: {totalYesGuests}
@@ -234,7 +234,7 @@ function Guest() {
       <th className="px-4 py-3">Guest Name</th>
       <th className="px-4 py-3">Number</th>
       <th className="px-4 py-3">Phone</th>
-      <th className="px-4 py-3">Address of Guests</th>
+      <th className="px-4 py-3">Address of Guests for card sending</th>
       <th className="px-4 py-3">Answer Status</th>
       <th className="px-4 py-3">Action</th>
     </tr>
