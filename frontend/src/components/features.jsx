@@ -1,123 +1,77 @@
+import budget from '../images/budget.png';
+import countdown from '../images/countdown.png';
+import dashboard from '../images/dashboard.png';
+import guestlist from '../images/guestlist.png';
+import todolist from '../images/todolist.png';
+import venue from '../images/venue.png';
+
+
 const Features = () => {
   const features = [
     {
-      title: 'Guest List',
-      description: 'Manage your guest RSVPs easily.',
+      // title: 'Guest List',
+      // description: 'Manage your guest RSVPs easily.',
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-12 w-12 mx-auto text-pink-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M17 20h5v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2h5m8-10a4 4 0 11-8 0 4 4 0 018 0z"
-          />
-        </svg>
+        <img
+          src={guestlist}
+          alt="Guest List Icon"
+        className="h-96 w-96 mx-auto"
+        />
       ),
     },
     {
-      title: 'Countdown',
-      description: 'Track the days until your wedding.',
+      // title: 'Guest List',
+      // description: 'Manage your guest RSVPs easily.',
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-12 w-12 mx-auto text-blue-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 8c.828 0 1.5-.672 1.5-1.5S12.828 5 12 5s-1.5.672-1.5 1.5S11.172 8 12 8z"
-          />
-        </svg>
+        <img
+          src={venue}
+          alt="Guest List Icon"
+       className="h-96 w-96 mx-auto"
+        />
       ),
     },
     {
-      title: 'To-Do List',
-      description: 'Organize all your wedding tasks.',
+      // title: 'Guest List',
+      // description: 'Manage your guest RSVPs easily.',
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-12 w-12 mx-auto text-green-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M5 13l4 4L19 7"
-          />
-        </svg>
+        <img
+          src={todolist}
+          alt="Guest List Icon"
+         className="h-96 w-96 mx-auto"
+        />
       ),
     },
     {
-      title: 'Personalized Dashboard',
-      description: 'Customize your planning experience.',
+      // title: 'Guest List',
+      // description: 'Manage your guest RSVPs easily.',
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-12 w-12 mx-auto text-yellow-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 4h16v16H4z"
-          />
-        </svg>
+        <img
+          src={budget}
+          alt="Guest List Icon"
+        className="h-96 w-96 mx-auto"
+        />
       ),
     },
     {
-      title: 'Budget Tracker',
-      description: 'Keep your wedding on budget.',
+      // title: 'Guest List',
+      // description: 'Manage your guest RSVPs easily.',
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-12 w-12 mx-auto text-purple-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M3 7h18M9 14h6m-3-3v6"
-          />
-        </svg>
+        <img
+          src={dashboard}
+          alt="Guest List Icon"
+        className="h-96 w-96 mx-auto"
+        />
       ),
     },
     {
-      title: 'Virtual Venue Tours',
-      description: 'Explore venues from your home.',
+      // title: 'Guest List',
+      // description: 'Manage your guest RSVPs easily.',
       icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-12 w-12 mx-auto text-red-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M3 7h18M9 14h6m-3-3v6"
-          />
-        </svg>
+        <img
+          src={countdown}
+          alt="Guest List Icon"
+        className="h-96 w-96 mx-auto"
+        />
       ),
     },
   ];
@@ -131,9 +85,11 @@ const Features = () => {
         {features.map((feature, index) => (
           <div
             key={index}
-            className="bg-white hover:shadow-xl transition-shadow duration-300 rounded-3xl p-8 text-center"
+          
+            className="bg-[#e8dfcf] hover:shadow-xl transition-shadow duration-300 rounded-3xl p-1 text-center"
+
           >
-            <div className="bg-gradient-to-r from-yellow-300 to-yellow-500 p-4 rounded-full w-20 h-20 mx-auto mb-6">
+            <div >
               {feature.icon}
             </div>
             <h2 className="text-2xl font-bold text-gray-700 mb-4">

@@ -1,8 +1,10 @@
-import { FaInstagram, FaFacebook, FaPinterest, FaLinkedin } from 'react-icons/fa';
+import { FaInstagram, FaFacebook, FaPinterest, FaLinkedin } from "react-icons/fa";
+import logo from '../images/logo6.png';
+
 
 const Footer = () => {
   return (
-    <footer className="bg-[#DBD084] text-gray-900 py-12 px-6">
+    <footer className="bg-BgKhaki text-BgFont py-12 px-6">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
         {/* Menu Section */}
         <div>
@@ -18,37 +20,32 @@ const Footer = () => {
         </div>
 
         {/* Center Section (Logo or Branding) */}
-        <div className="border-t border-gray-600 md:border-t-0 md:border-l md:border-r md:px-6">
-          <h3 className="text-4xl font-serif italic mb-4">The Wedding Company</h3>
+        <div className="border-t border-BgKhakiDark md:border-t-0 md:border-l md:border-r md:px-6 flex flex-col items-center">
+          <img src={logo} alt="I Said Yes Logo" className="w-32 h-auto mb-4" />
           <p className="text-sm mb-4">
-            Wedding planning, concept & coordination in Munich & worldwide
+            Your ultimate wedding planner to make your big day unforgettable.
           </p>
-          <p className="text-xs">
-            © 2023 The Wedding Company. All Rights Reserved.
-          </p>
-          <p className="text-xs">
-            Designed by <a href="#" className="hover:underline">Studio Blanche</a>
-          </p>
+          <p className="text-xs">© 2023 I SAID YES. All Rights Reserved.</p>
         </div>
 
         {/* Contact Section */}
         <div>
           <h3 className="text-3xl font-bold mb-6">CONTACT</h3>
           <p className="mb-2">
-            Email: <a href="mailto:info@theweddingcompany.de" className="hover:underline">info@theweddingcompany.de</a>
+            Email: <a href="mailto:info@isaidyes.com" className="hover:underline">info@isaidyes.com</a>
           </p>
-          <p className="mb-6">Phone: +49 (0) 152 25257063</p>
+          <p className="mb-6">Phone: +1 (555) 123-4567</p>
           <div className="flex justify-center md:justify-start space-x-4 text-2xl">
-            <a href="#" className="hover:text-gray-400"><FaInstagram /></a>
-            <a href="#" className="hover:text-gray-400"><FaFacebook /></a>
-            <a href="#" className="hover:text-gray-400"><FaPinterest /></a>
-            <a href="#" className="hover:text-gray-400"><FaLinkedin /></a>
+            <a href="#" className="hover:text-BgPinkDark"><FaInstagram /></a>
+            <a href="#" className="hover:text-BgPinkDark"><FaFacebook /></a>
+            <a href="#" className="hover:text-BgPinkDark"><FaPinterest /></a>
+            <a href="#" className="hover:text-BgPinkDark"><FaLinkedin /></a>
           </div>
         </div>
       </div>
 
       {/* Bottom Links */}
-      <div className="mt-12 text-center text-sm border-t border-gray-600 pt-6">
+      <div className="mt-12 text-center text-sm border-t border-BgKhakiDark pt-6">
         <a href="#impressum" className="hover:underline mx-4">Impressum</a>
         <a href="#privacy" className="hover:underline mx-4">Privacy Policy</a>
       </div>
@@ -57,10 +54,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
-
-
-
-
-
