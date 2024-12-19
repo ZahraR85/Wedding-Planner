@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppContext } from "../context/AppContext"; // Assuming you have AppContext for user data
 import { useNavigate } from "react-router-dom";
@@ -131,7 +131,8 @@ const MusicSelectionForm = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div className="min-h-screen bg-BgCreme px-20 py-10">
+      <div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Music Selection</h2>
       <form onSubmit={handleSubmit}>
         <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Select Music Options</h3>
@@ -156,7 +157,7 @@ const MusicSelectionForm = () => {
 
         <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
         <div className="flex gap-2">
-          <input
+          <textarea
             type="text"
             placeholder="Enter a custom request"
             value={customRequest}
@@ -166,7 +167,7 @@ const MusicSelectionForm = () => {
           <button
             type="button"
             onClick={addCustomRequest}
-            className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="p-2 bg-BgPink text-BgFont rounded hover:bg-BgPinkMiddle"
           >
             Add Request
           </button>
@@ -182,12 +183,13 @@ const MusicSelectionForm = () => {
         </h3>
         <button
           type="submit"
-          className="block w-full mt-6 p-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+          className="block w-full mt-6 p-3 bg-BgPink text-BgFont font-semibold rounded-lg hover:bg-BgPinkMiddle"
           disabled={loading}
         >
           {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
         </button>
       </form>
+    </div>
     </div>
   );
 };
