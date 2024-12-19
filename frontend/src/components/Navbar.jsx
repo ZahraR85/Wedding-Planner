@@ -1,11 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import SignOut from '../Auth/SignOut';
 
 const Navbar = () => {
-  const { isDropdownOpen, setDropdownOpen } = useAppContext();
+  const { isDropdownOpen, setDropdownOpen, isAuthenticated } = useAppContext();
   const location = useLocation();
 
-  // Check if the current route is the homepage
   const isHomepage = location.pathname === '/';
 
   return (
@@ -13,7 +13,7 @@ const Navbar = () => {
       className={`${
         isHomepage
           ? 'absolute top-0 left-0 w-full bg-opacity-70'
-          : 'sticky top-0 z-50 bg-btnLight shadow-md'
+          : 'sticky top-0 z-50 bg-BgKhaki shadow-md'
       } text-white`}
     >
       <div
@@ -81,12 +81,18 @@ const Navbar = () => {
           </li>
         </ul>
         <div className="font-bold">
-          <Link to="/signin" className="hover:underline focus:outline-none">
-            Signin | Register
-          </Link>
-          <button className="ml-4 font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
-            Let’s Start
-          </button>
+          {isAuthenticated ? (
+            <SignOut />
+          ) : (
+            <Link to="/signin" className="hover:underline focus:outline-none">
+              Signin | Register
+            </Link>
+          )}
+          {!isAuthenticated && (
+            <button className="ml-4 font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
+              Let’s Start
+            </button>
+          )}
         </div>
       </div>
     </nav>

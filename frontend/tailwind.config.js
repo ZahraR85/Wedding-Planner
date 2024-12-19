@@ -11,6 +11,7 @@ export default {
       customBg: "#FAF9F5", 
       customBg1: "#FFF2F4",
       BgPink: "#f5d0cb",
+      BgPinkMiddle: "#e1b1a0",
       BgPinkDark : "#d59d88",
       BgGray: "#d9dad0",
       BgCreme: "#e8dfcf",

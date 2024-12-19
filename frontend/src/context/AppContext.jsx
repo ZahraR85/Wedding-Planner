@@ -7,8 +7,8 @@ const initialState = {
   searchTerm: '',
   hoveredDropdown: null,
   isDropdownOpen: false,
-  userId: null, // Add userId
-  isAuthenticated: false, // Add authentication flag
+  userId: null, // User ID for authenticated user
+  isAuthenticated: false, // Tracks if the user is authenticated
 };
 
 const appReducer = (state, action) => {
@@ -24,10 +24,14 @@ const appReducer = (state, action) => {
     case 'SET_DROPDOWN_OPEN':
       return { ...state, isDropdownOpen: action.payload };
     case 'SET_AUTH':
-      return { ...state, isAuthenticated:
-        action.payload.isAuthenticated, 
-        userId: action.payload.userId };
-      default:
+      return {
+        ...state,
+        isAuthenticated: action.payload.isAuthenticated,
+        userId: action.payload.userId,
+      };
+    case 'SIGN_OUT':
+      return { ...state, isAuthenticated: false, userId: null };
+    default:
       return state;
   }
 };
@@ -35,6 +39,7 @@ const appReducer = (state, action) => {
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
+  // Actions to modify state
   const setSelectedCity = (city) => dispatch({ type: 'SET_SELECTED_CITY', payload: city });
   const setSearchTerm = (term) => dispatch({ type: 'SET_SEARCH_TERM', payload: term });
   const setHoveredDropdown = (dropdown) => dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: dropdown });
@@ -43,6 +48,9 @@ export const AppProvider = ({ children }) => {
 
   const setAuth = (isAuthenticated, userId) =>
     dispatch({ type: 'SET_AUTH', payload: { isAuthenticated, userId } });
+
+  const signOut = () => dispatch({ type: 'SIGN_OUT' });
+
   return (
     <AppContext.Provider
       value={{
@@ -53,6 +61,7 @@ export const AppProvider = ({ children }) => {
         clearHoveredDropdown,
         setDropdownOpen,
         setAuth,
+        signOut,
       }}
     >
       {children}
