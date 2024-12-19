@@ -115,7 +115,8 @@ const ReceptionSelector = () => {
 
     // Render UI
     return (
-        <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
+        <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-cover bg-center">
+
             <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
                 <p className="text-gray-600 text-center mb-8">{description}</p>
                 <h1 className="text-2xl font-bold m-10">Reception Features</h1>
@@ -154,7 +155,7 @@ const ReceptionSelector = () => {
                 <h2 className="text-lg font-bold mt-6">Total Price: ${total}</h2>
                 <button
                     onClick={handleSubmit}
-                    className="bg-btnLight text-white hover:bg-btnDark w-full px-4 py-2 rounded"
+                    className="w-full bg-BgPinkMiddle text-BgFont py-2 px-4 rounded hover:bg-BgPinkDark"
                 >
                     {isEditMode ? "Update" : "Submit"}
                 </button>
