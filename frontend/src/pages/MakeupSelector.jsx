@@ -141,11 +141,15 @@ const MakeupSelector = () => {
   // };
 
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-      <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-        <h1 className="text-2xl font-bold m-10">Makeup Features</h1>
+      <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
+        {/* Overlay for controlling opacity */}
+        <div className="absolute inset-0 bg-white/50"></div>
+        <div className="relative mx-auto w-full max-w-[calc(60%-250px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+              {/* <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">*/}
+      {/*<div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">*/}
+        <h1 className="text-2xl font-bold text-BgFont m-10">select services that you need:</h1>
         <DescriptionBox description={currentDescription} />
-        <form className="space-y-4">
+        <form className="space-y-4 font-bold">
           {features.map((feature) => (
             <div key={feature.id} className="flex items-center justify-between">
               <div
@@ -160,18 +164,18 @@ const MakeupSelector = () => {
                   onChange={() => handleCheckboxChange(feature.id)}
                   className="mr-2"
                 />
-                <label htmlFor={feature.id} className="text-lg">
+                <label htmlFor={feature.id} className="text-lg font-bold">
                   {feature.label} (${feature.price})
                 </label>
               </div>
             </div>
           ))}
         </form>
-        <div className="text-right mt-4 font-bold">Total: ${total}</div>
+        <div className="text-center text-xl text-BgFont mt-4 font-bold">Total: ${total}</div>
         <button
           type="button"
           onClick={handleSubmit}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          className="w-full bg-BgPinkMiddle text-BgFont py-2 px-4 rounded hover:bg-BgPinkDark"
           disabled={loading}
         >
           {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
