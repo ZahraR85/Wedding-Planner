@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import SignOut from '../Auth/SignOut';
+import logo from '../images/logo7.jpg';
 
 const Navbar = () => {
   const { isDropdownOpen, setDropdownOpen, isAuthenticated } = useAppContext();
@@ -21,8 +22,8 @@ const Navbar = () => {
           isHomepage ? '' : 'text-black'
         }`}
       >
+        {/* Left side: Links */}
         <ul className="flex font-bold items-center space-x-12">
-          <li className="text-2xl font-bold mr-20">I Said Yes!</li>
           <li>
             <Link to="/" className="hover:underline">
               Home
@@ -50,7 +51,7 @@ const Navbar = () => {
               <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
                 <ul className="flex flex-col items-start p-4 space-y-2">
                   <li className="hover:underline">
-                    <Link to="/Guests">invitation of Guests</Link>
+                    <Link to="/Guests">Invitation of Guests</Link>
                   </li>
                   <li className="hover:underline">
                     <Link to="/Venues">VenueAdmin</Link>
@@ -74,26 +75,43 @@ const Navbar = () => {
               </div>
             )}
           </li>
+        </ul>
+
+        {/* Middle: Logo */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Link to="/" className="block">
+            <img
+              src={logo} // Adjust this path if necessary
+              alt="Logo"
+              className="h-10"
+            />
+          </Link>
+        </div>
+
+        {/* Right side: Links */}
+        <ul className="flex font-bold items-center space-x-12">
           <li>
             <Link to="/cart" className="hover:underline">
               Shopping Cart
             </Link>
           </li>
-        </ul>
-        <div className="font-bold">
-          {isAuthenticated ? (
-            <SignOut />
-          ) : (
-            <Link to="/signin" className="hover:underline focus:outline-none">
-              Signin | Register
-            </Link>
-          )}
+          <li>
+            {isAuthenticated ? (
+              <SignOut />
+            ) : (
+              <Link to="/signin" className="hover:underline focus:outline-none">
+                Signin | Register
+              </Link>
+            )}
+          </li>
           {!isAuthenticated && (
-            <button className="ml-4 font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
-              Let’s Start
-            </button>
+            <li>
+              <button className="font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
+                Let’s Start
+              </button>
+            </li>
           )}
-        </div>
+        </ul>
       </div>
     </nav>
   );
