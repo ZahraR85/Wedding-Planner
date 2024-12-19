@@ -138,7 +138,7 @@ function Guest() {
   return (
     <div className="min-h-screen bg-BgCreme px-20 py-10">
       <div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-BgFont">Guest Features</h1>
+        <h1 className="text-3xl font-bold text-center text-BgFont">Add your Guests here please!</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -184,12 +184,12 @@ function Guest() {
             name="address"
             value={formData.address}
             onChange={handleChange}
-            placeholder="Address"
+            placeholder="Address of Guests"
               className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
             required
           />
           <div className="flex items-center justify-between">
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-1/3">
               <label className="block text-gray-700 font-medium mb-2">Answer Status:</label>
               <select
                 name="answerStatus"
@@ -205,7 +205,7 @@ function Guest() {
             </div>
             <button
               type="submit"
-              className="w-full md:w-1/2 bg-BgPink text-BgFont font-bold py-4 px-4 rounded-lg hover:bg-BgPinkMiddle"
+              className="w-full md:w-1/2 bg-BgPinkMiddle text-BgFont font-bold py-4 px-4 rounded-lg hover:bg-BgPinkDark"
             >
               {updatingGuestId ? "Update Guest" : "Add Guest"}
             </button>
@@ -228,12 +228,12 @@ function Guest() {
         <table className="w-full border border-BgFont text-BgFont bg-customBg rounded-lg">
   <thead>
     <tr className="bg-BgKhaki text-BgFont font-bold">
-      <th className="px-4 py-2">Guest Name</th>
-      <th className="px-4 py-2">Number of Persons</th>
-      <th className="px-4 py-2">Phone</th>
-      <th className="px-4 py-2">Address</th>
-      <th className="px-4 py-2">Answer Status</th>
-      <th className="px-4 py-2">Action</th>
+      <th className="px-4 py-3">Guest Name</th>
+      <th className="px-4 py-3">Number</th>
+      <th className="px-4 py-3">Phone</th>
+      <th className="px-4 py-3">Address of Guests</th>
+      <th className="px-4 py-3">Answer Status</th>
+      <th className="px-4 py-3">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -246,11 +246,11 @@ function Guest() {
         <td className="border px-4 py-2">{guest.answerStatus}</td>
         <td className="border px-4 py-2 flex gap-2">
           <button onClick={() => handleUpdate(guest._id)} 
-          className="bg-BgPink text-BgFont px-3 py-1 rounded hover:bg-BgPinkMiddle">
+          className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
             Update
           </button>
           <button onClick={() => handleDelete(guest._id)}
-          className="bg-BgPink text-BgFont px-3 py-1 rounded hover:bg-BgPinkMiddle">
+          className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
             Delete
           </button>
         </td>
