@@ -7,7 +7,7 @@ const Countdown = ({ weddingDate }) => {
     const targetDate = new Date(weddingDate); // Use weddingDate from props
     const now = new Date();
     const difference = targetDate - now;
-    console.log("tariiikh:",weddingDate);
+    console.log("tariiikh:", weddingDate);
     let timeLeft = {};
 
     if (difference > 0) {
@@ -40,21 +40,27 @@ const Countdown = ({ weddingDate }) => {
     <div>
       <h1 className="text-3xl font-bold text-center mb-6">Countdown to Wedding</h1>
       <div className="flex justify-center gap-4">
-        <div className="p-4 bg-gray-200 rounded text-center w-24">
-          <span className="text-4xl font-semibold block">{timeLeft.days ?? '00'}</span>
-          <p className="text-xl block">Days</p>
+
+        <div className="relative p-4 rounded-lg w-24 h-24 bg-gradient-to-b from-gray-100 to-gray-200 shadow-md text-center">
+          <span className="text-5xl font-bold text-gray-400 drop-shadow-md tracking-widest">
+            {timeLeft.days ?? '00'}
+          </span>
+          <p className="text-sm text-gray-500 uppercase tracking-wider mt-1">
+            Days
+          </p>
         </div>
-        <div className="p-4 bg-gray-200 rounded text-center w-24">
-          <span className="text-4xl font-semibold block">{timeLeft.hours ?? '00'}</span>
-          <p className="text-xl block">Hours</p>
+
+        <div className="relative p-4 rounded-lg w-24 h-24 bg-gradient-to-b from-gray-100 to-gray-200 shadow-md text-center">
+          <span className="text-5xl font-bold text-gray-400 drop-shadow-md tracking-widest">{timeLeft.hours ?? '00'}</span>
+          <p className="text-sm text-gray-500 uppercase tracking-wider mt-1">Hours</p>
         </div>
-        <div className="p-4 bg-gray-200 rounded text-center w-24">
-          <span className="text-4xl font-semibold block">{timeLeft.minutes ?? '00'}</span>
-          <p className="text-xl block">Minutes</p>
+        <div className="relative p-4 rounded-lg w-24 h-24 bg-gradient-to-b from-gray-100 to-gray-200 shadow-md text-center">
+          <span className="text-5xl font-bold text-gray-400 drop-shadow-md tracking-widest">{timeLeft.minutes ?? '00'}</span>
+          <p className="text-sm text-gray-500 uppercase tracking-wider mt-1">Minutes</p>
         </div>
-        <div className="p-4 bg-gray-200 rounded text-center w-24">
-          <span className="text-4xl font-semibold block">{timeLeft.seconds ?? '00'}</span>
-          <p className="text-xl block">Seconds</p>
+        <div className="relative p-4 rounded-lg w-24 h-24 bg-gradient-to-b from-gray-100 to-gray-200 shadow-md text-center">
+          <span className="text-5xl font-bold text-gray-400 drop-shadow-md tracking-widest">{timeLeft.seconds ?? '00'}</span>
+          <p className="text-sm text-gray-500 uppercase tracking-wider mt-1">Seconds</p>
         </div>
       </div>
     </div>
