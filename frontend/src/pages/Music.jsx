@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppContext } from "../context/AppContext"; // Assuming you have AppContext for user data
 import { useNavigate } from "react-router-dom";
@@ -131,65 +131,71 @@ const MusicSelectionForm = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Music Selection</h2>
-      <form onSubmit={handleSubmit}>
-        <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Select Music Options</h3>
-        <div className="grid grid-cols-3 gap-4">
-          {musicOptions.map((option) => (
-            <div key={option._id} className="relative border p-4 rounded-lg bg-gray-50">
-              <p className="font-semibold mb-2">{option.name}</p>
-              <p className="text-gray-600 mb-2">Price: ${option.pricePerHour}/hour</p>
-              <label className="block">
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="Hours"
-                  value={hours[option._id] || ""}
-                  onChange={(e) => handleHoursChange(option._id, e.target.value)}
-                  className="w-full p-2 border rounded"
-                />
-              </label>
+      <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
+        {/* Overlay for controlling opacity */}
+        <div className="absolute inset-0 bg-white/50"></div>
+    
+        {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}
+        <div className="relative mx-auto w-full max-w-[calc(100%-80px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Select your Music bands</h2>
+          <form onSubmit={handleSubmit}>
+            <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {musicOptions.map((option) => (
+                <div key={option._id} className="relative border p-4 rounded-lg bg-gray-50">
+                  <p className="font-semibold mb-2">{option.name}</p>
+                  <p className="text-gray-600 mb-2">Price: ${option.pricePerHour}/hour</p>
+                  <label className="block">
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="Hours"
+                      value={hours[option._id] || ""}
+                      onChange={(e) => handleHoursChange(option._id, e.target.value)}
+                      className="w-full p-2 border rounded"
+                    />
+                  </label>
+                </div>
+              ))}
             </div>
-          ))}
+    
+            <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
+            <div className="flex gap-2">
+              <textarea
+                type="text"
+                placeholder="Enter a custom request"
+                value={customRequest}
+                onChange={(e) => setCustomRequest(e.target.value)}
+                className="flex-1 p-2 border rounded"
+              />
+              <button
+                type="button"
+                onClick={addCustomRequest}
+                className="p-2 bg-BgPinkMiddle text-BgFont font-bold rounded hover:bg-BgPinkDark"
+              >
+                Add Request
+              </button>
+            </div>
+            <ul className="mt-4 list-disc pl-6 text-BgFont">
+              {userSelection?.customRequests?.map((request, index) => (
+                <li key={index}>{request.description}</li>
+              ))}
+            </ul>
+    
+            <h3 className="text-2xl font-bold text-center text-BgFont mt-6">
+              Total Cost: <span className="text-BgFont">${userSelection?.totalCost || 0}</span>
+            </h3>
+            <button
+              type="submit"
+              className="block w-full mt-6 p-3 bg-BgPinkMiddle text-BgFont font-bold rounded-lg hover:bg-BgPinkDark"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+            </button>
+          </form>
         </div>
-
-        <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter a custom request"
-            value={customRequest}
-            onChange={(e) => setCustomRequest(e.target.value)}
-            className="flex-1 p-2 border rounded"
-          />
-          <button
-            type="button"
-            onClick={addCustomRequest}
-            className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Add Request
-          </button>
-        </div>
-        <ul className="mt-4 list-disc pl-6 text-gray-700">
-          {userSelection?.customRequests?.map((request, index) => (
-            <li key={index}>{request.description}</li>
-          ))}
-        </ul>
-
-        <h3 className="text-xl font-bold text-center text-gray-800 mt-6">
-          Total Cost: <span className="text-blue-600">${userSelection?.totalCost || 0}</span>
-        </h3>
-        <button
-          type="submit"
-          className="block w-full mt-6 p-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
-        </button>
-      </form>
-    </div>
-  );
+      </div>
+    );    
 };
 
 export default MusicSelectionForm;

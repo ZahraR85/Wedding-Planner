@@ -136,7 +136,7 @@ function Guest() {
   };
 
   return (
-    <div className="min-h-screen bg-BgCreme px-8 py-10">
+    <div className="min-h-screen bg-BgCreme px-20 py-10">
       <div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">
         <h1 className="text-3xl font-bold text-center text-BgFont">Guest Features</h1>
 
