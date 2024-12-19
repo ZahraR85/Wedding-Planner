@@ -140,6 +140,10 @@ const MakeupSelector = () => {
   //   }
   // };
 
+
+
+  
+
   return (
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
         {/* Overlay for controlling opacity */}
