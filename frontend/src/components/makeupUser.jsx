@@ -42,17 +42,18 @@ const UserSelections = ({ userId }) => {
   // Render user selections
   return (
     <div className="user-selections">
-      <h2 className="text-2xl font-bold mb-4">Makeup features</h2>
+     
       <div className="p-4 bg-gray-100 rounded shadow mb-4">
         {/* User Information */}
-        <h3 className="text-lg font-semibold">
+        {/* <h3 className="text-lg font-semibold">
           User: {userSelections.userID?.name || "Unknown"} 
           ({userSelections.userID?.email || "No Email Available"})
-        </h3>
+        </h3> */}
+        <h2 className="text-2xl font-bold mb-4">Makeup features</h2>
         <p>Total Cost: ${userSelections.total || 0}</p>
 
         {/* Selections */}
-        <h4 className="mt-2 font-semibold">Selections:</h4>
+       
         <ul className="list-disc pl-5">
           <li>
             Makeup: {userSelections.makeup?.selected ? "Selected" : "Not Selected"} 

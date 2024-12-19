@@ -40,19 +40,16 @@ const UserSelections = ({ userId }) => {
     <div className="user-selections">
       <h2 className="text-2xl font-bold mb-4">Music features</h2>
       <div className="p-4 bg-gray-100 rounded shadow mb-4">
-        <h3 className="text-lg font-semibold">
+        {/* <h3 className="text-lg font-semibold">
           User: {userSelections.userID?.name} {userSelections.userID?.family}
-        </h3>
+        </h3> */}
         <p>Total Cost: ${userSelections.totalCost}</p>
-        <h4 className="mt-2 font-semibold">Selections:</h4>
+        {/* <h4 className="mt-2 font-semibold">Selections:</h4> */}
         <ul className="list-disc pl-5">
           {userSelections.selections.map((item, idx) => (
             <li key={idx} className="mb-2">
               <div className="p-2 bg-white rounded shadow">
-                <p>Music Option: {item.optionID?.name || 'N/A'}</p>
-                <p>Category: {item.optionID?.category || 'N/A'}</p>
-                <p>Price per Hour: ${item.optionID?.pricePerHour || 0}</p>
-                <p>Hours: {item.hours}</p>
+                <p>{item.optionID?.name || 'N/A'} Price per Hour: ${item.optionID?.pricePerHour || 0} for {item.hours} Hours</p>
                 <p>Total Price: ${item.totalPrice}</p>
               </div>
             </li>
