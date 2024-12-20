@@ -19,6 +19,7 @@ import { AppProvider } from './context/AppContext';
 import SignIn from './Auth/SignIn.jsx';
 import Register from './Auth/Register.jsx';
 import './index.css';
+
 function App() {
   return (
     <AppProvider>

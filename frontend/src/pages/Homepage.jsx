@@ -1,4 +1,4 @@
-import Features from '../components/features';
+//import Features from '../components/features';
 import Features1 from '../components/feature1';
 import Header from '../components/Header';
 const Homepage = () => {
@@ -6,7 +6,7 @@ const Homepage = () => {
     <div>
         <Header />
         <Features1 />
-        <Features />
+        {/*<Features />*/}
       
     </div>
   );

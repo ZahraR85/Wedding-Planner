@@ -123,73 +123,78 @@ const Photography = () => {
   };
 
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-      <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-        <h1 className="text-2xl font-bold m-10">Photography Services</h1>
-        <label className="flex items-center space-x-2">
-          Photography sessions (per 3 hours 300$):
-          <input
-            type="number"
-            name="number"
-            data-category="photography"
-            value={formData.photography?.number || 0}
-            onChange={handleChange}
-            className="border mx-2 p-2 rounded w-1/3"
-          />
-        </label>
-        <label className="flex items-center space-x-2">
-          Videography sessions (per 3 hours 300$):
-          <input
-            type="number"
-            name="number"
-            data-category="videography"
-            value={formData.videography?.number || 0}
-            onChange={handleChange}
-            className="border mx-2 p-2 rounded w-1/3"
-          />
-        </label>
-        <label className="flex items-center space-x-2">
-          Clip Construction (per 3 minutes 200$):
-          <input
-            type="number"
-            name="number"
-            data-category="clipConstruction"
-            value={formData.clipConstruction?.number || 0}
-            onChange={handleChange}
-            className="border mx-2 p-2 rounded w-1/3"
-          />
-        </label>
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            name="selected"
-            data-category="physicalAlbum"
-            checked={formData.physicalAlbum?.selected || false}
-            onChange={handleChange}
-          />
-          <span>Physical Album with 20 photos 500$</span>
-        </label>
-        <label className="flex items-center space-x-2">
-          Gift Image for guests 10$ (Size 15x18):
-          <input
-            type="number"
-            name="number"
-            data-category="giftImageSize"
-            value={formData.giftImageSize?.number || 0}
-            onChange={handleChange}
-            className="border mx-2 p-2 rounded w-1/3"
-          />
-        </label>
-        <h2 className="text-lg font-bold">Total Price: ${total}</h2>
-        <button
-          onClick={handleSubmit}
-          className="bg-btnLight text-white hover:bg-btnDark w-full px-4 py-2 rounded"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
-        </button>
-      </div>
-    </div>
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
+    {/* Overlay for controlling opacity */}
+    <div className="absolute inset-0 bg-white/50"></div>
+    <div className="relative mx-auto w-full max-w-[calc(70%-250px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+    {/*<div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">*/}
+    {/*<div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">*/}
+    <h1 className="text-2xl font-bold text-center text-BgFont m-10">Photography Services</h1>
+    <label className="flex items-center justify-between">
+      <span className="text-m font-bold text-BgFont">Photography sessions (per 3 hours 300$):</span>
+      <input
+        type="number"
+        name="number"
+        data-category="photography"
+        value={formData.photography?.number || 0}
+        onChange={handleChange}
+        className="border p-2 rounded w-1/3"
+      />
+    </label>
+    <label className="flex items-center justify-between">
+      <span className="text-m font-bold text-BgFont">Videography sessions (per 3 hours 300$):</span>
+      <input
+        type="number"
+        name="number"
+        data-category="videography"
+        value={formData.videography?.number || 0}
+        onChange={handleChange}
+        className="border p-2 rounded w-1/3"
+      />
+    </label>
+    <label className="flex items-center justify-between">
+      <span className="text-m font-bold text-BgFont">Clip Construction (per 3 minutes 200$):</span>
+      <input
+        type="number"
+        name="number"
+        data-category="clipConstruction"
+        value={formData.clipConstruction?.number || 0}
+        onChange={handleChange}
+        className="border p-2 rounded w-1/3"
+      />
+    </label>
+    <label className="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        name="selected"
+        data-category="physicalAlbum"
+        checked={formData.physicalAlbum?.selected || false}
+        onChange={handleChange}
+      />
+      <span>Physical Album with 20 photos 500$</span>
+    </label>
+    <label className="flex items-center justify-between">
+      <span className="text-m font-bold text-BgFont">Gift Image for guests 10$ (Size 15x18):</span>
+      <input
+        type="number"
+        name="number"
+        data-category="giftImageSize"
+        value={formData.giftImageSize?.number || 0}
+        onChange={handleChange}
+        className="border p-2 rounded w-1/3"
+      />
+    </label>
+    <h2 className="text-lg font-bold text-BgFont text-center">Total Price: ${total}</h2>
+    <button
+      onClick={handleSubmit}
+      className="bg-BgPinkMiddle text-white hover:bg-BgPinkDark w-full px-4 py-2 rounded"
+      disabled={loading}
+    >
+      {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+    </button>
+  </div>
+</div>
+
   );
 };
 
