@@ -97,7 +97,7 @@ const Register = () => {
         />
         <button
           onClick={handleRegister}
-          className="bg-btnLight text-white py-2 text-lg hover:bg-btnDark rounded w-full"
+          className="bg-BgPinkMiddle text-white py-2 text-lg hover:bg-BgPinkDark rounded w-full"
         >
           Register
         </button>

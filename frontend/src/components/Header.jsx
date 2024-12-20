@@ -55,7 +55,7 @@ const Header = () => {
             </select>
             <button
               onClick={handleSearch}
-              className="bg-btnLight text-white px-4 py-2 rounded-md flex items-center hover:bg-btnDark transition"
+              className="bg-BgPinkMiddle text-white px-4 py-2 rounded-md flex items-center hover:bg-BgPinkDark transition"
             >
               Search
             </button>
