@@ -11,21 +11,29 @@ export const createOrUpdateReception = async (req, res) => {
 
     // Prepare the data for updating or creating
     const updateData = {
-      Starter: { Number: Starter?.Number || 0, price: 5 },
-      MainCourse: { Number: MainCourse?.Number || 0, price: 15 },
-      Dessert: { Number: Dessert?.Number || 0, price: 6 },
-      ColdDrink: { Number: ColdDrink?.Number || 0, price: 7 },
-      CafeBar: { Number: CafeBar?.Number || 0, price: 4 },
-      Fruiets: { Number: Fruiets?.Number || 0, price: 9 },
-      Cake: { Number: Cake?.Number || 0, price: 3 },
-      Waiter: { Number: Waiter?.Number || 0, price: 20 },
+      Starter: { Number: Starter || 0, price: 5 },
+      MainCourse: { Number: MainCourse || 0, price: 15 },
+      Dessert: { Number: Dessert || 0, price: 6 },
+      ColdDrink: { Number: ColdDrink || 0, price: 7 },
+      CafeBar: { Number: CafeBar || 0, price: 4 },
+      Fruiets: { Number: Fruiets || 0, price: 9 },
+      Cake: { Number: Cake || 0, price: 3 },
+      Waiter: { Number: Waiter || 0, price: 20 },
     };
+
+    // Calculate the total price based on the number of each item and its price
+    const totalPrice = Object.keys(updateData).reduce((total, feature) => {
+      return total + updateData[feature].Number * updateData[feature].price;
+    }, 0);
+
+    // Add the total price to the data
+    updateData.total = totalPrice;
 
     // Log userID and data to ensure correctness
     console.log('UserID:', userID);
     console.log('Update Data:', updateData);
 
-    // Update or create the reception entry
+    // Update or create the reception entry in the database
     const reception = await Reception.findOneAndUpdate(
       { userID: new mongoose.Types.ObjectId(userID) },
       { $set: updateData },
@@ -39,7 +47,6 @@ export const createOrUpdateReception = async (req, res) => {
     }
 
     console.log("Updated Reception:", reception);
-
     res.status(200).json({ message: "Reception updated successfully", reception });
   } catch (error) {
     console.error("Error in createOrUpdateReception:", error);
