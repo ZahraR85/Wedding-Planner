@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 function Guest() {
   const { userId, isAuthenticated } = useAppContext();
@@ -21,7 +24,9 @@ function Guest() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("You must sign in to access this page.");
+      toast.error("You must sign in to access this page.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -54,15 +59,16 @@ function Guest() {
           )
         );
         setUpdatingGuestId(null);
-        alert("Guest updated successfully!");
+        toast.success("Guest updated successfully!");
       } else {
         const response = await axios.post(
           "http://localhost:3001/guests",
           requestData
         );
         setGuestList([...guestList, response.data.feature]);
-        alert("Guest created successfully!");
+        toast.success("Guest created successfully!");
       }
+
 
       setFormData({
         guestName: "",
@@ -74,7 +80,7 @@ function Guest() {
       });
     } catch (error) {
       console.error("Error submitting form:", error.message);
-      alert("Failed to save guest.");
+      toast.error("Failed to save guest.");
     }
   };
 
@@ -86,6 +92,7 @@ function Guest() {
       setGuestList(response.data);
     } catch (error) {
       console.error("Error fetching guests:", error.response.data.message);
+      toast.error("Failed to fetch guests.");
     }
   };
 
@@ -113,10 +120,10 @@ function Guest() {
     try {
       await axios.delete(`http://localhost:3001/guests/${id}`);
       setGuestList(guestList.filter((guest) => guest._id !== id));
-      alert("Guest deleted successfully!");
+      toast.success("Guest deleted successfully!");
     } catch (error) {
       console.error("Error deleting guest:", error.message);
-      alert("Failed to delete guest.");
+      toast.error("Failed to delete guest.");
     }
   };
 
@@ -136,7 +143,9 @@ function Guest() {
   };
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
+    <div>
+       <ToastContainer />
+   <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
     {/* Overlay for controlling opacity */}
     <div className="absolute inset-0 bg-white/50"></div>
     <div className="relative mx-auto w-full max-w-[calc(90%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
@@ -201,6 +210,7 @@ function Guest() {
                 className="custom-select px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki w-[calc(100%+20px)]"
                 required
               >
+                 <option >select statuse </option>
                 <option value="Not yet">Not yet</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -217,13 +227,13 @@ function Guest() {
 <div><hr /><br /></div>
         <div className="flex flex-col md:flex-row justify-between items-center mt-6">
           <h3 className="text-lg font-semibold text-gray-700">
-            Total Guests with YES Answer: {totalYesGuests}
+            Total Family with YES Answer: {totalYesGuests}
           </h3>
           <h3 className="text-lg font-semibold text-gray-700">
-            Total Guests with NO Answer: {totalNOGuests}
+            Total Family with NO Answer: {totalNOGuests}
           </h3>
           <h3 className="text-lg font-semibold text-gray-700">
-            Total Guests with NOT YET Answer: {totalNotyetGuests}
+            Total Family with NOT YET Answer: {totalNotyetGuests}
           </h3>
         </div>
 
@@ -241,13 +251,13 @@ function Guest() {
   </thead>
   <tbody>
     {currentGuests.map((guest) => (
-      <tr key={guest._id} className="hover:bg-gray-50 transition duration-200">
+      <tr key={guest._id} className="hover:bg-gray-50 transition duration-200 text-center">
         <td className="border px-4 py-2">{guest.guestName}</td>
         <td className="border px-4 py-2">{guest.numberOfPersons}</td>
         <td className="border px-4 py-2">{guest.phone}</td>
         <td className="border px-4 py-2">{guest.address}</td>
         <td className="border px-4 py-2">{guest.answerStatus}</td>
-        <td className="border px-4 py-2 flex gap-2">
+        <td className="border px-4 py-2 flex gap-2 flex justify-center items-center">
           <button onClick={() => handleUpdate(guest._id)} 
           className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
             Update
@@ -281,6 +291,8 @@ function Guest() {
         </div>
       </div>
     </div>
+    </div>
+ 
   );
 }
 

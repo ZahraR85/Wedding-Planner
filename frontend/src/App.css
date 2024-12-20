@@ -1,0 +1,19 @@
+.Toastify__toast {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient background */
+    color: #624e40;
+  }
+  
+  .Toastify__toast--success {
+    background: #d5c0b5; /* Green for success */
+  }
+  
+  .Toastify__toast--error {
+    background: #d59d88; /* Red for error */
+  }
+  
+  .Toastify__progress-bar {
+    background: #888884; /* White progress bar */
+  }
