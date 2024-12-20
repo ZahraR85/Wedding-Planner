@@ -1,15 +1,23 @@
 import express from "express";
 import {
-    getReceptions,
-    createReception,
-    getReceptionById,
-    updateReception,
-    deleteReception,
+  createOrUpdateReception,
+  getReceptions,
+  getReceptionById,
+  deleteReception,
 } from "../controllers/receptionComtroller.js";
 
 const router = express.Router();
 
-router.route("/").get(getReceptions).post(createReception);
-router.route("/:id").get(getReceptionById).put(updateReception).delete(deleteReception);
+// Route to create or update a reception (using POST for both)
+router.post("/", createOrUpdateReception);
+
+// Route to get all receptions for a user
+router.get("/", getReceptions);
+
+// Route to get a specific reception by ID
+router.get("/:id", getReceptionById);
+
+// Route to delete a reception by ID
+router.delete("/:id", deleteReception);
 
 export default router;
