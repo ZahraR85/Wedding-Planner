@@ -32,7 +32,7 @@ export const createGuest = async (req, res) => {
       email,
     });
 
-    res.status(201).json({ message: "Guest created successfully", feature });
+    res.status(201).json({ message: "Guest created successfullyyyyyy", feature });
   } catch (error) {
     console.error('Error in Controller:', error); // Log the full error object
     if (error.name === "ValidationError") {
