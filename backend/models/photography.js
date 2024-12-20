@@ -35,7 +35,7 @@ const photographySchema = new Schema(
   { timestamps: true }
 );
 
-// Pre-save hook to calculate total
+// Pre-save hook to calculate total on creation (for first time entry)
 photographySchema.pre("save", function (next) {
   this.total =
     this.photography.number * this.photography.price +
@@ -44,29 +44,6 @@ photographySchema.pre("save", function (next) {
     (this.physicalAlbum.selected ? this.physicalAlbum.price : 0) +
     this.giftImageSize.number * this.giftImageSize.price;
 
-  next();
-});
-
-// Pre-update hook to recalculate total before saving the update
-photographySchema.pre("findOneAndUpdate", async function (next) {
-  const update = this.getUpdate();
-  
-  if (update) {
-    const photography = update.photography || {};
-    const videography = update.videography || {};
-    const clipConstruction = update.clipConstruction || {};
-    const physicalAlbum = update.physicalAlbum || {};
-    const giftImageSize = update.giftImageSize || {};
-
-    const total =
-      (photography.number || 0) * (photography.price || 0) +
-      (videography.number || 0) * (videography.price || 0) +
-      (clipConstruction.number || 0) * (clipConstruction.price || 0) +
-      (physicalAlbum.selected ? (physicalAlbum.price || 0) : 0) +
-      (giftImageSize.number || 0) * (giftImageSize.price || 0);
-
-    this.setUpdate({ ...update, total });
-  }
   next();
 });
 

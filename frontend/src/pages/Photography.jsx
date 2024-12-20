@@ -97,22 +97,24 @@ const Photography = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const url = "http://localhost:3001/photographies";  // Updated URL for photography
+      const url = "http://localhost:3001/photographies";
       const requestData = {
-        userID: userId,
-        photography: formData.photography?.number || 0,
-        videography: formData.videography?.number || 0,
-        clipConstruction: formData.clipConstruction?.number || 0,
-        physicalAlbum: formData.physicalAlbum?.selected || false,
-        giftImageSize: formData.giftImageSize?.number || 0,
+        userID: userId,  // Make sure userId is correct
+        photography: formData.photography,
+        videography: formData.videography,
+        clipConstruction: formData.clipConstruction,
+        physicalAlbum: formData.physicalAlbum,
+        giftImageSize: formData.giftImageSize,
       };
+  
+      console.log("Sending data:", requestData);  // Log the data being sent
   
       const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
       });
   
-      alert(response.data.message);  // Show success message
-      setIsEditMode(true);  // Enable edit mode after successful submission
+      alert(response.data.message);
+      setIsEditMode(true);
     } catch (error) {
       console.error("Error saving photography data:", error);
       alert("Failed to save photography data!");
