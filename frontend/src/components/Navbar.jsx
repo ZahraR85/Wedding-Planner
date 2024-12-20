@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import SignOut from '../Auth/SignOut';
-import logo from '../images/logo7.jpg';
+import logo from '../images/logo8.jpg';
 
 const Navbar = () => {
   const { isDropdownOpen, setDropdownOpen, isAuthenticated } = useAppContext();
@@ -49,7 +49,7 @@ const Navbar = () => {
             </button>
             {isDropdownOpen && (
               <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
-                <ul className="flex flex-col items-start p-4 space-y-2">
+                <ul className="flex flex-col items-start  space-y-2">
                   <li className="hover:underline">
                     <Link to="/Guests">Invitation of Guests</Link>
                   </li>
@@ -83,7 +83,7 @@ const Navbar = () => {
             <img
               src={logo} // Adjust this path if necessary
               alt="Logo"
-              className="h-10"
+              className="h-16"
             />
           </Link>
         </div>
@@ -106,7 +106,7 @@ const Navbar = () => {
           </li>
           {!isAuthenticated && (
             <li>
-              <button className="font-bold px-6 py-3 bg-btnLight rounded hover:bg-btnDark">
+              <button className="font-bold px-6 py-3 rounded hover:underline">
                 Let’s Start
               </button>
             </li>
