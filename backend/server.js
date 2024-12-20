@@ -30,7 +30,7 @@ app.use(
   })
 ); 
 app.use("/users", usersRouter);
-app.use("/photography", photographyRoutes);
+app.use("/photographies", photographyRoutes);
 app.use("/makeups", makeupsRouter);
 app.use("/receptions", receptionsRouter);
 app.use("/guests", guestRouter);
