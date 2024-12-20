@@ -107,38 +107,6 @@ const MakeupSelector = () => {
       setLoading(false);
     }
   };
-  // const handleSubmit = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const url = `http://localhost:3001/makeups${isEditMode ? `/${formData._id}` : ""}`;
-  //     const method = isEditMode ? "PUT" : "POST";
-  //     const requestData = {
-  //       userID: userId,
-  //       makeup: { selected: selectedFeatures.makeup?.selected || false },
-  //       dress: { selected: selectedFeatures.dress?.selected || false },
-  //       nail: { selected: selectedFeatures.nail?.selected || false },
-  //       hairstyle: { selected: selectedFeatures.hairstyle?.selected || false },
-  //       shoes: { selected: selectedFeatures.shoes?.selected || false },
-  //       special: { selected: selectedFeatures.special?.selected || false },
-  //     };
-  
-  //     console.log("Request Payload:", requestData); // Debugging the data
-  
-  //     const response = await axios({
-  //       method,
-  //       url,
-  //       data: requestData,
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  
-  //     alert(`Makeup data ${isEditMode ? "updated" : "saved"} successfully!`);
-  //   } catch (error) {
-  //     console.error("Error saving makeup data:", error);
-  //     alert("Failed to save makeup data!");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
