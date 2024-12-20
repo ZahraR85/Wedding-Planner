@@ -123,13 +123,13 @@ const Photography = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
     {/* Overlay for controlling opacity */}
     <div className="absolute inset-0 bg-white/50"></div>
-    <div className="relative mx-auto w-full max-w-[calc(70%-250px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+    <div className="relative mx-auto w-full max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
     {/*<div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">*/}
     {/*<div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">*/}
-    <h1 className="text-2xl font-bold text-center text-BgFont m-10">Photography Services</h1>
+    <h1 className="text-2xl font-bold text-center text-BgFont m-20">Photography Services</h1>
     <label className="flex items-center justify-between">
       <span className="text-m font-bold text-BgFont">Photography sessions (per 3 hours 300$):</span>
       <input
