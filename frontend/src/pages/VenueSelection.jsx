@@ -42,7 +42,10 @@ const VenueSelectionPage = () => {
   };
 
   return (
-    <div>
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/MH1TyvzF/venueformat.png')]">
+    {/* Overlay for controlling opacity */}
+    <div className="absolute inset-0 bg-white/50"></div>
+    <div className="relative mx-auto w-full max-w-[calc(95%-100px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
       {loading && <p>Loading venues...</p>}
       {error && <p>{error}</p>}
 
@@ -64,6 +67,7 @@ const VenueSelectionPage = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

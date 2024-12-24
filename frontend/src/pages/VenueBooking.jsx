@@ -138,8 +138,10 @@ const VenueBooking = () => {
   }
 
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-      <div className="max-w-5xl w-4/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
+    {/* Overlay for controlling opacity */}
+    <div className="absolute inset-0 bg-white/50"></div>
+    <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
         <div className="relative">
           <img
@@ -162,15 +164,15 @@ const VenueBooking = () => {
         </div>
         <div className="flex">
           <div className="flex-1 my-4">
-        <p className="text-gray-500">City: {venue.city}</p>
-        <p className="text-gray-500">Capacity: 50 - {venue.capacity}</p>
-        <p className="text-gray-500">Address: ${venue.address} </p>
-        <p className="text-gray-500">Price: ${venue.price} </p>
-        <p className="text-gray-500">Price with our discount: ${venue.total}</p>
-        <p className="text-gray-700">{venue.description}</p>
+        <p className="text-m font-bold text-BgFont my-4">City: {venue.city}</p>
+        <p className="text-m font-bold text-BgFont my-4">Capacity: 50 - {venue.capacity}</p>
+        <p className="text-m font-bold text-BgFont my-4">Address: ${venue.address} </p>
+        <p className="text-m font-bold text-BgFont my-4">Price: ${venue.price} </p>
+        <p className="text-m font-bold text-BgFont my-4">Price with our discount: ${venue.total}</p>
+        <p className="text-m font-bold text-BgFont my-4">{venue.description}</p>
         </div>
         <div className=" flex-1 my-4">
-          <label className="text-BgFont">Select Day:
+          <label className="text-m font-bold text-BgFont my-4">Select Day:
             <input
               type="date"
               value={day}
@@ -183,14 +185,14 @@ const VenueBooking = () => {
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-BgPinkMiddle text-BgFont font-bold py-2 rounded hover:bg-BgPinkDark mb-2"
+          className="w-full bg-BgPinkMiddle text-lg text-BgFont font-bold py-2 rounded hover:bg-BgPinkDark mb-2"
           disabled={loading}
         >
           {loading ? "Booking..." : "Book Venue"}
         </button>
         <button
             onClick={() => navigate("/VenueSelections")}
-            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 "
+            className="bg-BgPinkMiddle text-lg text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 "
           >
             Back
           </button>
