@@ -1,11 +1,11 @@
 import express from "express";
-import { 
-  createVenue, 
-  updateVenue, 
-  deleteVenue, 
-  getAllVenues, 
-  getVenueByVenueId, 
-  getVenuesByUserId 
+import {
+  createVenue,
+  updateVenue,
+  deleteVenue,
+  getAllVenues,
+  getVenueByVenueId,
+  getVenuesByUserId,
 } from "../controllers/venueController.js";
 
 import { isAuthenticated, isAdmin } from "../middleware/RoleAccess.js";

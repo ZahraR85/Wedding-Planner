@@ -58,9 +58,11 @@ const VenueDetails = () => {
     return <div>Loading...</div>;
   }
 
+  const googleMapsLink = `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`;
+
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-      <div className="w-5/6 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
+    <div className="flex justify-center items-start pt-20 min-h-screen ">
+      <div className="max-w-5xl w-4/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
         <h1 className="text-2xl font-bold my-4">{venue.name}</h1>
         <div className="relative">
           <img
@@ -81,32 +83,47 @@ const VenueDetails = () => {
             &#8594;
           </button>
         </div>
-        <p className="text-sm text-gray-600 my-4">{venue.description}</p>
-        <p>City: {venue.city}</p>
-        <p>Capacity: {venue.capacity}</p>
-        <p>Price: ${venue.price} per day</p>
-        <p>Discount: %{venue.discount}</p>
-        <p>Address: {venue.address}</p>
-        <p>Location: {venue.location.x}, {venue.location.y}</p>
+        <div className="flex">
+        <div className="flex-1">
+        <p className="text-lg font-bold text-BgFont my-4">City: {venue.city}</p>
+        <p className="text-lg font-bold text-BgFont my-4">Capacity: {venue.capacity}</p>
+        <p className="text-lg font-bold text-BgFont my-4">Price: ${venue.price} per day</p>
+        <p className="text-lg font-bold text-BgFont my-4">Discount: %{venue.discount}</p>
+        <p className="text-lg font-bold text-BgFont my-4">Total Price: ${venue.total}</p>
+        <p className="text-lg font-bold text-BgFont my-4">Address: {venue.address}</p>
+        </div>
+        <div className="flex-1">
+        <p className="text-m text-BgFont my-4">Description:{venue.description}</p>
+        <p className="text-lg text-BgFont my-4">Location: {venue.latitude}, {venue.longitude}</p>
+        <a
+          className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 inline-block"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={googleMapsLink}
+        >
+          See it on Google Maps
+        </a>
         <div className="mt-4 flex gap-4">
           <button
             onClick={() => handleUpdate({ ...venue, price: venue.price + 10 })}
-            className="btn btn-primary text-white"
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
           >
             Update Price
           </button>
           <button
             onClick={handleDelete}
-            className="btn btn-danger text-white"
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
           >
             Delete Venue
           </button>
           <button
-            onClick={() => navigate("/")}
-            className="btn btn-secondary text-white"
+            onClick={() => navigate("/Venues")}
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
           >
             Back
           </button>
+          </div>
+          </div>
         </div>
       </div>
     </div>
