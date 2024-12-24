@@ -1,12 +1,14 @@
 import Venue from "../models/venue.js";
-import mongoose from "mongoose";
 
 // Create a new venue
 export const createVenue = async (req, res) => {
   try {
-    const { userId, name, city, images, capacity, price, discount, address, location } = req.body;
+    const { userId, name, city, images, capacity, price, discount, address, latitude, longitude } = req.body;
 
-    if (!userId) return res.status(400).json({ message: "User ID is required." });
+    // Validate required fields
+    if (!userId || !name || !city || !price || !address) {
+      return res.status(400).json({ message: "Missing required fields." });
+    }
 
     const newVenue = new Venue({
       userId,
@@ -17,7 +19,9 @@ export const createVenue = async (req, res) => {
       price,
       discount,
       address,
-      location
+      latitude,
+      longitude,
+      description,
     });
 
     await newVenue.save();
@@ -45,7 +49,7 @@ export const updateVenue = async (req, res) => {
   }
 };
 
-// Delete a venue entry by ID
+// Delete a venue by ID
 export const deleteVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
@@ -71,7 +75,8 @@ export const getAllVenues = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch venues.", error });
   }
 };
-// Get a specific venue by Venue ID
+
+// Get a specific venue by venue ID
 export const getVenueByVenueId = async (req, res) => {
   try {
     const { venueId } = req.params;
@@ -87,6 +92,7 @@ export const getVenueByVenueId = async (req, res) => {
   }
 };
 
+// Get venues by user ID
 export const getVenuesByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -101,4 +107,3 @@ export const getVenuesByUserId = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch venues.", error });
   }
 };
-

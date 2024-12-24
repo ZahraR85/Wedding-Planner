@@ -31,7 +31,7 @@ const AdminVenuePage = () => {
 
   return (
     <div className="container mx-auto">
-      {/*<h1 className="text-2xl font-bold my-4">Manage Venues</h1>*/}
+      <h1 className="text-2xl font-bold my-4">Add New Venue by Admin</h1>
       <VenueForm
         onSubmit={editVenue ? handleUpdateVenue : handleAddVenue}
         venue={editVenue}

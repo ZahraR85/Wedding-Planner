@@ -99,8 +99,10 @@ const handleImageUpload = (e) => {
   };
 
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-    <div className="w-{95%} p-8 bg-customBg1 shadow-lg rounded-lg space-y-5 ">
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
+    {/* Overlay for controlling opacity */}
+    <div className="absolute inset-0 bg-white/50"></div>
+    <div className="relative mx-auto w-full max-w-[calc(70%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
     <div className="flex">
       <div className="w-1/2 pr-8"><input
           type="text"
@@ -212,18 +214,9 @@ const handleImageUpload = (e) => {
         {loading ? "Processing..." : "Add Venue"}
       </button>
       </div>
-      <h2 className="text-lg font-bold mt-5">List of our Venues</h2>
-      <ul className="space-y-3">
-{venues.map((venue, index) => (
-  <li key={index} className="border p-4 rounded">
-    <h3 className="font-bold">{venue.name}</h3>
-    <p>Location: {venue.location.x}, {venue.location.y}</p> 
-    <p>Capacity: {venue.capacity}</p>
-    <p>Price: ${venue.price}/day</p>
-    <p>{venue.description}</p>
-  </li>
-))}
-</ul>
+      {/* <h2 className="text-lg font-bold mt-5">List of our Venues</h2><ul className="space-y-3">{venues.map((venue, index) => (<li key={index} className="border p-4 rounded">*/}
+      {/*<h3 className="font-bold">{venue.name}</h3><p>City: {venue.city}</p><p>Capacity: {venue.capacity}</p><p>Price: ${venue.price}/day</p></li>))  }
+</ul>*/}
 
     </div>
   </div>

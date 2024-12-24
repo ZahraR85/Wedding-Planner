@@ -46,11 +46,11 @@ const VenueSelectionPage = () => {
       {loading && <p>Loading venues...</p>}
       {error && <p>{error}</p>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {venues.map((venue) => (
           <div
             key={venue._id}
-            className="p-4 border rounded-lg cursor-pointer hover:shadow-lg"
+            className="p-4 border rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
             onClick={() => handleVenueClick(venue._id)}
           >
             <img

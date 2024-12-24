@@ -7,6 +7,7 @@ const VenueBooking = () => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
   const { venueId } = useParams(); // Extract venueId from the URL
+  const [currentIndex, setCurrentIndex] = useState(0); // Track the current image index
   const [venue, setVenue] = useState(null);
   const [images, setImages] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -14,8 +15,6 @@ const VenueBooking = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [bookingConflict, setBookingConflict] = useState(false); // Track booking conflicts
-
-  const imagesPerPage = 3; // Number of images per page
 
   // Redirect unauthenticated users to SignIn
   useEffect(() => {
@@ -71,17 +70,16 @@ const VenueBooking = () => {
   }, [day]);
 
   // Pagination for images
-  const paginatedImages = images.slice(
-    currentPage * imagesPerPage,
-    (currentPage + 1) * imagesPerPage
-  );
-
-  const handlePrevious = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 0));
+  const handlePrevImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? venue.images.length - 1 : prevIndex - 1
+    );
   };
 
-  const handleNext = () => {
-    setCurrentPage((prev) => (prev + 1 < Math.ceil(images.length / imagesPerPage) ? prev + 1 : prev));
+  const handleNextImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === venue.images.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   // Handle venue booking
@@ -140,70 +138,65 @@ const VenueBooking = () => {
   }
 
   return (
-    <div className="flex flex-col items-center pt-20 min-h-screen bg-customBg">
-      <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg space-y-5">
-        <h1 className="text-3xl font-bold">{venue.name}</h1>
-        <p className="text-gray-700">{venue.description}</p>
-        <p className="text-gray-500">Capacity: {venue.capacity}</p>
-        <p className="text-gray-500">Address: ${venue.address} </p>
-
-        <p className="text-gray-500">Price: ${venue.price} per day</p>
-        <p className="text-gray-500">Price with our discount: ${venue.total} per day</p>
-        <div className="my-4">
-          <h2 className="text-xl font-bold">Images</h2>
-          <div className="flex items-center space-x-2 overflow-x-auto">
-            <button
-              onClick={handlePrevious}
-              disabled={currentPage === 0}
-              className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
-            >
-              Previous
-            </button>
-
-            <div className="flex space-x-2">
-              {paginatedImages.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`Venue ${index + 1}`}
-                  className="w-40 h-40 object-cover rounded-lg"
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={handleNext}
-              disabled={(currentPage + 1) * imagesPerPage >= images.length}
-              className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
-            >
-              Next
-            </button>
-          </div>
+    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
+      <div className="max-w-5xl w-4/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
+        <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
+        <div className="relative">
+          <img
+            src={venue.images[currentIndex]}
+            alt={`Venue ${currentIndex}`}
+            className="w-full h-auto object-cover rounded-md"
+          />
+          <button
+            onClick={handlePrevImage}
+            className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"
+          >
+            &#8592;
+          </button>
+          <button
+            onClick={handleNextImage}
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"
+          >
+            &#8594;
+          </button>
         </div>
-
-        <div className="my-4">
-          <label className="block mb-2">
-            Select Day:
+        <div className="flex">
+          <div className="flex-1 my-4">
+        <p className="text-gray-500">City: {venue.city}</p>
+        <p className="text-gray-500">Capacity: 50 - {venue.capacity}</p>
+        <p className="text-gray-500">Address: ${venue.address} </p>
+        <p className="text-gray-500">Price: ${venue.price} </p>
+        <p className="text-gray-500">Price with our discount: ${venue.total}</p>
+        <p className="text-gray-700">{venue.description}</p>
+        </div>
+        <div className=" flex-1 my-4">
+          <label className="text-BgFont">Select Day:
             <input
               type="date"
               value={day}
               onChange={(e) => setDay(e.target.value)}
-              className="w-full p-2 border rounded"
-            />
-          </label>
+              className="w-full p-2 border rounded mb-4"
+            /></label>
           {bookingConflict && (
             <p className="text-red-500 mt-2">This venue is already booked on the selected date.</p>
           )}
-        </div>
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="w-full bg-BgPinkMiddle text-BgFont font-bold py-2 rounded hover:bg-BgPinkDark mb-2"
           disabled={loading}
         >
           {loading ? "Booking..." : "Book Venue"}
         </button>
+        <button
+            onClick={() => navigate("/VenueSelections")}
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 "
+          >
+            Back
+          </button>
+        </div>
       </div>
+    </div>
     </div>
   );
 };
