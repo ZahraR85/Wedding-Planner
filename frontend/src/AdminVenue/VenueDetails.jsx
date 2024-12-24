@@ -58,6 +58,8 @@ const VenueDetails = () => {
     return <div>Loading...</div>;
   }
 
+  const googleMapsLink = `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.location.coordinates[1]}+${venue.location.coordinates[0]}`;
+
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
       <div className="w-5/6 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
@@ -87,23 +89,34 @@ const VenueDetails = () => {
         <p>Price: ${venue.price} per day</p>
         <p>Discount: %{venue.discount}</p>
         <p>Address: {venue.address}</p>
-        <p>Location: {venue.location.x}, {venue.location.y}</p>
+        <p>Location: {venue.location.coordinates[1]}, {venue.location.coordinates[0]}</p>
+        <p className="text-sm">
+          Latitude / Longitude: {venue.location.coordinates[1]} / {venue.location.coordinates[0]}
+        </p>
+        <a
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={googleMapsLink}
+        >
+          See it on Google Maps
+        </a>
         <div className="mt-4 flex gap-4">
           <button
             onClick={() => handleUpdate({ ...venue, price: venue.price + 10 })}
-            className="btn btn-primary text-white"
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
           >
             Update Price
           </button>
           <button
             onClick={handleDelete}
-            className="btn btn-danger text-white"
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
           >
             Delete Venue
           </button>
           <button
-            onClick={() => navigate("/")}
-            className="btn btn-secondary text-white"
+            onClick={() => navigate("/Venues")}
+            className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
           >
             Back
           </button>

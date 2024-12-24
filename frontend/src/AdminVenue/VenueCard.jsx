@@ -24,7 +24,7 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
   };
 
   return (
-    <div className="card bg-white shadow-lg p-4 rounded-md">
+    <div className="card bg-white shadow-lg p-4 rounded-md hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out">
       <img
         src={venue.images[0] || 'placeholder.jpg'}
         alt={venue.name}
@@ -39,7 +39,7 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
       <div className="mt-4 flex justify-between">
         <button
           onClick={handleViewDetails}
-          className="btn btn-secondary text-white"
+          className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark px-4 py-2"
         >
           View Details
         </button>

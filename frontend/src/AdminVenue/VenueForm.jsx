@@ -206,7 +206,7 @@ const handleImageUpload = (e) => {
         <span className="text-xl font-bold mr-20">total price: $</span>
       <button
         onClick={handleSubmit}
-        className="bg-btnLight text-white hover:bg-btnDark w-1/3 px-4 py-2 rounded"
+        className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark w-1/3 px-4 py-2 rounded"
         disabled={loading}
       >
         {loading ? "Processing..." : "Add Venue"}
