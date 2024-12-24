@@ -38,11 +38,10 @@ const Photography = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/photography?userId=${userId}`);
+        const response = await axios.get(`http://localhost:3001/photographies?userId=${userId}`);
+        console.log(response.data);  // Log the fetched data
         if (response.data) {
           const existingData = response.data;
-
-          // Merge the fetched data with the default values
           setFormData({
             photography: existingData.photography || { number: 0, price: 300 },
             videography: existingData.videography || { number: 0, price: 300 },
@@ -55,12 +54,12 @@ const Photography = () => {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     if (userId) {
       fetchData();
     }
   }, [userId]);
-
+  
   // Calculate total price dynamically based on the form data
   useEffect(() => {
     const calculatedTotal = Object.keys(formData).reduce((sum, key) => {
@@ -98,22 +97,24 @@ const Photography = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const url = "http://localhost:3001/photography";  // Updated URL for photography
+      const url = "http://localhost:3001/photographies";
       const requestData = {
-        userId: userId,
-        photography: formData.photography?.number || 0,
-        videography: formData.videography?.number || 0,
-        clipConstruction: formData.clipConstruction?.number || 0,
-        physicalAlbum: formData.physicalAlbum?.selected || false,
-        giftImageSize: formData.giftImageSize?.number || 0,
+        userID: userId,  // Make sure userId is correct
+        photography: formData.photography,
+        videography: formData.videography,
+        clipConstruction: formData.clipConstruction,
+        physicalAlbum: formData.physicalAlbum,
+        giftImageSize: formData.giftImageSize,
       };
-
+  
+      console.log("Sending data:", requestData);  // Log the data being sent
+  
       const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
       });
-
-      alert(response.data.message);  // Show success message
-      setIsEditMode(true);  // Enable edit mode after successful submission
+  
+      alert(response.data.message);
+      setIsEditMode(true);
     } catch (error) {
       console.error("Error saving photography data:", error);
       alert("Failed to save photography data!");
@@ -121,7 +122,7 @@ const Photography = () => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
     {/* Overlay for controlling opacity */}

@@ -2,21 +2,21 @@ import { Schema, model } from "mongoose";
 
 const photographySchema = new Schema(
   {
-    userId: {
+    userID: {
       type: Schema.Types.ObjectId, // Reference to the User schema
-      ref: "User",
+      ref: "User", // Foreign key linking to the User table
       required: true,
     },
     photography: {
-      number: { type: Number, required: true, default: 0 },
+      number: { type: Number, required: false, default: 0 },
       price: { type: Number, default: 300 },
     },
     videography: {
-      number: { type: Number, required: true, default: 0 },
+      number: { type: Number, required: false, default: 0 },
       price: { type: Number, default: 300 },
     },
     clipConstruction: {
-      number: { type: Number, required: true, default: 0 },
+      number: { type: Number, required: false, default: 0 },
       price: { type: Number, default: 200 },
     },
     physicalAlbum: {
@@ -24,7 +24,7 @@ const photographySchema = new Schema(
       price: { type: Number, default: 500 },
     },
     giftImageSize: {
-      number: { type: Number, required: true, default: 0 },
+      number: { type: Number, required: false, default: 0 },
       price: { type: Number, default: 10 },
     },
     total: {
@@ -35,9 +35,8 @@ const photographySchema = new Schema(
   { timestamps: true }
 );
 
-// Pre-save hook to calculate total
+// Pre-save hook to calculate total on creation (for first time entry)
 photographySchema.pre("save", function (next) {
-  // Calculate the total dynamically
   this.total =
     this.photography.number * this.photography.price +
     this.videography.number * this.videography.price +
@@ -47,33 +46,5 @@ photographySchema.pre("save", function (next) {
 
   next();
 });
-/*photographySchema.pre("findOneAndUpdate", async function (next) {
-  const update = this.getUpdate();
-  if (update) {
-    // Fetch the current document
-    const docToUpdate = await this.model.findOne(this.getQuery());
-
-    // Merge existing values with the incoming update
-    const photography = { ...docToUpdate.photography, ...update.photography };
-    const videography = { ...docToUpdate.videography, ...update.videography };
-    const clipConstruction = { ...docToUpdate.clipConstruction, ...update.clipConstruction };
-    const physicalAlbum = { ...docToUpdate.physicalAlbum, ...update.physicalAlbum };
-    const giftImageSize = { ...docToUpdate.giftImageSize, ...update.giftImageSize };
-
-    // Recalculate total
-    const total =
-      (photography.number || 0) * (photography.price || 0) +
-      (videography.number || 0) * (videography.price || 0) +
-      (clipConstruction.number || 0) * (clipConstruction.price || 0) +
-      (physicalAlbum.selected ? (physicalAlbum.price || 0) : 0) +
-      (giftImageSize.number || 0) * (giftImageSize.price || 0);
-
-    // Update the total in the update object
-    this.setUpdate({ ...update, total });
-  }
-  next();
-});
-*/
 
 export default model("Photography", photographySchema);
-

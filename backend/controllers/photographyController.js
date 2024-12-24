@@ -1,78 +1,69 @@
 import Photography from "../models/photography.js";
 import mongoose from "mongoose";
 
-// Create or update photography
+// Create or Update Photography
 export const createOrUpdatePhotography = async (req, res) => {
   try {
-    const { userId, photography, videography, clipConstruction, physicalAlbum, giftImageSize } = req.body;
-    console.log("Received Data:", req.body);
+    const { userID, photography, videography, clipConstruction, physicalAlbum, giftImageSize } = req.body;
 
-    if (!userId) {
+    if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
     }
 
-    // Calculate the total price
+    // Ensure the userID is a valid ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userID);
+
+    // Calculate total
     const total =
-      (photography ? photography.number * (photography.price || 300) : 0) +
-      (videography ? videography.number * (videography.price || 300) : 0) +
-      (clipConstruction ? clipConstruction.number * (clipConstruction.price || 200) : 0) +
-      (physicalAlbum && physicalAlbum.selected ? physicalAlbum.price || 500 : 0) +
-      (giftImageSize ? giftImageSize.number * (giftImageSize.price || 10) : 0);
+      (photography?.number || 0) * (photography?.price || 300) +
+      (videography?.number || 0) * (videography?.price || 300) +
+      (clipConstruction?.number || 0) * (clipConstruction?.price || 200) +
+      (physicalAlbum?.selected ? (physicalAlbum?.price || 500) : 0) +
+      (giftImageSize?.number || 0) * (giftImageSize?.price || 10);
 
-    console.log("Calculated Total:", total);
-
-    // Prepare the data to update
+    // Prepare the updated data
     const updateData = {
-      photography: { ...photography, price: photography?.price || 300 },
-      videography: { ...videography, price: videography?.price || 300 },
-      clipConstruction: { ...clipConstruction, price: clipConstruction?.price || 200 },
-      physicalAlbum: { ...physicalAlbum, price: physicalAlbum?.price || 500 },
-      giftImageSize: { ...giftImageSize, price: giftImageSize?.price || 10 },
-      total, // Include the calculated total
+      photography: { number: photography?.number || 0, price: photography?.price || 300 },
+      videography: { number: videography?.number || 0, price: videography?.price || 300 },
+      clipConstruction: { number: clipConstruction?.number || 0, price: clipConstruction?.price || 200 },
+      physicalAlbum: { selected: physicalAlbum?.selected || false, price: physicalAlbum?.price || 500 },
+      giftImageSize: { number: giftImageSize?.number || 0, price: giftImageSize?.price || 10 },
+      total, // Ensure total is calculated and included
     };
 
-    console.log("Photography:", photography ? photography.number * (photography.price || 300) : 0);
-    console.log("Videography:", videography ? videography.number * (videography.price || 300) : 0);
-    console.log("Clip Construction:", clipConstruction ? clipConstruction.number * (clipConstruction.price || 200) : 0);
-    console.log("Physical Album:", physicalAlbum && physicalAlbum.selected ? physicalAlbum.price || 500 : 0);
-    console.log("Gift Image Size:", giftImageSize ? giftImageSize.number * (giftImageSize.price || 10) : 0);
-    console.log("Calculated Total:", total);
-
-    // Update or create the document
-    const feature = await Photography.findOneAndUpdate(
-      { userId: new mongoose.Types.ObjectId(userId) },
-      { $set: updateData },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
+    // Use findOneAndUpdate to find or create the entry and update
+    const photographyEntry = await Photography.findOneAndUpdate(
+      { userID: userObjectId }, // Use ObjectId for userID
+      { $set: updateData }, // Set the updated values
+      { new: true, upsert: true, setDefaultsOnInsert: true } // If not found, create new entry
     );
 
-    console.log("Updated Feature:", feature);
-    res.status(200).json({ message: "Photography data updated successfully.", feature });
+    res.status(200).json({ message: "Photography data updated successfully", photographyEntry });
   } catch (error) {
     console.error("Error in createOrUpdatePhotography:", error);
-    res.status(500).json({ message: "Error saving photography data.", error });
+    res.status(500).json({ message: "Error updating photography data", error: error.message });
   }
 };
 
-// Get all photography entries
+// Get All Photography Entries
 export const getAllPhotographyEntries = async (req, res) => {
   try {
-    const entries = await Photography.find().populate("userId", "name email"); // Populate user details
+    const entries = await Photography.find().populate("userID", "name email");
     res.status(200).json(entries);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch photography entries.", details: error.message });
+    res.status(500).json({ message: "Failed to fetch photography entries", error: error.message });
   }
 };
 
-// Get a specific photography entry by UserID
+// Get Photography by User ID
 export const getPhotographyByUserId = async (req, res) => {
-  const { userId } = req.query;
+  const { id: userID } = req.params;
   try {
-    if (!userId) {
+    if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
     }
 
-    const entry = await Photography.findOne({ userId: mongoose.Types.ObjectId(userId) });
-    console.log("Fetched photography entry:", entry); // Log fetched data
+    const entry = await Photography.findOne({ userID: mongoose.Types.ObjectId(userID) }).populate("userID", "name email");
 
     if (!entry) {
       return res.status(404).json({ message: "No photography data found for this user." });
@@ -80,42 +71,6 @@ export const getPhotographyByUserId = async (req, res) => {
 
     res.status(200).json(entry);
   } catch (error) {
-    console.error("Error in getPhotographyByUserId:", error);
-    res.status(500).json({ message: "Failed to fetch photography data.", error });
-  }
-};
-
-// Update a photography entry by ID
-export const updatePhotographyEntry = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updatedData = req.body;
-
-    const photography = await Photography.findByIdAndUpdate(id, updatedData, { new: true });
-    console.log("Received Data:", req.body);
-
-    if (!photography) {
-      return res.status(404).json({ message: "Photography entry not found" });
-    }
-
-    res.status(200).json({ message: "Photography updated successfully", photography });
-  } catch (error) {
-    res.status(500).json({ message: "Error updating photography", error });
-  }
-};
-
-// Delete a photography entry by ID
-export const deletePhotographyEntry = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const deletedEntry = await Photography.findByIdAndDelete(id);
-
-    if (!deletedEntry) {
-      return res.status(404).json({ error: "Photography entry not found." });
-    }
-
-    res.status(200).json({ message: "Photography entry deleted successfully!" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete photography entry.", details: error.message });
+    res.status(500).json({ message: "Failed to fetch photography data", error: error.message });
   }
 };
