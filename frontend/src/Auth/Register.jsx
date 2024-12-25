@@ -50,9 +50,17 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">
-      <div className="max-w-5xl w-2/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-        <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+    <div className="flex min-h-screen bg-customBg">
+      {/* Left Section: Form */}
+      <div className="relative w-1/2 flex items-center justify-center min-h-screen bg-cover bg-center bg-[url('https://i.postimg.cc/RVhWxyrV/userinfo3.png')]">
+        {/* Overlay for controlling opacity */}
+        <div className="absolute inset-0 bg-white/50"></div>
+        
+        {/* Centered Form */}
+        <div className="relative w-4/5 max-w-md bg-opacity-80 rounded-lg p-5 ml-14 mb-14 space-y-4">
+    {/*  <div className="w-1/2 flex justify-center items-center bg-customBg1">*/}
+    {/*  <div className="max-w-5xl w-4/5 p-16 bg-customBg shadow-lg rounded-lg space-y-5">*/}
+          <h2 className="text-3xl font-bold mb-10 text-center">Please Register!</h2>
         {success && <p className="text-green-500 text-sm text-center">Registration successful! Redirecting...</p>}
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <input
@@ -97,10 +105,17 @@ const Register = () => {
         />
         <button
           onClick={handleRegister}
-          className="bg-BgPinkMiddle text-white py-2 text-lg hover:bg-BgPinkDark rounded w-full"
+          className="bg-BgPinkMiddle text-BgFont py-2 text-lg font-bold hover:bg-BgPinkDark rounded w-full"
         >
           Register
         </button>
+      </div>
+    </div>
+          {/* Right Section: Picture */}
+          <div className="w-1/2 flex justify-center items-center bg-cover bg-center" 
+          style={{ backgroundImage: "url('https://i.postimg.cc/9Qd0dqss/s2.jpg')" }}>
+        {/* You can replace the URL with your desired image */}
+        <div className="w-full h-full"></div>
       </div>
     </div>
   );

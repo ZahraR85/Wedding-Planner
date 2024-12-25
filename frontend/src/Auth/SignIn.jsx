@@ -71,7 +71,7 @@ const SignIn = () => {
           </div>
           <button
             onClick={handleSignIn}
-            className="bg-BgPinkMiddle text-white py-2 text-lg hover:bg-BgPinkDark rounded w-full"
+            className="bg-BgPinkMiddle text-BgFont py-2 text-lg font-bold hover:bg-BgPinkDark rounded w-full"
           >
             Sign In
           </button>
