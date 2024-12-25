@@ -25,7 +25,7 @@ function Guest() {
   useEffect(() => {
     if (!isAuthenticated) {
       toast.error("You must sign in to access this page.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: "top-center",
       });
       navigate("/signin");
     }
@@ -41,13 +41,17 @@ function Guest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
       const requestData = {
-        ...formData,
-        numberOfPersons: Number(formData.numberOfPersons),
-        userID: userId,
+        guestName: formData.guestName,
+        numberOfPersons: formData.numberOfPersons,
+        phone: formData.phone,
+        address: formData.address,
+        answerStatus: formData.answerStatus,
+        email: formData.email,
       };
-
+  
       if (updatingGuestId) {
         const response = await axios.put(
           `http://localhost:3001/guests/${updatingGuestId}`,
@@ -55,7 +59,7 @@ function Guest() {
         );
         setGuestList(
           guestList.map((guest) =>
-            guest._id === updatingGuestId ? response.data : guest
+            guest._id === updatingGuestId ? response.data.updatedGuest : guest
           )
         );
         setUpdatingGuestId(null);
@@ -68,8 +72,7 @@ function Guest() {
         setGuestList([...guestList, response.data.feature]);
         toast.success("Guest created successfully!");
       }
-
-
+  
       setFormData({
         guestName: "",
         numberOfPersons: "",
@@ -79,11 +82,15 @@ function Guest() {
         email: "",
       });
     } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message || "Validation error occurred.");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
       console.error("Error submitting form:", error.message);
-      toast.error("Failed to save guest.");
     }
   };
-
+  
   const fetchGuests = async () => {
     try {
       const response = await axios.get(
@@ -144,8 +151,8 @@ function Guest() {
 
   return (
     <div>
-       <ToastContainer />
-   <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
+    <ToastContainer />
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
     {/* Overlay for controlling opacity */}
     <div className="absolute inset-0 bg-white/50"></div>
     <div className="relative mx-auto w-full max-w-[calc(90%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
@@ -210,7 +217,7 @@ function Guest() {
                 className="custom-select px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki w-[calc(100%+20px)]"
                 required
               >
-                 <option >select statuse </option>
+                <option >select status </option>
                 <option value="Not yet">Not yet</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -272,27 +279,27 @@ function Guest() {
   </tbody>
 </table>
 
-        </div>
+</div>
+<div className="flex justify-center mt-4">
+  <button
+    onClick={() => paginate(currentPage - 1)}
+    disabled={currentPage === 1}
+    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+  >
+    Previous
+  </button>
+  <button
+    onClick={() => paginate(currentPage + 1)}
+    disabled={currentPage === Math.ceil(guestList.length / guestsPerPage)}
+    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+  >
+    Next
+  </button>
+</div>
+</div>
+</div>
+</div>
 
-        <div className="mt-6 flex justify-center space-x-2">
-          {Array.from({ length: Math.ceil(guestList.length / guestsPerPage) }).map((_, index) => (
-            <button
-              key={index + 1}
-              className={`px-3 py-1 rounded-lg ${
-                index + 1 === currentPage
-                  ? "bg-BgKhakiDark text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-              onClick={() => paginate(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-    </div>
- 
   );
 }
 
