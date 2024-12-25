@@ -9,6 +9,12 @@ const userSchema = new Schema(
     phone: { type: String, required: true, unique: true, match: [/^\d{10,15}$/, "Enter a valid phone number."] },
     password: { type: String, required: true, select: false },
     role: { type: String, default: 'user', enum: ['user', 'admin'] },
+ // Add SMTP credentials (optional)
+    smtpHost: { type: String }, // e.g., 'smtp.gmail.com'
+    smtpPort: { type: Number }, // e.g., 587
+    smtpPass: { type: String }, // User's email password (or app-specific password)
+    resetPasswordToken: { type: String },
+    resetPasswordTokenExpiry: { type: Date },
   },
   { timestamps: true }
 );

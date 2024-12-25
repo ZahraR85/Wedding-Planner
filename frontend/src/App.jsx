@@ -18,6 +18,8 @@ import Musics from './pages/Music.jsx';
 import { AppProvider } from './context/AppContext';
 import SignIn from './Auth/SignIn.jsx';
 import Register from './Auth/Register.jsx';
+import ForgotPassword from './Auth/ForgotPassword.jsx';
+import ResetPassword from './Auth/ResetPassword.jsx';
 import './index.css';
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
             <Route path="/UserInfo" element={ <UserInfo />} />
             <Route path="/signin" element={ <SignIn />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route path="/ResetPassword" element={<ResetPassword />} />
               {/* Admin Routes */}
             <Route path="/venues" element={<AdminVenuePage />} />
             {/*<Route path="/venues" element={<VenueList />} />*/}

@@ -67,7 +67,7 @@ const SignIn = () => {
             className="block w-full p-2 border border-gray-300 rounded"
           />
           <div className="m-2 w-full text-start underline hover:decoration-2">
-            <Link to="/register" className="text-m">Forgot your password?</Link>
+            <Link to="/ForgotPassword" className="text-m">Forgot your password?</Link>
           </div>
           <button
             onClick={handleSignIn}

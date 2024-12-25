@@ -1,6 +1,8 @@
-import User from '../models/User.js';
+import User from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.JWT_SECRET, { expiresIn: '60d' });
@@ -80,28 +82,6 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
-// Update Password
-export const updatePassword = async (req, res) => {
-  const { userId } = req.user;
-  const { oldPassword, newPassword } = req.body;
-
-  try {
-    const user = await User.findById(userId).select('+password');
-    if (!user) return res.status(404).send('User not found');
-
-    const isMatch = await user.comparePassword(oldPassword);
-    if (!isMatch) return res.status(401).send('Old password is incorrect');
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-    await user.save();
-
-    res.status(200).send('Password updated successfully');
-  } catch (error) {
-    res.status(500).send('Error updating password');
-  }
-};
-
 // Admin-Only Delete User
 export const deleteUser = async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Admins only');
@@ -151,3 +131,52 @@ export const getUserRole = async (req, res) => {
   }
 };
 
+
+
+
+// Send Reset Password Email
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Generate a reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour expiry
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordTokenExpiry = resetTokenExpiry;
+    await user.save();
+
+    // Generate password reset link
+    const resetLink = `${process.env.CLIENT_URL}/ResetPassword?token=${resetToken}`;
+
+    // Set up transporter with user-specific email configuration
+    const transporter = nodemailer.createTransport({
+      host: user.smtpHost, // User-specific SMTP host (e.g., mail.example.com)
+      port: user.smtpPort, // User-specific SMTP port (e.g., 587)
+      auth: {
+        user: user.email,    // User's email address
+        pass: user.smtpPass, // User's email password
+      },
+    });
+
+    const mailOptions = {
+      from: user.email,
+      to: user.email,
+      subject: 'Password Reset',
+      text: `Click the link to reset your password: ${resetLink}`,
+    };
+
+    // Send email using the transporter
+    await transporter.sendMail(mailOptions);
+    res.status(200).send('Password reset email sent');
+  } catch (error) {
+    console.error('Error in forgotPassword controller:', error);
+    res.status(500).send('Error sending reset password email');
+  }
+};
