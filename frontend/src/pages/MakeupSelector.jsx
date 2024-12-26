@@ -4,6 +4,13 @@ import DescriptionBox from "../components/MakeupDescriptionBox";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
+
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
+
+
 const features = [
   { id: "makeup", label: "Makeup", price: 400, description: "Professional makeup for the bride and groom." },
   { id: "shoes", label: "Shoes", price: 100, description: "Elegant shoes for the perfect look." },
@@ -32,7 +39,9 @@ const MakeupSelector = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("You must sign in to access this page.");
+      toast.error("You must sign in to access this page.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -57,6 +66,7 @@ const MakeupSelector = () => {
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+        toast.error("Failed to fetch data. Please try again later.");
       }
     };
   
@@ -80,6 +90,37 @@ const MakeupSelector = () => {
       [id]: { ...prev[id], selected: !prev[id]?.selected },
     }));
   };
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const url = `http://localhost:3001/makeups`;
+  //     const requestData = {
+  //       userID: userId,
+  //       makeup: selectedFeatures.makeup?.selected || false,
+  //       dress: selectedFeatures.dress?.selected || false,
+  //       nail: selectedFeatures.nail?.selected || false,
+  //       hairstyle: selectedFeatures.hairstyle?.selected || false,
+  //       shoes: selectedFeatures.shoes?.selected || false,
+  //       special: selectedFeatures.special?.selected || false,
+  //     };
+  //     console.log("Sending data:", requestData);
+  
+  //     const response = await axios.post(url, requestData, {
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+  
+  //     toast.success(response.data.message, {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error saving makeup data:", error);
+  //     toast.error("Failed to save makeup data. Please try again.", {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -93,22 +134,26 @@ const MakeupSelector = () => {
         shoes: selectedFeatures.shoes?.selected || false,
         special: selectedFeatures.special?.selected || false,
       };
-      console.log("Sending data:", requestData);
   
       const response = await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
       });
   
-      alert(response.data.message); // Show success message
+      toast.success("Makeup updated successfully!", {
+      });
     } catch (error) {
-      console.error("Error saving makeup data:", error);
-      alert("Failed to save makeup data!");
+      console.error("Failed to save guest.", error);
+      toast.error("Error message", {
+      });
     } finally {
       setLoading(false);
     }
   };
-
   return (
+
+    <div>
+       <ToastContainer />
+
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
         {/* Overlay for controlling opacity */}
         <div className="absolute inset-0 bg-white/50"></div>
@@ -150,6 +195,10 @@ const MakeupSelector = () => {
         </button>
       </div>
     </div>
+    </div>
+
+
+
   );
 };
 
