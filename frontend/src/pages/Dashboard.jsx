@@ -1,8 +1,4 @@
-
-
-
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
@@ -11,12 +7,9 @@ import Music from "../components/music";
 import MakeupUser from "../components/makeupUser";
 import UserInformation from "../components/userinformation";
 
-
 import userinfoBackground from '../images/userinfo.png';
 import musicBackground from '../images/music1.png';
 import makeupBackground from '../images/makeup.png';
-
-
 
 const Dashboard = () => {
   const { userId, isAuthenticated } = useAppContext();
@@ -122,7 +115,7 @@ const Dashboard = () => {
     margin: "0 auto", // Center the div horizontally
     overflow: "hidden", // Hide overflow content
   }}>
-      <div className="p-4 bg-white bg-opacity-90 rounded shadow w-full md:w-2/3 lg:w-1/2">
+      <div className="p-4 bg-opacity-90 rounded shadow w-full md:w-2/3 lg:w-1/2">
     <Music userId={userId} />
   </div>
 
