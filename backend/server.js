@@ -13,7 +13,7 @@ import musicOptionRouter from "./routes/musicOption.js";
 import userInfoRoutes from './routes/userinfoes.js';
 import venueRouter from "./routes/venueRouter.js";
 import venueSelectionRouter from './routes/venueSelectionRouter.js';
-
+import galleryRouter from './routes/galleryRouter.js';
 dotenv.config(); // Load environment variables
 
 const app = express();
@@ -39,6 +39,7 @@ app.use("/musicoptions", musicOptionRouter);
 app.use("/userInfoes", userInfoRoutes);
 app.use("/venues", venueRouter);
 app.use("/venueSelections", venueSelectionRouter);
+app.use("/galleries", galleryRouter);
 app.get("/", (req, res) => {
   console.log(`Unhandled request: ${req.method} ${req.url}`);
   res.status(404).send("Not found");

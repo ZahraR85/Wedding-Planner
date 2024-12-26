@@ -4,7 +4,8 @@ import { Schema, model } from "mongoose";
 const GuestSchema = new Schema(
   {
     userID: {
-      type: String, // No `unique: true`
+      type: Schema.Types.ObjectId, // Reference to the User schema
+      ref: "User",
       required: true,
       trim: true,
     },
