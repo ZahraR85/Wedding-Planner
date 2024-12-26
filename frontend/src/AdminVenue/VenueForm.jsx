@@ -101,8 +101,9 @@ const handleImageUpload = (e) => {
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
     {/* Overlay for controlling opacity */}
-    <div className="absolute inset-0 bg-white/50"></div>
-    <div className="relative mx-auto w-full max-w-[calc(70%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+    <div className="absolute inset-0 bg-white/50 "></div>
+    <div className="relative mx-auto w-full max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+    <h1 className="text-2xl font-bold m-5 text-center text-BgFont">Add New Venue by Admin</h1>
     <div className="flex">
       <div className="w-1/2 pr-8"><input
           type="text"
@@ -154,7 +155,7 @@ const handleImageUpload = (e) => {
             name="x"
             value={formData.location.x}
             onChange={handleChange}
-            placeholder="Location X"
+            placeholder="Latitude"
             required
             className="input input-bordered w-1/2 mb-2"
           />
@@ -163,7 +164,7 @@ const handleImageUpload = (e) => {
             name="y"
             value={formData.location.y}
             onChange={handleChange}
-            placeholder="Location Y"
+            placeholder="Longitude"
             required
             className="input input-bordered w-1/2 mb-2"
           /></div>
@@ -205,10 +206,12 @@ const handleImageUpload = (e) => {
     </div>
         )}
         </div>
-        <span className="text-xl font-bold mr-20">total price: $</span>
+        <span className="text-xl font-bold text-BgFont mt-5 pl-20">total price: $</span>
+      </div>
+      <div className="">
       <button
         onClick={handleSubmit}
-        className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark w-1/3 px-4 py-2 rounded"
+        className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark w-full p-4 rounded"
         disabled={loading}
       >
         {loading ? "Processing..." : "Add Venue"}

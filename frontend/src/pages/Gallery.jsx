@@ -5,7 +5,6 @@ const Gallery = () => {
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false); // Assume you have a way to check if the user is an admin
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -14,12 +13,6 @@ const Gallery = () => {
     };
 
     fetchImages();
-    
-    // Check if the user is an admin
-    const userRole = localStorage.getItem('userRole'); // Assuming you store the user role in local storage
-    if (userRole === 'admin') {
-      setIsAdmin(true);
-    }
   }, []);
 
   const handleAddImage = async () => {
@@ -56,30 +49,26 @@ const Gallery = () => {
           <div key={image._id}>
             <img src={image.imageUrl} alt={image.description} />
             <p>{image.description}</p>
-            {isAdmin && (
-              <button onClick={() => handleDeleteImage(image._id)}>Delete</button>
-            )}
+            <button onClick={() => handleDeleteImage(image._id)}>Delete</button>
           </div>
         ))}
       </div>
-      {isAdmin && (
-        <div>
-          <h2>Add Image</h2>
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <button onClick={handleAddImage}>Add Image</button>
-        </div>
-      )}
+      <div>
+        <h2>Add Image</h2>
+        <input
+          type="text"
+          placeholder="Image URL"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <button onClick={handleAddImage}>Add Image</button>
+      </div>
     </div>
   );
 };

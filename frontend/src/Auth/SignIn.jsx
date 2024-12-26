@@ -22,10 +22,11 @@ const SignIn = () => {
         credentials: 'include',
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         setAuth(true, data.userId);
+        localStorage.setItem('userRole', data.role); // Store user role
         navigate('/');
       } else {
         const message = await response.text();
@@ -36,7 +37,7 @@ const SignIn = () => {
       setError('Failed to sign in. Please try again later.');
     }
   };
-
+  
   return (
     <div className="flex min-h-screen bg-customBg">
       {/* Left Section: Form */}

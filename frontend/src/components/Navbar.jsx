@@ -39,11 +39,6 @@ const Navbar = () => {
               UserInfo
             </Link>
           </li>
-          <li>
-            <Link to="/Gallery" className="hover:underline">
-            Gallery
-            </Link>
-          </li>
           <li className="relative">
             <button
               onClick={() => setDropdownOpen(!isDropdownOpen)}
@@ -95,6 +90,11 @@ const Navbar = () => {
 
         {/* Right side: Links */}
         <ul className="flex font-bold items-center space-x-12">
+          <li>
+            <Link to="/admin" className="hover:underline">
+            AdminPannel
+            </Link>
+          </li>
           <li>
             <Link to="/cart" className="hover:underline">
               Shopping Cart
