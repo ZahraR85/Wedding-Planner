@@ -1,25 +1,23 @@
-import Guest from "../models/guest.js";
-
-
-
-export const createGuest = async (req, res) => {
+import Guest from "../models/guest.js";export const createGuest = async (req, res) => {
   try {
-    console.log('Incoming Request Body:', req.body);
-
-    const {userID, guestName, numberOfPersons, phone, address,answerStatus, email } = req.body;
-
-    console.log("Received Data:", req.body);
+    const { userID, guestName, numberOfPersons, phone, address, answerStatus, email } = req.body;
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
     }
 
-
     if (!['Yes', 'No', 'Not yet'].includes(answerStatus)) {
-      return res.status(400).json({ message: "Invalid answerStatus" });
+      return res.status(400).json({ message: "Invalid answerStatus." });
     }
+
     if (!email || !/.+@.+\..+/.test(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+      return res.status(400).json({ message: "Invalid email format." });
+    }
+
+    // Check for existing email
+    const existingGuest = await Guest.findOne({ email });
+    if (existingGuest) {
+      return res.status(400).json({ message: "Email already exists. Please use a different email." });
     }
 
     const feature = await Guest.create({
@@ -32,13 +30,13 @@ export const createGuest = async (req, res) => {
       email,
     });
 
-    res.status(201).json({ message: "Guest created successfullyyyyyy", feature });
+    res.status(201).json({ message: "Guest created successfully!", feature });
   } catch (error) {
-    console.error('Error in Controller:', error); // Log the full error object
+    console.error("Error in Controller:", error);
     if (error.name === "ValidationError") {
       res.status(400).json({ message: "Validation Error", errors: error.errors });
     } else {
-      res.status(500).json({ message: "Error creating guest", error: error.message || error });
+      res.status(500).json({ message: "Error creating guest", error: error.message });
     }
   }
 };
@@ -73,15 +71,37 @@ export const getGuestById = async (req, res) => {
 // Update a guest
 export const updateGuest = async (req, res) => {
   try {
+    const { id } = req.params;
+    const { guestName, numberOfPersons, phone, address, answerStatus, email } = req.body;
+
+    if (!['Yes', 'No', 'Not yet'].includes(answerStatus)) {
+      return res.status(400).json({ message: "Invalid answerStatus." });
+    }
+
+    if (!email || !/.+@.+\..+/.test(email)) {
+      return res.status(400).json({ message: "Invalid email format." });
+    }
+
+    // Check if another guest already uses the same email
+    const existingGuest = await Guest.findOne({ email, _id: { $ne: id } });
+    if (existingGuest) {
+      return res.status(400).json({ message: "Email already exists. Please use a different email." });
+    }
+
     const updatedGuest = await Guest.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
+      id,
+      { guestName, numberOfPersons, phone, address, answerStatus, email },
+      { new: true }
     );
-    if (!updatedGuest) return res.status(404).json({ message: 'Guest not found' });
-    res.status(200).json(updatedGuest);
+
+    if (!updatedGuest) {
+      return res.status(404).json({ message: "Guest not found." });
+    }
+
+    res.status(200).json({ message: "Guest updated successfully!", updatedGuest });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error in Controller:", error);
+    res.status(500).json({ message: "Error updating guest", error: error.message });
   }
 };
 
