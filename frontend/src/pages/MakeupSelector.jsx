@@ -142,7 +142,7 @@ const MakeupSelector = () => {
       toast.success("Makeup updated successfully!", {
       });
     } catch (error) {
-      console.error("Failed to save guest.", error);
+      console.error("Failed to save makeup.", error);
       toast.error("Error message", {
       });
     } finally {
