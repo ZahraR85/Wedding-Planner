@@ -60,13 +60,13 @@ export const createOrUpdateMakeup = async (req, res) => {
 
 
 
-console.log("Makeup:", makeup ? 400 : 0);
-console.log("Dress:", dress ? 500 : 0);
-console.log("Nail:", nail ? 200 : 0);
-console.log("Hairstyle:", hairstyle ? 400 : 0);
-console.log("Shoes:", shoes ? 100 : 0);
-console.log("Special:", special ? 300 : 0);
-console.log("Calculated Total:", total);
+// console.log("Makeup:", makeup ? 400 : 0);
+// console.log("Dress:", dress ? 500 : 0);
+// console.log("Nail:", nail ? 200 : 0);
+// console.log("Hairstyle:", hairstyle ? 400 : 0);
+// console.log("Shoes:", shoes ? 100 : 0);
+// console.log("Special:", special ? 300 : 0);
+// console.log("Calculated Total:", total);
 
     // Update or create the document
     const feature = await Makeup.findOneAndUpdate(
