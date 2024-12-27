@@ -5,13 +5,13 @@ import { useAppContext } from '../context/AppContext';
 import logo from '../images/logo8.jpg';
 
 const Navbar = () => {
-  const { isDropdownOpen, setDropdownOpen, isAuthenticated, userRole, signOut } = useAppContext();
+  const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut } = useAppContext();
   const location = useLocation();
 
   const isHomepage = location.pathname === '/';
   useEffect(() => {
-    console.log('isAuthenticated:', isAuthenticated, 'userRole:', userRole);
-  }, [isAuthenticated, userRole]); // Log when these values change
+    console.log('isAuthenticated:', isAuthenticated, 'role:', role);
+  }, [isAuthenticated, role]); // Log when these values change
 
   return (
     <nav
@@ -94,7 +94,7 @@ const Navbar = () => {
 
         {/* Right side: Links */}
         <ul className="flex font-bold items-center space-x-12">
-        {isAuthenticated && userRole === 'admin' && (
+        {isAuthenticated && role === 'admin' && (
     <li>
       <Link to="/admin" className="hover:underline focus:outline-none">
         Admin Panel

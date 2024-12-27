@@ -5,16 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const AdminPanel = () => {
-  const { isAuthenticated, userRole } = useAppContext();
+  const { userId, isAuthenticated, role } = useAppContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated || userRole !== 'admin') {
+    if (!isAuthenticated || role !== 'admin') {
       navigate('/'); // Redirect unauthorized users
     }
-  }, [isAuthenticated, userRole, navigate]);
+  }, [isAuthenticated, role, navigate]);
 
-  if (!isAuthenticated || userRole !== 'admin') {
+  if (!isAuthenticated || role !== 'admin') {
     return <h1>Access Denied</h1>;
   }
 

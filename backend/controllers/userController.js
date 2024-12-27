@@ -44,7 +44,13 @@ export const signin = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = generateToken(user._id, user.role);
+    //const token = generateToken(user._id, user.role);
+     // Generate a JWT token with an expiration time
+    const token = jwt.sign(
+      { userId: user._id, role: user.role }, // Payload
+      process.env.JWT_SECRET,              // Secret key
+      { expiresIn: '1h' }                  // Expiration time
+    );
 
     // Set token as HTTP-only cookie
     res
@@ -59,6 +65,7 @@ export const signin = async (req, res) => {
         message: 'Login successful',
         userId: user._id,
         role: user.role,
+        token,
       });
   } catch (error) {
     console.error('Error during sign in:', error);

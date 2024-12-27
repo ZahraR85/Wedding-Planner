@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useAppContext } from "../context/AppContext";
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [imageName, setImageName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
-
+  const { userId } = useAppContext();
   useEffect(() => {
     const fetchImages = async () => {
       const response = await axios.get('http://localhost:3001/galleries');
@@ -18,16 +19,35 @@ const Gallery = () => {
 
   const handleAddImage = async () => {
     try {
-      await axios.post('http://localhost:3001/galleries', { imageName, imageUrl, description }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        throw new Error('No token found in localStorage');
+      }
+  
+      if (!userId) {
+        console.error('No user ID found');
+        alert('User  ID is required to add an image');
+        return;
+      }
+  
+      await axios.post(
+        'http://localhost:3001/galleries',
+        { userId, imageName, imageUrl, description },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       alert('Image added successfully');
     } catch (error) {
+      console.error('Error adding image:', error);
       alert('Failed to add image');
     }
   };
   
-
   const handleDeleteImage = async (id) => {
     const token = localStorage.getItem('token');
     await axios.delete(`http://localhost:3001/galleries/${id}`, {
@@ -42,26 +62,6 @@ const Gallery = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Gallery</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {images.map((image) => (
-          <div
-            key={image._id}
-            className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200"
-          >
-            <img src={image.imageUrl} alt={image.description} className="w-full h-48 object-cover" />
-            <div className="p-4">
-              <p className="text-gray-700">{image.description}</p>
-              <button
-                onClick={() => handleDeleteImage(image._id)}
-                className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add Image</h2>
@@ -93,6 +93,27 @@ const Gallery = () => {
           Add Image
         </button>
       </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {images.map((image) => (
+          <div
+            key={image._id}
+            className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200"
+          >
+            <img src={image.imageUrl} alt={image.description} className="w-full h-48 object-cover" />
+            <div className="p-4">
+              <p className="text-gray-700">{image.description}</p>
+              <button
+                onClick={() => handleDeleteImage(image._id)}
+                className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 };
