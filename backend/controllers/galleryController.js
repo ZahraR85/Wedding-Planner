@@ -55,3 +55,30 @@ export const deleteGalleryImage = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Update a gallery image
+export const updateGalleryImage = async (req, res) => {
+  const { id } = req.params;
+  const { imageName, imageUrl, description, userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  try {
+    // Find the image by ID and update
+    const updatedImage = await Gallery.findByIdAndUpdate(
+      id,
+      { imageName, imageUrl, description },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedImage) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    res.status(200).json(updatedImage);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
