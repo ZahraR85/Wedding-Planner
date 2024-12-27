@@ -8,18 +8,18 @@ import {
   getVenuesByUserId,
 } from "../controllers/venueController.js";
 
-import { isAuthenticated, isAdmin } from "../middleware/RoleAccess.js";
+import { adminOnly } from "../middleware/auth.js"; // Import the middlewares
 
 const router = express.Router();
 
 // Admin Routes - Only for venue management
-router.post("/", createVenue); // Create a new venue
-router.put("/:venueId", isAuthenticated, isAdmin, updateVenue); // Update venue by ID
-router.delete("/:venueId", isAuthenticated, isAdmin, deleteVenue); // Delete venue by ID
+router.post("/", adminOnly, createVenue); // Create a new venue (Admin only)
+router.put("/:venueId", adminOnly, updateVenue); // Update venue by ID (Admin only)
+router.delete("/:venueId", adminOnly, deleteVenue); // Delete venue by ID (Admin only)
 
 // Public/User Routes
-router.get("/", getAllVenues); // Get all venues
-router.get("/:venueId", getVenueByVenueId); // Get a single venue by venue ID
-router.get("/user/:userId", isAuthenticated, getVenuesByUserId); // Get venues by user ID
+router.get("/", getAllVenues); // Get all venues (Public)
+router.get("/:venueId", getVenueByVenueId); // Get a single venue by venue ID (Public)
+router.get("/user/:userId", getVenuesByUserId); // Get venues by user ID (Authenticated users)
 
 export default router;

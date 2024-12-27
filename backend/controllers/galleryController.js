@@ -12,17 +12,27 @@ export const getGalleryImages = async (req, res) => {
 
 // Add a new image to the gallery
 export const addGalleryImage = async (req, res) => {
-  const { userId, imageUrl, description } = req.body;
+  console.log('Request Body:', req.body); // Log the request body
+  const { imageName, imageUrl, description, userId } = req.body;
 
+  if (!userId) {
+    return res.status(400).json({ message: 'User  ID is required' });
+  }
   if (req.user.role !== 'admin') {
     return res.status(403).json({ message: 'Access denied' });
   }
 
   try {
-    const newImage = new Gallery({ userId, imageName, imageUrl, description });
+    const newImage = new Gallery({
+      userId, // Use the authenticated user's ID
+      imageName,
+      imageUrl,
+      description,
+    });
     await newImage.save();
     res.status(201).json(newImage);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };

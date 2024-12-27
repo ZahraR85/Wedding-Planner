@@ -1,19 +1,27 @@
 import { useAppContext } from '../context/AppContext';
-import AdminVenuePage from './AdminVenuePage.jsx';
+//import AdminVenuePage from './AdminVenuePage.jsx';
 import Gallery from '../pages/Gallery.jsx';
-const AdminPanel = () => {
-  const { isAuthenticated } = useAppContext();
-  const userRole = localStorage.getItem('userRole');
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-  if (!isAuthenticated || userRole !== 'admin') {
-    return <h1>Access Denied</h1>; 
+const AdminPanel = () => {
+  const { userId, isAuthenticated, role } = useAppContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated || role !== 'admin') {
+      navigate('/'); // Redirect unauthorized users
+    }
+  }, [isAuthenticated, role, navigate]);
+
+  if (!isAuthenticated || role !== 'admin') {
+    return <h1>Access Denied</h1>;
   }
 
   return (
     <div>
-      <h1>Admin Panel</h1>
       <Gallery />
-      <AdminVenuePage />
+      {/*<AdminVenuePage />*/}
     </div>
   );
 };

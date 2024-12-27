@@ -1,13 +1,17 @@
+import {useEffect} from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import SignOut from '../Auth/SignOut';
+//import SignOut from '../Auth/SignOut';
 import logo from '../images/logo8.jpg';
 
 const Navbar = () => {
-  const { isDropdownOpen, setDropdownOpen, isAuthenticated } = useAppContext();
+  const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut } = useAppContext();
   const location = useLocation();
 
   const isHomepage = location.pathname === '/';
+  useEffect(() => {
+    console.log('isAuthenticated:', isAuthenticated, 'role:', role);
+  }, [isAuthenticated, role]); // Log when these values change
 
   return (
     <nav
@@ -90,11 +94,13 @@ const Navbar = () => {
 
         {/* Right side: Links */}
         <ul className="flex font-bold items-center space-x-12">
-          <li>
-            <Link to="/admin" className="hover:underline">
-            AdminPannel
-            </Link>
-          </li>
+        {isAuthenticated && role === 'admin' && (
+    <li>
+      <Link to="/admin" className="hover:underline focus:outline-none">
+        Admin Panel
+      </Link>
+    </li>
+  )}
           <li>
             <Link to="/cart" className="hover:underline">
               Shopping Cart
@@ -102,7 +108,7 @@ const Navbar = () => {
           </li>
           <li>
             {isAuthenticated ? (
-              <SignOut />
+              <button onClick={signOut}>Sign Out</button>
             ) : (
               <Link to="/signin" className="hover:underline focus:outline-none">
                 Signin | Register

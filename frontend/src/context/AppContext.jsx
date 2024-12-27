@@ -9,6 +9,7 @@ const initialState = {
   isDropdownOpen: false,
   userId: null, // User ID for authenticated user
   isAuthenticated: false, // Tracks if the user is authenticated
+  userRole: null, // Role of the authenticated user
 };
 
 const appReducer = (state, action) => {
@@ -28,9 +29,10 @@ const appReducer = (state, action) => {
         ...state,
         isAuthenticated: action.payload.isAuthenticated,
         userId: action.payload.userId,
+        role: action.payload.role, // Set Role on authentication
       };
     case 'SIGN_OUT':
-      return { ...state, isAuthenticated: false, userId: null };
+      return { ...state, isAuthenticated: false, userId: null , userRole: null};
     default:
       return state;
   }
@@ -46,8 +48,9 @@ export const AppProvider = ({ children }) => {
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
   const setDropdownOpen = (isOpen) => dispatch({ type: 'SET_DROPDOWN_OPEN', payload: isOpen });
 
-  const setAuth = (isAuthenticated, userId) =>
-    dispatch({ type: 'SET_AUTH', payload: { isAuthenticated, userId } });
+  const setAuth = (isAuthenticated, userId, role) =>
+    
+    dispatch({ type: 'SET_AUTH', payload: { isAuthenticated, userId, role } });
 
   const signOut = () => dispatch({ type: 'SIGN_OUT' });
 
