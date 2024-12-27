@@ -66,20 +66,6 @@ export const signin = async (req, res) => {
   }
 };
 
-// Verify Token Middleware
-export const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).send('Access denied');
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch {
-    res.status(403).send('Invalid token');
-  }
-};
-
 // Update Password
 export const updatePassword = async (req, res) => {
   const { userId } = req.user;
