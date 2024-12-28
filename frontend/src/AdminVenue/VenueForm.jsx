@@ -211,7 +211,7 @@ const handleImageUpload = (e) => {
       <div className="">
       <button
         onClick={handleSubmit}
-        className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark w-full p-4 rounded"
+        className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
         disabled={loading}
       >
         {loading ? "Processing..." : "Add Venue"}
