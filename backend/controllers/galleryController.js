@@ -13,10 +13,10 @@ export const getGalleryImages = async (req, res) => {
 // Add a new image to the gallery
 export const addGalleryImage = async (req, res) => {
   console.log('Request Body:', req.body); // Log the request body
-  const { imageName, imageUrl, description, userId } = req.body;
+  const { imageName, imageUrl, description, userId, category} = req.body;
 
-  if (!userId) {
-    return res.status(400).json({ message: 'User  ID is required' });
+  if (!userId || !category) {
+    return res.status(400).json({ message: 'User ID and category are required' });
   }
   if (req.user.role !== 'admin') {
     return res.status(403).json({ message: 'Access denied' });
@@ -28,6 +28,7 @@ export const addGalleryImage = async (req, res) => {
       imageName,
       imageUrl,
       description,
+      category
     });
     await newImage.save();
     res.status(201).json(newImage);
@@ -59,17 +60,17 @@ export const deleteGalleryImage = async (req, res) => {
 // Update a gallery image
 export const updateGalleryImage = async (req, res) => {
   const { id } = req.params;
-  const { imageName, imageUrl, description, userId } = req.body;
+  const { imageName, imageUrl, description, userId, category } = req.body;
 
-  if (!userId) {
-    return res.status(400).json({ message: 'User ID is required' });
+  if (!userId || !category) {
+    return res.status(400).json({ message: 'User ID and category are required' });
   }
 
   try {
     // Find the image by ID and update
     const updatedImage = await Gallery.findByIdAndUpdate(
       id,
-      { imageName, imageUrl, description },
+      { imageName, imageUrl, description, category},
       { new: true } // Return the updated document
     );
 
@@ -82,3 +83,20 @@ export const updateGalleryImage = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Route to get photos by category
+export const GalleryCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    console.log('Category received from frontend:', category);
+
+    const photos = await Gallery.find({ category });
+    console.log('Photos fetched from database:', photos);
+
+    res.json(photos);
+  } catch (error) {
+    console.error('Error fetching photos by category:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
