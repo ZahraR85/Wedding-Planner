@@ -157,6 +157,7 @@ const GalleryManagement = () => {
             <option value="Photography">Photography</option>
             <option value="Wedding-dress">Wedding-dress</option>
             <option value="Musician">Musician</option>
+            <option value="Cake">Cake</option>
           </select>
         {editingImageId ? (
           <button
