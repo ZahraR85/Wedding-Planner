@@ -6,7 +6,6 @@ const CategoryDetails = () => {
   const { category } = useParams(); // Get category from the URL
   const [photos, setPhotos] = useState([]); // Store photos
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const itemsPerPage = 6; // Number of items per page
 
   useEffect(() => {
     // Fetch photos by category
@@ -24,28 +23,24 @@ const CategoryDetails = () => {
     fetchCategoryPhotos();
   }, [category]);
 
-  // Calculate pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPhotos = photos.slice(indexOfFirstItem, indexOfLastItem);
+  // Get the current photo based on the current page
+  const currentPhoto = photos[currentPage - 1];
 
-  const totalPages = Math.ceil(photos.length / itemsPerPage);
+  const totalPages = Math.ceil(photos.length);
 
   return (
     <div className="container mx-auto my-8 text-center">
-      <h1 className="text-2xl font-bold text-gray-700 mb-4">{category} Photos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentPhotos.length > 0 ? (
-          currentPhotos.map((photo) => (
-            <img
-              key={photo._id}
-              src={photo.imageUrl}
-              alt={photo.imageName}
-              className="w-full h-48 object-cover rounded"
-            />
-          ))
+      <h1 className="text-2xl font-bold text-gray-700 mb-4">{category} Photo</h1>
+      <div className="flex justify-center mb-6">
+        {currentPhoto ? (
+          <img
+            key={currentPhoto._id}
+            src={currentPhoto.imageUrl}
+            alt={currentPhoto.imageName}
+            className="w-full h-112 object-cover rounded"
+          />
         ) : (
-          <p className="text-gray-500 text-center col-span-full">No photos found for this category.</p>
+          <p className="text-gray-500">No photos found for this category.</p>
         )}
       </div>
       <div className="flex justify-center items-center mt-4">
