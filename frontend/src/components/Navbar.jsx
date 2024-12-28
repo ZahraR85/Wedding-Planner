@@ -39,8 +39,8 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/userinfo" className="hover:underline">
-              UserInfo
+            <Link to="/Gallery" className="hover:underline">
+              Gallery
             </Link>
           </li>
           <li className="relative">
@@ -58,6 +58,9 @@ const Navbar = () => {
                     <Link to="/Guests">Invitation of Guests</Link>
                   </li>
                   <li className="hover:underline">
+                    <Link to="/userinfo"> UserInfo </Link>
+                  </li>
+                  <li className="hover:underline">
                     <Link to="/VenueSelections">VenueSelection</Link>
                   </li>
                   <li className="hover:underline">
@@ -67,7 +70,7 @@ const Navbar = () => {
                     <Link to="/photography">Photography</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link to="/Makeup">Makeup, Hair, Wedding Dress</Link>
+                    <Link to="/Makeup">Makeup, Wedding Dress</Link>
                   </li>
                   <li className="hover:underline">
                     <Link to="/Musics">Music Band</Link>
@@ -105,7 +108,7 @@ const Navbar = () => {
                 <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
                   <ul className="flex flex-col items-start space-y-2">
                     <li className="hover:underline">
-                      <Link to="/Gallery">Manage Gallery</Link>
+                      <Link to="/GalleryManagement">Manage Gallery</Link>
                     </li>
                     <li className="hover:underline">
                       <Link to="/venues">Manage Venue</Link>

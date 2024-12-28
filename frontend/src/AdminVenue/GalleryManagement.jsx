@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAppContext } from "../context/AppContext";
 
-const Gallery = () => {
+const GalleryManagement = () => {
   const [images, setImages] = useState([]);
   const [imageName, setImageName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -113,7 +113,7 @@ const Gallery = () => {
     {/* Overlay for controlling opacity */}
     <div className="absolute inset-0 bg-white/50 "></div>
     <div className="relative mx-auto w-full max-w-[calc(45%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 mt-40 space-y-4">
-        <h2 className="text-xl font-bold text-BgFont mb-12 text-center">Add / Edit Images in Gallery</h2>
+        <h2 className="text-2xl font-bold text-BgFont mb-12 text-center">Add / Edit Images in Gallery</h2>
         <input
           type="text"
           placeholder="Image Name"
@@ -184,4 +184,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default GalleryManagement;
