@@ -83,3 +83,20 @@ export const updateGalleryImage = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Route to get photos by category
+export const GalleryCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    console.log('Category received from frontend:', category);
+
+    const photos = await Gallery.find({ category });
+    console.log('Photos fetched from database:', photos);
+
+    res.json(photos);
+  } catch (error) {
+    console.error('Error fetching photos by category:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+

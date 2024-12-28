@@ -19,7 +19,8 @@ import { AppProvider } from './context/AppContext';
 import SignIn from './Auth/SignIn.jsx';
 import Register from './Auth/Register.jsx';
 import GalleryManagement from './AdminVenue/GalleryManagement.jsx';
-//import AdminPanel from './AdminVenue/AdminPannel.jsx';
+import Gallery from './pages/Gallery.jsx';
+import CategoryDetails from './components/CategoryDetails.jsx'; 
 import './index.css';
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
               {/* Public Routes */}
             <Route path="/" element={<Homepage />} />
             <Route path="/Dashboard" element={ <Dashboard />} />
+            <Route path="/Gallery" element={<Gallery />} />
+            <Route path="/Gallery/:category" element={<CategoryDetails />} />
             <Route path="/UserInfo" element={ <UserInfo />} />
             <Route path="/GalleryManagement" element={ <GalleryManagement />} />
             <Route path="/signin" element={ <SignIn />} />
