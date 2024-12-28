@@ -58,9 +58,6 @@ const Navbar = () => {
                     <Link to="/Guests">Invitation of Guests</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link to="/Venues">VenueAdmin</Link>
-                  </li>
-                  <li className="hover:underline">
                     <Link to="/VenueSelections">VenueSelection</Link>
                   </li>
                   <li className="hover:underline">
@@ -93,14 +90,32 @@ const Navbar = () => {
         </div>
 
         {/* Right side: Links */}
+
+         {/* Right side: Links */}
         <ul className="flex font-bold items-center space-x-12">
-        {isAuthenticated && role === 'admin' && (
-    <li>
-      <Link to="/admin" className="hover:underline focus:outline-none">
-        Admin Panel
-      </Link>
-    </li>
-  )}
+          {isAuthenticated && role === 'admin' && (
+            <li className="relative">
+              <button
+                onClick={() => setDropdownOpen(!isDropdownOpen)}
+                className="hover:underline focus:outline-none"
+              >
+                Admin Pannel {isDropdownOpen ? '▲' : '▼'}
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
+                  <ul className="flex flex-col items-start space-y-2">
+                    <li className="hover:underline">
+                      <Link to="/Gallery">Manage Gallery</Link>
+                    </li>
+                    <li className="hover:underline">
+                      <Link to="/venues">Manage Venue</Link>
+                    </li>
+                  {/* <li className="hover:underline"><Link to="/">Gallery Settings</Link></li>*/}
+                  </ul>
+                </div>
+              )}
+            </li>
+          )}
           <li>
             <Link to="/cart" className="hover:underline">
               Shopping Cart
@@ -115,13 +130,6 @@ const Navbar = () => {
               </Link>
             )}
           </li>
-          {!isAuthenticated && (
-            <li>
-              <button className="font-bold px-6 py-3 rounded hover:underline">
-                Let’s Start
-              </button>
-            </li>
-          )}
         </ul>
       </div>
     </nav>
