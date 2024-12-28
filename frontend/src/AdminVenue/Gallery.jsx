@@ -108,11 +108,12 @@ const Gallery = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Gallery</h1>
-
-      <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Add / Edit Image</h2>
+    <div className=" bg-gray-100 min-h-screen">
+    <div className="relative min-h-screen bg-cover bg-center p-20  bg-[url('https://i.postimg.cc/qMRwT2zF/gallery3.jpg')]">
+    {/* Overlay for controlling opacity */}
+    <div className="absolute inset-0 bg-white/50 "></div>
+    <div className="relative mx-auto w-full max-w-[calc(45%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 mt-40 space-y-4">
+        <h2 className="text-xl font-bold text-BgFont mb-12 text-center">Add / Edit Image in Gallery</h2>
         <input
           type="text"
           placeholder="Image Name"
@@ -127,7 +128,7 @@ const Gallery = () => {
           onChange={(e) => setImageUrl(e.target.value)}
           className="w-full mb-4 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
         />
-        <input
+        <textarea
           type="text"
           placeholder="Description"
           value={description}
@@ -144,14 +145,14 @@ const Gallery = () => {
         ) : (
           <button
             onClick={handleAddImage}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
+            className="w-full bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark p-4 rounded transition-colors duration-200"
           >
             Add Image
           </button>
         )}
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         {images.map((image) => (
           <div
             key={image._id}
@@ -159,7 +160,8 @@ const Gallery = () => {
           >
             <img src={image.imageUrl} alt={image.description} className="w-full h-48 object-cover" />
             <div className="p-4">
-              <p className="text-gray-700">{image.description}</p>
+            <p className="text-BgFont font-bold">{image.imageName}</p>
+              <p className="text-BgFont">{image.description}</p>
               <button
                 onClick={() => handleEditClick(image)}
                 className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors duration-200"

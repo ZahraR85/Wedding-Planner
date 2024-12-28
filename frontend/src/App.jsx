@@ -18,8 +18,8 @@ import Musics from './pages/Music.jsx';
 import { AppProvider } from './context/AppContext';
 import SignIn from './Auth/SignIn.jsx';
 import Register from './Auth/Register.jsx';
-//import Gallery from './pages/Gallery.jsx';
-import AdminPanel from './AdminVenue/AdminPannel.jsx';
+import Gallery from './AdminVenue/Gallery.jsx';
+//import AdminPanel from './AdminVenue/AdminPannel.jsx';
 import './index.css';
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
             <Route path="/" element={<Homepage />} />
             <Route path="/Dashboard" element={ <Dashboard />} />
             <Route path="/UserInfo" element={ <UserInfo />} />
-            <Route path="/admin" element={ <AdminPanel />} />
+            <Route path="/Gallery" element={ <Gallery />} />
             <Route path="/signin" element={ <SignIn />} />
             <Route path="/register" element={<Register />} />
               {/* Admin Routes */}
