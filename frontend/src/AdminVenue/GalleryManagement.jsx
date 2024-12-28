@@ -7,6 +7,7 @@ const GalleryManagement = () => {
   const [imageName, setImageName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState(''); 
   const [editingImageId, setEditingImageId] = useState(null);
   const { userId } = useAppContext();
 
@@ -30,15 +31,14 @@ const GalleryManagement = () => {
         throw new Error('No token found in localStorage');
       }
 
-      if (!userId) {
-        console.error('No user ID found');
-        alert('User ID is required to add an image');
+      if (!userId || !category) {
+        alert('User ID and category are required to add an image');
         return;
       }
 
       await axios.post(
         'http://localhost:3001/galleries',
-        { userId, imageName, imageUrl, description },
+        { userId, imageName, imageUrl, description, category},
         {
           headers: {
             'Content-Type': 'application/json',
@@ -48,6 +48,10 @@ const GalleryManagement = () => {
       );
       alert('Image added successfully');
       fetchImages(); // Reload images after adding
+      setImageName('');
+      setImageUrl('');
+      setDescription('');
+      setCategory('');
     } catch (error) {
       console.error('Error adding image:', error);
       alert('Failed to add image');
@@ -63,15 +67,15 @@ const GalleryManagement = () => {
         throw new Error('No token found in localStorage');
       }
 
-      if (!userId) {
+      if (!userId || !category) {
         console.error('No user ID found');
-        alert('User ID is required to update an image');
+        alert('User ID and category are required to update an image');
         return;
       }
 
       await axios.put(
         `http://localhost:3001/galleries/${editingImageId}`,
-        { userId, imageName, imageUrl, description },
+        { userId, imageName, imageUrl, description, category},
         {
           headers: {
             'Content-Type': 'application/json',
@@ -81,6 +85,10 @@ const GalleryManagement = () => {
       );
       alert('Image updated successfully');
       fetchImages(); // Reload images after updating
+      setImageName('');
+      setImageUrl('');
+      setDescription('');
+      setCategory(''); 
       setEditingImageId(null); // Clear editing state
     } catch (error) {
       console.error('Error updating image:', error);
@@ -105,6 +113,7 @@ const GalleryManagement = () => {
     setImageName(image.imageName);
     setImageUrl(image.imageUrl);
     setDescription(image.description);
+    setCategory(image.category);
   };
 
   return (
@@ -135,6 +144,20 @@ const GalleryManagement = () => {
           onChange={(e) => setDescription(e.target.value)}
           className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
         />
+        <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
+          >
+            <option value="" disabled>
+              Select a Category
+            </option>
+            <option value="Venue">Venue</option>
+            <option value="Makeup">Makeup</option>
+            <option value="Photography">Photography</option>
+            <option value="Wedding-dress">Wedding-dress</option>
+            <option value="Musician">Musician</option>
+          </select>
         {editingImageId ? (
           <button
             onClick={handleUpdateImage}

@@ -6,6 +6,11 @@ const gallerySchema = new Schema(
     imageName: {type: String, required: true},
     imageUrl: { type: String, required: true },
     description: { type: String, trim: true },
+    category: {
+      type: String,
+      enum: ['Venue', 'Makeup', 'Photography', 'Wedding-dress', 'Musician'],
+      required: true,
+    },
   },
   { timestamps: true }
 );
