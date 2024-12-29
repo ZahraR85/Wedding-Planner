@@ -38,33 +38,35 @@ const UserSelections = ({ userId }) => {
 
   return (
     <div className="user-selections">
-      <h2 className="text-2xl font-bold mb-4">Music features</h2>
-      <div className="p-4 bg-gray-100 rounded shadow mb-4">
+
+      <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80 space-y-4 p-4">
+        <h2 className="text-3xl font-bold text-center mb-6">We selected these Musik features</h2>
         {/* <h3 className="text-lg font-semibold">
           User: {userSelections.userID?.name} {userSelections.userID?.family}
         </h3> */}
         <p>Total Cost: ${userSelections.totalCost}</p>
         {/* <h4 className="mt-2 font-semibold">Selections:</h4> */}
-        <ul className="list-disc pl-5">
-          {userSelections.selections.map((item, idx) => (
-            <li key={idx} className="mb-2">
-              <div className="p-2 bg-white rounded shadow">
-                <p>{item.optionID?.name || 'N/A'} Price per Hour: ${item.optionID?.pricePerHour || 0} for {item.hours} Hours</p>
-                <p>Total Price: ${item.totalPrice}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <h4 className="mt-2 font-semibold">Custom Requests:</h4>
-        <ul className="list-disc pl-5">
-          {userSelections.customRequests?.map((request, idx) => (
-            <li key={idx}>
-              {request.description || 'No description'} - {request.details || 'No details'}
-            </li>
-          )) || <p>No custom requests found.</p>}
-        </ul>
-      </div>
+        {userSelections.selections.map((item, idx) => (
+          <div key={idx} className="mb-4 p-2 bg-white rounded shadow">
+          <div className="flex items-center space-x-4">
+            <p className="font-medium">{item.optionID?.name || 'N/A'}</p>
+            <p style={{ fontSize: "0.6rem", color: "#555" }}>
+               ${item.optionID?.pricePerHour || 0} per Hour
+            </p>
+            <p>For {item.hours} Hours</p>
+          </div>
+          <p style={{ fontSize: "0.6rem", color: "#555" }}>Total: ${item.totalPrice}</p>
+        </div>
+      ))}
+      <h4 className="mt-4 font-semibold">Custom Requests:</h4>
+      {userSelections.customRequests?.map((request, idx) => (
+        <div key={idx} className="mb-2">
+          <p>{request.description || 'No description'}</p>
+          <p style={{ fontSize: "0.8rem", color: "#555" }}>{request.details || 'No details'}</p>
+        </div>
+      )) || <p>No custom requests found.</p>}
     </div>
+  </div>
   );
 };
 

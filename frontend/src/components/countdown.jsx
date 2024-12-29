@@ -38,7 +38,7 @@ const Countdown = ({ weddingDate }) => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center mb-6">Countdown to Wedding</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">The Countdown to Us</h1>
       <div className="flex justify-center gap-4">
 
         <div className="relative p-4 rounded-lg w-24 h-24 bg-gradient-to-b from-gray-100 to-gray-200 shadow-md text-center">
