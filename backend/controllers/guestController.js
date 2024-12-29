@@ -19,7 +19,7 @@ export const createGuest = async (req, res) => {
     }
 
     // Check for existing email
-    const existingGuest = await Guest.findOne({ email });
+    const existingGuest = await Guest.findOne({ email, userID });
     if (existingGuest) {
       return res.status(400).json({ message: "Email already exists. Please use a different email." });
     }
