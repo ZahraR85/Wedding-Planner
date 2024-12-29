@@ -8,7 +8,7 @@ const gallerySchema = new Schema(
     description: { type: String, trim: true },
     category: {
       type: String,
-      enum: ['Venue', 'Makeup', 'Photography', 'Wedding-dress', 'Musician'],
+      enum: ['Venue', 'Makeup', 'Photography', 'Wedding-dress', 'Musician', 'Cake'],
       required: true,
     },
   },

@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 //import SignOut from '../Auth/SignOut';
 import logo from '../images/logo8.jpg';
+import { FaHome } from 'react-icons/fa'; // Home icon
+import { FaUser } from 'react-icons/fa'; // User icon for Sign-in
+import { FaShoppingCart } from 'react-icons/fa'; // Shopping cart icon
 
 const Navbar = () => {
   const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut } = useAppContext();
@@ -28,10 +31,11 @@ const Navbar = () => {
       >
         {/* Left side: Links */}
         <ul className="flex font-bold items-center space-x-12">
-          <li>
-            <Link to="/" className="hover:underline">
-              Home
-            </Link>
+        <li>
+          <Link to="/" className="flex items-center space-x-1 hover:underline">
+              <FaHome className="text-xl" />
+              <span>Home</span>
+          </Link>
           </li>
           <li>
             <Link to="/dashboard" className="hover:underline">
@@ -55,13 +59,13 @@ const Navbar = () => {
               <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
                 <ul className="flex flex-col items-start  space-y-2">
                   <li className="hover:underline">
+                    <Link to="/userinfo"> UserInformation </Link>
+                  </li>
+                  <li className="hover:underline">
                     <Link to="/Guests">Invitation of Guests</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link to="/userinfo"> UserInfo </Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link to="/VenueSelections">VenueSelection</Link>
+                    <Link to="/VenueSelections">Book your Venue</Link>
                   </li>
                   <li className="hover:underline">
                     <Link to="/Catering">Catering</Link>
@@ -120,16 +124,18 @@ const Navbar = () => {
             </li>
           )}
           <li>
-            <Link to="/cart" className="hover:underline">
-              Shopping Cart
-            </Link>
+          <Link to="/cart" className="flex items-center space-x-1 hover:underline">
+            <FaShoppingCart className="text-xl" />
+            <span>Shopping Cart</span>
+          </Link>
           </li>
           <li>
             {isAuthenticated ? (
               <button onClick={signOut}>Sign Out</button>
             ) : (
-              <Link to="/signin" className="hover:underline focus:outline-none">
-                Signin | Register
+              <Link to="/signin" className="flex items-center space-x-1 hover:underline focus:outline-none">
+                <FaUser className="text-xl" />
+                <span>Signin | Register</span>  
               </Link>
             )}
           </li>
