@@ -10,6 +10,7 @@ import UserInformation from "../components/userinformation";
 import userinfoBackground from '../images/userinfo.png';
 import musicBackground from '../images/music1.png';
 import makeupBackground from '../images/makeup.png';
+import countdownBackground from '../images/downcount5.png';
 
 const Dashboard = () => {
   const { userId, isAuthenticated } = useAppContext();
@@ -53,12 +54,6 @@ const Dashboard = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       {/* Left Column */}
       <div className="flex flex-col gap-4">
-        {/* Countdown */}
-        <div className="p-4 rounded shadow bg-blue-100">
-          <Countdown weddingDate={weddingDate} />
-        </div>
-
-
 
         {/* User Information with Background */}
         <div
@@ -69,57 +64,65 @@ const Dashboard = () => {
             backgroundPosition: "center",
           }}
         >
-          
-            <UserInformation userId={userId} setWeddingDate={setWeddingDate} />
-        
+          <UserInformation userId={userId} setWeddingDate={setWeddingDate} />
         </div>
 
-        <div className="flex justify-center items-center p-4 rounded shadow h-[300px] md:h-[400px]"
+
+        {/* Music */}
+        <div className="flex justify-center items-center p-4 rounded shadow w-full"
           style={{
-            backgroundImage: `url(${makeupBackground})`,
+            backgroundImage: `url(${musicBackground})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            height: "400px", // Fixed height to prevent overflow
+            maxWidth: "100%", // Ensure no horizontal overflow
+            margin: "0 auto", // Center the div horizontally
+            overflow: "hidden", // Hide overflow content
           }}>
-          {/* Makeup Features */}
-
-          <MakeupUser userId={userId} />
+          <div className="p-4 bg-opacity-90 rounded shadow w-full md:w-2/3 lg:w-1/2">
+            <Music userId={userId} />
+          </div>
 
         </div>
 
-        <div className="flex justify-center items-center p-4 rounded shadow h-[300px] md:h-[400px]"
-          style={{
-            backgroundImage: `url(${userinfoBackground})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}>
-          {/* Makeup Features */}
+      
 
-          <MakeupUser userId={userId} />
 
-        </div>
+
+
+
       </div>
 
       {/* Right Column */}
       <div className="flex flex-col gap-4">
 
 
-        {/* Music Features */}
-        <div className="flex justify-center items-center p-4 rounded shadow w-full"
-  style={{
-    backgroundImage: `url(${musicBackground})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    height: "400px", // Fixed height to prevent overflow
-    maxWidth: "100%", // Ensure no horizontal overflow
-    margin: "0 auto", // Center the div horizontally
-    overflow: "hidden", // Hide overflow content
-  }}>
-      <div className="p-4 bg-opacity-90 rounded shadow w-full md:w-2/3 lg:w-1/2">
-    <Music userId={userId} />
-  </div>
-
+  {/* Countdown */}
+  <div
+          className="flex justify-center items-center p-4 rounded shadow h-[300px] md:h-[400px]"
+          style={{
+            backgroundImage: `url(${countdownBackground})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <Countdown weddingDate={weddingDate} />
         </div>
+
+
+
+        {/* Makeup  */}
+        <div className="flex justify-center items-center p-4 rounded shadow h-[300px] md:h-[400px]"
+          style={{
+            backgroundImage: `url(${makeupBackground})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}>
+          <MakeupUser userId={userId} />
+        </div>
+
+
       </div>
     </div>
   );

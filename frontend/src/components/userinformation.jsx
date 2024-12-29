@@ -37,27 +37,25 @@ const UserInformation = ({ userId, setWeddingDate }) => {
 
   return (
     <div className="user-info">
-      <h2 className="text-2xl font-bold mb-4">your Information</h2>
+      {/* <h2 className="text-2xl font-bold mb-4">your Information</h2> */}
 
 
+      <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80   space-y-4 p-4  ">
 
-      <div className="p-4 bg-gray-100 rounded shadow mb-4">
-        <p><strong>Bride Name:</strong> {userInfo.brideName || "N/A"}</p>
-        <p><strong>Groom Name:</strong> {userInfo.groomName || "N/A"}</p>
-        <p><strong>Wedding Date:</strong> {userInfo.weddingDate ? new Date(userInfo.weddingDate).toLocaleDateString() : "N/A"}</p>
-        <p><strong>Bride's Birthday:</strong> {userInfo.brideBirthday ? new Date(userInfo.brideBirthday).toLocaleDateString() : "N/A"}</p>
-        <p><strong>Groom's Birthday:</strong> {userInfo.groomBirthday ? new Date(userInfo.groomBirthday).toLocaleDateString() : "N/A"}</p>
-        <p><strong>Story:</strong> {userInfo.story || "No story provided."}</p>
-        <p><strong>Feedback:</strong> {userInfo.feedback || "No feedback provided."}</p>
+        <p style={{ fontSize: "1.5rem", fontWeight: "bold", textAlign: "center", textTransform: "uppercase", }}>
+          {userInfo.brideName || "N/A"} <span>&</span> {userInfo.groomName || "N/A"}
+        </p>
+
+        <p><strong>The Day We Will Begin Forever</strong> {userInfo.weddingDate ? new Date(userInfo.weddingDate).toLocaleDateString() : "N/A"}</p>
+
+        <p><strong>Our Story:</strong> {userInfo.story || "No story provided."}</p>
+
         <p><strong>Last Updated:</strong> {userInfo.updatedAt ? new Date(userInfo.updatedAt).toLocaleString() : "N/A"}</p>
+
+        {/* <p><strong>Feedback:</strong> {userInfo.feedback || "No feedback provided."}</p> */}
+        {/* <p><strong>Bride's Birthday:</strong> {userInfo.brideBirthday ? new Date(userInfo.brideBirthday).toLocaleDateString() : "N/A"}</p> */}
+        {/* <p><strong>Groom's Birthday:</strong> {userInfo.groomBirthday ? new Date(userInfo.groomBirthday).toLocaleDateString() : "N/A"}</p> */}
       </div>
-
-
-
-
-
-
-
 
     </div>
 

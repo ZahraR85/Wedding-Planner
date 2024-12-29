@@ -42,42 +42,42 @@ const UserSelections = ({ userId }) => {
   // Render user selections
   return (
     <div className="user-selections">
-     
-      <div className="p-4 bg-gray-100 rounded shadow mb-4">
+
+      <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80   space-y-4 p-4  ">
         {/* User Information */}
         {/* <h3 className="text-lg font-semibold">
           User: {userSelections.userID?.name || "Unknown"} 
           ({userSelections.userID?.email || "No Email Available"})
         </h3> */}
-        <h2 className="text-2xl font-bold mb-4">Makeup features</h2>
+        <h2 className="text-3xl font-bold text-center mb-6">We selected these Makeup features</h2>
         <p>Total Cost: ${userSelections.total || 0}</p>
 
         {/* Selections */}
-       
-        <ul className="list-disc pl-5">
+
+        <ul className="pl-5 space-y-2">
           <li>
-            Makeup: {userSelections.makeup?.selected ? "Selected" : "Not Selected"} 
-            (${userSelections.makeup?.price || 0})
+            {userSelections.makeup?.selected ? "✔️" : "❌"}
+            Makeup    <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.makeup?.price || 0})</span>
           </li>
           <li>
-            Dress: {userSelections.dress?.selected ? "Selected" : "Not Selected"} 
-            (${userSelections.dress?.price || 0})
+            {userSelections.dress?.selected ? "✔️" : "❌"}
+            Dress   <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.dress?.price || 0})</span>
           </li>
           <li>
-            Nail: {userSelections.nail?.selected ? "Selected" : "Not Selected"} 
-            (${userSelections.nail?.price || 0})
+            {userSelections.nail?.selected ? "✔️" : "❌"}
+            Nail  <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.nail?.price || 0})</span>
           </li>
           <li>
-            Hairstyle: {userSelections.hairstyle?.selected ? "Selected" : "Not Selected"} 
-            (${userSelections.hairstyle?.price || 0})
+            {userSelections.hairstyle?.selected ? "✔️" : "❌"}
+            Hairstyle  <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.hairstyle?.price || 0})</span>
           </li>
           <li>
-            Shoes: {userSelections.shoes?.selected ? "Selected" : "Not Selected"} 
-            (${userSelections.shoes?.price || 0})
+            {userSelections.shoes?.selected ? "✔️" : "❌"}
+            Shoes   <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.shoes?.price || 0})</span>
           </li>
           <li>
-            Special: {userSelections.special?.selected ? "Selected" : "Not Selected"} 
-            (${userSelections.special?.price || 0})
+            {userSelections.special?.selected ? "✔️" : "❌"}
+            Special  <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.special?.price || 0})</span>
           </li>
         </ul>
 
