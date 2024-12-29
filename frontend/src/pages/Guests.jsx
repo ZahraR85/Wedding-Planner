@@ -44,6 +44,7 @@ function Guest() {
   
     try {
       const requestData = {
+        userID: userId,
         guestName: formData.guestName,
         numberOfPersons: formData.numberOfPersons,
         phone: formData.phone,
@@ -69,7 +70,13 @@ function Guest() {
           "http://localhost:3001/guests",
           requestData
         );
-        setGuestList([...guestList, response.data.feature]);
+        // setGuestList([...guestList, response.data.feature]);
+        setGuestList((prevList) => {
+          const updatedList = [...prevList, response.data.feature];
+          // Navigate to the last page
+          setCurrentPage(Math.ceil(updatedList.length / guestsPerPage));
+          return updatedList;
+        });
         toast.success("Guest created successfully!");
       }
   
@@ -148,7 +155,7 @@ function Guest() {
       setUpdatingGuestId(id);
     }
   };
-
+  const totalPages = Math.ceil(guestList.length / guestsPerPage);
   return (
     <div>
     <ToastContainer />
@@ -281,20 +288,31 @@ function Guest() {
 
 </div>
 <div className="flex justify-center mt-4">
-  <button
-    onClick={() => paginate(currentPage - 1)}
-    disabled={currentPage === 1}
-    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
-  >
-    Previous
-  </button>
-  <button
-    onClick={() => paginate(currentPage + 1)}
-    disabled={currentPage === Math.ceil(guestList.length / guestsPerPage)}
-    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
-  >
-    Next
-  </button>
+<button
+      onClick={() => paginate(currentPage - 1)}
+      disabled={currentPage === 1}
+      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+    >
+      Previous
+    </button>
+    {[...Array(totalPages).keys()].map((page) => (
+      <button
+        key={page + 1}
+        onClick={() => paginate(page + 1)}
+        className={`px-4 py-2 ${
+          currentPage === page + 1 ? "bg-gray-500" : "bg-gray-300"
+        } text-gray-700 rounded-md hover:bg-gray-400`}
+      >
+        {page + 1}
+      </button>
+    ))}
+    <button
+      onClick={() => paginate(currentPage + 1)}
+      disabled={currentPage === totalPages}
+      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+    >
+      Next
+    </button>
 </div>
 </div>
 </div>

@@ -1,6 +1,10 @@
-import Guest from "../models/guest.js";export const createGuest = async (req, res) => {
+import Guest from "../models/guest.js";
+
+
+export const createGuest = async (req, res) => {
   try {
     const { userID, guestName, numberOfPersons, phone, address, answerStatus, email } = req.body;
+    console.log(req.body);
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
@@ -83,10 +87,10 @@ export const updateGuest = async (req, res) => {
     }
 
     // Check if another guest already uses the same email
-    const existingGuest = await Guest.findOne({ email, _id: { $ne: id } });
-    if (existingGuest) {
-      return res.status(400).json({ message: "Email already exists. Please use a different email." });
-    }
+    // const existingGuest = await Guest.findOne({ email, _id: { $ne: id } });
+    // if (existingGuest) {
+    //   return res.status(400).json({ message: "Email already exists. Please use a different email." });
+    // }
 
     const updatedGuest = await Guest.findByIdAndUpdate(
       id,
