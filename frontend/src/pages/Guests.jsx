@@ -269,8 +269,8 @@ function Guest() {
                 <tr className="bg-BgKhaki text-BgFont font-bold">
                   <th className="px-4 py-3">Guest Name</th>
                   <th className="px-4 py-3">Number</th>
-                  <th className="px-4 py-3">Phone</th>
-                  <th className="px-4 py-3">Address of Guests for card sending</th>
+                  <th className="px-4 py-3">Email</th>
+                  <th className="px-4 py-3">Address for card sending</th>
                   <th className="px-4 py-3">Answer Status</th>
                   <th className="px-4 py-3">Action</th>
                 </tr>
@@ -280,7 +280,7 @@ function Guest() {
                   <tr key={guest._id} className="hover:bg-gray-50 transition duration-200 text-center">
                     <td className="border px-4 py-2">{guest.guestName}</td>
                     <td className="border px-4 py-2">{guest.numberOfPersons}</td>
-                    <td className="border px-4 py-2">{guest.phone}</td>
+                    <td className="border px-4 py-2">{guest.email}</td>
                     <td className="border px-4 py-2">{guest.address}</td>
                     <td className="border px-4 py-2">{guest.answerStatus}</td>
                     <td className="border px-4 py-2 flex gap-2 flex justify-center items-center">
@@ -294,8 +294,8 @@ function Guest() {
                       </button>
                       <button
                         onClick={() => handleSendInvitation(guest.email)}
-                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
-                        Send Invitation
+                        className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
+                        Invite
                       </button>
                     </td>
                   </tr>
