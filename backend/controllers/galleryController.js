@@ -61,28 +61,20 @@ export const deleteGalleryImage = async (req, res) => {
 // Update a gallery image
 export const updateGalleryImage = async (req, res) => {
   const { id } = req.params;
-  const { imageName, description, userId, category } = req.body;
+  const { userId, imageName, description, category, keepExistingImage } = req.body;
 
-  if (!userId || !category || !imageName) {
-    return res.status(400).json({ message: 'User ID, category, and image name are required' });
+  const updateData = { userId, imageName, description, category };
+
+  if (keepExistingImage !== 'true' && req.file) {
+    updateData.imagePath = `/uploads/${req.file.filename}`;
   }
 
   try {
-    const updateData = { imageName, description, category };
-
-    if (req.file) {
-      updateData.imagePath = req.file.path;  // Update with new file if uploaded
-    }
-
     const updatedImage = await Gallery.findByIdAndUpdate(id, updateData, { new: true });
-
-    if (!updatedImage) {
-      return res.status(404).json({ message: 'Image not found' });
-    }
-
-    res.status(200).json(updatedImage);
+    res.json(updatedImage);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error updating image:', error);
+    res.status(500).send('Error updating image');
   }
 };
 

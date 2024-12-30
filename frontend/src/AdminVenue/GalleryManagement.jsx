@@ -87,8 +87,8 @@ const GalleryManagement = () => {
         throw new Error('No token found in localStorage');
       }
   
-      if (!userId || !category || !imagePath) {
-        alert('All fields are required to update an image');
+      if (!userId || !category) {
+        alert('User ID and category are required to update an image');
         return;
       }
   
@@ -97,7 +97,12 @@ const GalleryManagement = () => {
       formData.append('imageName', imageName);
       formData.append('description', description);
       formData.append('category', category);
-      if (imagePath) formData.append('image', imagePath); // Only include file if selected
+  
+      if (imagePath) {
+        formData.append('image', imagePath);
+      } else {
+        formData.append('keepExistingImage', true); // Tell backend to keep the current image
+      }
   
       await axios.put(`http://localhost:3001/galleries/${editingImageId}`, formData, {
         headers: {
@@ -117,7 +122,7 @@ const GalleryManagement = () => {
       console.error('Error updating image:', error);
       alert('Failed to update image');
     }
-  };
+  };  
   
   const handleDeleteImage = async (id) => {
     try {
