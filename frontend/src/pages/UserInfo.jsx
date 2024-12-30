@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const UserInfoForm = () => {
   const { userId, isAuthenticated } = useAppContext();
@@ -21,7 +24,7 @@ const UserInfoForm = () => {
   // Redirect unauthenticated users
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("You must sign in to access this page.");
+      toast.error("You must sign in to access this page.");
       navigate("/signin");
     } else {
       checkExistingForm();
@@ -34,7 +37,7 @@ const UserInfoForm = () => {
     try {
       const response = await axios.get('http://localhost:3001/userinfoes');
       const existingData = response.data.find((entry) => entry.userID === userId);
-  
+
       if (existingData) {
         // Format date fields before setting form data
         setFormData({
@@ -45,12 +48,14 @@ const UserInfoForm = () => {
         });
         setIsUpdating(true);
         // alert("Form already exists. Ready to update.");
+        toast.info("Form already exists. Ready to update.");
       }
     } catch (error) {
       console.error("Error checking existing form:", error);
+      toast.error("Error fetching existing data.");
     }
   };
-  
+
 
   // Handle input changes
   const handleChange = (e) => {
@@ -67,164 +72,139 @@ const UserInfoForm = () => {
 
       if (isUpdating) {
         await axios.put(`http://localhost:3001/userinfoes/${formData._id}`, payload);
-        alert("Form updated successfully.");
+        toast.success("Form updated successfully.");
       } else {
         await axios.post("http://localhost:3001/userinfoes", payload);
-        alert("Form created successfully.");
+        toast.success("Form created successfully.");
       }
     } catch (error) {
       console.error("Error saving form:", error);
-      alert("Something went wrong.");
+      toast.error("Something went wrong.");
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>{isUpdating ? "Update Your Information" : "Create Your Information"}</h2>
-      <form style={styles.form} onSubmit={handleSubmit}>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Bride Name:</label>
-          <input
-            type="text"
-            name="brideName"
-            value={formData.brideName}
-            onChange={handleChange}
-            style={styles.input}
-            required
-          />
-        </div>
+    <div >
+      <ToastContainer />
 
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Groom Name:</label>
-          <input
-            type="text"
-            name="groomName"
-            value={formData.groomName}
-            onChange={handleChange}
-            style={styles.input}
-            required
-          />
-        </div>
 
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Wedding Date:</label>
-          <input
-            type="date"
-            name="weddingDate"
-            value={formData.weddingDate}
-            onChange={handleChange}
-            style={styles.input}
-            required
-          />
-        </div>
+      <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/sg98vGsB/Screenshot-2024-12-30-171841.png')]">
+        <h2 className="text-3xl font-bold text-center text-BgFont ">{isUpdating ? "Update Your Information" : "Create Your Information"}</h2>
+        <br />   <br />
+        <form onSubmit={handleSubmit}>
+          {/* Two-column inputs */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Story:</label>
-          <textarea
-            name="story"
-            value={formData.story}
-            onChange={handleChange}
-            style={styles.textarea}
-            rows="3"
-          ></textarea>
-        </div>
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Bride Name:</label>
+              <input
+                type="text"
+                name="brideName"
+                value={formData.brideName}
+                onChange={handleChange}
+                placeholder="Bride Name"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+            </div>
 
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Bride Birthday:</label>
-          <input
-            type="date"
-            name="brideBirthday"
-            value={formData.brideBirthday}
-            onChange={handleChange}
-            style={styles.input}
-          />
-        </div>
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Groom Name:</label>
+              <input
+                type="text"
+                name="groomName"
+                value={formData.groomName}
+                onChange={handleChange}
+                placeholder="Groom Name"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+            </div>
 
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Groom Birthday:</label>
-          <input
-            type="date"
-            name="groomBirthday"
-            value={formData.groomBirthday}
-            onChange={handleChange}
-            style={styles.input}
-          />
-        </div>
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Wedding Date:</label>
+              <input
+                type="date"
+                name="weddingDate"
+                value={formData.weddingDate}
+                onChange={handleChange}
+                placeholder="Wedding Date"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+            </div>
 
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Feedback:</label>
-          <textarea
-            name="feedback"
-            value={formData.feedback}
-            onChange={handleChange}
-            style={styles.textarea}
-            rows="3"
-          ></textarea>
-        </div>
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Bride Birthday:</label>
+              <input
+                type="date"
+                name="brideBirthday"
+                value={formData.brideBirthday}
+                onChange={handleChange}
+                placeholder="Bride Birthday"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+              />
+            </div>
 
-        <button type="submit" style={styles.button}>
-          {isUpdating ? "Update" : "Create"}
-        </button>
-      </form>
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Groom Birthday:</label>
+              <input
+                type="date"
+                name="groomBirthday"
+                value={formData.groomBirthday}
+                onChange={handleChange}
+                placeholder="Groom Birthday"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+              />
+            </div>
+
+          </div>
+          <br />   <br />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Story:</label>
+              <textarea
+                name="story"
+                value={formData.story}
+                onChange={handleChange}
+                placeholder="Our story"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                rows="8"
+              ></textarea>
+            </div>
+
+            <div>
+              <label className="text-1xl font-bold text-center text-BgFont ">Feedback:</label>
+              <textarea
+                name="feedback"
+                value={formData.feedback}
+                onChange={handleChange}
+                placeholder="Feedback"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                rows="8"
+              ></textarea>
+            </div>
+
+          </div>
+          <br />   <br />
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="w-full md:w-1/2 bg-BgPinkMiddle text-BgFont font-bold py-4 px-4 rounded-lg hover:bg-BgPinkDark"
+            >
+              {isUpdating ? "Update" : "Create"}
+            </button>
+          </div>
+
+
+        </form>
+
+      </div>
+
+
     </div>
   );
 };
 
-// Inline Styles
-const styles = {
-  container: {
-    maxWidth: "600px",
-    margin: "2rem auto",
-    padding: "1.5rem",
-    borderRadius: "10px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    backgroundColor: "#f9f9f9",
-  },
-  heading: {
-    textAlign: "center",
-    marginBottom: "1.5rem",
-    color: "#333",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-  },
-  inputGroup: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  label: {
-    marginBottom: "0.5rem",
-    fontWeight: "bold",
-    color: "#555",
-  },
-  input: {
-    padding: "0.7rem",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    fontSize: "1rem",
-  },
-  textarea: {
-    padding: "0.7rem",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    fontSize: "1rem",
-    resize: "none",
-  },
-  button: {
-    padding: "0.7rem",
-    border: "none",
-    borderRadius: "5px",
-    backgroundColor: "#007BFF",
-    color: "#fff",
-    fontSize: "1.1rem",
-    cursor: "pointer",
-    transition: "background 0.3s ease",
-  },
-  buttonHover: {
-    backgroundColor: "#0056b3",
-  },
-};
 
 export default UserInfoForm;

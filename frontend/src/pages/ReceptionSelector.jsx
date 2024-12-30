@@ -1,17 +1,60 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext"; // Import AppContext
+import { useAppContext } from "../context/AppContext"; 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const features = [
-  { name: "Starter", price: 5, description: "This is the starter feature description." },
-  { name: "MainCourse", price: 15, description: "This is the main course feature description." },
-  { name: "Dessert", price: 6, description: "This is the dessert feature description." },
-  { name: "ColdDrink", price: 7, description: "This is the cold drink feature description." },
-  { name: "CafeBar", price: 4, description: "This is the cafe bar feature description." },
-  { name: "Fruiets", price: 9, description: "This is the fruits feature description." },
-  { name: "Cake", price: 3, description: "This is the cake feature description." },
-  { name: "Waiter", price: 20, description: "This is the waiter feature description." },
+  {
+    name: "Starter",
+    price: 5,
+    description:
+      "Contains Onion Rings, Chicken Wings, Fish and Chips, Mozzarella Sticks, and Stuffed Mushrooms. Available in classic, spicy, gluten-free, keto-friendly, and kids’ special models.",
+  },
+  {
+    name: "MainCourse",
+    price: 15,
+    description:
+      "Includes Grilled Chicken Breast, Beef Steak, Vegetarian Lasagna, Shrimp Alfredo, and Lamb Chops. Options available are gourmet, low-calorie, vegan, BBQ-style, and international fusion.",
+  },
+  {
+    name: "Dessert",
+    price: 6,
+    description:
+      "Features Chocolate Fudge Cake, Strawberry Cheesecake, Ice Cream Sundaes, Tiramisu, and Crème Brûlée. Available in sugar-free, classic, seasonal fruits, mini-portions, and deluxe servings.",
+  },
+  {
+    name: "ColdDrink",
+    price: 7,
+    description:
+      "Offers Cola, Lemonade, Iced Tea, Fruit Punch, and Sparkling Water. Variants include diet, classic, natural sweeteners, carbonated, and alcohol-free mocktail mixes.",
+  },
+  {
+    name: "CafeBar",
+    price: 4,
+    description:
+      "Provides Espresso, Cappuccino, Latte, Hot Chocolate, and Iced Coffee. Choose from regular, decaf, organic, blended flavors (vanilla, hazelnut), and extra-strong options.",
+  },
+  {
+    name: "Fruiets",
+    price: 9,
+    description:
+      "Features Fresh Apple Slices, Banana Halves, Orange Wedges, Berries Mix, and Exotic Fruit Platters. Available in seasonal selections, tropical medleys, organic, dried fruits mix, and cocktail garnish sets.",
+  },
+  {
+    name: "Cake",
+    price: 3,
+    description:
+      "Includes Vanilla Sponge, Chocolate Truffle, Red Velvet, Carrot Cake, and Black Forest. Variants include personalized designs, mini cupcakes, layered cakes, gluten-free, and special occasion cakes.",
+  },
+  {
+    name: "Waiter",
+    price: 20,
+    description:
+      "Services include Table Serving, Buffet Assistance, Beverage Refills, Special Requests Handling, and Cleanup Support. Models offered are standard service, premium service, international cuisine experts, event-specific attire, and multilingual waitstaff.",
+  },
 ];
 
 const ReceptionSelector = () => {
@@ -36,7 +79,7 @@ const ReceptionSelector = () => {
   // Redirect to SignIn if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("Please sign in to access this page.");
+      toast.warn("Please sign in to access this page.");
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -57,6 +100,7 @@ const ReceptionSelector = () => {
           }
         } catch (error) {
           console.error("Error fetching reception data:", error);
+          toast.error("please add your entertain");
         }
       };
       fetchReceptionData();
@@ -89,24 +133,25 @@ const ReceptionSelector = () => {
       });
   
       if (response.status === 200 || response.status === 201) {
-        alert(`Reception ${isEditMode ? "updated" : "created"} successfully!`);
+        toast.success(`entertain ${isEditMode ? "updated" : "created"} successfully!`);
         if (!isEditMode) {
           setIsEditMode(true); // Switch to edit mode after creating
         }
       } else {
-        alert("Failed to save data!");
+        toast.error("Failed to save data!");
       }
     } catch (error) {
       console.error("Error saving data:", error);
-      alert("Failed to save data!");
+      toast.error("Failed to save data!");
     }
   };
   
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-cover bg-center">
       <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-        <p className="text-gray-600 text-center mb-8">{description}</p>
-        <h1 className="text-2xl font-bold m-10">Reception Features</h1>
+      <ToastContainer />
+        <p className=" text-2xl text-BgFont  font-bold m-10 text-center mb-8">{description}</p>
+        <h1 className="text-3xl   font-bold m-10">Reception Features</h1>
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
             <tr>

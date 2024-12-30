@@ -12,12 +12,48 @@ import "../App.css";
 
 
 const features = [
-  { id: "makeup", label: "Makeup", price: 400, description: "Professional makeup for the bride and groom." },
-  { id: "shoes", label: "Shoes", price: 100, description: "Elegant shoes for the perfect look." },
-  { id: "dress", label: "Dress", price: 500, description: "Designer dress for the big day." },
-  { id: "nail", label: "Nail", price: 200, description: "Beautiful nail art for the bride." },
-  { id: "hairstyle", label: "Hairstyle", price: 400, description: "Stunning hairstyle for the bride and groom." },
-  { id: "special", label: "Special", price: 300, description: "Special package with unique add-ons." },
+  {
+    id: "makeup",
+    label: "Makeup",
+    price: 400,
+    description:
+      "Professional makeup for the bride and groom, including high-definition airbrush techniques, contouring, and personalized palettes tailored to skin tone and style. Includes trials and touch-ups throughout the day.",
+  },
+  {
+    id: "shoes",
+    label: "Shoes",
+    price: 100,
+    description:
+      "Elegant shoes for the perfect look, available in custom designs and a variety of styles including stilettos, flats, and classic formal shoes. Comfort and style ensured for all-day wear.",
+  },
+  {
+    id: "dress",
+    label: "Dress",
+    price: 500,
+    description:
+      "Designer dress for the big day, with options for traditional gowns, modern silhouettes, and custom-made designs. Includes fitting sessions and fabric customization for a flawless fit.",
+  },
+  {
+    id: "nail",
+    label: "Nail",
+    price: 200,
+    description:
+      "Beautiful nail art for the bride, offering services like gel extensions, intricate designs, and a wide range of colors to complement the wedding theme. Includes a consultation for unique styling.",
+  },
+  {
+    id: "hairstyle",
+    label: "Hairstyle",
+    price: 400,
+    description:
+      "Stunning hairstyles for the bride and groom, including updos, curls, and sleek styles. Each style is customized based on face shape, outfit, and personal preference. Includes pre-event trials.",
+  },
+  {
+    id: "special",
+    label: "Special",
+    price: 300,
+    description:
+      "Special package with unique add-ons like skincare treatments, personalized gift boxes, or additional beauty services for family members. Perfect for an all-inclusive wedding experience.",
+  },
 ];
 
 const MakeupSelector = () => {
@@ -164,7 +200,7 @@ const MakeupSelector = () => {
         <DescriptionBox description={currentDescription} />
         <form className="space-y-4 font-bold">
           {features.map((feature) => (
-            <div key={feature.id} className="flex items-center justify-between">
+            <div key={feature.id} className="flex items-center text-BgFont justify-between">
               <div
                 onMouseEnter={() => setCurrentDescription(feature.description)}
                 onMouseLeave={() => setCurrentDescription("")}
