@@ -3,8 +3,8 @@ import { Schema, model } from 'mongoose';
 const gallerySchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    imageName: {type: String, required: true},
-    imageUrl: { type: String, required: true },
+    imageName: { type: String, required: true },
+    imagePath: { type: String, required: true }, // Updated to store file path
     description: { type: String, trim: true },
     category: {
       type: String,

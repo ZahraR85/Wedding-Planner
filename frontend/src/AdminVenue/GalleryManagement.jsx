@@ -8,34 +8,31 @@ const GalleryManagement = () => {
   const IMAGES_PER_PAGE = 10; // Number of images per page
 
   const [imageName, setImageName] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imagePath, setImagePath] = useState(null); // Track the uploaded image file
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [editingImageId, setEditingImageId] = useState(null);
   const { userId } = useAppContext();
 
-  // Fetch all images
   const fetchImages = async () => {
     try {
       const response = await axios.get('http://localhost:3001/galleries');
+      console.log('Fetched images:', response.data); // Log the fetched images
       setAllImages(response.data); // Update the state with the fetched images
     } catch (error) {
       console.error('Error fetching images:', error);
     }
   };
 
-  // Fetch images when component mounts
   useEffect(() => {
     fetchImages();
   }, []);
 
-  // Get images for the current page
   const currentImages = allImages.slice(
     (currentPage - 1) * IMAGES_PER_PAGE,
     currentPage * IMAGES_PER_PAGE
   );
 
-  // Total number of pages
   const totalPages = Math.ceil(allImages.length / IMAGES_PER_PAGE);
 
   const handlePageChange = (newPage) => {
@@ -44,7 +41,6 @@ const GalleryManagement = () => {
     }
   };
 
-  // Add a new image
   const handleAddImage = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -52,26 +48,30 @@ const GalleryManagement = () => {
         console.error('No token found');
         throw new Error('No token found in localStorage');
       }
-
-      if (!userId || !category) {
-        alert('User ID and category are required to add an image');
+  
+      if (!userId || !category || !imagePath) {
+        alert('User ID, category, and image are required to add an image');
         return;
       }
-
-      await axios.post(
-        'http://localhost:3001/galleries',
-        { userId, imageName, imageUrl, description, category },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  
+      const formData = new FormData();
+      formData.append('imageName', imageName);
+      formData.append('image', imagePath); // Ensure `imagePath` is a file object from an input
+      formData.append('description', description);
+      formData.append('category', category);
+      formData.append('userId', userId);
+  
+      await axios.post('http://localhost:3001/galleries', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
       alert('Image added successfully');
-      fetchImages(); // Reload images after adding
+      fetchImages();
       setImageName('');
-      setImageUrl('');
+      setImagePath(null);
       setDescription('');
       setCategory('');
     } catch (error) {
@@ -79,36 +79,37 @@ const GalleryManagement = () => {
       alert('Failed to add image');
     }
   };
-
-  // Handle updating an image
+  
   const handleUpdateImage = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        console.error('No token found');
         throw new Error('No token found in localStorage');
       }
-
-      if (!userId || !category) {
-        console.error('No user ID found');
-        alert('User ID and category are required to update an image');
+  
+      if (!userId || !category || !imagePath) {
+        alert('All fields are required to update an image');
         return;
       }
-
-      await axios.put(
-        `http://localhost:3001/galleries/${editingImageId}`,
-        { userId, imageName, imageUrl, description, category },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  
+      const formData = new FormData();
+      formData.append('userId', userId);
+      formData.append('imageName', imageName);
+      formData.append('description', description);
+      formData.append('category', category);
+      if (imagePath) formData.append('image', imagePath); // Only include file if selected
+  
+      await axios.put(`http://localhost:3001/galleries/${editingImageId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       alert('Image updated successfully');
       fetchImages(); // Reload images after updating
       setImageName('');
-      setImageUrl('');
+      setImagePath(null);
       setDescription('');
       setCategory('');
       setEditingImageId(null); // Clear editing state
@@ -117,8 +118,7 @@ const GalleryManagement = () => {
       alert('Failed to update image');
     }
   };
-
-  // Handle deleting an image
+  
   const handleDeleteImage = async (id) => {
     try {
       const token = localStorage.getItem('token');
@@ -134,13 +134,12 @@ const GalleryManagement = () => {
     }
   };
 
-  // Set the current image for editing
   const handleEditClick = (image) => {
     setEditingImageId(image._id);
     setImageName(image.imageName);
-    setImageUrl(image.imageUrl);
     setDescription(image.description);
     setCategory(image.category);
+    setImagePath(null); // Clear file input on edit
   };
 
   return (
@@ -159,10 +158,12 @@ const GalleryManagement = () => {
             className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
           />
           <input
-            type="text"
-            placeholder="Image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              console.log(file); // Log the selected file to see if it's being captured
+              setImagePath(file); // Set the selected file to state
+            }}
             className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
           />
           <textarea
@@ -211,7 +212,7 @@ const GalleryManagement = () => {
               key={image._id}
               className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
             >
-              <img src={image.imageUrl} alt={image.description} className="w-full h-48 object-cover" />
+              <img src={`http://localhost:3001${image.imagePath}`} alt={image.description} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <p className="text-BgFont font-bold">{image.imageName}</p>
                 <p className="text-BgFont">{image.description}</p>

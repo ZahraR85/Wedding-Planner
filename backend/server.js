@@ -2,6 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import morgan from "morgan";
 import dotenv from "dotenv";
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
+import multer from 'multer';
 import "./db.js"; // Import the DB connection
 import usersRouter from "./routes/users.js";
 import photographyRoutes from "./routes/photographies.js";
@@ -14,7 +18,14 @@ import userInfoRoutes from './routes/userinfoes.js';
 import venueRouter from "./routes/venueRouter.js";
 import venueSelectionRouter from './routes/venueSelectionRouter.js';
 import galleryRouter from './routes/galleryRouter.js';
+
 dotenv.config(); // Load environment variables
+
+// Ensure 'uploads' directory exists
+const uploadsDir = 'uploads';
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+} 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,6 +40,23 @@ app.use(
     credentials: true, // Allow sending cookies if needed
   })
 ); 
+// Setup file upload with Multer
+const upload = multer({
+  dest: uploadsDir,  // Directory to store images temporarily
+  limits: { fileSize: 5 * 1024 * 1024 },  // Limit file size to 5MB
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed.'));
+    }
+    cb(null, true);
+  },
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use("/users", usersRouter);
 app.use("/photographies", photographyRoutes);
 app.use("/makeups", makeupsRouter);
