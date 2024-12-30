@@ -41,7 +41,7 @@ function Guest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const requestData = {
         userID: userId,
@@ -52,7 +52,7 @@ function Guest() {
         answerStatus: formData.answerStatus,
         email: formData.email,
       };
-  
+
       if (updatingGuestId) {
         const response = await axios.put(
           `http://localhost:3001/guests/${updatingGuestId}`,
@@ -79,7 +79,7 @@ function Guest() {
         });
         toast.success("Guest created successfully!");
       }
-  
+
       setFormData({
         guestName: "",
         numberOfPersons: "",
@@ -97,7 +97,7 @@ function Guest() {
       console.error("Error submitting form:", error.message);
     }
   };
-  
+
   const fetchGuests = async () => {
     try {
       const response = await axios.get(
@@ -155,168 +155,184 @@ function Guest() {
       setUpdatingGuestId(id);
     }
   };
+
+  const handleSendInvitation = async (email) => {
+    try {
+      const response = await axios.post("http://localhost:3001/guests/send-invitation", {userId, email });
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error sending invitation:", error.response?.data?.message || error.message);
+      toast.error("Failed to send invitation.");
+    }
+  };
+
+
   const totalPages = Math.ceil(guestList.length / guestsPerPage);
   return (
     <div>
-    <ToastContainer />
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
-    {/* Overlay for controlling opacity */}
-    <div className="absolute inset-0 bg-white/50"></div>
-    <div className="relative mx-auto w-full max-w-[calc(90%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
-    {/*<div className="min-h-screen bg-BgCreme px-20 py-10">*/}
-      {/*<div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">*/}
-        <h1 className="text-3xl font-bold text-center text-BgFont ">Add your Guests here please!</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
+      <ToastContainer />
+      <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/K8V29bgB/dance-of-guests.png')]">
+        {/* Overlay for controlling opacity */}
+        <div className="absolute inset-0 bg-white/50"></div>
+        <div className="relative mx-auto w-full max-w-[calc(90%-200px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
+          {/*<div className="min-h-screen bg-BgCreme px-20 py-10">*/}
+          {/*<div className="container mx-auto bg-BgGray shadow-md rounded-lg p-8 space-y-6">*/}
+          <h1 className="text-3xl font-bold text-center text-BgFont ">Add your Guests here please!</h1>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="guestName"
+                value={formData.guestName}
+                onChange={handleChange}
+                placeholder="Guest Name"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+              <input
+                type="number"
+                name="numberOfPersons"
+                value={formData.numberOfPersons}
+                onChange={handleChange}
+                placeholder="Number of Persons"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email || ''}
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone"
+                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                required
+              />
+            </div>
+            <textarea
               type="text"
-              name="guestName"
-              value={formData.guestName}
+              name="address"
+              value={formData.address}
               onChange={handleChange}
-              placeholder="Guest Name"
+              placeholder="Address of Guests"
               className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
               required
             />
-            <input
-              type="number"
-              name="numberOfPersons"
-              value={formData.numberOfPersons}
-              onChange={handleChange}
-              placeholder="Number of Persons"
-              className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              value={formData.email || ''}
-              onChange={handleChange}
-              placeholder="Email"
-              className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
-              required
-            />
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Phone"
-              className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
-              required
-            />
-          </div>
-          <textarea
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address of Guests"
-              className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
-            required
-          />
             <div className="flex items-center justify-between">
               <div className="flex items-center md:w-1/3 space-x-2">
-              <label className="text-gray-800 font-medium whitespace-nowrap">Answer Status:</label>
-              <select
-                name="answerStatus"
-                value={formData.answerStatus || ''}
-                onChange={handleChange}
-                className="custom-select px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki w-[calc(100%+20px)]"
-                required
+                <label className="text-gray-800 font-medium whitespace-nowrap">Answer Status:</label>
+                <select
+                  name="answerStatus"
+                  value={formData.answerStatus || ''}
+                  onChange={handleChange}
+                  className="custom-select px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki w-[calc(100%+20px)]"
+                  required
+                >
+                  <option >select status </option>
+                  <option value="Not yet">Not yet</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                className="w-full md:w-1/2 bg-BgPinkMiddle text-BgFont font-bold py-4 px-4 rounded-lg hover:bg-BgPinkDark"
               >
-                <option >select status </option>
-                <option value="Not yet">Not yet</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
+                {updatingGuestId ? "Update Guest" : "Add Guest"}
+              </button>
             </div>
+          </form>
+          <div><hr /><br /></div>
+          <div className="flex flex-col md:flex-row justify-between items-center mt-6">
+            <h3 className="text-lg font-semibold text-gray-700">
+              Total Family with YES Answer: {totalYesGuests}
+            </h3>
+            <h3 className="text-lg font-semibold text-gray-700">
+              Total Family with NO Answer: {totalNOGuests}
+            </h3>
+            <h3 className="text-lg font-semibold text-gray-700">
+              Total Family with NOT YET Answer: {totalNotyetGuests}
+            </h3>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border border-BgFont text-BgFont bg-customBg rounded-lg">
+              <thead>
+                <tr className="bg-BgKhaki text-BgFont font-bold">
+                  <th className="px-4 py-3">Guest Name</th>
+                  <th className="px-4 py-3">Number</th>
+                  <th className="px-4 py-3">Phone</th>
+                  <th className="px-4 py-3">Address of Guests for card sending</th>
+                  <th className="px-4 py-3">Answer Status</th>
+                  <th className="px-4 py-3">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentGuests.map((guest) => (
+                  <tr key={guest._id} className="hover:bg-gray-50 transition duration-200 text-center">
+                    <td className="border px-4 py-2">{guest.guestName}</td>
+                    <td className="border px-4 py-2">{guest.numberOfPersons}</td>
+                    <td className="border px-4 py-2">{guest.phone}</td>
+                    <td className="border px-4 py-2">{guest.address}</td>
+                    <td className="border px-4 py-2">{guest.answerStatus}</td>
+                    <td className="border px-4 py-2 flex gap-2 flex justify-center items-center">
+                      <button onClick={() => handleUpdate(guest._id)}
+                        className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
+                        Update
+                      </button>
+                      <button onClick={() => handleDelete(guest._id)}
+                        className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => handleSendInvitation(guest.email)}
+                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                        Send Invitation
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+          </div>
+          <div className="flex justify-center mt-4">
             <button
-              type="submit"
-              className="w-full md:w-1/2 bg-BgPinkMiddle text-BgFont font-bold py-4 px-4 rounded-lg hover:bg-BgPinkDark"
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
             >
-              {updatingGuestId ? "Update Guest" : "Add Guest"}
+              Previous
+            </button>
+            {[...Array(totalPages).keys()].map((page) => (
+              <button
+                key={page + 1}
+                onClick={() => paginate(page + 1)}
+                className={`px-4 py-2 ${currentPage === page + 1 ? "bg-gray-500" : "bg-gray-300"
+                  } text-gray-700 rounded-md hover:bg-gray-400`}
+              >
+                {page + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+            >
+              Next
             </button>
           </div>
-        </form>
-<div><hr /><br /></div>
-        <div className="flex flex-col md:flex-row justify-between items-center mt-6">
-          <h3 className="text-lg font-semibold text-gray-700">
-            Total Family with YES Answer: {totalYesGuests}
-          </h3>
-          <h3 className="text-lg font-semibold text-gray-700">
-            Total Family with NO Answer: {totalNOGuests}
-          </h3>
-          <h3 className="text-lg font-semibold text-gray-700">
-            Total Family with NOT YET Answer: {totalNotyetGuests}
-          </h3>
         </div>
-
-        <div className="overflow-x-auto">
-        <table className="w-full border border-BgFont text-BgFont bg-customBg rounded-lg">
-  <thead>
-    <tr className="bg-BgKhaki text-BgFont font-bold">
-      <th className="px-4 py-3">Guest Name</th>
-      <th className="px-4 py-3">Number</th>
-      <th className="px-4 py-3">Phone</th>
-      <th className="px-4 py-3">Address of Guests for card sending</th>
-      <th className="px-4 py-3">Answer Status</th>
-      <th className="px-4 py-3">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    {currentGuests.map((guest) => (
-      <tr key={guest._id} className="hover:bg-gray-50 transition duration-200 text-center">
-        <td className="border px-4 py-2">{guest.guestName}</td>
-        <td className="border px-4 py-2">{guest.numberOfPersons}</td>
-        <td className="border px-4 py-2">{guest.phone}</td>
-        <td className="border px-4 py-2">{guest.address}</td>
-        <td className="border px-4 py-2">{guest.answerStatus}</td>
-        <td className="border px-4 py-2 flex gap-2 flex justify-center items-center">
-          <button onClick={() => handleUpdate(guest._id)} 
-          className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
-            Update
-          </button>
-          <button onClick={() => handleDelete(guest._id)}
-          className="bg-BgPinkMiddle text-BgFont px-3 py-1 rounded hover:bg-BgPinkDark">
-            Delete
-          </button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-
-</div>
-<div className="flex justify-center mt-4">
-<button
-      onClick={() => paginate(currentPage - 1)}
-      disabled={currentPage === 1}
-      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
-    >
-      Previous
-    </button>
-    {[...Array(totalPages).keys()].map((page) => (
-      <button
-        key={page + 1}
-        onClick={() => paginate(page + 1)}
-        className={`px-4 py-2 ${
-          currentPage === page + 1 ? "bg-gray-500" : "bg-gray-300"
-        } text-gray-700 rounded-md hover:bg-gray-400`}
-      >
-        {page + 1}
-      </button>
-    ))}
-    <button
-      onClick={() => paginate(currentPage + 1)}
-      disabled={currentPage === totalPages}
-      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
-    >
-      Next
-    </button>
-</div>
-</div>
-</div>
-</div>
+      </div>
+    </div>
 
   );
 }
