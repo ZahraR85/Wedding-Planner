@@ -47,7 +47,7 @@ const Gallery = () => {
           >
             <h2 className="text-xl font-semibold text-BgFont mb-4">{category}</h2>
             <img
-              src={photos[0].imageUrl}
+              src={`http://localhost:3001${photos[0].imagePath}`}
               alt={category}
               className="w-full h-72 object-cover rounded"
             />

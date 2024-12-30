@@ -1,4 +1,5 @@
 import Gallery from '../models/Gallery.js';
+import path from 'path';
 
 // Get all gallery images
 export const getGalleryImages = async (req, res) => {
@@ -12,28 +13,28 @@ export const getGalleryImages = async (req, res) => {
 
 // Add a new image to the gallery
 export const addGalleryImage = async (req, res) => {
-  console.log('Request Body:', req.body); // Log the request body
-  const { imageName, imageUrl, description, userId, category} = req.body;
+  const { userId, imageName, description, category } = req.body;
 
-  if (!userId || !category) {
-    return res.status(400).json({ message: 'User ID and category are required' });
-  }
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Access denied' });
+  if (!imageName || !description || !category || !userId || !req.file) {
+    return res.status(400).json({ error: 'Missing required fields or image file' });
   }
 
   try {
+   // const imagePath = req.file.path.replace(/\\/g, '/'); // Ensure forward slashes
+    //console.log('Saving image path:', imagePath); // Log the image path
+
     const newImage = new Gallery({
-      userId, // Use the authenticated user's ID
+      userId: userId,
       imageName,
-      imageUrl,
+      imagePath: `/uploads/${req.file.filename}`, // Store relative URL
       description,
-      category
+      category,
     });
+    
     await newImage.save();
     res.status(201).json(newImage);
   } catch (error) {
-    console.error(error);
+    console.error('Error saving image:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -60,27 +61,20 @@ export const deleteGalleryImage = async (req, res) => {
 // Update a gallery image
 export const updateGalleryImage = async (req, res) => {
   const { id } = req.params;
-  const { imageName, imageUrl, description, userId, category } = req.body;
+  const { userId, imageName, description, category, keepExistingImage } = req.body;
 
-  if (!userId || !category) {
-    return res.status(400).json({ message: 'User ID and category are required' });
+  const updateData = { userId, imageName, description, category };
+
+  if (keepExistingImage !== 'true' && req.file) {
+    updateData.imagePath = `/uploads/${req.file.filename}`;
   }
 
   try {
-    // Find the image by ID and update
-    const updatedImage = await Gallery.findByIdAndUpdate(
-      id,
-      { imageName, imageUrl, description, category},
-      { new: true } // Return the updated document
-    );
-
-    if (!updatedImage) {
-      return res.status(404).json({ message: 'Image not found' });
-    }
-
-    res.status(200).json(updatedImage);
+    const updatedImage = await Gallery.findByIdAndUpdate(id, updateData, { new: true });
+    res.json(updatedImage);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error updating image:', error);
+    res.status(500).send('Error updating image');
   }
 };
 
@@ -88,15 +82,9 @@ export const updateGalleryImage = async (req, res) => {
 export const GalleryCategory = async (req, res) => {
   try {
     const { category } = req.params;
-    console.log('Category received from frontend:', category);
-
     const photos = await Gallery.find({ category });
-    console.log('Photos fetched from database:', photos);
-
     res.json(photos);
   } catch (error) {
-    console.error('Error fetching photos by category:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ message: error.message });
   }
 };
-
