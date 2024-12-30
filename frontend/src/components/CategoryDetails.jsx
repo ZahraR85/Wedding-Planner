@@ -51,7 +51,7 @@ const CategoryDetails = () => {
         <div>
           <div className="flex justify-center mb-6">
             <img
-              src={selectedPhoto.imageUrl}
+              src={`http://localhost:3001${selectedPhoto.imagePath}`}
               alt={selectedPhoto.imageName}
               className="w-[90%] h-112 object-cover rounded"
             />
@@ -71,7 +71,7 @@ const CategoryDetails = () => {
               currentPhotos.map((photo) => (
                 <img
                   key={photo._id}
-                  src={photo.imageUrl}
+                  src={`http://localhost:3001${photo.imagePath}`}
                   alt={photo.imageName}
                   onClick={() => handlePhotoClick(photo)}
                   className="w-full h-72 object-cover rounded cursor-pointer hover:opacity-75"

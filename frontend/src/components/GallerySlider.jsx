@@ -59,7 +59,7 @@ const GallerySlider = () => {
       <h1 className="text-3xl font-bold text-center text-BgFont m-20">We use best services for you!</h1>
       {/* Image */}
       <img
-        src={photos[currentIndex]?.imageUrl}
+        src={`http://localhost:3001${photos[currentIndex]?.imagePath}`}
         alt={photos[currentIndex]?.imageName || 'Gallery Image'}
         className="w-full h-full object-cover"
       />
