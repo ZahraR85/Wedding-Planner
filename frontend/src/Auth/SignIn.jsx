@@ -27,8 +27,8 @@ const SignIn = () => {
         const data = await response.json();
       // Set authentication context and store user info in localStorage
       setAuth(true, data.userId, data.role);  // Set authentication context
-      localStorage.setItem('role', data.role);  // Store user role
-      localStorage.setItem('token', data.token);  // Store token
+      //localStorage.setItem('role', data.role);  // Store user role
+      //localStorage.setItem('token', data.token);  // Store token
         navigate('/');
       } else {
         const message = await response.text();
