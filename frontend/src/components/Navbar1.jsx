@@ -1,12 +1,10 @@
 import { useState } from "react";
 import {useEffect} from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import SignOut from '../Auth/SignOut';
 import logo from '../images/logo8.jpg';
-import { FaHome } from 'react-icons/fa'; // Home icon
-import { FaUser } from 'react-icons/fa'; // User icon for Sign-in
-import { FaShoppingCart } from 'react-icons/fa'; // Shopping cart icon
+import { FaHome,FaUser, FaShoppingCart, FaTimes, FaBars} from 'react-icons/fa'; 
 
 const Navbar = () => {
   const [formData, setFormData] = useState({ identifier: '', password: '' });
@@ -16,6 +14,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut } = useAppContext();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isHomepage = location.pathname === '/';
   useEffect(() => {
@@ -34,11 +33,8 @@ const Navbar = () => {
   
       if (response.ok) {
         const data = await response.json();
-      // Set authentication context and store user info in localStorage
       setAuth(true, data.userId, data.role);  // Set authentication context
-      //localStorage.setItem('role', data.role);  // Store user role
-      //localStorage.setItem('token', data.token);  // Store token
-        navigate('/');
+        navigate('/signIn');
       } else {
         const message = await response.text();
         setError(message || 'Invalid login credentials');
@@ -51,15 +47,15 @@ const Navbar = () => {
   return (
     <nav className="border-b bg-BgKhaki shadow-md">
       {/* First Row */}
-      <div className="flex items-center justify-between px-4 py-2 md:px-8">
+      <div className="flex items-center text-BgFont justify-between px-4 py-2 md:px-8 ">
         <button
-          className="text-lg font-semibold"
+          className=" text-BgFont lg:hidden"
           onClick={() => setMenuOpen(true)}
         >
-          Menu
+          <FaBars className="text-BgFont text-2xl" />  
         </button>
         <div>
-        <ul className="flex font-bold items-center space-x-12">
+        <ul className="flex font-bold text-BgFont items-center space-x-12">
           <li>
           <Link to="/" className="flex items-center space-x-1 hover:underline">
               <FaHome className="text-xl" />
@@ -82,7 +78,7 @@ const Navbar = () => {
             <img src={logo} alt="Logo" className="h-16"/>
           </Link>
          {/* Right side: Links */}
-          <ul className="flex font-bold items-center space-x-12">
+          <ul className="flex font-bold text-BgFont items-center space-x-12">
           {isAuthenticated && role === 'admin' && (
             <li className="relative">
               <button
@@ -126,8 +122,8 @@ const Navbar = () => {
       </div>
 
       {/* Second Row */}
-      <div className="hidden items-center justify-between bg-gray-100 px-4 py-2 text-sm md:flex">
-      <ul className="flex font-bold items-center space-x-12">
+      <div className="hidden text-BgFont items-center justify-around bg-gray-100 px-4 py-2 text-sm md:flex">
+      <ul className="flex font-bold items-center justify-around space-x-12">
         <li className="hover:underline">
           <Link to="/userinfo"> UserInformation </Link>
         </li>
@@ -152,49 +148,38 @@ const Navbar = () => {
         </ul>
     </div>
       {/* Mobile Searchbar */}
-      <div className="block px-4 py-2 md:hidden">
-        <input
-          type="text"
-          placeholder="Suchbegriff eingeben"
-          className="w-full rounded border px-4 py-2"
-        />
-      </div>
+    {/*  <div className="block px-4 py-2 md:hidden"> <input type="text" placeholder="Search" */}
+    {/* className="w-full rounded border px-4 py-2" /> </div> */}
 
       {/* Side Menu */}
       {menuOpen && (
         <div className="fixed inset-0 z-50 flex">
-          <div className="w-64 bg-white shadow-lg">
+          <div className="w-64 my-4 bg-BgKhaki shadow-lg">
+            <span className="p-6 text-xl text-BgFont font-semibold">I said yes!</span>
             <button
-              className="p-4 text-lg font-semibold"
+              className="text-lg font-semibold ml-20 text-BgFont border-2 rounded-full focus:outline-none"
               onClick={() => setMenuOpen(false)}
-            >
-              Schließen
+            ><FaTimes className="w-6 h-6 text-BgFont" />
             </button>
+            <br />
             <hr />
-            <div className="flex flex-col gap-2 p-4">
-              <a href="/userinfo" className="hover:text-red-500">User Information</a>
-              <a href="/Guests" className="hover:text-red-500">Invitation of Guests</a>
-              <a href="/VenueSelections" className="hover:text-red-500">Book your Venue</a>
-              <a href="/Catering" className="hover:text-red-500">Catering</a>
-              <a href="/photography" className="hover:text-red-500">Photography</a>
-              <a href="/Makeup" className="hover:text-red-500">Makeup, Wedding Dress</a>
-              <a href="/Musics" className="hover:text-red-500">Music Band</a>
+            <div className="flex flex-col text-m gap-4 p-6">
+              <a href="/userinfo" className="text-BgFont hover:text-red-500 hover:underline">User Information</a>
+              <a href="/Guests" className="text-BgFont hover:text-red-500 hover:underline">Invitation of Guests</a>
+              <a href="/VenueSelections" className="text-BgFont hover:text-red-500 hover:underline">Book your Venue</a>
+              <a href="/Catering" className="text-BgFont hover:text-red-500 hover:underline">Catering</a>
+              <a href="/photography" className="text-BgFont hover:text-red-500 hover:underline">Photography</a>
+              <a href="/Makeup" className="text-BgFont hover:text-red-500 hover:underline">Makeup, Wedding Dress</a>
+              <a href="/Musics" className="text-BgFont hover:text-red-500 hover:underline">Music Band</a>
 
             </div>
             <hr />
             <br />
-            <Link to="/signin" className="flex items-center ml-4 space-x-1 hover:underline focus:outline-none">
+            <Link to="/signin" className="flex items-center text-BgFont ml-4 space-x-1 hover:underline focus:outline-none">
                 <FaUser className="text-xl" />
                 <span>Signin | Register</span>  
             </Link>
-            <div>
-          <button
-            onClick={handleSignIn}
-            className="bg-BgPinkMiddle text-BgFont py-2 text-lg font-bold hover:bg-BgPinkDark rounded w-full"
-          >
-            Sign In
-          </button>
-          </div>
+
           </div>
 
           <div
