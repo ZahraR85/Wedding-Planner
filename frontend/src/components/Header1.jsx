@@ -1,6 +1,6 @@
 import { useAppContext } from '../context/AppContext';
 import Navbar from './Navbar';
-
+//import Navbar1 from './Navbar1';
 const Header = () => {
   const {
     selectedCity,
@@ -24,7 +24,7 @@ const Header = () => {
       }}
     >
      {/* Navbar Component */}
-    <Navbar />
+      {/* <Navbar1 /> */}
 
       {/* Hero Section search */}
 
