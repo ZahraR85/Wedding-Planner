@@ -21,29 +21,6 @@ const Navbar = () => {
     console.log('isAuthenticated:', isAuthenticated, 'role:', role);
   }, [isAuthenticated, role]); // Log when these values change
 
-  const handleSignIn = async () => {
-    setError('');
-    try {
-      const response = await fetch('http://localhost:3001/users/signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(formData),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-      setAuth(true, data.userId, data.role);  // Set authentication context
-        navigate('/signIn');
-      } else {
-        const message = await response.text();
-        setError(message || 'Invalid login credentials');
-      }
-    } catch (err) {
-      console.error(err);
-      setError('Failed to sign in. Please try again later.');
-    }
-  };
   return (
     <nav className="border-b bg-BgKhaki shadow-md">
       {/* First Row */}

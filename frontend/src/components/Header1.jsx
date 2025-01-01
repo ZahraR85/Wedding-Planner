@@ -1,13 +1,10 @@
 import { useAppContext } from '../context/AppContext';
 import Navbar from './Navbar';
-//import Navbar1 from './Navbar1';
-const Header = () => {
-  const {
-    selectedCity,
-    searchTerm,
-    setSelectedCity,
-    setSearchTerm,
-  } = useAppContext();
+import { useState } from 'react';
+
+const Header1 = () => {
+  const { selectedCity, searchTerm, setSelectedCity, setSearchTerm } =
+    useAppContext();
 
   const cities = ['Berlin', 'Munich', 'Hamburg', 'Frankfurt', 'Cologne'];
 
@@ -15,20 +12,77 @@ const Header = () => {
     console.log('Search for:', selectedCity, searchTerm);
   };
 
+  // Slider images
+  const sliderImages = [
+    'https://i.postimg.cc/SK1M5PmW/5be520cf22459c5f7dad2b10f22d91e4-5d273d28-1000.jpg',
+    'https://i.postimg.cc/1tMJJ9fZ/tehran-wedding-gardens.jpg',
+    'https://i.postimg.cc/gJdZS57y/Cake13.jpg',
+    'https://i.postimg.cc/wMB8VqcC/Makeup18.jpg',
+    'https://i.postimg.cc/c17B77vG/Wedding10.jpg',
+    'https://i.postimg.cc/1XS45qSp/bridemaids2.jpg',
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderImages.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? sliderImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentIndex(index);
+  };
+
   return (
-    <header
-      className="relative h-screen bg-cover bg-center"
-      style={{
-        backgroundImage:
-          'url(https://i.postimg.cc/SK1M5PmW/5be520cf22459c5f7dad2b10f22d91e4-5d273d28-1000.jpg)',
-      }}
-    >
-     {/* Navbar Component */}
-      {/* <Navbar1 /> */}
+    <header className="relative h-screen overflow-hidden">
+      {/* Navbar */}
+      <Navbar />
 
-      {/* Hero Section search */}
+      {/* Slider */}
+      <div className="relative h-full">
+        <img
+          src={sliderImages[currentIndex]}
+          alt={`Slide ${currentIndex + 1}`}
+          className="absolute top-0 left-0 w-full h-full object-cover"
+        />
+        {/* Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
 
-      <div className="flex flex-col items-center justify-center h-full text-center text-white bg-black bg-opacity-50">
+        {/* Navigation Buttons */}
+        <button
+          onClick={handlePrev}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-BgPinkMiddle text-white p-3 rounded-full hover:bg-BgPinkDark z-10"
+        >
+          &#8592;
+        </button>
+        <button
+          onClick={handleNext}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-BgPinkMiddle text-white p-3 rounded-full hover:bg-BgPinkDark z-10"
+        >
+          &#8594;
+        </button>
+
+        {/* Dots for Current Image */}
+        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {sliderImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleDotClick(index)}
+              className={`w-3 h-3 rounded-full ${
+                currentIndex === index ? 'bg-white' : 'bg-BgPinkDark'
+              }`}
+            ></button>
+          ))}
+        </div>
+      </div>
+
+      {/* Hero Section Search */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
         <p className="text-xl font-light mb-4">
           Welcome to our amazing platform! Explore everything we have to offer.
         </p>
@@ -66,4 +120,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header1;
