@@ -43,8 +43,8 @@ export async function getUserProgress(userID) {
 
     const percentageDone = Math.round((completedCount / models.length) * 100);
 
-    console.log("Progress Data:", progressData);
-    console.log("Percentage Done:", percentageDone);
+    // console.log("Progress Data:", progressData);
+    // console.log("Percentage Done:", percentageDone);
 
     return {
         completedCount,
