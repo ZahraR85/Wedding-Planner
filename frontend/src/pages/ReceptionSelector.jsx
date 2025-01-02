@@ -58,7 +58,7 @@ const features = [
 ];
 
 const ReceptionSelector = () => {
-  const { userId, isAuthenticated } = useAppContext();
+  const { userId, isAuthenticated,addToCart } = useAppContext();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -137,14 +137,21 @@ const ReceptionSelector = () => {
         if (!isEditMode) {
           setIsEditMode(true); // Switch to edit mode after creating
         }
-      } else {
-        toast.error("Failed to save data!");
-      }
-    } catch (error) {
-      console.error("Error saving data:", error);
+      // Add total to shopping cart
+      addToCart({
+        name: "Reception Catering",
+        type: "Reception",
+        total,
+        description: "Catering services for your reception",
+      });
+    } else {
       toast.error("Failed to save data!");
     }
-  };
+  } catch (error) {
+    console.error("Error saving data:", error);
+    toast.error("Failed to save data!");
+  }
+};
   
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-cover bg-center">

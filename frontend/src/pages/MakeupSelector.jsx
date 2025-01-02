@@ -57,7 +57,7 @@ const features = [
 ];
 
 const MakeupSelector = () => {
-  const { userId, isAuthenticated } = useAppContext();
+  const { userId, isAuthenticated, addToShoppingCard} = useAppContext();
   const navigate = useNavigate();
   const [selectedFeatures, setSelectedFeatures] = useState({
     makeup: { selected: false, price: 400 },
@@ -126,37 +126,7 @@ const MakeupSelector = () => {
       [id]: { ...prev[id], selected: !prev[id]?.selected },
     }));
   };
-  // const handleSubmit = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const url = `http://localhost:3001/makeups`;
-  //     const requestData = {
-  //       userID: userId,
-  //       makeup: selectedFeatures.makeup?.selected || false,
-  //       dress: selectedFeatures.dress?.selected || false,
-  //       nail: selectedFeatures.nail?.selected || false,
-  //       hairstyle: selectedFeatures.hairstyle?.selected || false,
-  //       shoes: selectedFeatures.shoes?.selected || false,
-  //       special: selectedFeatures.special?.selected || false,
-  //     };
-  //     console.log("Sending data:", requestData);
-  
-  //     const response = await axios.post(url, requestData, {
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  
-  //     toast.success(response.data.message, {
-  //       position: toast.POSITION.TOP_RIGHT,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error saving makeup data:", error);
-  //     toast.error("Failed to save makeup data. Please try again.", {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -171,24 +141,26 @@ const MakeupSelector = () => {
         special: selectedFeatures.special?.selected || false,
       };
   
-      const response = await axios.post(url, requestData, {
+      await axios.post(url, requestData, {
         headers: { "Content-Type": "application/json" },
       });
-  
-      toast.success("Makeup updated successfully!", {
-      });
+
+      // Add total price to shopping card (frontend-only)
+      addToShoppingCard({ totalPrice: total, category: "Makeup" });
+      toast.success("Makeup data and total price added to shopping card successfully!");
+      navigate("/shoppingCard");
     } catch (error) {
-      console.error("Failed to save guest.", error);
-      toast.error("Error message", {
-      });
+      console.error("Failed to save makeup data or add to shopping card.", error);
+      toast.error("Error saving data or adding to shopping card.");
     } finally {
       setLoading(false);
     }
   };
+
   return (
 
     <div>
-       <ToastContainer />
+      <ToastContainer />
 
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
         {/* Overlay for controlling opacity */}

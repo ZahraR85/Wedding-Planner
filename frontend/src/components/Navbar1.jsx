@@ -80,9 +80,9 @@ const Navbar = () => {
             </li>
           )}
           <li>
-          <Link to="/cart" className="flex items-center space-x-1 hover:underline">
+          <Link to="/ShoppingCard" className="flex items-center space-x-1 hover:underline">
             <FaShoppingCart className="text-xl" />
-            <span>Shopping Cart</span>
+            <span>Shopping Card</span>
           </Link>
           </li>
           <li>

@@ -10,6 +10,7 @@ const initialState = {
   userId: null, // User ID for authenticated user
   isAuthenticated: false, // Tracks if the user is authenticated
   userRole: null, // Role of the authenticated user
+  shoppingCard: [], // State for shopping card items
 };
 
 const appReducer = (state, action) => {
@@ -33,6 +34,10 @@ const appReducer = (state, action) => {
       };
     case 'SIGN_OUT':
       return { ...state, isAuthenticated: false, userId: null , userRole: null};
+      case 'ADD_TO_SHOPPING_CARD':
+        return { ...state, shoppingCard: [...state.shoppingCard, action.payload] };
+      case 'CLEAR_SHOPPING_CARD':
+        return { ...state, shoppingCard: [] };
     default:
       return state;
   }
@@ -54,6 +59,9 @@ export const AppProvider = ({ children }) => {
 
   const signOut = () => dispatch({ type: 'SIGN_OUT' });
 
+  const addToShoppingCard = (item) => dispatch({ type: 'ADD_TO_SHOPPING_CARD', payload: item });
+  const clearShoppingCard = () => dispatch({ type: 'CLEAR_SHOPPING_CARD' });
+
   return (
     <AppContext.Provider
       value={{
@@ -65,6 +73,8 @@ export const AppProvider = ({ children }) => {
         setDropdownOpen,
         setAuth,
         signOut,
+        addToShoppingCard,
+        clearShoppingCard,
       }}
     >
       {children}
