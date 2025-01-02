@@ -58,7 +58,7 @@ const features = [
 ];
 
 const ReceptionSelector = () => {
-  const { userId, isAuthenticated,addToCart } = useAppContext();
+  const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -138,12 +138,14 @@ const ReceptionSelector = () => {
           setIsEditMode(true); // Switch to edit mode after creating
         }
       // Add total to shopping cart
-      addToCart({
-        name: "Reception Catering",
-        type: "Reception",
-        total,
-        description: "Catering services for your reception",
+      addToShoppingCard({
+        id: 'reception', // Unique identifier for the item
+        name: 'Reception',
+        price: total,
+        description: 'Complete reception catering services including starter, main course, dessert, and drinks',
+        category: 'Reception',
       });
+      
     } else {
       toast.error("Failed to save data!");
     }

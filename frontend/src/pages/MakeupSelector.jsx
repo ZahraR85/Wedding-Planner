@@ -146,7 +146,14 @@ const MakeupSelector = () => {
       });
 
       // Add total price to shopping card (frontend-only)
-      addToShoppingCard({ totalPrice: total, category: "Makeup" });
+      addToShoppingCard({
+        id: 'makeup', // Unique identifier for the item
+        name: 'Makeup',
+        price: total,
+        description: 'Professional makeup services for the bride and groom',
+        category: 'Makeup',
+      });
+      
       toast.success("Makeup data and total price added to shopping card successfully!");
       navigate("/shoppingCard");
     } catch (error) {

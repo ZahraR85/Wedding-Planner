@@ -12,7 +12,7 @@ const Navbar = () => {
   //const navigate = useNavigate();
   const { setAuth } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut } = useAppContext();
+  const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut, shoppingCardCount} = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -80,10 +80,15 @@ const Navbar = () => {
             </li>
           )}
           <li>
-          <Link to="/ShoppingCard" className="flex items-center space-x-1 hover:underline">
-            <FaShoppingCart className="text-xl" />
-            <span>Shopping Card</span>
-          </Link>
+        {/* Shopping Cart with Item Count */}
+        <Link to="/ShoppingCard" className="flex items-center space-x-1 hover:underline">
+          <FaShoppingCart className="text-xl" />
+          <span>Shopping Card</span>
+          {/* Display the shopping cart count */}
+          {shoppingCardCount > 0 && (
+            <span className="ml-2 text-sm text-red-600">{shoppingCardCount}</span>
+          )}
+        </Link>
           </li>
           <li>
             {isAuthenticated ? (
@@ -91,7 +96,7 @@ const Navbar = () => {
             ) : (
               <Link to="/signin" className="flex items-center space-x-1 hover:underline focus:outline-none">
                 <FaUser className="text-xl" />
-                <span>Signin | Register</span>  
+                <span>Signin | Register</span>
               </Link>
             )}
           </li>

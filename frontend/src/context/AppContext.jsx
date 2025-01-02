@@ -32,6 +32,11 @@ const appReducer = (state, action) => {
         userId: action.payload.userId,
         role: action.payload.role, // Set Role on authentication
       };
+      case 'REMOVE_FROM_SHOPPING_CARD':
+  return { 
+    ...state, 
+    shoppingCard: state.shoppingCard.filter(item => item.id !== action.payload.id) 
+  };
     case 'SIGN_OUT':
       return { ...state, isAuthenticated: false, userId: null , userRole: null};
       case 'ADD_TO_SHOPPING_CARD':
@@ -61,6 +66,9 @@ export const AppProvider = ({ children }) => {
 
   const addToShoppingCard = (item) => dispatch({ type: 'ADD_TO_SHOPPING_CARD', payload: item });
   const clearShoppingCard = () => dispatch({ type: 'CLEAR_SHOPPING_CARD' });
+  const removeFromShoppingCard = (itemId) => dispatch({ type: 'REMOVE_FROM_SHOPPING_CARD', payload: { id: itemId } });
+  // Get shopping cart count
+  const shoppingCardCount = state.shoppingCard.length;
 
   return (
     <AppContext.Provider
@@ -75,6 +83,8 @@ export const AppProvider = ({ children }) => {
         signOut,
         addToShoppingCard,
         clearShoppingCard,
+        removeFromShoppingCard,
+        shoppingCardCount, // Expose shopping card count here
       }}
     >
       {children}
