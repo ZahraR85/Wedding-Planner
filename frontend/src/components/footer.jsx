@@ -12,8 +12,8 @@ const Footer = () => {
           <ul className="space-y-3">
             <li><a href="/" className="hover:underline">Home</a></li>
             <li><a href="#about" className="hover:underline">About Us</a></li>
-            <li><a href="#services" className="hover:underline">Services</a></li>
-            <li><a href="#weddings" className="hover:underline">Weddings</a></li>
+            <li><a href="#services" className="hover:underline">Gallery</a></li>
+            <li><a href="#weddings" className="hover:underline">Features</a></li>
             <li><a href="#process" className="hover:underline">Our Process</a></li>
             <li><a href="#faq" className="hover:underline">FAQ</a></li>
           </ul>
@@ -25,7 +25,7 @@ const Footer = () => {
           <p className="text-sm mb-4">
             Your ultimate wedding planner to make your big day unforgettable.
           </p>
-          <p className="text-xs">© 2023 I SAID YES. All Rights Reserved.</p>
+          <p className="text-xs">© 2025 I SAID YES. All Rights Reserved.</p>
         </div>
 
         {/* Contact Section */}
@@ -34,7 +34,7 @@ const Footer = () => {
           <p className="mb-2">
             Email: <a href="mailto:info@isaidyes.com" className="hover:underline">info@isaidyes.com</a>
           </p>
-          <p className="mb-6">Phone: +1 (555) 123-4567</p>
+          <p className="mb-6">Phone: +49 (555) 123-4567</p>
           <div className="flex justify-center md:justify-start space-x-4 text-2xl">
             <a href="#" className="hover:text-BgPinkDark"><FaInstagram /></a>
             <a href="#" className="hover:text-BgPinkDark"><FaFacebook /></a>

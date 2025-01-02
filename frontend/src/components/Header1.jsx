@@ -14,11 +14,17 @@ const Header1 = () => {
 
   // Slider images
   const sliderImages = [
-    'https://i.postimg.cc/SK1M5PmW/5be520cf22459c5f7dad2b10f22d91e4-5d273d28-1000.jpg',
-    'https://i.postimg.cc/1tMJJ9fZ/tehran-wedding-gardens.jpg',
-    'https://i.postimg.cc/gJdZS57y/Cake13.jpg',
+
+
     'https://i.postimg.cc/wMB8VqcC/Makeup18.jpg',
-    'https://i.postimg.cc/c17B77vG/Wedding10.jpg',
+    'https://i.postimg.cc/1XS45qSp/bridemaids2.jpg',
+    'https://i.postimg.cc/D0Rqv49P/makeup1.jpg',
+    'https://i.postimg.cc/d3Fh4mcX/makeup2.png',
+    'https://i.postimg.cc/gJTMhj9n/music1.png',
+    'https://i.postimg.cc/2SC8M8Jq/photo1.jpg',
+    'https://i.postimg.cc/FKdtnM9d/photo2.jpg',
+    'https://i.postimg.cc/BvWN4kT1/photo3.webp',
+    'https://i.postimg.cc/T1Wpd7qp/photo5.jpg',
     'https://i.postimg.cc/1XS45qSp/bridemaids2.jpg',
   ];
 

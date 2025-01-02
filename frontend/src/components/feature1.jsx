@@ -79,7 +79,7 @@ const Features = () => {
     return (
         <div className="bg-[#FAF9F5] py-16 px-6">
           <h1 className="text-5xl font-extrabold text-center mb-16" style={{ color: '#624e40' }}>
-                Wedding Planner Features
+                Our Features
             </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
                 {features.map((feature, index) => (

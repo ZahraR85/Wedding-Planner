@@ -1,5 +1,5 @@
 import express from 'express';
-import UserInfo from '../models/userInfo.js'; 
+import UserInfo from '../models/userinfo.js'; 
 import mongoose from 'mongoose';
 import {
   createUserInfo,
@@ -7,6 +7,7 @@ import {
   getUserInfoById,
   updateUserInfo,
   deleteUserInfo,
+  getUserFeedbackCards,
 } from '../controllers/userinfoController.js';
 
 const router = express.Router();
@@ -34,6 +35,9 @@ router.get("/check/:userID", async (req, res) => {
     res.status(500).json({ message: "Error checking user info", error: error.message });
   }
 });
+
+
+router.get('/feedback', getUserFeedbackCards);
 
 router.post('/', createUserInfo);
 router.get('/', getAllUserInfo);
