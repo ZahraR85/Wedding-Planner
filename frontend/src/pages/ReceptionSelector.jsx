@@ -137,14 +137,23 @@ const ReceptionSelector = () => {
         if (!isEditMode) {
           setIsEditMode(true); // Switch to edit mode after creating
         }
-      // Add total to shopping cart
-      addToShoppingCard({
-        id: 'Catering', // Unique identifier for the item
-        name: 'Catering',
-        price: total,
-        description: 'Complete Catering services including starter, main course, dessert, and drinks',
-        category: 'Catering',
+        const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+     // Save shopping cart data
+        const shoppingCartData = {
+          userID: userId,
+          serviceName: 'Catering',
+          price: total,
+        };
+console.log (shoppingCartData);
+      await axios.post(shoppingCartUrl, shoppingCartData, {
+        headers: { "Content-Type": "application/json" },
       });
+
+    // Frontend-only addition (optional if the backend handles the cart data)
+      addToShoppingCard(shoppingCartData);
+
+      toast.success("Catering data and total price added to shopping cart successfully!");
+      //navigate("/shoppingCard");
       
     } else {
       toast.error("Failed to save data!");

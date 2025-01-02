@@ -9,7 +9,7 @@ import "../App.css";
 
 
 const MusicSelectionForm = () => {
-  const { userId, isAuthenticated } = useAppContext(); // Get userId and auth status from context
+  const { userId, isAuthenticated,addToShoppingCard} = useAppContext(); // Get userId and auth status from context
   const navigate = useNavigate(); // Navigation hook
 
   const [musicOptions, setMusicOptions] = useState([]);
@@ -23,7 +23,7 @@ const MusicSelectionForm = () => {
   // Redirect unauthenticated users
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.warn("Please sign in to continue.");
+      toast.warn("You must sign in to access this page.");
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -99,8 +99,9 @@ const MusicSelectionForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
+      // Prepare selections based on user input
       const selections = musicOptions
         .filter((option) => hours[option._id] > 0)
         .map((option) => ({
@@ -108,24 +109,44 @@ const MusicSelectionForm = () => {
           hours: parseInt(hours[option._id], 10),
           totalPrice: parseInt(hours[option._id], 10) * option.pricePerHour,
         }));
-
-      const requestData = {
+  
+      // Calculate total cost
+      const totalCost = selections.reduce((total, selection) => total + selection.totalPrice, 0);
+  
+      // Prepare data for music selection
+      const musicSelectionData = {
         userID: userId,
         selections,
         customRequests: userSelection?.customRequests || [],
-        totalCost: userSelection?.totalCost || 0,
+        totalCost,
       };
-
-      const url = `http://localhost:3001/musics${isEditMode ? `/${userSelection._id}` : ""}`;
-      const method = isEditMode ? "PUT" : "POST";
-
+  
+      // Add or update music selection
+      const musicUrl = `http://localhost:3001/musics${isEditMode ? `/${userSelection._id}` : ""}`;
+      const musicMethod = isEditMode ? "PUT" : "POST";
+  
       await axios({
-        method,
-        url,
-        data: requestData,
+        method: musicMethod,
+        url: musicUrl,
+        data: musicSelectionData,
         headers: { "Content-Type": "application/json" },
       });
-
+  
+      // Add or update shopping card entry
+      const shoppingCardUrl = `http://localhost:3001/shoppingcards`;
+      const shoppingCardData = {
+        userID: userId,
+        serviceName: "Music",
+        price: totalCost,
+      };
+  
+      await axios.post(shoppingCardUrl, shoppingCardData, {
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      // Optionally update frontend context
+      addToShoppingCard(shoppingCardData);
+  
       toast.success(`Music selection ${isEditMode ? "updated" : "created"} successfully!`);
     } catch (error) {
       console.error("Error saving music selection:", error);
@@ -133,7 +154,7 @@ const MusicSelectionForm = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
