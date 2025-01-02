@@ -60,17 +60,17 @@ const ShoppingCard = () => {
   };
 
   // Remove service from shopping card
-  const removeService = async (serviceName) => {
+  const removeService = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/shoppingcards`, {
-        data: { userId, serviceName },
+        data: { userId, id }, // Use id for removal
       });
-      removeFromShoppingCard(serviceName);
+      removeFromShoppingCard(id); // Pass id for removal in context
       toast.success('Service removed!');
     } catch (error) {
       toast.error('Failed to remove service!');
     }
-  };
+  };  
 
   // Clear the shopping card
   const handleClearShoppingCard = async () => {
@@ -101,15 +101,13 @@ const ShoppingCard = () => {
           <p className="text-xl text-center col-span-full">Your shopping card is empty.</p>
         ) : (
           shoppingCard.map((item) => (
-            <div key={item.serviceName} className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <div key={item.id} className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
               <h3 className="text-xl font-semibold text-center mb-2">{item.serviceName}</h3>
               <span className="text-lg font-bold mb-2">${item.price.toFixed(2)}</span>
               <button
-                onClick={() => removeService(item.serviceName)}
+                onClick={() => removeService(item.id)}  // Pass unique ID for removal
                 className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
-              >
-                Remove
-              </button>
+              >Remove</button>
             </div>
           ))
         )}

@@ -1,7 +1,9 @@
 import { createContext, useContext, useReducer } from 'react';
 
+// Create context for app state
 const AppContext = createContext();
 
+// Initial state
 const initialState = {
   selectedCity: 'All Cities',
   searchTerm: '',
@@ -13,6 +15,7 @@ const initialState = {
   shoppingCard: [], // State for shopping card items
 };
 
+// Define reducer function
 const appReducer = (state, action) => {
   switch (action.type) {
     case 'SET_SELECTED_CITY':
@@ -30,24 +33,45 @@ const appReducer = (state, action) => {
         ...state,
         isAuthenticated: action.payload.isAuthenticated,
         userId: action.payload.userId,
-        role: action.payload.role, // Set Role on authentication
+        userRole: action.payload.role, // Set Role on authentication
       };
-      case 'REMOVE_FROM_SHOPPING_CARD':
-  return { 
-    ...state, 
-    shoppingCard: state.shoppingCard.filter(item => item.id !== action.payload.id) 
-  };
     case 'SIGN_OUT':
-      return { ...state, isAuthenticated: false, userId: null , userRole: null};
+      return { ...state, isAuthenticated: false, userId: null, userRole: null };
       case 'ADD_TO_SHOPPING_CARD':
-        return { ...state, shoppingCard: [...state.shoppingCard, action.payload] };
-      case 'CLEAR_SHOPPING_CARD':
-        return { ...state, shoppingCard: [] };
+        // Check if serviceName exists in payload and shopping card
+        if (!action.payload || !action.payload.serviceName) {
+          console.error('Item must have a serviceName property');
+          return state; // No action if the item does not have serviceName
+        }
+      
+        // Prevent duplicates by checking if the service already exists in the cart
+        const isDuplicate = state.shoppingCard.some(
+          (cardItem) => cardItem.serviceName === action.payload.serviceName
+        );
+      
+        if (isDuplicate) {
+          return state; // Return the existing state if duplicate
+        }
+      
+        // Create a unique ID for the item using serviceName and timestamp
+        const uniqueItem = {
+          ...action.payload,
+          id: action.payload.serviceName + '-' + new Date().getTime(), // Unique ID
+        };
+      
+        return {
+          ...state,
+          shoppingCard: [...state.shoppingCard, uniqueItem], // Add new unique item
+        };
+      
+    case 'CLEAR_SHOPPING_CARD':
+      return { ...state, shoppingCard: [] };
     default:
       return state;
   }
 };
 
+// AppProvider component to provide state to the app
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
@@ -59,15 +83,21 @@ export const AppProvider = ({ children }) => {
   const setDropdownOpen = (isOpen) => dispatch({ type: 'SET_DROPDOWN_OPEN', payload: isOpen });
 
   const setAuth = (isAuthenticated, userId, role) =>
-    
     dispatch({ type: 'SET_AUTH', payload: { isAuthenticated, userId, role } });
 
   const signOut = () => dispatch({ type: 'SIGN_OUT' });
 
-  const addToShoppingCard = (item) => dispatch({ type: 'ADD_TO_SHOPPING_CARD', payload: item });
+  // Add to shopping card
+  const addToShoppingCard = (item) => {
+    // Ensure each item in the shopping cart has a unique ID
+    const uniqueItem = { ...item, id: item.serviceName + '-' + new Date().getTime() }; // or use any other unique ID
+    dispatch({ type: 'ADD_TO_SHOPPING_CARD', payload: uniqueItem });
+  };
+
   const clearShoppingCard = () => dispatch({ type: 'CLEAR_SHOPPING_CARD' });
   const removeFromShoppingCard = (itemId) => dispatch({ type: 'REMOVE_FROM_SHOPPING_CARD', payload: { id: itemId } });
-  // Get shopping cart count
+
+  // Get shopping card count
   const shoppingCardCount = state.shoppingCard.length;
 
   return (
@@ -92,4 +122,5 @@ export const AppProvider = ({ children }) => {
   );
 };
 
+// Custom hook to access app context
 export const useAppContext = () => useContext(AppContext);
