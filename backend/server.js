@@ -19,6 +19,7 @@ import venueRouter from "./routes/venueRouter.js";
 import venueSelectionRouter from './routes/venueSelectionRouter.js';
 import galleryRouter from './routes/galleryRouter.js';
 import todolistRouter  from './routes/todolist.js';
+import shoppingCardRouter from './routes/shoppingCardRouter.js';
 
 dotenv.config(); // Load environment variables
 
@@ -70,6 +71,7 @@ app.use("/venues", venueRouter);
 app.use("/venueSelections", venueSelectionRouter);
 app.use("/galleries", galleryRouter);
 app.use("/todolist", todolistRouter);
+app.use("/shoppingcards", shoppingCardRouter);
 
 
 app.get("/", (req, res) => {

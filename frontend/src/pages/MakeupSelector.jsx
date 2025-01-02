@@ -3,13 +3,9 @@ import axios from "axios";
 import DescriptionBox from "../components/MakeupDescriptionBox";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
-
-
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
-
 
 const features = [
   {
@@ -130,7 +126,8 @@ const MakeupSelector = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const url = `http://localhost:3001/makeups`;
+      const makeupUrl = `http://localhost:3001/makeups`;
+      const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
       const requestData = {
         userID: userId,
         makeup: selectedFeatures.makeup?.selected || false,
@@ -141,28 +138,33 @@ const MakeupSelector = () => {
         special: selectedFeatures.special?.selected || false,
       };
   
-      await axios.post(url, requestData, {
+      await axios.post(makeupUrl, requestData, {
         headers: { "Content-Type": "application/json" },
       });
 
-      // Add total price to shopping card (frontend-only)
-      addToShoppingCard({
-        id: 'makeup', // Unique identifier for the item
-        name: 'Makeup',
-        price: total,
-        description: 'Professional makeup services for the bride and groom',
-        category: 'Makeup',
-      });
-      
-      toast.success("Makeup data and total price added to shopping card successfully!");
-      navigate("/shoppingCard");
-    } catch (error) {
-      console.error("Failed to save makeup data or add to shopping card.", error);
-      toast.error("Error saving data or adding to shopping card.");
-    } finally {
-      setLoading(false);
-    }
-  };
+     // Save shopping cart data
+    const shoppingCartData = {
+      userID: userId,
+      serviceName: 'Makeup',
+      price: total,
+    };
+console.log (shoppingCartData);
+    await axios.post(shoppingCartUrl, shoppingCartData, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    // Frontend-only addition (optional if the backend handles the cart data)
+    addToShoppingCard(shoppingCartData);
+
+    toast.success("Makeup data and total price added to shopping cart successfully!");
+    //navigate("/shoppingCard");
+  } catch (error) {
+    console.error("Failed to save makeup data or add to shopping cart.", error);
+    toast.error("Error saving data or adding to shopping cart.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
 
