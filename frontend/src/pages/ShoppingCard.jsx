@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useAppContext } from '../context/AppContext';
 
 const ShoppingCard = () => {
-  const { userId, shoppingCard, addToShoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext();
+  const { userId,isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0); // Local state for total price
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error("You must sign in to access this page.", { position: toast.POSITION.TOP_CENTER });
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
   // Fetch shopping card items
   const fetchShoppingCard = async () => {
     try {
@@ -26,7 +33,7 @@ const ShoppingCard = () => {
   };
 
   // Add a new service to the shopping card
-  const addService = async (newService) => {
+  /*const addService = async (newService) => {
     if (shoppingCard.some((item) => item.serviceName === newService.serviceName)) {
       toast.warning('This service is already in your shopping card.');
       return;
@@ -44,7 +51,7 @@ const ShoppingCard = () => {
       console.error('Failed to add service:', error);
       toast.error('Could not add service. Please try again.');
     }
-  };
+  }; */
 
   // Calculate total price
   const calculateTotalPrice = () => {

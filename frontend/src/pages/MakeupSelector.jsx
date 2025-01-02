@@ -67,7 +67,7 @@ const MakeupSelector = () => {
   const [currentDescription, setCurrentDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [formData, setFormData] = useState({});
+  //const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (!isAuthenticated) {
