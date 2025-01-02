@@ -21,6 +21,7 @@ import Register from './Auth/Register.jsx';
 import GalleryManagement from './AdminVenue/GalleryManagement.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
+import ShoppingCard from './pages/ShoppingCard.jsx';
 import './index.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Routes>
               {/* Public Routes */}
             <Route path="/" element={<Homepage />} />
+            <Route path="/ShoppingCard" element={ <ShoppingCard />} />
             <Route path="/Dashboard" element={ <Dashboard />} />
             <Route path="/Gallery" element={<Gallery />} />
             <Route path="/Gallery/:category" element={<CategoryDetails />} />
