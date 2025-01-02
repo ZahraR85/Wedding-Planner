@@ -139,11 +139,11 @@ const ReceptionSelector = () => {
         }
       // Add total to shopping cart
       addToShoppingCard({
-        id: 'reception', // Unique identifier for the item
-        name: 'Reception',
+        id: 'Catering', // Unique identifier for the item
+        name: 'Catering',
         price: total,
-        description: 'Complete reception catering services including starter, main course, dessert, and drinks',
-        category: 'Reception',
+        description: 'Complete Catering services including starter, main course, dessert, and drinks',
+        category: 'Catering',
       });
       
     } else {

@@ -2,23 +2,17 @@ import { useState } from "react";
 import {useEffect} from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import SignOut from '../Auth/SignOut';
 import logo from '../images/logo8.jpg';
 import { FaHome,FaUser, FaShoppingCart, FaTimes, FaBars} from 'react-icons/fa'; 
 
 const Navbar = () => {
-  const [formData, setFormData] = useState({ identifier: '', password: '' });
-  const [error, setError] = useState('');
-  //const navigate = useNavigate();
-  const { setAuth } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut, shoppingCardCount} = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isHomepage = location.pathname === '/';
   useEffect(() => {
-    console.log('isAuthenticated:', isAuthenticated, 'role:', role);
+    //console.log('isAuthenticated:', isAuthenticated, 'role:', role);
   }, [isAuthenticated, role]); // Log when these values change
 
   return (

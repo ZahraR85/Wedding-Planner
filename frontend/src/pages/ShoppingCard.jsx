@@ -1,8 +1,17 @@
 import { useAppContext } from '../context/AppContext';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingCard = () => {
-  const { shoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext();
+  const { shoppingCard, removeFromShoppingCard, clearShoppingCard, isAuthenticated } = useAppContext();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/signin');
+    }
+  }, [isAuthenticated, navigate]);
+  
   // Calculate the total sum of the shopping card
   const totalAmount = shoppingCard.reduce((sum, item) => sum + item.price, 0);
 
