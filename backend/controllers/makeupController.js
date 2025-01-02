@@ -1,36 +1,11 @@
 import Makeup from "../models/makeup.js";
 import mongoose from "mongoose";
-// Create a new makeup for a user
-// export const createMakeup = async (req, res) => {
-//   try {
-//     console.log("Request Body:", req.body); // Debugging
-//     const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
 
-//     if (!userID) {
-//       return res.status(400).json({ message: "UserID is required." });
-//     }
-//     console.log("Received Data:", req.body);
-//     const feature = await Makeup.create({
-//       userID,
-//       makeup,
-//       dress,
-//       nail,
-//       hairstyle,
-//       shoes,
-//       special,
-//     });
-
-//     res.status(201).json({ message: "Makeup created successfully", feature });
-//   } catch (error) {
-//     console.error("Error in createMakeup:", error); // Debugging
-//     res.status(500).json({ message: "Error creating feature", error });
-//   }
-// };
 export const createOrUpdateMakeup = async (req, res) => {
   try {
     const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
 
-    console.log("Received Data:", req.body);
+    // console.log("Received Data:", req.body);
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
@@ -45,7 +20,7 @@ export const createOrUpdateMakeup = async (req, res) => {
       (shoes ? 100 : 0) +
       (special ? 300 : 0);
 
-    console.log("Calculated Total:", total);
+    // console.log("Calculated Total:", total);
 
     // Prepare the data to update
     const updateData = {
@@ -60,13 +35,6 @@ export const createOrUpdateMakeup = async (req, res) => {
 
 
 
-// console.log("Makeup:", makeup ? 400 : 0);
-// console.log("Dress:", dress ? 500 : 0);
-// console.log("Nail:", nail ? 200 : 0);
-// console.log("Hairstyle:", hairstyle ? 400 : 0);
-// console.log("Shoes:", shoes ? 100 : 0);
-// console.log("Special:", special ? 300 : 0);
-// console.log("Calculated Total:", total);
 
     // Update or create the document
     const feature = await Makeup.findOneAndUpdate(
@@ -75,7 +43,7 @@ export const createOrUpdateMakeup = async (req, res) => {
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
-    console.log("Updated Feature:", feature);
+    // console.log("Updated Feature:", feature);
     res.status(200).json({ message: "Makeup updated successfully", feature });
   } catch (error) {
     console.error("Error in createOrUpdateMakeup:", error);
@@ -99,7 +67,7 @@ export const getMakeups = async (req, res) => {
     const music = await Makeup.findOne({ userID })
       .populate('userID', 'name family') // Populate user's name and family
 
-      console.log(music);
+      // console.log(music);
 
     if (!music) {
       return res.status(404).json({ message: "No selections found for this user" });
@@ -136,7 +104,7 @@ export const updateMakeup = async (req, res) => {
     const updatedData = req.body;
 
     const makeup = await Makeup.findByIdAndUpdate(id, updatedData, { new: true });
-    console.log("Received Data:", req.body);
+    // console.log("Received Data:", req.body);
     if (!makeup) {
       return res.status(404).json({ message: "Makeup not found" });
     }

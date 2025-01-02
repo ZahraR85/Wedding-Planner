@@ -1,24 +1,15 @@
-import Music from "../models/Music.js";
+import Music from "../models/music.js";
 import mongoose from "mongoose";
 
 
-// Create a new user music selection
-// export const createMusicSelection = async (req, res) => {
-//   try {
-//     const newSelection = new Music(req.body);
-//     const savedSelection = await newSelection.save();
-//     res.status(201).json(savedSelection);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+
 
 
 export const createOrUpdateMusic = async (req, res) => {
   try {
     const { userID, selections, customRequests } = req.body;
 
-    console.log("Received Data:", req.body);
+    // console.log("Received Data:", req.body);
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
@@ -29,7 +20,7 @@ export const createOrUpdateMusic = async (req, res) => {
       return total + (selection.totalPrice || 0);
     }, 0);
 
-    console.log("Calculated Total Cost:", totalCost);
+    // console.log("Calculated Total Cost:", totalCost);
 
     // Prepare the data to update
     const updateData = {
@@ -38,7 +29,7 @@ export const createOrUpdateMusic = async (req, res) => {
       totalCost,
     };
 
-    console.log("Data to Update:", updateData);
+    // console.log("Data to Update:", updateData);
 
     // Find and update the document or create a new one
     const musicRecord = await Music.findOneAndUpdate(
@@ -47,7 +38,7 @@ export const createOrUpdateMusic = async (req, res) => {
       { new: true, upsert: true, setDefaultsOnInsert: true } // Update or insert with defaults
     );
 
-    console.log("Updated Music Record:", musicRecord);
+    // console.log("Updated Music Record:", musicRecord);
     res.status(200).json({ message: "Music updated successfully", musicRecord });
   } catch (error) {
     console.error("Error in createOrUpdateMusic:", error);
@@ -68,34 +59,6 @@ export const getAllMusicSelections = async (req, res) => {
 };
 
 
-// export const getUserSelectionById = async (req, res) => {
-//   try {
-//     // Extract userID from query parameters
-//     const userID = req.query.userID;
-
-//     if (!userID) {
-//       return res.status(400).json({ message: "User ID is required." });
-//     }
-
-//     console.log("Fetching data for userID:", userID);
-
-//     // Ensure userID is treated as an ObjectId
-//     const music = await Music.findOne({ userID: new mongoose.Types.ObjectId(userID) })
-//       .populate("userID", "name family") // Populate user details
-//       .populate("selections.optionID"); // Populate optionID details
-
-//     console.log("Fetched Music Data:", music);
-
-//     if (!music) {
-//       return res.status(404).json({ message: "No selections found for this user." });
-//     }
-
-//     res.status(200).json(music);
-//   } catch (error) {
-//     console.error("Error fetching user selections:", error);
-//     res.status(500).json({ message: "Error fetching user selections", error });
-//   }
-// };
 
 export const getUserSelectionById = async (req, res) => {
   try {
@@ -105,7 +68,7 @@ export const getUserSelectionById = async (req, res) => {
       return res.status(400).json({ message: "User ID is required." });
     }
 
-    console.log("Fetching data for userID:", userID);
+    // console.log("Fetching data for userID:", userID);
 
     // Debug: Check if userID is valid
     if (!mongoose.Types.ObjectId.isValid(userID)) {
@@ -124,7 +87,7 @@ export const getUserSelectionById = async (req, res) => {
       return res.status(404).json({ message: "No selections found for this user." });
     }
 
-    console.log("Fetched Music Data:", JSON.stringify(music, null, 2));
+    // console.log("Fetched Music Data:", JSON.stringify(music, null, 2));
 
     res.status(200).json(music);
   } catch (error) {

@@ -18,6 +18,7 @@ import userInfoRoutes from './routes/userinfoes.js';
 import venueRouter from "./routes/venueRouter.js";
 import venueSelectionRouter from './routes/venueSelectionRouter.js';
 import galleryRouter from './routes/galleryRouter.js';
+import todolistRouter  from './routes/todolist.js';
 
 dotenv.config(); // Load environment variables
 
@@ -68,6 +69,9 @@ app.use("/userInfoes", userInfoRoutes);
 app.use("/venues", venueRouter);
 app.use("/venueSelections", venueSelectionRouter);
 app.use("/galleries", galleryRouter);
+app.use("/todolist", todolistRouter);
+
+
 app.get("/", (req, res) => {
   console.log(`Unhandled request: ${req.method} ${req.url}`);
   res.status(404).send("Not found");

@@ -6,6 +6,7 @@ import Countdown from "../components/countdown";
 import Music from "../components/music";
 import MakeupUser from "../components/makeupUser";
 import UserInformation from "../components/userinformation";
+import Todolist from "../components/todolist";
 
 import userinfoBackground from '../images/userinfo.png';
 import musicBackground from '../images/music1.png';
@@ -86,7 +87,7 @@ const Dashboard = () => {
 
         </div>
 
-      
+
 
 
 
@@ -98,8 +99,8 @@ const Dashboard = () => {
       <div className="flex flex-col gap-4">
 
 
-  {/* Countdown */}
-  <div
+        {/* Countdown */}
+        <div
           className="flex justify-center items-center p-4 rounded shadow h-[300px] md:h-[400px]"
           style={{
             backgroundImage: `url(${countdownBackground})`,
@@ -124,6 +125,13 @@ const Dashboard = () => {
 
 
       </div>
+      <div className="flex justify-center items-center p-4 rounded shadow h-[300px] md:h-[400px]"
+          style={{         
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}>
+          <Todolist userId={userId} />
+        </div>
     </div>
   );
 
