@@ -40,7 +40,7 @@ const UserSelections = ({ userId }) => {
     <div className="user-selections">
 
       <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80 space-y-4 p-4">
-        <h2 className="text-3xl font-bold text-center mb-6">We selected these Musik features</h2>
+        <h2 className="text-3xl font-bold text-center mb-6">Musik</h2>
         {/* <h3 className="text-lg font-semibold">
           User: {userSelections.userID?.name} {userSelections.userID?.family}
         </h3> */}
