@@ -1,4 +1,4 @@
-import UserInfo from '../models/userInfo.js';
+import UserInfo from '../models/userinfo.js';
 
 // Create a new record
 export const createUserInfo = async (req, res) => {

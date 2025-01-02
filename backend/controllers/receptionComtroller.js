@@ -54,6 +54,10 @@ export const createOrUpdateReception = async (req, res) => {
   }
 };
 
+
+
+
+
 // Get all Receptions
 export const getReceptions = async (req, res) => {
   try {
