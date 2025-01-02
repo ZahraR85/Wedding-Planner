@@ -21,7 +21,7 @@ export const createOrUpdateShoppingCard = async (req, res) => {
       await existingCardEntry.save();
 
       return res.status(200).json({
-        message: "Shopping cart entry updated successfully.",
+        message: "Shopping card entry updated successfully.",
         cart: existingCardEntry,
       });
     }
@@ -34,18 +34,18 @@ export const createOrUpdateShoppingCard = async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "Shopping cart entry created successfully.",
+      message: "Shopping card entry created successfully.",
       cart: newCartEntry,
     });
   } catch (error) {
-    console.error("Error in createOrUpdateShoppingCard:", error);
-    return res.status(500).json({ message: "Internal server error." });
+    console.error("Error in createOrUpdateShoppingCard:", error.message);
+    return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 };
 
 // Get user's shopping card
 export const getShoppingCard = async (req, res) => {
-  const { userID } = req.query; // Extract userID from query parameters
+  const { userID } = req.query;
 
   try {
     if (!userID) {
@@ -59,9 +59,11 @@ export const getShoppingCard = async (req, res) => {
     }
 
     const totalPrice = cardItems.reduce((sum, item) => sum + item.price, 0);
+
     res.status(200).json({ cardItems, totalPrice });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching shopping card', error });
+    console.error("Error in getShoppingCard:", error.message);
+    res.status(500).json({ message: 'Error fetching shopping card', error: error.message });
   }
 };
 
@@ -70,14 +72,23 @@ export const removeFromShoppingCard = async (req, res) => {
   const { userID, serviceName } = req.body;
 
   try {
-    await ShoppingCard.findOneAndDelete({ userID, serviceName });
+    if (!userID || !serviceName) {
+      return res.status(400).json({ message: 'UserID and ServiceName are required.' });
+    }
+
+    const deletedItem = await ShoppingCard.findOneAndDelete({ userID, serviceName });
+
+    if (!deletedItem) {
+      return res.status(404).json({ message: 'Service not found in the shopping card.' });
+    }
 
     const cardItems = await ShoppingCard.find({ userID });
     const totalPrice = cardItems.reduce((sum, item) => sum + item.price, 0);
 
-    res.status(200).json({ message: 'Service removed', cardItems, totalPrice });
+    res.status(200).json({ message: 'Service removed successfully.', cardItems, totalPrice });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to remove service', error });
+    console.error("Error in removeFromShoppingCard:", error.message);
+    res.status(500).json({ message: 'Failed to remove service', error: error.message });
   }
 };
 
@@ -86,11 +97,15 @@ export const clearShoppingCard = async (req, res) => {
   const { userID } = req.params;
 
   try {
-    // Remove all services associated with the user
+    if (!userID) {
+      return res.status(400).json({ message: 'UserID is required.' });
+    }
+
     await ShoppingCard.deleteMany({ userID });
 
-    res.status(200).json({ message: 'Shopping card cleared' });
+    res.status(200).json({ message: 'Shopping card cleared successfully.' });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to clear shopping card', error });
+    console.error("Error in clearShoppingCard:", error.message);
+    res.status(500).json({ message: 'Failed to clear shopping card.', error: error.message });
   }
 };

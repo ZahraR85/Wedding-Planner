@@ -8,16 +8,16 @@ import {
 
 const router = express.Router();
 
-// Add a service to the shopping card
+// Add or update a service in the shopping card
 router.post('/', createOrUpdateShoppingCard);
 
 // Get user's shopping card
 router.get('/', getShoppingCard);
 
-// Remove a service from the shopping card
+// Remove a specific service from the shopping card
 router.delete('/', removeFromShoppingCard);
 
-// Clear user's shopping card
-router.delete('/:id', clearShoppingCard);
+// Clear all items from the user's shopping card
+router.delete('/clear/:userID', clearShoppingCard);
 
 export default router;

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useAppContext } from '../context/AppContext';
 
 const ShoppingCard = () => {
-  const { userId, shoppingCard, addToShoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext(); 
+  const { userId, shoppingCard, addToShoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0); // Local state for total price
 
   // Fetch shopping card items
@@ -12,10 +12,37 @@ const ShoppingCard = () => {
     try {
       const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
       const { cardItems } = response.data;
-      cardItems.forEach((item) => addToShoppingCard(item)); // Add items to context
+
+      // Add fetched items to the context
+      cardItems.forEach((item) => {
+        if (!shoppingCard.some((cardItem) => cardItem.serviceName === item.serviceName)) {
+          addToShoppingCard(item);
+        }
+      });
     } catch (error) {
       console.error('Failed to fetch shopping card:', error);
       toast.error('Could not load shopping card. Please try again.');
+    }
+  };
+
+  // Add a new service to the shopping card
+  const addService = async (newService) => {
+    if (shoppingCard.some((item) => item.serviceName === newService.serviceName)) {
+      toast.warning('This service is already in your shopping card.');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`http://localhost:3001/shoppingcards`, {
+        userId,
+        service: newService,
+      });
+
+      addToShoppingCard(response.data.newCardItem);
+      toast.success(`${newService.serviceName} added to your shopping card!`);
+    } catch (error) {
+      console.error('Failed to add service:', error);
+      toast.error('Could not add service. Please try again.');
     }
   };
 
@@ -26,12 +53,12 @@ const ShoppingCard = () => {
   };
 
   // Remove service from shopping card
-  const removeService = async (serviceId) => {
+  const removeService = async (serviceName) => {
     try {
       await axios.delete(`http://localhost:3001/shoppingcards`, {
-        data: { userId, serviceId },
+        data: { userId, serviceName },
       });
-      removeFromShoppingCard(serviceId); // Remove item from context
+      removeFromShoppingCard(serviceName);
       toast.success('Service removed!');
     } catch (error) {
       toast.error('Failed to remove service!');
@@ -42,8 +69,8 @@ const ShoppingCard = () => {
   const handleClearShoppingCard = async () => {
     try {
       await axios.delete(`http://localhost:3001/shoppingcards/${userId}`);
-      clearShoppingCard(); // Clear shopping card in context
-      setTotalPrice(0); // Reset total price to 0
+      clearShoppingCard();
+      setTotalPrice(0);
       toast.success('Shopping card cleared!');
     } catch (error) {
       toast.error('Failed to clear shopping card!');
@@ -52,10 +79,10 @@ const ShoppingCard = () => {
 
   useEffect(() => {
     fetchShoppingCard();
-  }, [userId]); // Re-fetch shopping card when userId changes
+  }, [userId]);
 
   useEffect(() => {
-    calculateTotalPrice(); // Recalculate total price when shoppingCard changes
+    calculateTotalPrice();
   }, [shoppingCard]);
 
   return (
@@ -67,12 +94,11 @@ const ShoppingCard = () => {
           <p className="text-xl text-center col-span-full">Your shopping card is empty.</p>
         ) : (
           shoppingCard.map((item) => (
-            <div key={item.serviceId} className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <div key={item.serviceName} className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
               <h3 className="text-xl font-semibold text-center mb-2">{item.serviceName}</h3>
-              <p className="text-gray-500 text-center mb-4">{item.description}</p>
               <span className="text-lg font-bold mb-2">${item.price.toFixed(2)}</span>
               <button
-                onClick={() => removeService(item.serviceId)}
+                onClick={() => removeService(item.serviceName)}
                 className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
               >
                 Remove
