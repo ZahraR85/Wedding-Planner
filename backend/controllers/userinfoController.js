@@ -54,3 +54,18 @@ export const deleteUserInfo = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+export const getUserFeedbackCards = async (req, res) => {
+  try {
+    const feedbackData = await UserInfo.find({ feedback: { $exists: true, $ne: "" } });
+    console.log('Feedback Data:', feedbackData);
+    res.status(200).json(feedbackData);
+  } catch (error) {
+    console.error('Database Query Error:', error);
+    res.status(500).json({ message: 'Database Query Error', error: error.message });
+  }
+};
