@@ -33,10 +33,10 @@ const appReducer = (state, action) => {
         ...state,
         isAuthenticated: action.payload.isAuthenticated,
         userId: action.payload.userId,
-        userRole: action.payload.role, // Set Role on authentication
+        role: action.payload.role, // Set Role on authentication
       };
     case 'SIGN_OUT':
-      return { ...state, isAuthenticated: false, userId: null, userRole: null };
+      return { ...state, isAuthenticated: false, userId: null, role: null };
       case 'ADD_TO_SHOPPING_CARD':
         // Check if serviceName exists in payload and shopping card
         if (!action.payload || !action.payload.serviceName) {
