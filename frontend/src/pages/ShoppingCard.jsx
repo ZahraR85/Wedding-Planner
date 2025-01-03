@@ -1,79 +1,66 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
 import { useAppContext } from '../context/AppContext';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const ShoppingCard = () => {
-  const { userId,isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext();
+  const { userId, isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0); // Local state for total price
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.", { position: toast.POSITION.TOP_CENTER });
+      toast.error("You must sign in to access this page.");
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
-  // Fetch shopping card items
-  const fetchShoppingCard = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
-      const { cardItems } = response.data;
+ // Fetch shopping card items
+ const fetchShoppingCard = async () => {
+  if (!userId) {
+    // If userId is null or undefined, don't fetch
+    toast.error('User not authenticated. Please sign in.');
+    return;
+  }
 
-      // Add fetched items to the context
-      cardItems.forEach((item) => {
-        if (!shoppingCard.some((cardItem) => cardItem.serviceName === item.serviceName)) {
-          addToShoppingCard(item);
-        }
-      });
-    } catch (error) {
-      console.error('Failed to fetch shopping card:', error);
-      toast.error('Could not load shopping card. Please try again.');
-    }
-  };
+  try {
+    const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
+    const { cardItems } = response.data;
 
-  // Add a new service to the shopping card
-  /*const addService = async (newService) => {
-    if (shoppingCard.some((item) => item.serviceName === newService.serviceName)) {
-      toast.warning('This service is already in your shopping card.');
-      return;
-    }
+    // Add fetched items to the context
+    cardItems.forEach((item) => {
+      if (!shoppingCard.some((cardItem) => cardItem.serviceName === item.serviceName)) {
+        addToShoppingCard(item);
+      }
+    });
+  } catch (error) {
+    console.error('Failed to fetch shopping card:', error);
+    toast.error('Could not load shopping card. Please try again.');
+  }
+};
 
-    try {
-      const response = await axios.post(`http://localhost:3001/shoppingcards`, {
-        userId,
-        service: newService,
-      });
+// Calculate total price
+const calculateTotalPrice = () => {
+  const total = shoppingCard.reduce((sum, item) => sum + item.price, 0);
+  setTotalPrice(total);
+};
 
-      addToShoppingCard(response.data.newCardItem);
-      toast.success(`${newService.serviceName} added to your shopping card!`);
-    } catch (error) {
-      console.error('Failed to add service:', error);
-      toast.error('Could not add service. Please try again.');
-    }
-  }; */
-
-  // Calculate total price
-  const calculateTotalPrice = () => {
-    const total = shoppingCard.reduce((sum, item) => sum + item.price, 0);
-    setTotalPrice(total);
-  };
-
-  // Remove service from shopping card
-  const removeService = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3001/shoppingcards`, {
-        data: { userId, id }, // Use id for removal
-      });
-      removeFromShoppingCard(id); // Pass id for removal in context
-      toast.success('Service removed!');
-    } catch (error) {
-      toast.error('Failed to remove service!');
-    }
-  };  
+// Remove service from shopping card
+const removeService = async (id) => {
+  try {
+    await axios.delete(`http://localhost:3001/shoppingcards`, {
+      data: { userId, id }, // Use id for removal
+    });
+    removeFromShoppingCard(id); // Pass id for removal in context
+    toast.success('Service removed!');
+  } catch (error) {
+    toast.error('Failed to remove service!');
+  }
+};
 
   // Clear the shopping card
-  const handleClearShoppingCard = async () => {
+  /* const handleClearShoppingCard = async () => {
     try {
       await axios.delete(`http://localhost:3001/shoppingcards/${userId}`);
       clearShoppingCard();
@@ -83,19 +70,21 @@ const ShoppingCard = () => {
       toast.error('Failed to clear shopping card!');
     }
   };
-
+*/
   useEffect(() => {
-    fetchShoppingCard();
+    if (userId) {
+      fetchShoppingCard();
+    }
   }, [userId]);
-
+  
   useEffect(() => {
     calculateTotalPrice();
   }, [shoppingCard]);
-
+  
   return (
     <div className="container mx-auto py-8">
       <h2 className="text-3xl font-bold text-center mb-6">Your Shopping Card</h2>
-
+      <ToastContainer />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {shoppingCard.length === 0 ? (
           <p className="text-xl text-center col-span-full">Your shopping card is empty.</p>
@@ -116,12 +105,7 @@ const ShoppingCard = () => {
       {shoppingCard.length > 0 && (
         <div className="mt-8 flex justify-between items-center">
           <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>
-          <button
-            onClick={handleClearShoppingCard}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
-          >
-            Clear Card
-          </button>
+         {/* <button onClick={handleClearShoppingCard} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Clear Card</button> */}
         </div>
       )}
     </div>

@@ -33,39 +33,44 @@ const appReducer = (state, action) => {
         ...state,
         isAuthenticated: action.payload.isAuthenticated,
         userId: action.payload.userId,
-        userRole: action.payload.role, // Set Role on authentication
+        role: action.payload.role, // Set Role on authentication
       };
     case 'SIGN_OUT':
-      return { ...state, isAuthenticated: false, userId: null, userRole: null };
-      case 'ADD_TO_SHOPPING_CARD':
-        // Check if serviceName exists in payload and shopping card
-        if (!action.payload || !action.payload.serviceName) {
-          console.error('Item must have a serviceName property');
-          return state; // No action if the item does not have serviceName
-        }
-      
-        // Prevent duplicates by checking if the service already exists in the cart
-        const isDuplicate = state.shoppingCard.some(
-          (cardItem) => cardItem.serviceName === action.payload.serviceName
-        );
-      
-        if (isDuplicate) {
-          return state; // Return the existing state if duplicate
-        }
-      
-        // Create a unique ID for the item using serviceName and timestamp
-        const uniqueItem = {
-          ...action.payload,
-          id: action.payload.serviceName + '-' + new Date().getTime(), // Unique ID
-        };
-      
-        return {
-          ...state,
-          shoppingCard: [...state.shoppingCard, uniqueItem], // Add new unique item
-        };
-      
-    case 'CLEAR_SHOPPING_CARD':
-      return { ...state, shoppingCard: [] };
+      return { ...state, isAuthenticated: false, userId: null, role: null };
+    case 'ADD_TO_SHOPPING_CARD':
+      // Check if serviceName exists in payload and shopping card
+      if (!action.payload || !action.payload.serviceName) {
+        console.error('Item must have a serviceName property');
+        return state; // No action if the item does not have serviceName
+      }
+
+      // Prevent duplicates by checking if the service already exists in the cart
+      const isDuplicate = state.shoppingCard.some(
+        (cardItem) => cardItem.serviceName === action.payload.serviceName
+      );
+
+      if (isDuplicate) {
+        return state; // Return the existing state if duplicate
+      }
+
+      // Create a unique ID for the item using serviceName and timestamp
+      const uniqueItem = {
+        ...action.payload,
+        id: action.payload.serviceName + '-' + new Date().getTime(), // Unique ID
+      };
+
+      return {
+        ...state,
+        shoppingCard: [...state.shoppingCard, uniqueItem], // Add new unique item
+      };
+
+    case 'REMOVE_FROM_SHOPPING_CARD':
+      // Remove item by its ID
+      return {
+        ...state,
+        shoppingCard: state.shoppingCard.filter(item => item.id !== action.payload.id),
+      };
+
     default:
       return state;
   }
@@ -94,8 +99,10 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: 'ADD_TO_SHOPPING_CARD', payload: uniqueItem });
   };
 
-  const clearShoppingCard = () => dispatch({ type: 'CLEAR_SHOPPING_CARD' });
-  const removeFromShoppingCard = (itemId) => dispatch({ type: 'REMOVE_FROM_SHOPPING_CARD', payload: { id: itemId } });
+  // Remove from shopping card
+  const removeFromShoppingCard = (itemId) => {
+    dispatch({ type: 'REMOVE_FROM_SHOPPING_CARD', payload: { id: itemId } });
+  };
 
   // Get shopping card count
   const shoppingCardCount = state.shoppingCard.length;
@@ -112,7 +119,6 @@ export const AppProvider = ({ children }) => {
         setAuth,
         signOut,
         addToShoppingCard,
-        clearShoppingCard,
         removeFromShoppingCard,
         shoppingCardCount, // Expose shopping card count here
       }}

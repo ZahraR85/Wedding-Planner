@@ -144,7 +144,7 @@ const ReceptionSelector = () => {
           serviceName: 'Catering',
           price: total,
         };
-console.log (shoppingCartData);
+
       await axios.post(shoppingCartUrl, shoppingCartData, {
         headers: { "Content-Type": "application/json" },
       });
@@ -153,7 +153,7 @@ console.log (shoppingCartData);
       addToShoppingCard(shoppingCartData);
 
       toast.success("Catering data and total price added to shopping cart successfully!");
-      //navigate("/shoppingCard");
+      navigate("/shoppingCard");
       
     } else {
       toast.error("Failed to save data!");

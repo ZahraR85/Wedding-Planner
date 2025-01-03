@@ -12,7 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //console.log('isAuthenticated:', isAuthenticated, 'role:', role);
+    console.log('isAuthenticated:', isAuthenticated, 'role:', role);
   }, [isAuthenticated, role]); // Log when these values change
 
   return (
