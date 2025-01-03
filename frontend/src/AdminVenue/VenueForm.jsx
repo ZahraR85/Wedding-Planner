@@ -55,8 +55,14 @@ const VenueForm = () => {
   };
 
   const handleFileChange = (e) => {
-    setImageFiles(e.target.files);
+    const files = Array.from(e.target.files);
+    setImageFiles((prevFiles) => [...prevFiles, ...files]);
   };
+  
+  const removeImage = (index) => {
+    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+  
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -184,22 +190,27 @@ const VenueForm = () => {
           placeholder="Description"
         />
         <div className="flex">
-        <div className="w-1/2 pr-8">
-
-  <input type="file" multiple onChange={handleFileChange} className="border mx-2 p-2 rounded w-full h-20"/>
-  {formData.images.length > 0 && (
-    <div className="flex flex-wrap gap-2">
-      {formData.images.map((img, index) => (
-        <img
-          key={index}
-          src={img}
-          alt="Uploaded"
-          className="w-16 h-16 object-cover rounded"
-        />
+        <div>
+          <input type="file" multiple onChange={handleFileChange}
+    className="border mx-2 p-2 rounded w-full h-20"/>
+      {imageFiles.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+        {imageFiles.map((file, index) => (
+          <div key={index} className="relative">
+            <img src={URL.createObjectURL(file)} alt="Preview" className="w-16 h-16 object-cover rounded"/>
+          <button
+            type="button"
+            onClick={() => removeImage(index)}
+            className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
+          >
+            &times;
+          </button>
+        </div>
       ))}
     </div>
-        )}
-        </div>
+  )}
+</div>
+
         <span className="text-xl font-bold text-BgFont mt-5 pl-20">total price: $</span>
       </div>
       <div className="">
