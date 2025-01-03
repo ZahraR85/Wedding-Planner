@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const features = [
   { id: "photography", label: "Photography (per 3 hours)", price: 300 },
@@ -12,7 +15,7 @@ const features = [
 ];
 
 const Photography = () => {
-  const { userId, isAuthenticated } = useAppContext();
+  const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     photography: { number: 0, price: 300 },
@@ -38,8 +41,6 @@ const Photography = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/photographies?userId=${userId}`);
-        console.log("Fetched data:", response.data);
-
         if (response.data && response.data.length > 0) {
           const existingData = response.data[0]; // Access the first object in the array
           const updatedFormData = {
@@ -55,7 +56,8 @@ const Photography = () => {
           console.log("No data found for this user. Initializing with defaults.");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching photography data:", error);
+        toast.error("please add your selection for photography!");
       }
     };
 
@@ -113,11 +115,35 @@ const Photography = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      alert(response.data.message);
-      setIsEditMode(true); // Switch to edit mode after submission
-    } catch (error) {
-      console.error("Error saving photography data:", error);
-      alert("Failed to save photography data!");
+      if (response.status === 200 || response.status === 201) {
+        toast.success(`entertain ${isEditMode ? "updated" : "created"} successfully!`);
+        if (!isEditMode) {
+          setIsEditMode(true); // Switch to edit mode after creating
+        }
+        const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+     // Save shopping cart data
+        const shoppingCartData = {
+          userID: userId,
+          serviceName: 'Photography',
+          price: total,
+        };
+
+      await axios.post(shoppingCartUrl, shoppingCartData, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+    // Frontend-only addition (optional if the backend handles the cart data)
+      addToShoppingCard(shoppingCartData);
+
+      toast.success("Catering data and total price added to shopping cart successfully!");
+      navigate("/shoppingCard");
+      
+    } else {
+      toast.error("Failed to save data!");
+    }
+  } catch (error) {
+    console.error("Error saving data:", error);
+    toast.error("Failed to save data!");
     } finally {
       setLoading(false);
     }
@@ -128,6 +154,7 @@ const Photography = () => {
       <div className="absolute inset-0 bg-white/50"></div>
       <div className="relative mx-auto w-full max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-2xl font-bold text-center text-BgFont m-20">Photography Services</h1>
+        <ToastContainer />
         {features.map((feature) => (
           <label key={feature.id} className="flex items-center justify-between">
             <span className="text-m font-bold text-BgFont">{feature.label}:</span>

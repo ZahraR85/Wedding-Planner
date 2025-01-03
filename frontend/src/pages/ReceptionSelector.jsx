@@ -144,7 +144,7 @@ const ReceptionSelector = () => {
           serviceName: 'Catering',
           price: total,
         };
-console.log (shoppingCartData);
+
       await axios.post(shoppingCartUrl, shoppingCartData, {
         headers: { "Content-Type": "application/json" },
       });
