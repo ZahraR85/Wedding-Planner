@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  createVenue,
+  //createVenue,
   updateVenue,
   deleteVenue,
   getAllVenues,
@@ -13,7 +13,7 @@ import { adminOnly } from "../middleware/auth.js"; // Import the middlewares
 const router = express.Router();
 
 // Admin Routes - Only for venue management
-router.post("/", adminOnly, createVenue); // Create a new venue (Admin only)
+//router.post("/", adminOnly, createVenue); // Create a new venue (Admin only)
 router.put("/:venueId", adminOnly, updateVenue); // Update venue by ID (Admin only)
 router.delete("/:venueId", adminOnly, deleteVenue); // Delete venue by ID (Admin only)
 

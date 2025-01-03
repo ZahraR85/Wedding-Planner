@@ -17,11 +17,13 @@ const venueSchema = new mongoose.Schema(
     description: { type: String, required: false },
     latitude: {
       type: Number,
+      default: null,
       min: -90,
       max: 90,
     },
     longitude: {
       type: Number,
+      default: null,
       min: -180,
       max: 180,
     },

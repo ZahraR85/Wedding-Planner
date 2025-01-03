@@ -20,7 +20,8 @@ const VenueForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [venues, setVenues] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  //const [venues, setVenues] = useState([]);
 
   // Redirect unauthorized users
   useEffect(() => {
@@ -31,7 +32,7 @@ const VenueForm = () => {
   }, [isAuthenticated, navigate]);
 
   // Fetch all venues
-  useEffect(() => {
+ /* useEffect(() => {
     const fetchVenues = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/venues`);
@@ -42,7 +43,7 @@ const VenueForm = () => {
     };
     fetchVenues();
   }, []);
-
+*/
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,29 +54,33 @@ const VenueForm = () => {
     }
   };
 
-  // Handle image uploads
-  /*const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setFormData({ ...formData, images: [...formData.images, ...files] });
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImageFiles((prevFiles) => [...prevFiles, ...files]);
   };
-  */
-// Update the handleImageUpload function to accept URLs directly
-const handleImageUpload = (e) => {
-  const { value } = e.target;
-  const urls = value.split(',').map((url) => url.trim()); // Split by comma and trim whitespace
-  setFormData({ ...formData, images: [...formData.images, ...urls] });
-};
-  // Submit new venue
+  
+  const removeImage = (index) => {
+    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+  
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const requestData = { userId, ...formData };
-      const response = await axios.post("http://localhost:3001/venues", requestData);
+      // Prepare form data
+      const uploadFormData = new FormData();
+      Array.from(imageFiles).forEach((file) => uploadFormData.append("images", file));
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "images") uploadFormData.append(key, value);
+      });
+      uploadFormData.append("userId", userId);
+  
+      // Upload to backend
+      const response = await axios.post("http://localhost:3001/venues", uploadFormData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
       alert(response.data.message || "Venue added successfully!");
-      
-      // Reset form for new entries
       setFormData({
         name: "",
         city: "",
@@ -87,9 +92,7 @@ const handleImageUpload = (e) => {
         images: [],
         description: "",
       });
-
-      // Update venue list
-      setVenues((prevVenues) => [...prevVenues, response.data.venue]);
+      setImageFiles([]);
     } catch (error) {
       console.error("Error adding venue:", error);
       alert("Failed to add venue.");
@@ -97,7 +100,7 @@ const handleImageUpload = (e) => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
     {/* Overlay for controlling opacity */}
@@ -187,25 +190,27 @@ const handleImageUpload = (e) => {
           placeholder="Description"
         />
         <div className="flex">
-        <div className="w-1/2 pr-8">
-  <textarea
-    placeholder="Enter image URLs, separated by commas"
-    onChange={handleImageUpload}
-    className="textarea textarea-bordered w-full mb-2"
-  />
-  {formData.images.length > 0 && (
-    <div className="flex flex-wrap gap-2">
-      {formData.images.map((img, index) => (
-        <img
-          key={index}
-          src={img}
-          alt="Uploaded"
-          className="w-16 h-16 object-cover rounded"
-        />
+        <div>
+          <input type="file" multiple onChange={handleFileChange}
+    className="border mx-2 p-2 rounded w-full h-20"/>
+      {imageFiles.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+        {imageFiles.map((file, index) => (
+          <div key={index} className="relative">
+            <img src={URL.createObjectURL(file)} alt="Preview" className="w-16 h-16 object-cover rounded"/>
+          <button
+            type="button"
+            onClick={() => removeImage(index)}
+            className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
+          >
+            &times;
+          </button>
+        </div>
       ))}
     </div>
-        )}
-        </div>
+  )}
+</div>
+
         <span className="text-xl font-bold text-BgFont mt-5 pl-20">total price: $</span>
       </div>
       <div className="">

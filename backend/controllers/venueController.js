@@ -1,78 +1,101 @@
 import Venue from "../models/venue.js";
 
-// Create a new venue
 export const createVenue = async (req, res) => {
   try {
-    const { userId, name, city, images, capacity, price, discount, address, latitude, longitude } = req.body;
+    const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
 
-    // Validate required fields
-    if (!userId || !name || !city || !price || !address) {
-      return res.status(400).json({ message: "Missing required fields." });
-    }
+    // Collect uploaded image URLs
+    const images = req.files.map((file) => file.path);
 
-    const newVenue = new Venue({
+    const venue = new Venue({
       userId,
       name,
       city,
-      images,
       capacity,
       price,
       discount,
       address,
+      description,
       latitude,
       longitude,
-      description,
+      images,
     });
 
-    await newVenue.save();
-    res.status(201).json({ message: "Venue created successfully.", venue: newVenue });
+    await venue.save();
+    res.status(201).json({ message: "Venue created successfully!", venue });
   } catch (error) {
-    console.error("Error in createVenue:", error);
-    res.status(500).json({ message: "Error creating venue.", error });
+    console.error(error);
+    res.status(500).json({ message: "Error creating venue", error });
+  }
+};
+// Get all venues
+export const getAllVenues = async (req, res) => {
+  try {
+    const venues = await Venue.find(); // Fetch all venues from the database
+    res.status(200).json(venues);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching venues", error });
   }
 };
 
-// Update an existing venue
+// Update a price of venue
 export const updateVenue = async (req, res) => {
   try {
-    const { venueId } = req.params;
-    const updatedData = req.body;
-
-    const venue = await Venue.findByIdAndUpdate(venueId, updatedData, { new: true });
-
-    if (!venue) return res.status(404).json({ message: "Venue not found." });
-
-    res.status(200).json({ message: "Venue updated successfully.", venue });
+    const { id } = req.params;
+    const updatedVenue = await Venue.findByIdAndUpdate(id, req.body, { new: true });
+    res.status(200).json(updatedVenue);
   } catch (error) {
-    console.error("Error in updateVenue:", error);
-    res.status(500).json({ message: "Error updating venue.", error });
+    res.status(500).json({ message: "Error updating venue", error });
   }
 };
 
-// Delete a venue by ID
+// Update a venue
+/*export const updateVenue = async (req, res) => {
+  try {
+    const { venueId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
+
+    // Find the venue by id
+    const venue = await Venue.findById(venueId);
+    if (!venue) {
+      return res.status(404).json({ message: "Venue not found" });
+    }
+
+    // Update venue fields
+    venue.name = name;
+    venue.city = city;
+    venue.capacity = capacity;
+    venue.price = price;
+    venue.discount = discount;
+    venue.address = address;
+    venue.description = description;
+    venue.latitude = latitude;
+    venue.longitude = longitude;
+
+    await venue.save();
+
+    res.status(200).json({ message: "Venue updated successfully!", venue });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating venue", error });
+  }
+};
+*/
+// Delete a venue
 export const deleteVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
 
-    const deletedVenue = await Venue.findByIdAndDelete(venueId);
+    // Find and delete the venue
+    const venue = await Venue.findByIdAndDelete(venueId);
+    if (!venue) {
+      return res.status(404).json({ message: "Venue not found" });
+    }
 
-    if (!deletedVenue) return res.status(404).json({ message: "Venue not found." });
-
-    res.status(200).json({ message: "Venue deleted successfully." });
+    res.status(200).json({ message: "Venue deleted successfully!" });
   } catch (error) {
-    console.error("Error in deleteVenue:", error);
-    res.status(500).json({ message: "Error deleting venue.", error });
-  }
-};
-
-// Get all venues
-export const getAllVenues = async (req, res) => {
-  try {
-    const venues = await Venue.find().populate("userId", "name email");
-    res.status(200).json(venues);
-  } catch (error) {
-    console.error("Error fetching venues:", error);
-    res.status(500).json({ message: "Failed to fetch venues.", error });
+    console.error(error);
+    res.status(500).json({ message: "Error deleting venue", error });
   }
 };
 

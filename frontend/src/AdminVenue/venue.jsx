@@ -6,6 +6,7 @@ const API_BASE_URL = 'http://localhost:3001/venues'; // Replace with your actual
 export const getVenues = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/`);
+    console.log('Fetched venues:', response.data); // Debugging
     return response.data;
   } catch (error) {
     console.error('Error fetching venues:', error);
@@ -18,7 +19,8 @@ export const addVenue = async (venueData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/add`, venueData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Add auth token if required
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;
