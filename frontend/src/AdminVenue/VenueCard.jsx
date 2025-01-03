@@ -1,19 +1,4 @@
 /* eslint-disable react/prop-types */
-/*import React from 'react';
-
-const VenueCard = ({ venue }) => {
-  return (
-    <div className="card shadow-md p-4">
-      <img src={venue.images[0]} alt={venue.name} className="h-48 w-full object-cover mb-2" />
-      <h3 className="text-lg font-bold">{venue.name}</h3>
-      <p className="text-sm text-gray-600">{venue.city}</p>
-      <p className="text-sm">Capacity: {venue.capacity}</p>
-      <p className="text-sm">Price: ${venue.price}</p>
-    </div>
-  );
-};
-
-export default VenueCard; */
 import { useNavigate } from 'react-router-dom';
 
 const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
