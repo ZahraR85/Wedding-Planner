@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useAppContext } from '../context/AppContext';
 
 const ShoppingCard = () => {
-  const { userId,isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard, clearShoppingCard } = useAppContext();
+  const { userId,isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0); // Local state for total price
   const navigate = useNavigate();
   useEffect(() => {
@@ -32,27 +32,6 @@ const ShoppingCard = () => {
     }
   };
 
-  // Add a new service to the shopping card
-  /*const addService = async (newService) => {
-    if (shoppingCard.some((item) => item.serviceName === newService.serviceName)) {
-      toast.warning('This service is already in your shopping card.');
-      return;
-    }
-
-    try {
-      const response = await axios.post(`http://localhost:3001/shoppingcards`, {
-        userId,
-        service: newService,
-      });
-
-      addToShoppingCard(response.data.newCardItem);
-      toast.success(`${newService.serviceName} added to your shopping card!`);
-    } catch (error) {
-      console.error('Failed to add service:', error);
-      toast.error('Could not add service. Please try again.');
-    }
-  }; */
-
   // Calculate total price
   const calculateTotalPrice = () => {
     const total = shoppingCard.reduce((sum, item) => sum + item.price, 0);
@@ -73,7 +52,7 @@ const ShoppingCard = () => {
   };  
 
   // Clear the shopping card
-  const handleClearShoppingCard = async () => {
+  /* const handleClearShoppingCard = async () => {
     try {
       await axios.delete(`http://localhost:3001/shoppingcards/${userId}`);
       clearShoppingCard();
@@ -83,7 +62,7 @@ const ShoppingCard = () => {
       toast.error('Failed to clear shopping card!');
     }
   };
-
+*/
   useEffect(() => {
     fetchShoppingCard();
   }, [userId]);
@@ -116,12 +95,7 @@ const ShoppingCard = () => {
       {shoppingCard.length > 0 && (
         <div className="mt-8 flex justify-between items-center">
           <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>
-          <button
-            onClick={handleClearShoppingCard}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
-          >
-            Clear Card
-          </button>
+         {/* <button onClick={handleClearShoppingCard} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Clear Card</button> */}
         </div>
       )}
     </div>

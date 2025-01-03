@@ -153,7 +153,7 @@ const ReceptionSelector = () => {
       addToShoppingCard(shoppingCartData);
 
       toast.success("Catering data and total price added to shopping cart successfully!");
-      //navigate("/shoppingCard");
+      navigate("/shoppingCard");
       
     } else {
       toast.error("Failed to save data!");

@@ -157,7 +157,7 @@ console.log (shoppingCartData);
     addToShoppingCard(shoppingCartData);
 
     toast.success("Makeup data and total price added to shopping cart successfully!");
-    //navigate("/shoppingCard");
+    navigate("/shoppingCard");
   } catch (error) {
     console.error("Failed to save makeup data or add to shopping cart.", error);
     toast.error("Error saving data or adding to shopping cart.");
