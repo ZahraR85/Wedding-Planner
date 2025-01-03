@@ -60,19 +60,34 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Header */}
+      <h2 className="text-4xl font-bold text-center mt-6 mb-4 bg-[#e8dfcf] p-6 rounded-lg shadow-md">Dashboard Overview</h2>
+
       {/* Rest of the components in one row */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#d5c0b5]  h-[600px]">
-          <Todolist userId={userId} />
+        <div className="flex flex-col items-center">
+          <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Music</h2>
+          <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#f5d0cb] w-[350px] h-[600px]">
+            <Music userId={userId} />
+          </div>
         </div>
-        <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#f5d0cb] h-[600px]">
-          <Music userId={userId} />
+        <div className="flex flex-col items-center">
+          <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Catering</h2>
+          <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#e8dfcf] bg-gradient-to-br w-[350px] h-[600px]">
+            <Catering userId={userId} />
+          </div>
         </div>
-        <div className="flex justify-center items-center p-4 rounded-3xl bg-gradient-to-br shadow bg-[#e8dfcf] h-[600px]">
-          <Catering userId={userId} />
+        <div className="flex flex-col items-center">
+          <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Makeup</h2>
+          <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#fff2f4] w-[350px] h-[600px]">
+            <MakeupUser userId={userId} />
+          </div>
         </div>
-        <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#fff2f4] h-[600px]">
-          <MakeupUser userId={userId} />
+        <div className="flex flex-col items-center">
+          <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Todolist</h2>
+          <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#d5c0b5] w-[370px] h-[600px]">
+            <Todolist userId={userId} />
+          </div>
         </div>
       </div>
     </div>

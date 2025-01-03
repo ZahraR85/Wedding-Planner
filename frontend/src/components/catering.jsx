@@ -54,10 +54,6 @@ const UserSelections = ({ userId }) => {
 
   return (
     <div className="user-selections mx-auto max-w-xl bg-opacity-80 space-y-4 p-4">
-      <h2 className="text-3xl font-bold text-center mb-6">
-       Catering
-      </h2>
-      <p className="font-semibold">Total Cost: ${userSelections.total || 0}</p>
 
       <div className="space-y-2">
         {items.map((item, index) => (
@@ -66,7 +62,7 @@ const UserSelections = ({ userId }) => {
               <>
                 ✔ {item.name}:{" "}
                 <span className="text-sm text-gray-600">
-                  ${item.price} x {item.quantity} = ${item.price * item.quantity}
+                  ${item.price} for  {item.quantity} person Total: ${item.price * item.quantity}
                 </span>
               </>
             ) : (
@@ -78,7 +74,7 @@ const UserSelections = ({ userId }) => {
           </div>
         ))}
       </div>
-
+      <p className="font-semibold">Total Cost: ${userSelections.total || 0}</p>
       <p className="mt-4 text-sm text-gray-500">
         Last Updated: {userSelections.updatedAt ? new Date(userSelections.updatedAt).toLocaleString() : "No Update Info"}
       </p>
