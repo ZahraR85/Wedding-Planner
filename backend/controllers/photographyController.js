@@ -48,15 +48,35 @@ export const getPhotographyByUserId = async (req, res) => {
     }
     console.log("UserIddddd:", userID);
     const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userID) }).populate("userID", "name email");
-
+    console.log("Database Query Result:", entry);
     if (!entry) {
-      return res.status(404).json({ message: "No photography data found for this user." });
+      return res.status(404).json({ message: "No information has been documented yet!" });
     }
 
     res.status(200).json(entry);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch photography data", error: error.message });
+    res.status(500).json({ message: "No information has been documented yet!", error: error.message });
   }
 };
 
+
+
+export const getPhotographyByQuery = async (req, res) => {
+  const { userId } = req.query; // Fetch userId from query parameters
+  try {
+      if (!userId) {
+          return res.status(400).json({ message: "UserId is required." });
+      }
+      console.log("UserIdddddlog:", userId);
+      const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userId) }).populate("userID", "name email");
+
+      if (!entry) {
+          return res.status(404).json({ message: "No information has been documented yet!" });
+      }
+
+      res.status(200).json(entry);
+  } catch (error) {
+      res.status(500).json({ message: "Failed to fetch photography data", error: error.message });
+  }
+};
 

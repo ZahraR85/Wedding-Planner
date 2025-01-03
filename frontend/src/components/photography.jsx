@@ -12,9 +12,7 @@ const UserSelections = ({ userId }) => {
         if (!userId) {
           throw new Error("User ID is missing");
         }
-        console.log("UserIddddd:", userId);
         const response = await axios.get(`http://localhost:3001/photographies/${userId}`);
-        console.log("API Response:", response.data); // Debug: Log API response
         setUserSelections(response.data);
       } catch (err) {
         console.error("Error fetching user selections:", err);
@@ -39,22 +37,27 @@ const UserSelections = ({ userId }) => {
     return <p>No data available for this user.</p>;
   }
 
-  // Transform the object keys into an array for easier mapping
   const items = Object.entries(userSelections)
-    .filter(([key, value]) => value?.Number !== undefined && value?.price !== undefined)
-    .map(([key, value]) => ({
+  .filter(([key, value]) => {
+    // Include all items with 'number' and 'price', or the special case for 'physicalAlbum'
+    return (value?.number !== undefined && value?.price !== undefined) || key === "physicalAlbum";
+  })
+  .map(([key, value]) => {
+    if (key === "physicalAlbum") {
+      return {
+        name: key,
+        quantity: value.selected ? 1 : 0, // Treat 'selected' as a boolean toggle
+        price: value.price,
+      };
+    }
+    return {
       name: key,
-      quantity: value.Number,
+      quantity: value.number,
       price: value.price,
-    }));
-
-  if (items.length === 0) {
-    return <p>No data available for this user.</p>;
-  }
-
+    };
+  });
   return (
     <div className="user-selections mx-auto max-w-xl bg-opacity-80 space-y-4 p-4">
-
       <div className="space-y-2">
         {items.map((item, index) => (
           <div key={index} className="text-lg">
@@ -62,7 +65,7 @@ const UserSelections = ({ userId }) => {
               <>
                 ✔ {item.name}:{" "}
                 <span className="text-sm text-gray-600">
-                  ${item.price} for  {item.quantity} person Total: ${item.price * item.quantity}
+                  ${item.price} for {item.quantity} hour(s) Total: ${item.price * item.quantity}
                 </span>
               </>
             ) : (
