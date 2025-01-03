@@ -10,54 +10,57 @@ const ShoppingCard = () => {
   const { userId, isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0); // Local state for total price
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isAuthenticated) {
       toast.error("You must sign in to access this page.");
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
- // Fetch shopping card items
- const fetchShoppingCard = async () => {
-  if (!userId) {
-    // If userId is null or undefined, don't fetch
-    toast.error('User not authenticated. Please sign in.');
-    return;
-  }
 
-  try {
-    const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
-    const { cardItems } = response.data;
+  // Fetch shopping card items
+  const fetchShoppingCard = async () => {
+    if (!userId) {
+      // If userId is null or undefined, don't fetch
+      toast.error('User not authenticated. Please sign in.');
+      return;
+    }
 
-    // Add fetched items to the context
-    cardItems.forEach((item) => {
-      if (!shoppingCard.some((cardItem) => cardItem.serviceName === item.serviceName)) {
+    try {
+      const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
+      const { cardItems } = response.data;
+
+      // Clear the shopping card first to avoid duplicates
+      shoppingCard.length = 0; // Clear existing items in state
+
+      // Add fetched items to the context
+      cardItems.forEach((item) => {
         addToShoppingCard(item);
-      }
-    });
-  } catch (error) {
-    console.error('Failed to fetch shopping card:', error);
-    toast.error('Could not load shopping card. Please try again.');
-  }
-};
+      });
+    } catch (error) {
+      console.error('Failed to fetch shopping card:', error);
+      toast.error('Could not load shopping card. Please try again.');
+    }
+  };
 
-// Calculate total price
-const calculateTotalPrice = () => {
-  const total = shoppingCard.reduce((sum, item) => sum + item.price, 0);
-  setTotalPrice(total);
-};
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    const total = shoppingCard.reduce((sum, item) => sum + item.price, 0);
+    setTotalPrice(total);
+  };
 
-// Remove service from shopping card
-const removeService = async (id) => {
-  try {
-    await axios.delete(`http://localhost:3001/shoppingcards`, {
-      data: { userId, id }, // Use id for removal
-    });
-    removeFromShoppingCard(id); // Pass id for removal in context
-    toast.success('Service removed!');
-  } catch (error) {
-    toast.error('Failed to remove service!');
-  }
-};
+  // Remove service from shopping card
+  const removeService = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/shoppingcards`, {
+        data: { userId, id }, // Use id for removal
+      });
+      removeFromShoppingCard(id); // Pass id for removal in context
+      toast.success('Service removed!');
+    } catch (error) {
+      toast.error('Failed to remove service!');
+    }
+  };
 
   // Clear the shopping card
   /* const handleClearShoppingCard = async () => {
@@ -71,16 +74,17 @@ const removeService = async (id) => {
     }
   };
 */
+  // Fetch shopping card when the component is mounted or when userId changes
   useEffect(() => {
     if (userId) {
       fetchShoppingCard();
     }
   }, [userId]);
-  
+
   useEffect(() => {
     calculateTotalPrice();
   }, [shoppingCard]);
-  
+
   return (
     <div className="container mx-auto py-8">
       <h2 className="text-3xl font-bold text-center mb-6">Your Shopping Card</h2>
@@ -105,7 +109,7 @@ const removeService = async (id) => {
       {shoppingCard.length > 0 && (
         <div className="mt-8 flex justify-between items-center">
           <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>
-         {/* <button onClick={handleClearShoppingCard} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Clear Card</button> */}
+                   {/* <button onClick={handleClearShoppingCard} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Clear Card</button> */}
         </div>
       )}
     </div>
