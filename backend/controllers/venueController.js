@@ -38,8 +38,20 @@ export const getAllVenues = async (req, res) => {
     res.status(500).json({ message: "Error fetching venues", error });
   }
 };
-// Update a venue
+
+// Update a price of venue
 export const updateVenue = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedVenue = await Venue.findByIdAndUpdate(id, req.body, { new: true });
+    res.status(200).json(updatedVenue);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating venue", error });
+  }
+};
+
+// Update a venue
+/*export const updateVenue = async (req, res) => {
   try {
     const { venueId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
 
@@ -68,7 +80,7 @@ export const updateVenue = async (req, res) => {
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
-
+*/
 // Delete a venue
 export const deleteVenue = async (req, res) => {
   try {

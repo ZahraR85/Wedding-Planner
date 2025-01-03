@@ -32,6 +32,16 @@ const VenueDetails = () => {
     }
   };
 
+  /*const handleUpdatePrice = async (newPrice) => {
+    try {
+      const updatedVenue = await updateVenue(id, { price: newPrice });
+      setVenue((prevVenue) => ({ ...prevVenue, price: updatedVenue.price, total: updatedVenue.total }));
+      alert("Price updated successfully!");
+    } catch (error) {
+      console.error("Error updating price:", error);
+    }
+  };
+  */
   const handleDelete = async () => {
     try {
       await deleteVenue(id);
