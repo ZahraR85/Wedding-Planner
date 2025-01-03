@@ -44,16 +44,6 @@ const UserSelections = ({ userId }) => {
     <div className="user-selections">
 
       <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80   space-y-4 p-4  ">
-        {/* User Information */}
-        {/* <h3 className="text-lg font-semibold">
-          User: {userSelections.userID?.name || "Unknown"} 
-          ({userSelections.userID?.email || "No Email Available"})
-        </h3> */}
-        <h2 className="text-3xl font-bold text-center mb-6">Makeup</h2>
-        <p>Total Cost: ${userSelections.total || 0}</p>
-
-        {/* Selections */}
-
         <ul className="pl-5 space-y-2">
           <li>
             {userSelections.makeup?.selected ? "✔️" : "❌"}
@@ -80,7 +70,7 @@ const UserSelections = ({ userId }) => {
             Special  <span style={{ fontSize: "0.6rem", color: "#555" }}> (${userSelections.special?.price || 0})</span>
           </li>
         </ul>
-
+        <p>Total Cost: ${userSelections.total || 0}</p>
         {/* Last Updated */}
         <p className="mt-4">
           Last Updated: {userSelections.updatedAt ? new Date(userSelections.updatedAt).toLocaleString() : "No Update Info"}

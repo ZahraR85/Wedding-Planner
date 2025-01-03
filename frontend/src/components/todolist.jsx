@@ -52,24 +52,26 @@ const Todolist = ({ userId }) => {
     };
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="user-selections">
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             {/* Vertical Table */}
             <div>
-                <h3>Progress Details</h3>
                 <table border="1" style={{ borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                    {/* <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead> */}
                     <tbody>
                         {Object.entries(modelProgress).map(([key, value], index) => (
                             <tr key={index}>
-                                <td style={{ padding: '8px' }}>{key}</td>
                                 <td style={{ padding: '8px', textAlign: 'center' }}>
                                     {value ? '✔️' : '❌'}
                                 </td>
+                                <td style={{ padding: '8px' }}>{key}</td>
+
                             </tr>
                         ))}
                     </tbody>
@@ -79,16 +81,17 @@ const Todolist = ({ userId }) => {
             {/* Pie Chart */}
             <div style={{ width: '200px', height: '200px' }}>
                 <h3>Overall Progress</h3>
-                <Pie 
-                    data={pieData} 
+                <Pie
+                    data={pieData}
                     options={{
                         maintainAspectRatio: false,
                     }}
                 />
                 <p style={{ textAlign: 'center', marginTop: '10px' }}>
-                    THAT MEANS {percentageDone}% DONE
+                    {percentageDone}% DONE
                 </p>
             </div>
+        </div>
         </div>
     );
 };
