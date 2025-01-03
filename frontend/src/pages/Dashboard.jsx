@@ -8,6 +8,9 @@ import MakeupUser from "../components/makeupUser";
 import UserInformation from "../components/userinformation";
 import Todolist from "../components/todolist";
 import Catering from "../components/catering";
+import Photography from "../components/photography";
+
+
 
 const Dashboard = () => {
   const { userId, isAuthenticated } = useAppContext();
@@ -88,6 +91,8 @@ const Dashboard = () => {
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#d5c0b5] w-[370px] h-[600px]">
             <Todolist userId={userId} />
           </div>
+
+          <Photography userId={userId} />
         </div>
       </div>
     </div>
