@@ -83,55 +83,55 @@ const VenueBooking = () => {
   };
 
   // Handle venue booking
-const handleSubmit = async () => {
-  if (!isAuthenticated) {
-    alert("Please log in to book a venue.");
-    navigate("/signin"); // Redirect to login if not authenticated
-    return;
-  }
-
-  if (!day) {
-    alert("Booking date is required.");
-    return; // Exit if no date is provided
-  }
-
-  if (bookingConflict) {
-    alert("This venue is already booked on the selected date. Please choose another date.");
-    return; // Exit if there's a booking conflict
-  }
-
-  try {
-    // Validate the date format
-    const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
-    if (!isValidDate) {
-      alert("Invalid date format. Please use YYYY-MM-DD.");
+  const handleSubmit = async () => {
+    if (!isAuthenticated) {
+      alert("Please log in to book a venue.");
+      navigate("/signin"); // Redirect to login if not authenticated
       return;
     }
 
-    setLoading(true);
-    const response = await axios.post("http://localhost:3001/venueSelections", {
-      userId,
-      venueId,
-      date: day,
-    });
-
-    alert(response.data.message || "Venue booked successfully!");
-    navigate("/"); // Redirect to HomePage list after booking
-  } catch (error) {
-    const errorMessage =
-      error.response?.data?.message ||
-      "An error occurred while booking the venue. Please try again.";
-
-    // Display specific error for duplicate booking
-    if (errorMessage.includes("You already have a booking")) {
-      alert("You already have a booking. You cannot book another venue.");
-    } else {
-      alert(errorMessage);
+    if (!day) {
+      alert("Booking date is required.");
+      return; // Exit if no date is provided
     }
-  } finally {
-    setLoading(false);
-  }
-};
+
+    if (bookingConflict) {
+      alert("This venue is already booked on the selected date. Please choose another date.");
+      return; // Exit if there's a booking conflict
+    }
+
+    try {
+      // Validate the date format
+      const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
+      if (!isValidDate) {
+        alert("Invalid date format. Please use YYYY-MM-DD.");
+        return;
+      }
+
+      setLoading(true);
+      const response = await axios.post("http://localhost:3001/venueSelections", {
+        userId,
+        venueId,
+        date: day,
+      });
+
+      alert(response.data.message || "Venue booked successfully!");
+      navigate("/"); // Redirect to HomePage list after booking
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "An error occurred while booking the venue. Please try again.";
+
+      // Display specific error for duplicate booking
+      if (errorMessage.includes("You already have a booking")) {
+        alert("You already have a booking. You cannot book another venue.");
+      } else {
+        alert(errorMessage);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div className="text-center pt-20">Loading venue details...</div>;
@@ -147,9 +147,9 @@ const handleSubmit = async () => {
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
-    {/* Overlay for controlling opacity */}
-    <div className="absolute inset-0 bg-white/50"></div>
-    <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
+      {/* Overlay for controlling opacity */}
+      <div className="absolute inset-0 bg-white/50"></div>
+      <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
         <div className="relative">
           <img
@@ -172,41 +172,42 @@ const handleSubmit = async () => {
         </div>
         <div className="flex">
           <div className="flex-1 my-4">
-        <p className="text-m font-bold text-BgFont my-4">City: {venue.city}</p>
-        <p className="text-m font-bold text-BgFont my-4">Capacity: 50 - {venue.capacity}</p>
-        <p className="text-m font-bold text-BgFont my-4">Address: ${venue.address} </p>
-        <p className="text-m font-bold text-BgFont my-4">Price: ${venue.price} </p>
-        <p className="text-m font-bold text-BgFont my-4">Price with our discount: ${venue.total}</p>
-        <p className="text-m font-bold text-BgFont my-4">{venue.description}</p>
-        </div>
-        <div className=" flex-1 my-4">
-          <label className="text-m font-bold text-BgFont my-4">Select Day:
-            <input
-              type="date"
-              value={day}
-              onChange={(e) => setDay(e.target.value)}
-              className="w-full p-2 border rounded mb-4"
-            /></label>
-          {bookingConflict && (
-            <p className="text-red-500 mt-2">This venue is already booked on the selected date.</p>
-          )}
-
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-BgPinkMiddle text-lg text-BgFont font-bold py-2 rounded hover:bg-BgPinkDark mb-2"
-          disabled={loading}
-        >
-          {loading ? "Booking..." : "Book Venue"}
-        </button>
-        <button
-            onClick={() => navigate("/VenueSelections")}
-            className="bg-BgPinkMiddle text-lg text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 "
-          >
-            Back
-          </button>
+            <p className="text-m font-bold text-BgFont my-4">City: {venue.city}</p>
+            <p className="text-m font-bold text-BgFont my-4">Capacity: 50 - {venue.capacity}</p>
+            <p className="text-m font-bold text-BgFont my-4">Address: {venue.address}</p>
+            <p className="text-m font-bold text-BgFont my-4">Price: ${venue.price}</p>
+            <p className="text-m font-bold text-BgFont my-4">Price with our discount: ${venue.total}</p>
+            <p className="text-m font-bold text-BgFont my-4">{venue.description}</p>
+          </div>
+          <div className="flex-1 my-4">
+            <label className="text-m font-bold text-BgFont my-4">
+              Select Day:
+              <input
+                type="date"
+                value={day}
+                onChange={(e) => setDay(e.target.value)}
+                className="w-full p-2 border rounded mb-4"
+              />
+            </label>
+            {bookingConflict && (
+              <p className="text-red-500 mt-2">This venue is already booked on the selected date. Please choose another date.</p>
+            )}
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-BgPinkMiddle text-lg text-BgFont font-bold py-2 rounded hover:bg-BgPinkDark mb-2"
+              disabled={loading}
+            >
+              {loading ? "Booking..." : "Book Venue"}
+            </button>
+            <button
+              onClick={() => navigate("/VenueSelections")}
+              className="bg-BgPinkMiddle text-lg text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
+            >
+              Back
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
