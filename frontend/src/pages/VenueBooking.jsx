@@ -113,7 +113,7 @@ const VenueBooking = () => {
       const shoppingCartData = {
         userID: userId,
         serviceName: 'Venue',
-        price: venue?.price,
+        price: venue?.total,
       };
   console.log (venue?.price);
       await axios.post(shoppingCartUrl, shoppingCartData, {
@@ -173,6 +173,8 @@ const VenueBooking = () => {
             <p className="text-m font-bold text-BgFont my-4">City: {venue?.city}</p>
             <p className="text-m font-bold text-BgFont my-4">Capacity: {venue?.capacity}</p>
             <p className="text-m font-bold text-BgFont my-4">Price: {venue?.price}</p>
+            <p className="text-m font-bold text-BgFont my-4">discount: {venue?.discount}</p>
+            <p className="text-m font-bold text-BgFont my-4">total price:{venue?.total}</p>
             <p className="text-m font-bold text-BgFont my-4">{venue?.description}</p>
           </div>
           <div className="flex-1 my-4">
