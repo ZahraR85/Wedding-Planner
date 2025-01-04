@@ -13,7 +13,7 @@ const VenueBooking = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [day, setDay] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [bookingConflict, setBookingConflict] = useState(false); // Track booking conflicts
 
   // Redirect unauthenticated users to SignIn
@@ -83,47 +83,55 @@ const VenueBooking = () => {
   };
 
   // Handle venue booking
-  const handleSubmit = async () => {
-    if (!isAuthenticated) {
-      alert("Please log in to book a venue.");
-      navigate("/signin"); // Redirect to login if not authenticated
+const handleSubmit = async () => {
+  if (!isAuthenticated) {
+    alert("Please log in to book a venue.");
+    navigate("/signin"); // Redirect to login if not authenticated
+    return;
+  }
+
+  if (!day) {
+    alert("Booking date is required.");
+    return; // Exit if no date is provided
+  }
+
+  if (bookingConflict) {
+    alert("This venue is already booked on the selected date. Please choose another date.");
+    return; // Exit if there's a booking conflict
+  }
+
+  try {
+    // Validate the date format
+    const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
+    if (!isValidDate) {
+      alert("Invalid date format. Please use YYYY-MM-DD.");
       return;
     }
 
-    if (!day) {
-      alert("Booking date is required.");
-      return; // Exit if no date is provided
+    setLoading(true);
+    const response = await axios.post("http://localhost:3001/venueSelections", {
+      userId,
+      venueId,
+      date: day,
+    });
+
+    alert(response.data.message || "Venue booked successfully!");
+    navigate("/"); // Redirect to HomePage list after booking
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "An error occurred while booking the venue. Please try again.";
+
+    // Display specific error for duplicate booking
+    if (errorMessage.includes("already booked this venue")) {
+      alert("You have already booked this venue. You cannot book it again.");
+    } else {
+      alert(errorMessage);
     }
-
-    if (bookingConflict) {
-      alert("This venue is already booked on the selected date. Please choose another date.");
-      return; // Exit if there's a booking conflict
-    }
-
-    try {
-      // Validate the date format
-      const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
-      if (!isValidDate) {
-        alert("Invalid date format. Please use YYYY-MM-DD.");
-        return;
-      }
-
-      setLoading(true);
-      const response = await axios.post("http://localhost:3001/venueSelections", {
-        userId,
-        venueId,
-        date: day,
-      });
-
-      alert(response.data.message || "Venue booked successfully!");
-      navigate("/"); // Redirect to HomePage list after booking
-    } catch (error) {
-      console.error("Error during booking:", error);
-      alert(error.response?.data?.message || "An error occurred while booking the venue. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (loading) {
     return <div className="text-center pt-20">Loading venue details...</div>;
