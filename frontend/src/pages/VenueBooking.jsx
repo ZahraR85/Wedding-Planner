@@ -110,11 +110,11 @@ const VenueBooking = () => {
         date: day,
       });
 
-      // Display toast message for successful booking
+      // Replace the alert with toast.success for successful booking
       if (response.data.message) {
         setAlreadyBookedMessage(response.data.message);
       } else {
-        toast.success("Venue booked successfully!"); // Toast for success
+        toast.success("Venue booked successfully!"); // Use toast instead of alert
         navigate("/"); // Redirect to HomePage list after booking
       }
     } catch (error) {
