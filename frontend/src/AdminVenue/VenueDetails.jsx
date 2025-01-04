@@ -32,6 +32,16 @@ const VenueDetails = () => {
     }
   };
 
+  /*const handleUpdatePrice = async (newPrice) => {
+    try {
+      const updatedVenue = await updateVenue(id, { price: newPrice });
+      setVenue((prevVenue) => ({ ...prevVenue, price: updatedVenue.price, total: updatedVenue.total }));
+      alert("Price updated successfully!");
+    } catch (error) {
+      console.error("Error updating price:", error);
+    }
+  };
+  */
   const handleDelete = async () => {
     try {
       await deleteVenue(id);
@@ -43,33 +53,39 @@ const VenueDetails = () => {
   };
 
   const handlePrevImage = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? venue.images.length - 1 : prevIndex - 1
-    );
+    if (venue && venue.images.length > 0) {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? venue.images.length - 1 : prevIndex - 1
+      );
+    }
   };
-
+  
   const handleNextImage = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === venue.images.length - 1 ? 0 : prevIndex + 1
-    );
+    if (venue && venue.images.length > 0) {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === venue.images.length - 1 ? 0 : prevIndex + 1
+      );
+    }
   };
-
+  
   if (!venue) {
     return <div>Loading...</div>;
   }
 
-  const googleMapsLink = `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`;
+  const googleMapsLink = venue.latitude && venue.longitude
+  ? `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`
+  : null;
 
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen ">
       <div className="max-w-5xl w-4/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
         <h1 className="text-2xl font-bold my-4">{venue.name}</h1>
         <div className="relative">
-          <img
-            src={venue.images[currentIndex]}
-            alt={`Venue ${currentIndex}`}
-            className="w-full h-auto object-cover rounded-md"
-          />
+        <img
+          src={`http://localhost:3001/${venue.images[currentIndex]}`} // Ensure full URL for images
+          alt={`Venue ${currentIndex}`}
+          className="w-full h-auto object-cover rounded-md"
+        />
           <button
             onClick={handlePrevImage}
             className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"

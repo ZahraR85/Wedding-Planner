@@ -1,19 +1,4 @@
 /* eslint-disable react/prop-types */
-/*import React from 'react';
-
-const VenueCard = ({ venue }) => {
-  return (
-    <div className="card shadow-md p-4">
-      <img src={venue.images[0]} alt={venue.name} className="h-48 w-full object-cover mb-2" />
-      <h3 className="text-lg font-bold">{venue.name}</h3>
-      <p className="text-sm text-gray-600">{venue.city}</p>
-      <p className="text-sm">Capacity: {venue.capacity}</p>
-      <p className="text-sm">Price: ${venue.price}</p>
-    </div>
-  );
-};
-
-export default VenueCard; */
 import { useNavigate } from 'react-router-dom';
 
 const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
@@ -25,11 +10,20 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
 
   return (
     <div className="card bg-white shadow-lg p-4 rounded-md hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out">
-      <img
-        src={venue.images[0] || 'placeholder.jpg'}
-        alt={venue.name}
-        className="h-48 w-full object-cover rounded-md"
-      />
+      <div className="flex overflow-x-scroll space-x-2">
+        {venue.images?.length > 0 ? (
+          venue.images.map((image, index) => (
+            <img
+              key={index}
+              src={`http://localhost:3001/${image}`} // Make sure this path is correct
+              alt={`Venue ${index + 1}`}
+              className="h-48 w-48 object-cover rounded-md"
+            />
+          ))
+        ) : (
+          <p>No images available</p>
+        )}
+      </div>
       <div className="mt-4">
         <h2 className="text-xl font-bold">{venue.name}</h2>
         <p className="text-sm text-gray-600">{venue.city}</p>
