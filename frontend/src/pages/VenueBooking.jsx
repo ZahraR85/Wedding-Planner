@@ -145,7 +145,7 @@ const VenueBooking = () => {
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
         <div className="relative">
           <img
-            src={venue.images[currentIndex]}
+            src={`http://localhost:3001/${venue.images[currentIndex]}`}
             alt={`Venue ${currentIndex}`}
             className="w-full h-auto object-cover rounded-md"
           />

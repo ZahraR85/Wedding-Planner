@@ -1,5 +1,5 @@
 import express from "express";
-import { createVenue, getAllVenues, updateVenue, deleteVenue } from "../controllers/venueController.js";
+import { createVenue, getAllVenues, updateVenue, deleteVenue , getVenueByVenueId} from "../controllers/venueController.js";
 import { upload } from "../middleware/uploadMiddleware.js"; // Middleware for handling file uploads.
 
 const router = express.Router();
@@ -13,5 +13,6 @@ router.put("/:venueId", updateVenue);
 
 // DELETE: Delete a venue
 router.delete("/:venueId", deleteVenue);
-
+//in Booking
+router.get("/:venueId", getVenueByVenueId);
 export default router;
