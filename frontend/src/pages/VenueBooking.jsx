@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toast
 
 const VenueBooking = () => {
-  const { userId, isAuthenticated } = useAppContext();
+  const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate();
   const { venueId } = useParams();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -109,13 +109,29 @@ const VenueBooking = () => {
         venueId,
         date: day,
       });
-
+      const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+      const shoppingCartData = {
+        userID: userId,
+        serviceName: 'Venue',
+        price: venue?.price,
+      };
+  console.log (venue?.price);
+      await axios.post(shoppingCartUrl, shoppingCartData, {
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      // Frontend-only addition (optional if the backend handles the cart data)
+      addToShoppingCard(shoppingCartData);
+  
+      toast.success("Makeup data and total price added to shopping cart successfully!");
+      navigate("/shoppingCard");
       // Replace the alert with toast.success for successful booking
       if (response.data.message) {
         setAlreadyBookedMessage(response.data.message);
       } else {
         toast.success("Venue booked successfully!"); // Use toast instead of alert
         navigate("/"); // Redirect to HomePage list after booking
+  
       }
     } catch (error) {
       const errorMessage =
