@@ -123,8 +123,8 @@ const handleSubmit = async () => {
       "An error occurred while booking the venue. Please try again.";
 
     // Display specific error for duplicate booking
-    if (errorMessage.includes("already booked this venue")) {
-      alert("You have already booked this venue. You cannot book it again.");
+    if (errorMessage.includes("You already have a booking")) {
+      alert("You already have a booking. You cannot book another venue.");
     } else {
       alert(errorMessage);
     }
