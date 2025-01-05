@@ -77,9 +77,10 @@ const VenueDetails = () => {
   : null;
 
   return (
-    <div className="flex justify-center items-start pt-20 min-h-screen ">
-      <div className="max-w-5xl w-4/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-        <h1 className="text-2xl font-bold my-4">{venue.name}</h1>
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
+      <div className="absolute inset-0 bg-white/50"></div>
+      <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
+        <h1 className="text-3xl font-bold text-center text-BgFont my-4">{venue.name}</h1>
         <div className="relative">
         <img
           src={`http://localhost:3001/${venue.images[currentIndex]}`} // Ensure full URL for images
@@ -103,13 +104,13 @@ const VenueDetails = () => {
         <div className="flex-1">
         <p className="text-lg font-bold text-BgFont my-4">City: {venue.city}</p>
         <p className="text-lg font-bold text-BgFont my-4">Capacity: {venue.capacity}</p>
-        <p className="text-lg font-bold text-BgFont my-4">Price: ${venue.price} per day</p>
-        <p className="text-lg font-bold text-BgFont my-4">Discount: %{venue.discount}</p>
-        <p className="text-lg font-bold text-BgFont my-4">Total Price: ${venue.total}</p>
+        <p className="text-lg font-bold text-BgFont my-4">Price: {venue.price} $ per day</p>
+        <p className="text-lg font-bold text-BgFont my-4">Discount: {venue.discount} %</p>
+        <p className="text-lg font-bold text-BgFont my-4">Total Price: {venue.total}  $</p>
         <p className="text-lg font-bold text-BgFont my-4">Address: {venue.address}</p>
         </div>
         <div className="flex-1">
-        <p className="text-m text-BgFont my-4">Description:{venue.description}</p>
+        <p className="text-m text-BgFont my-4">Description: {venue.description}</p>
         <p className="text-lg text-BgFont my-4">Location: {venue.latitude}, {venue.longitude}</p>
         <a
           className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 inline-block"

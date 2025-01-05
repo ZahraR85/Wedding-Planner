@@ -172,12 +172,13 @@ const VenueBooking = () => {
           <div className="flex-1 my-4">
             <p className="text-m font-bold text-BgFont my-4">City: {venue?.city}</p>
             <p className="text-m font-bold text-BgFont my-4">Capacity: {venue?.capacity}</p>
-            <p className="text-m font-bold text-BgFont my-4">Price: {venue?.price}</p>
-            <p className="text-m font-bold text-BgFont my-4">discount: {venue?.discount}</p>
-            <p className="text-m font-bold text-BgFont my-4">total price:{venue?.total}</p>
-            <p className="text-m font-bold text-BgFont my-4">{venue?.description}</p>
+            <p className="text-m font-bold text-BgFont my-4">Price: {venue?.price} $</p>
+            <p className="text-m font-bold text-BgFont my-4">Discount: {venue?.discount} %</p>
+            <p className="text-m font-bold text-BgFont my-4">Total price: {venue?.total} $</p>
+            <p className="text-m font-bold text-BgFont my-4">Address: {venue?.address}</p>
           </div>
           <div className="flex-1 my-4">
+          <p className="text-m font-bold text-BgFont my-4">{venue?.description}</p>
             <label className="text-m font-bold text-BgFont my-4">Select Day:
               <input
                 type="date"
