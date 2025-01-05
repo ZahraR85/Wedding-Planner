@@ -160,10 +160,10 @@ const VenueBooking = () => {
             className="w-full h-auto object-cover rounded-md"
           />
           <div className="absolute top-1/2 left-0 right-0 flex justify-between">
-            <button onClick={handlePrevImage} className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+            <button onClick={handlePrevImage} className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark">
               Prev
             </button>
-            <button onClick={handleNextImage} className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+            <button onClick={handleNextImage} className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark">
               Next
             </button>
           </div>
