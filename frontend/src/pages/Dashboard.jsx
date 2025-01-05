@@ -9,6 +9,7 @@ import UserInformation from "../components/userinformation";
 import Todolist from "../components/todolist";
 import Catering from "../components/catering";
 import Photography from "../components/photography";
+import Venue from "../components/venue";
 
 
 
@@ -93,6 +94,7 @@ const Dashboard = () => {
           </div>
 
           <Photography userId={userId} />
+          <Venue userId={userId} />
         </div>
       </div>
     </div>
