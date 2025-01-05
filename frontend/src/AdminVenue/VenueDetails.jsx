@@ -87,18 +87,14 @@ const VenueDetails = () => {
           alt={`Venue ${currentIndex}`}
           className="w-full h-auto object-cover rounded-md"
         />
-          <button
-            onClick={handlePrevImage}
-            className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"
-          >
-            &#8592;
-          </button>
-          <button
-            onClick={handleNextImage}
-            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"
-          >
-            &#8594;
-          </button>
+          <div className="absolute top-1/2 left-0 right-0 flex justify-between">
+            <button onClick={handlePrevImage} className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark">
+              Prev
+            </button>
+            <button onClick={handleNextImage} className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark">
+              Next
+            </button>
+          </div>
         </div>
         <div className="flex">
         <div className="flex-1">
