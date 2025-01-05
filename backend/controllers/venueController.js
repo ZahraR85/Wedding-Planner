@@ -42,45 +42,14 @@ export const getAllVenues = async (req, res) => {
 // Update a price of venue
 export const updateVenue = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedVenue = await Venue.findByIdAndUpdate(id, req.body, { new: true });
+    const { venueId } = req.params;
+    const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
     res.status(200).json(updatedVenue);
   } catch (error) {
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
 
-// Update a venue
-/*export const updateVenue = async (req, res) => {
-  try {
-    const { venueId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
-
-    // Find the venue by id
-    const venue = await Venue.findById(venueId);
-    if (!venue) {
-      return res.status(404).json({ message: "Venue not found" });
-    }
-
-    // Update venue fields
-    venue.name = name;
-    venue.city = city;
-    venue.capacity = capacity;
-    venue.price = price;
-    venue.discount = discount;
-    venue.address = address;
-    venue.description = description;
-    venue.latitude = latitude;
-    venue.longitude = longitude;
-
-    await venue.save();
-
-    res.status(200).json({ message: "Venue updated successfully!", venue });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error updating venue", error });
-  }
-};
-*/
 // Delete a venue
 export const deleteVenue = async (req, res) => {
   try {
