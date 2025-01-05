@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from '../context/AppContext';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaTrash } from 'react-icons/fa';
 import "../App.css";
 
 const ShoppingCard = () => {
@@ -79,46 +80,55 @@ const ShoppingCard = () => {
   }, [shoppingCard]);
 
   return (
-    <div className="relative  h-[170vh] bg-cover bg-center p-40 bg-[url('https://i.postimg.cc/DyLpK7Lx/photo1.jpg')]">
-    {/* Overlay for controlling opacity */}
-    <div className="absolute inset-0 "></div>
-    <div className="relative mx-auto w-full max-w-[calc(80%-50px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
-      <h2 className="text-3xl font-bold text-center mb-6">Your Shopping Card</h2>
-      <ToastContainer />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {shoppingCard.length === 0 ? (
-          <p className="text-xl text-center col-span-full">Your shopping card is empty.</p>
-        ) : (
-          shoppingCard.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center"
-            >
-              <h3 className="text-2xl font-bold text-center text-red-500 mb-2">
-                {item.serviceName}
-              </h3>
-              <span className="text-lg font-bold mb-2">
-                ${item.price.toFixed(2)}
-              </span>
-              <button
-                onClick={() => removeService(item.serviceName)}
-                className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          ))
-        )}
+<div className="relative min-h-screen flex bg-customBg1">
+  {/* Left Side: Shopping Card */}
+  <div className="flex-1 p-10">
+    <h2 className="text-3xl font-bold text-center text-BgFont mb-10">Your Shopping Card</h2>
+    <ToastContainer />
+    {shoppingCard.length === 0 ? (
+      <p className="text-xl text-center">Your shopping card is empty.</p>
+    ) : (
+      <div className="flex flex-col space-y-6">
+        {shoppingCard.map((item) => (
+          <div
+            key={item.id}
+            className="bg-white p-8 rounded-lg shadow-lg flex flex-row items-center"
+          >
+            <h3 className="w-1/3 text-2xl font-semibold text-center text-red-500 m-2">
+              {item.serviceName}
+            </h3>
+            <span className="w-1/3 text-lg text-BgFont font-semibold ml-10">
+              {item.price.toFixed(2)} $
+            </span>
+            <FaTrash
+                  className="w-1/3 text-red-400 text-2xl cursor-pointer hover:text-red-600"
+                  onClick={() => removeService(item.serviceName)}
+                  title="Delete"
+                />
+              </div>
+        ))}
       </div>
-      {shoppingCard.length > 0 && (
-        <div className="mt-8 flex justify-between items-center">
-          <div className="text-xl font-semibold">
-            Total: ${totalPrice.toFixed(2)}
-          </div>
+    )}
+    {shoppingCard.length > 0 && (
+      <div className="mt-8 text-center">
+        {/* <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>*/}
+      </div>
+    )}
+  </div>
+
+  {/* Right Side: Background Image */}
+  <div className="relative flex-none w-2/3 bg-cover bg-center" style={{ backgroundImage: `url('https://i.postimg.cc/XqYyy1GZ/shopping-Card1.jpg')` }}>
+    {/* Centered Total Price */}
+    {shoppingCard.length > 0 && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="bg-BgPink text-BgFont text-3xl font-bold p-4 rounded-lg shadow-lg">
+          Total: {totalPrice.toFixed(2)} $
         </div>
-      )}
-    </div>
-    </div>
+      </div>
+    )}
+  </div>
+</div>
+
   );
 };
 
