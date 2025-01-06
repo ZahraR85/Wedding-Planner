@@ -1,11 +1,10 @@
-
-
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from '../context/AppContext';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaTrash } from 'react-icons/fa';
 import "../App.css";
 
 const ShoppingCard = () => {
@@ -14,7 +13,6 @@ const ShoppingCard = () => {
     isAuthenticated,
     shoppingCard,
     setShoppingCard,
-    removeFromShoppingCard,
   } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
@@ -82,180 +80,56 @@ const ShoppingCard = () => {
   }, [shoppingCard]);
 
   return (
-    <div className="container mx-auto py-8">
-      <h2 className="text-3xl font-bold text-center mb-6">Your Shopping Card</h2>
-      <ToastContainer />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {shoppingCard.length === 0 ? (
-          <p className="text-xl text-center col-span-full">Your shopping card is empty.</p>
-        ) : (
-          shoppingCard.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center"
-            >
-              <h3 className="text-xl font-semibold text-center mb-2">
-                {item.serviceName}
-              </h3>
-              <span className="text-lg font-bold mb-2">
-                ${item.price.toFixed(2)}
-              </span>
-              <button
-                onClick={() => removeService(item.serviceName)}
-                className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          ))
-        )}
+<div className="relative min-h-screen flex bg-customBg1">
+  {/* Left Side: Shopping Card */}
+  <div className="flex-1 p-10">
+    <h2 className="text-3xl font-bold text-center text-BgFont mb-10">Your Shopping Card</h2>
+    <ToastContainer />
+    {shoppingCard.length === 0 ? (
+      <p className="text-xl text-center">Your shopping card is empty.</p>
+    ) : (
+      <div className="flex flex-col space-y-6">
+        {shoppingCard.map((item) => (
+          <div
+            key={item.id}
+            className="bg-white p-8 rounded-lg shadow-lg flex flex-row items-center"
+          >
+            <h3 className="w-1/3 text-2xl font-semibold text-center text-red-500 m-2">
+              {item.serviceName}
+            </h3>
+            <span className="w-1/3 text-lg text-BgFont font-semibold ml-10">
+              {item.price.toFixed(2)} $
+            </span>
+            <FaTrash
+                  className="w-1/3 text-red-400 text-2xl cursor-pointer hover:text-red-600"
+                  onClick={() => removeService(item.serviceName)}
+                  title="Delete"
+                />
+              </div>
+        ))}
       </div>
-      {shoppingCard.length > 0 && (
-        <div className="mt-8 flex justify-between items-center">
-          <div className="text-xl font-semibold">
-            Total: ${totalPrice.toFixed(2)}
-          </div>
+    )}
+    {shoppingCard.length > 0 && (
+      <div className="mt-8 text-center">
+        {/* <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>*/}
+      </div>
+    )}
+  </div>
+
+  {/* Right Side: Background Image */}
+  <div className="relative flex-none w-2/3 bg-cover bg-center" style={{ backgroundImage: `url('https://i.postimg.cc/XqYyy1GZ/shopping-Card1.jpg')` }}>
+    {/* Centered Total Price */}
+    {shoppingCard.length > 0 && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="bg-BgPink text-BgFont text-3xl font-bold p-4 rounded-lg shadow-lg">
+          Total: {totalPrice.toFixed(2)} $
         </div>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
+</div>
+
   );
 };
 
 export default ShoppingCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from "react-router-dom";
-// import { useAppContext } from '../context/AppContext';
-// import { toast, ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import "../App.css";
-
-// const ShoppingCard = () => {
-//   const { userId, isAuthenticated, shoppingCard, addToShoppingCard, removeFromShoppingCard } = useAppContext();
-//   const [totalPrice, setTotalPrice] = useState(0); // Local state for total price
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     if (!isAuthenticated) {
-//       toast.error("You must sign in to access this page.");
-//       navigate("/signin");
-//     }
-//   }, [isAuthenticated, navigate]);
-
-//   // Fetch shopping card items
-//   const fetchShoppingCard = async () => {
-//     if (!userId) {
-//       // If userId is null or undefined, don't fetch
-//       toast.error('User not authenticated. Please sign in.');
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
-//       const { cardItems } = response.data;
-
-//       // Clear the shopping card first to avoid duplicates
-//       shoppingCard.length = 0; // Clear existing items in state
-
-//       // Add fetched items to the context
-//       cardItems.forEach((item) => {
-//         addToShoppingCard(item);
-//       });
-//     } catch (error) {
-//       console.error('Failed to fetch shopping card:', error);
-//       toast.error('Could not load shopping card. Please try again.');
-//     }
-//   };
-
-//   // Calculate total price
-//   const calculateTotalPrice = () => {
-//     const total = shoppingCard.reduce((sum, item) => sum + item.price, 0);
-//     setTotalPrice(total);
-//   };
-
-//   // Remove service from shopping card
-//   const removeService = async (id) => {
-//     try {
-//       await axios.delete(`http://localhost:3001/shoppingcards`, {
-//         data: { userID: userId, serviceName: item.serviceName },
-//       });
-//       console.log('Mapped userID:', userId);
-//       console.log('Mapped serviceName:', id);
-//       removeFromShoppingCard(id); // Pass id for removal in context
-//       toast.success('Service removed!');
-//     } catch (error) {
-//       toast.error('Failed to remove service!');
-//     }
-//   };
-
-//   // Clear the shopping card
-//   /* const handleClearShoppingCard = async () => {
-//     try {
-//       await axios.delete(`http://localhost:3001/shoppingcards/${userId}`);
-//       clearShoppingCard();
-//       setTotalPrice(0);
-//       toast.success('Shopping card cleared!');
-//     } catch (error) {
-//       toast.error('Failed to clear shopping card!');
-//     }
-//   };
-// */
-//   // Fetch shopping card when the component is mounted or when userId changes
-//   useEffect(() => {
-//     if (userId) {
-//       fetchShoppingCard();
-//     }
-//   }, [userId]);
-
-//   useEffect(() => {
-//     calculateTotalPrice();
-//   }, [shoppingCard]);
-
-//   return (
-//     <div className="container mx-auto py-8">
-//       <h2 className="text-3xl font-bold text-center mb-6">Your Shopping Card</h2>
-//       <ToastContainer />
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//         {shoppingCard.length === 0 ? (
-//           <p className="text-xl text-center col-span-full">Your shopping card is empty.</p>
-//         ) : (
-//           shoppingCard.map((item) => (
-//             <div key={item.id} className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-//               <h3 className="text-xl font-semibold text-center mb-2">{item.serviceName}</h3>
-//               <span className="text-lg font-bold mb-2">${item.price.toFixed(2)}</span>
-//               <button
-//                 onClick={() => removeService(item.id)}  // Pass unique ID for removal
-//                 className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
-//               >Remove</button>
-//             </div>
-//           ))
-//         )}
-//       </div>
-
-//       {shoppingCard.length > 0 && (
-//         <div className="mt-8 flex justify-between items-center">
-//           <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>
-//                    {/* <button onClick={handleClearShoppingCard} className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Clear Card</button> */}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ShoppingCard;
