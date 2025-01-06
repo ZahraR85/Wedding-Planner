@@ -56,9 +56,6 @@ export const deleteUserInfo = async (req, res) => {
 };
 
 
-
-
-
 export const getUserFeedbackCards = async (req, res) => {
   try {
     const feedbackData = await UserInfo.find({ feedback: { $exists: true, $ne: "" } });

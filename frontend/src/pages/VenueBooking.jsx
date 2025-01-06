@@ -25,6 +25,24 @@ const VenueBooking = () => {
     }
   }, [isAuthenticated, navigate]);
 
+//fetch WeddingDate from userInfo
+  useEffect(() => {
+    const fetchWeddingDate = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/userinfoes/${userId}`);
+        if (response.data?.weddingDate) {
+          setDay(response.data.weddingDate.split("T")[0]); // Set formatted date (YYYY-MM-DD)
+        }
+      } catch (error) {
+        console.error("Error fetching wedding date:", error);
+      }
+    };
+  
+    if (userId) {
+      fetchWeddingDate();
+    }
+  }, [userId]);  
+  
   useEffect(() => {
     const fetchVenueDetails = async () => {
       setLoading(true);
