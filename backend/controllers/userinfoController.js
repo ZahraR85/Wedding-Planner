@@ -24,9 +24,15 @@ export const getAllUserInfo = async (req, res) => {
 // Get a single record by ID
 export const getUserInfoById = async (req, res) => {
   try {
-    // Query by userID instead of _id
     const userInfo = await UserInfo.findOne({ userID: req.params.id });
-    if (!userInfo) return res.status(404).json({ message: "User info not found ftftftf" });
+    if (!userInfo) {
+      return res.status(404).json({ message: "User info not found. Please fill out the user information form." });
+    }
+
+    if (!userInfo.weddingDate) {
+      return res.status(200).json({ message: "Wedding date is missing. Please provide your wedding date in the user information page.", userInfo });
+    }
+
     res.status(200).json(userInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -54,9 +60,6 @@ export const deleteUserInfo = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
 
 
 export const getUserFeedbackCards = async (req, res) => {
