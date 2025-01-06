@@ -18,7 +18,7 @@ const initialState = {
 // Define reducer function
 const appReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_SELECTED_CITY':
+    case "SET_SELECTED_CITY":
       return { ...state, selectedCity: action.payload };
     case 'SET_SEARCH_TERM':
       return { ...state, searchTerm: action.payload };
@@ -81,8 +81,8 @@ const appReducer = (state, action) => {
 // AppProvider component
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
-
-  const setSelectedCity = (city) => dispatch({ type: 'SET_SELECTED_CITY', payload: city });
+ 
+  const setSelectedCity = (city) => dispatch({ type: "SET_SELECTED_CITY", payload: city });
   const setSearchTerm = (term) => dispatch({ type: 'SET_SEARCH_TERM', payload: term });
   const setHoveredDropdown = (dropdown) => dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: dropdown });
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
