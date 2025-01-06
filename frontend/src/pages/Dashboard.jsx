@@ -10,6 +10,7 @@ import Todolist from "../components/todolist";
 import Catering from "../components/catering";
 import Photography from "../components/photography";
 import Venue from "../components/venue";
+import Story from "../components/userstory";
 
 
 
@@ -54,13 +55,18 @@ const Dashboard = () => {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-4 bg-neutral-200">
-      {/* Countdown and User Information in one row */}
+      {/* User Information as Header */}
+      <div className="flex justify-center items-center p-4 bg-[#e8dfcf] shadow-2xl rounded-lg">
+        <UserInformation userId={userId} setWeddingDate={setWeddingDate} />
+      </div>
+
+      {/* Countdown and Todolist in one row */}
       <div className="grid grid-cols-2 gap-4">
         <div className="flex justify-center items-center p-4 rounded-full shadow-2xl bg-e8dfcf h-[400px]">
           <Countdown weddingDate={weddingDate} />
         </div>
         <div className="flex justify-center items-center p-4 rounded-3xl shadow-2xl bg-[#e8dfcf] h-[400px]">
-          <UserInformation userId={userId} setWeddingDate={setWeddingDate} />
+          <Todolist userId={userId} />
         </div>
       </div>
 
@@ -87,16 +93,37 @@ const Dashboard = () => {
             <MakeupUser userId={userId} />
           </div>
         </div>
+       
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Todolist</h2>
+          <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Photography</h2>
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#d5c0b5] w-[370px] h-[600px]">
-            <Todolist userId={userId} />
+            <Photography userId={userId} />
           </div>
-
-          <Photography userId={userId} />
-          <Venue userId={userId} />
         </div>
+
       </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col items-center">
+          {/* <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Venue</h2> */}
+          <div className="flex justify-center items-center p-4 rounded-full shadow-2xl bg-[#fff2f4] h-[400px] w-[400px]">
+  <Venue userId={userId} />
+</div>
+        </div>
+
+        <div className="flex flex-col items-center">
+          {/* <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">story</h2> */}
+          <div className="flex justify-center items-center p-4 rounded-3xl shadow-2xl bg-[#e8dfcf] h-[400px]">
+            <Story userId={userId} setWeddingDate={setWeddingDate} />
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+
     </div>
   );
 };

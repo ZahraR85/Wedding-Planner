@@ -79,8 +79,8 @@ const Todolist = ({ userId }) => {
             </div>
 
             {/* Pie Chart */}
-            <div style={{ width: '200px', height: '200px' }}>
-                <h3>Overall Progress</h3>
+            <div style={{ width: '300px', height: '300px' }}>
+               
                 <Pie
                     data={pieData}
                     options={{

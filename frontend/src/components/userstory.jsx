@@ -42,19 +42,11 @@ const UserInformation = ({ userId, setWeddingDate }) => {
 
       <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80   space-y-4 p-4  ">
 
-        <p style={{ fontSize: "3rem", fontWeight: "bold", textAlign: "center", textTransform: "uppercase", }}>
-          {userInfo.brideName || "N/A"} <span>&</span> {userInfo.groomName || "N/A"}
-        </p>
+   
+        <p><strong>Our Story:</strong> {userInfo.story || "No story provided."}</p>
 
-        <p><strong>The Day We Will Begin Forever</strong> {userInfo.weddingDate ? new Date(userInfo.weddingDate).toLocaleDateString() : "N/A"}</p>
 
-        {/* <p><strong>Our Story:</strong> {userInfo.story || "No story provided."}</p> */}
 
-        {/* <p><strong>Last Updated:</strong> {userInfo.updatedAt ? new Date(userInfo.updatedAt).toLocaleString() : "N/A"}</p> */}
-
-        {/* <p><strong>Feedback:</strong> {userInfo.feedback || "No feedback provided."}</p> */}
-        {/* <p><strong>Bride's Birthday:</strong> {userInfo.brideBirthday ? new Date(userInfo.brideBirthday).toLocaleDateString() : "N/A"}</p> */}
-        {/* <p><strong>Groom's Birthday:</strong> {userInfo.groomBirthday ? new Date(userInfo.groomBirthday).toLocaleDateString() : "N/A"}</p> */}
       </div>
 
     </div>
