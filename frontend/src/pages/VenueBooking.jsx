@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toast
 
 const VenueBooking = () => {
@@ -99,13 +99,20 @@ const VenueBooking = () => {
 
   const handleSubmit = async () => {
     if (!isAuthenticated) {
-      alert("Please log in to book a venue.");
+      toast.error("Please log in to book a venue.");
       navigate("/signin");
       return;
     }
 
-    if (!day) {
-      alert("Booking date is required.");
+      if (!day) {
+      toast.error("You must fill the form and Wedding Date in user Information page before you can select the venue", {
+        position: "top-center",
+        autoClose: 3000, // Close the toast after 3 seconds
+      });
+
+      setTimeout(() => {
+        navigate('/userInfo');
+      }, 3000); // Navigate after 3 seconds
       return;
     }
 
@@ -171,6 +178,7 @@ const VenueBooking = () => {
       <div className="absolute inset-0 bg-white/50"></div>
       <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
+        <ToastContainer />
         <div className="relative">
           <img
             src={`http://localhost:3001/${venue?.images[currentIndex]}`}
@@ -201,6 +209,7 @@ const VenueBooking = () => {
               <input
                 type="date"
                 value={day}
+                readOnly
                 onChange={(e) => setDay(e.target.value)}
                 className="w-full p-2 border rounded mb-4"
               />
