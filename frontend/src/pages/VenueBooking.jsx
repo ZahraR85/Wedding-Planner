@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toast
+import "react-toastify/dist/ReactToastify.css";
 
 const VenueBooking = () => {
   const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
@@ -25,7 +25,6 @@ const VenueBooking = () => {
     }
   }, [isAuthenticated, navigate]);
 
-//fetch WeddingDate from userInfo
   useEffect(() => {
     const fetchWeddingDate = async () => {
       try {
@@ -103,44 +102,58 @@ const VenueBooking = () => {
       navigate("/signin");
       return;
     }
-
-      if (!day) {
+  
+    if (!day) {
       toast.error("You must fill the form and Wedding Date in user Information page before you can select the venue", {
         position: "top-center",
-        autoClose: 3000, // Close the toast after 3 seconds
+        autoClose: 3000,
       });
-
+  
       setTimeout(() => {
         navigate('/userInfo');
       }, 3000); // Navigate after 3 seconds
       return;
     }
-
+    
     if (bookingConflict) {
       alert("This venue is already booked on the selected date. Please choose another date.");
       return;
     }
-
+  
     try {
       const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
       if (!isValidDate) {
         alert("Invalid date format. Please use YYYY-MM-DD.");
         return;
       }
-
+  
       setLoading(true);
-      const response = await axios.post("http://localhost:3001/venueSelections", {
-        userId,
-        venueId,
-        date: day,
-      });
+      const isBookingNew = !venueId; // If venueId exists, this is an update; if not, it's a new booking
+
+      let response;
+      if (isBookingNew) {
+        // Create new venue booking (POST request)
+        response = await axios.post(`http://localhost:3001/venueSelections`, {
+          userId,
+          date: day,
+          venueId, // Send the selected venueId
+        });
+      } else {
+        // Update venue booking (PUT request)
+        response = await axios.put(`http://localhost:3001/venueSelections/${userId}`, {
+          userId,
+          date: day,
+          newVenueId: venueId, // Send the updated venueId
+        });
+      }
+
       const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
       const shoppingCartData = {
         userID: userId,
         serviceName: 'Venue',
         price: venue?.total,
       };
-  console.log (venue?.price);
+  
       await axios.post(shoppingCartUrl, shoppingCartData, {
         headers: { "Content-Type": "application/json" },
       });
@@ -148,21 +161,19 @@ const VenueBooking = () => {
       // Frontend-only addition (optional if the backend handles the cart data)
       addToShoppingCard(shoppingCartData);
   
-      toast.success("Makeup data and total price added to shopping cart successfully!");
+      toast.success("Venue booking successfully completed!");
       navigate("/shoppingCard");
-      // Replace the alert with toast.success for successful booking
       if (response.data.message) {
         setAlreadyBookedMessage(response.data.message);
       } else {
-        toast.success("Venue booked successfully!"); // Use toast instead of alert
-        navigate("/"); // Redirect to HomePage list after booking
-  
+        toast.success("Venue booking updated successfully!");
+        navigate("/"); // Redirect to HomePage list after updating
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
-        "An error occurred while booking the venue. Please try again.";
-
+        "An error occurred while processing the booking. Please try again.";
+  
       if (errorMessage.includes("You already have a booking")) {
         setAlreadyBookedMessage("You already have a booking. You cannot book another venue.");
       } else {
@@ -171,7 +182,7 @@ const VenueBooking = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
@@ -204,7 +215,7 @@ const VenueBooking = () => {
             <p className="text-m font-bold text-BgFont my-4">Address: {venue?.address}</p>
           </div>
           <div className="flex-1 my-4">
-          <p className="text-m font-bold text-BgFont my-4">{venue?.description}</p>
+            <p className="text-m font-bold text-BgFont my-4">{venue?.description}</p>
             <label className="text-m font-bold text-BgFont my-4">Select Day:
               <input
                 type="date"

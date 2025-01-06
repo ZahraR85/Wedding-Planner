@@ -1,8 +1,8 @@
 import express from 'express';
 import {
-  //createOrUpdateVenueSelection,
-  createVenueSelection,
-  updateVenueSelectionByNewVenueId,
+  createOrUpdateVenueSelection,
+  //createVenueSelection,
+  //updateVenueSelectionByNewVenueId,
   getVenueSelectionsByUserId,
   deleteVenueSelection,
   checkBookingConflict,
@@ -11,11 +11,11 @@ import {
 const router = express.Router();
 
 
-//router.post('/', createOrUpdateVenueSelection);
-router.post('/', createVenueSelection);
+router.post('/', createOrUpdateVenueSelection);
+//router.post('/', createVenueSelection);
 // Get venue selections by user ID
 router.get("/:userId", getVenueSelectionsByUserId);
-router.put("/:userId", updateVenueSelectionByNewVenueId);
+//router.put("/:userId", updateVenueSelectionByNewVenueId);
 // Delete venue selection
 router.delete('/:id/:venueId', deleteVenueSelection);
 

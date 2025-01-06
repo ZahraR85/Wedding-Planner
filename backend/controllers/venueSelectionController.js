@@ -1,69 +1,42 @@
 import VenueSelection from '../models/venueSelection.js';
-
-// Create Venue Selection
-export const createVenueSelection = async (req, res) => {
+// Create or Update Venue Selection
+export const createOrUpdateVenueSelection = async (req, res) => {
   const { userId, venueId, date } = req.body;
+
+  if (!userId || !venueId || !date) {
+    return res.status(400).json({ message: 'userId, venueId, and date are required.' });
+  }
+
   try {
-    // Check if the user already has any existing booking
-    const existingUserBooking = await VenueSelection.findOne({ userId });
-    if (existingUserBooking) {
-      return res.status(400).json({
-        message: "You already have a booking. You cannot book another venue.",
+    // Check if the user already has a booking for the selected date
+    const existingBooking = await VenueSelection.findOne({ userId, date });
+
+    // If the user has an existing booking for the selected date
+    if (existingBooking) {
+      // Update the venueId for the existing booking
+      existingBooking.venueId = venueId;
+      const updatedBooking = await existingBooking.save();
+
+      return res.status(200).json({
+        message: 'Booking updated successfully.',
+        data: updatedBooking,
       });
     }
-    // Check if the venue is already booked for the given date by another user
-    const isDateOccupied = await VenueSelection.findOne({
-      venueId,
-      date,
-      userId: { $ne: userId }, // Ensure no other user has booked it for the same date
-    });
-    if (isDateOccupied) {
-      return res
-        .status(400)
-        .json({ message: "This venue is already booked on the selected date." });
-    }
-    // Create a new booking if all checks pass
+
+    // If no existing booking is found, create a new one
     const newBooking = new VenueSelection({ userId, venueId, date });
     await newBooking.save();
-    return res
-      .status(201)
-      .json({ message: "Booking created successfully", data: newBooking });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error processing booking", error: error.message });
-  }
-};
 
-
-// Update Venue for a User
-export const updateVenueSelectionByNewVenueId =  async (req, res) => {
-  const { userId, date, newVenueId } = req.body;
-
-  if (!userId || !date || !newVenueId) {
-    return res.status(400).json({ message: 'userId, date, and newVenueId are required.' });
-  }
-
-  try {
-    // Find and delete the existing venue for the user on the specific date
-    const existingVenue = await Venue.findOneAndDelete({ userId, date });
-
-    if (existingVenue) {
-      console.log(`Deleted previous venue for userId: ${userId} on date: ${date}`);
-    }
-
-    // Create a new venue entry for the user
-    const updatedVenue = new Venue({
-      userId,
-      date,
-      venueId: newVenueId,
+    return res.status(201).json({
+      message: 'Booking created successfully.',
+      data: newBooking,
     });
-
-    await updatedVenue.save();
-
-    res.status(200).json({ message: 'Venue updated successfully.', updatedVenue });
   } catch (error) {
-    console.error('Error updating venue:', error);
-    res.status(500).json({ message: 'An error occurred while updating the venue.', error });
+    console.error('Error processing booking:', error);
+    return res.status(500).json({
+      message: 'Error processing booking',
+      error: error.message,
+    });
   }
 };
 
