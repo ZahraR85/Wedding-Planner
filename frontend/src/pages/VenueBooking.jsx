@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
@@ -16,7 +16,7 @@ const VenueBooking = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [bookingConflict, setBookingConflict] = useState(false);
-  const [alreadyBookedMessage, setAlreadyBookedMessage] = useState(""); // Message for already booked
+  const toastShown = useRef(false); // Flag to track if toast has already been shown
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -31,17 +31,36 @@ const VenueBooking = () => {
         const response = await axios.get(`http://localhost:3001/userinfoes/${userId}`);
         if (response.data?.weddingDate) {
           setDay(response.data.weddingDate.split("T")[0]); // Set formatted date (YYYY-MM-DD)
+        } else {
+          handleMissingUserInfo();
         }
       } catch (error) {
-        console.error("Error fetching wedding date:", error);
+        // Only handle 404 errors for missing user information gracefully
+        if (error.response?.status === 404) {
+          handleMissingUserInfo();
+        } else {
+          console.error("Error fetching wedding date:", error); // Log other errors
+          toast.error("An unexpected error occurred. Please try again later.");
+        }
       }
     };
   
+    const handleMissingUserInfo = () => {
+      if (!toastShown.current) { // Ensure the toast is only shown once
+        toast.error(
+          "User information not found. Please fill out the form on the User Information page before selecting a venue.",
+          { position: "top-center", autoClose: 3000 }
+        );
+        toastShown.current = true; // Mark toast as shown
+        setTimeout(() => navigate("/userInfo"), 3000); // Navigate after showing toast
+      }
+    };
+
     if (userId) {
       fetchWeddingDate();
     }
-  }, [userId]);  
-  
+  }, [userId, navigate]);
+
   useEffect(() => {
     const fetchVenueDetails = async () => {
       setLoading(true);
@@ -67,11 +86,7 @@ const VenueBooking = () => {
       const response = await axios.get(
         `http://localhost:3001/venueSelections/venue/${venueId}/date/${selectedDate}`
       );
-      if (response.data.length > 0) {
-        setBookingConflict(true);
-      } else {
-        setBookingConflict(false);
-      }
+      setBookingConflict(response.data.length > 0);
     } catch (error) {
       console.error("Error checking booking conflict:", error);
       setError("Failed to check booking availability.");
@@ -103,18 +118,6 @@ const VenueBooking = () => {
       return;
     }
   
-    if (!day) {
-      toast.error("You must fill the form and Wedding Date in user Information page before you can select the venue", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-  
-      setTimeout(() => {
-        navigate('/userInfo');
-      }, 3000); // Navigate after 3 seconds
-      return;
-    }
-    
     if (bookingConflict) {
       alert("This venue is already booked on the selected date. Please choose another date.");
       return;
@@ -128,57 +131,34 @@ const VenueBooking = () => {
       }
   
       setLoading(true);
-      const isBookingNew = !venueId; // If venueId exists, this is an update; if not, it's a new booking
-
-      let response;
-      if (isBookingNew) {
-        // Create new venue booking (POST request)
-        response = await axios.post(`http://localhost:3001/venueSelections`, {
-          userId,
-          date: day,
-          venueId, // Send the selected venueId
-        });
-      } else {
-        // Update venue booking (PUT request)
-        response = await axios.put(`http://localhost:3001/venueSelections/${userId}`, {
-          userId,
-          date: day,
-          newVenueId: venueId, // Send the updated venueId
-        });
-      }
-
-      const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+  
+      // Send booking request to the backend
+      const response = await axios.post(`http://localhost:3001/venueSelections`, {
+        userId,
+        date: day,
+        venueId,
+      });
+  
+      toast.success(response.data.message); // Use the message from the backend
+  
+      // Add to shopping cart
       const shoppingCartData = {
         userID: userId,
-        serviceName: 'Venue',
+        serviceName: "Venue",
         price: venue?.total,
       };
-  
-      await axios.post(shoppingCartUrl, shoppingCartData, {
+      await axios.post("http://localhost:3001/shoppingcards", shoppingCartData, {
         headers: { "Content-Type": "application/json" },
       });
   
-      // Frontend-only addition (optional if the backend handles the cart data)
       addToShoppingCard(shoppingCartData);
-  
       toast.success("Venue booking successfully completed!");
       navigate("/shoppingCard");
-      if (response.data.message) {
-        setAlreadyBookedMessage(response.data.message);
-      } else {
-        toast.success("Venue booking updated successfully!");
-        navigate("/"); // Redirect to HomePage list after updating
-      }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
-        "An error occurred while processing the booking. Please try again.";
-  
-      if (errorMessage.includes("You already have a booking")) {
-        setAlreadyBookedMessage("You already have a booking. You cannot book another venue.");
-      } else {
-        alert(errorMessage);
-      }
+        "An error occurred while processing the venue booking. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -221,18 +201,12 @@ const VenueBooking = () => {
                 type="date"
                 value={day}
                 readOnly
-                onChange={(e) => setDay(e.target.value)}
                 className="w-full p-2 border rounded mb-4"
               />
             </label>
             {bookingConflict && (
               <p className="text-red-500 mt-2">This venue is already booked on the selected date. Please choose another date.</p>
             )}
-
-            {alreadyBookedMessage && (
-              <p className="text-red-500 mt-2">{alreadyBookedMessage}</p> // Display message here
-            )}
-
             <button
               onClick={handleSubmit}
               className="w-full bg-BgPinkMiddle text-lg text-BgFont font-bold py-2 rounded hover:bg-BgPinkDark mb-2"
