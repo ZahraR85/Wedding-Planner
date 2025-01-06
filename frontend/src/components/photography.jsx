@@ -70,7 +70,7 @@ const UserSelections = ({ userId }) => {
               </>
             ) : (
               <>
-                ✖ {item.name}:{" "}
+                ❌ {item.name}:{" "}
                 <span className="text-sm text-gray-600">${item.price}</span>
               </>
             )}

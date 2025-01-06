@@ -28,13 +28,28 @@ export async function getUserProgress(userID) {
 
     for (const { model, name } of models) {
         try {
-            const exists = await model.exists({ userID });
+            let exists;
+            if (name === "Venue") {
+                // Query using 'userId' for Venue model
+                exists = await model.exists({ userId: userID });
+            } else {
+                // Query using 'userID' for other models
+                exists = await model.exists({ userID });
+            }
+
             if (exists) {
                 progressData[name] = true; // Mark as completed
                 completedCount++;
             } else {
                 progressData[name] = false; // Mark as not completed
             }
+            // const exists = await model.exists({ userID });
+            // if (exists) {
+            //     progressData[name] = true; // Mark as completed
+            //     completedCount++;
+            // } else {
+            //     progressData[name] = false; // Mark as not completed
+            // }
         } catch (error) {
             console.error(`Error querying model ${name}:`, error.message);
             progressData[name] = false; // Mark as not completed if there's an error
