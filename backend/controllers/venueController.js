@@ -1,5 +1,20 @@
 import Venue from "../models/venue.js";
 
+
+
+
+// Get unique cities
+export const getUniqueCities = async (req, res) => {
+  try {
+    const cities = await Venue.distinct("city"); // Fetch distinct cities
+    res.status(200).json(cities);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    res.status(500).json({ message: "Error fetching cities", error });
+  }
+};
+
+
 export const createVenue = async (req, res) => {
   try {
     const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
@@ -31,14 +46,16 @@ export const createVenue = async (req, res) => {
 // Get all venues
 export const getAllVenues = async (req, res) => {
   try {
-    const venues = await Venue.find(); // Fetch all venues from the database
+    const { city } = req.query; // Extract city from query parameters
+    const filter = city && city !== "All Cities" ? { city } : {}; // Build the filter object
+
+    const venues = await Venue.find(filter); // Apply filter when fetching venues
     res.status(200).json(venues);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching venues:", error);
     res.status(500).json({ message: "Error fetching venues", error });
   }
 };
-
 // Update a price of venue
 export const updateVenue = async (req, res) => {
   try {

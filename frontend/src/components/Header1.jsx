@@ -1,17 +1,43 @@
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import Navbar from './Navbar';
-import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-const Header1 = () => {
-  const { selectedCity, searchTerm, setSelectedCity, setSearchTerm } =
-    useAppContext();
 
-  const cities = ['Berlin', 'Munich', 'Hamburg', 'Frankfurt', 'Cologne'];
+
+
+
+
+const Header1 = ({ onScrollToSearchVenues }) => {
+  const { selectedCity, setSelectedCity } = useAppContext();
+  const [cities, setCities] = useState([]);
+  // const navigate = useNavigate(); // Initialize useNavigate
+
+
+  useEffect(() => {
+    async function fetchCities() {
+      try {
+        const response = await axios.get("http://localhost:3001/venues/cities");
+        setCities(response.data);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    }
+
+    fetchCities();
+  }, []);
+
+  const handleCityChange = (e) => {
+    const city = e.target.value;
+    setSelectedCity(city);
+    navigate("/searchvenues"); // Navigate to the searchvenues page
+  };
+
 
   const handleSearch = () => {
     console.log('Search for:', selectedCity, searchTerm);
   };
-
   // Slider images
   const sliderImages = [
 
@@ -33,6 +59,9 @@ const Header1 = () => {
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderImages.length);
   };
+
+
+
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -79,9 +108,8 @@ const Header1 = () => {
             <button
               key={index}
               onClick={() => handleDotClick(index)}
-              className={`w-3 h-3 rounded-full ${
-                currentIndex === index ? 'bg-white' : 'bg-BgPinkDark'
-              }`}
+              className={`w-3 h-3 rounded-full ${currentIndex === index ? 'bg-white' : 'bg-BgPinkDark'
+                }`}
             ></button>
           ))}
         </div>
@@ -94,21 +122,20 @@ const Header1 = () => {
         </p>
         <div className="w-full text-gray">
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Enter City..."
-              className="w-full md:w-[400px] px-4 py-2 border rounded-md bg-transparent"
-            />
-            <select
+
+          <select
               value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="w-full md:w-[200px] px-4 py-2 border rounded-md bg-transparent"
+              onChange={(e) => {
+                setSelectedCity(e.target.value);
+                onScrollToSearchVenues(); // Trigger scroll to Searchvenues
+              }}
+              className="w-full md:w-[300px] bg-BgPinkDark px-4 py-2 border rounded-md bg-transparent"
             >
-              <option value="All Cities">All Cities</option>
+              <option value="All Cities" className="text-gray-500">
+                All Cities
+              </option>
               {cities.map((city, index) => (
-                <option key={index} value={city}>
+                <option key={index} value={city} className="text-red-500">
                   {city}
                 </option>
               ))}
@@ -123,6 +150,7 @@ const Header1 = () => {
         </div>
       </div>
     </header>
+
   );
 };
 

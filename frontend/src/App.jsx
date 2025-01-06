@@ -22,6 +22,7 @@ import GalleryManagement from './AdminVenue/GalleryManagement.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
+import Venue from "./components/searchvenues";
 import './index.css';
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
+            <Route path="/searchvenues" element={<Venue />} />
           </Routes>
         </Layout>
       </Router>
