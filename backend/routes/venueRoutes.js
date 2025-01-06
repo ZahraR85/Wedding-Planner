@@ -21,9 +21,4 @@ router.get("/:venueId", getVenueByVenueId);
 
 router.get("/user/:userId", getVenuesByUserId);
 
-
-
-  
-
-
 export default router;
