@@ -150,10 +150,10 @@ const Photography = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
+    <div className="relative min-h-screen bg-cover bg-center p-16 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
       <div className="absolute inset-0 bg-white/50"></div>
       <div className="relative mx-auto w-full max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-        <h1 className="text-2xl font-bold text-center text-BgFont m-20">Photography Services</h1>
+        <h1 className="text-2xl font-bold text-center text-BgFont m-14">Photography Services</h1>
         <ToastContainer />
         {features.map((feature) => (
           <label key={feature.id} className="flex items-center justify-between">
@@ -165,6 +165,7 @@ const Photography = () => {
                 data-category={feature.id}
                 checked={formData[feature.id]?.selected || false}
                 onChange={handleChange}
+                className="text-center w-5 h-5"
               />
             ) : (
               <input
@@ -173,12 +174,12 @@ const Photography = () => {
                 data-category={feature.id}
                 value={formData[feature.id]?.number || 0}
                 onChange={handleChange}
-                className="border p-2 rounded w-1/3"
+                className="border p-2 rounded w-1/3  border-BgPinkDark hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"
               />
             )}
           </label>
         ))}
-        <h2 className="text-lg font-bold text-BgFont text-center">Total Price: {total} €</h2>
+        <h2 className="text-lg font-bold text-BgFont text-center py-8">Total Price: {total} €</h2>
         <button
           onClick={handleSubmit}
           className="bg-BgPinkMiddle text-BgFont text-lg font-bold hover:bg-BgPinkDark w-full px-4 py-2 rounded"
