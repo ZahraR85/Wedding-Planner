@@ -160,28 +160,28 @@ const GalleryManagement = () => {
             placeholder="Image Name"
             value={imageName}
             onChange={(e) => setImageName(e.target.value)}
-            className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
+            className="w-full mb-4 p-2 border border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <input
             type="file"
             onChange={(e) => {
               const file = e.target.files[0];
-              console.log(file); // Log the selected file to see if it's being captured
+              //console.log(file); 
               setImagePath(file); // Set the selected file to state
             }}
-            className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
+            className="w-full mb-4 p-2 border border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <textarea
             type="text"
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
+            className="w-full mb-4 p-2 border border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full mb-4 p-2 border border-BgKhaki rounded focus:outline-none focus:ring focus:ring-BgKhaki"
+            className="w-full mb-4 p-2 border border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           >
             <option value="" disabled>
               Select a Category

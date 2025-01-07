@@ -60,7 +60,7 @@ const Register = () => {
         <div className="relative w-4/5 max-w-md bg-opacity-80 rounded-lg p-5 ml-14 mb-14 space-y-4">
     {/*  <div className="w-1/2 flex justify-center items-center bg-customBg1">*/}
     {/*  <div className="max-w-5xl w-4/5 p-16 bg-customBg shadow-lg rounded-lg space-y-5">*/}
-          <h2 className="text-3xl font-bold mb-10 text-center">Please Register!</h2>
+          <h2 className="text-3xl text-BgFont font-bold mb-10 text-center">Please Register!</h2>
         {success && <p className="text-green-500 text-sm text-center">Registration successful! Redirecting...</p>}
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <input
@@ -69,7 +69,7 @@ const Register = () => {
           placeholder="Name"
           value={formData.name}
           onChange={handleChange}
-          className="block w-full p-2 border border-gray-300 rounded"
+          className="block w-full p-2 border rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
         <input
         type="text"
@@ -77,7 +77,7 @@ const Register = () => {
         placeholder="Last Name"
         value={formData.family}
         onChange={handleChange}
-        className="block w-full p-2 border border-gray-300 rounded"
+        className="block w-full p-2 border rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
       />
         <input
           type="email"
@@ -85,7 +85,7 @@ const Register = () => {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className="block w-full p-2 border border-gray-300 rounded"
+          className="block w-full p-2 border rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
               <input
         type="text"
@@ -93,7 +93,7 @@ const Register = () => {
         placeholder="Phone"
         value={formData.phone}
         onChange={handleChange}
-        className="block w-full p-2 border border-gray-300 rounded"
+        className="block w-full p-2 border rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
       />
         <input
           type="password"
@@ -101,7 +101,7 @@ const Register = () => {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
-          className="block w-full p-2 border border-gray-300 rounded"
+          className="block w-full p-2 border rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
         <button
           onClick={handleRegister}

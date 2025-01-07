@@ -74,7 +74,7 @@ const ReceptionSelector = () => {
 
   const [total, setTotal] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [description, setDescription] = useState("Select a feature to see its description.");
+  const [description, setDescription] = useState("Select a feature to see its description here!");
 
   // Redirect to SignIn if not authenticated
   useEffect(() => {
@@ -168,8 +168,9 @@ const ReceptionSelector = () => {
     <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-cover bg-center">
       <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
       <ToastContainer />
-        <p className=" text-2xl text-BgFont font-bold m-10 text-center mb-8">{description}</p>
-        <h1 className="text-3xl text-BgFont font-bold m-10">Reception Features</h1>
+      <h1 className="text-3xl text-center text-BgFont font-bold m-10">Select your Catering features:</h1>
+        <p className=" text-m text-BgFont font-semibold m-10 text-center mb-8">{description}</p>
+
         <table className="table-auto text-BgFont w-full border-collapse border border-BgFont">
           <thead>
             <tr>
@@ -184,7 +185,7 @@ const ReceptionSelector = () => {
                 key={feature.name}
                 onMouseEnter={() => setDescription(feature.description)}
                 onMouseLeave={() => setDescription("Select a feature to see its description.")}
-                className="hover:bg-gray-100"
+                className="hover:bg-BgPink"
               >
                 <td className="border border-gray-300 px-4 py-2">{feature.name}</td>
                 <td className="border border-gray-300 px-4 py-2">{feature.price} €</td>
@@ -194,7 +195,7 @@ const ReceptionSelector = () => {
                     min="0"
                     value={formData[feature.name] || 0}
                     onChange={(e) => handleChange(e, feature.name)}
-                    className="w-full p-2 border border-gray-300 rounded hover:border-BgPinkDark hover:border-2"
+                    className="w-full p-2 border border-BgPinkDark rounded hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"
                   />
                 </td>
               </tr>

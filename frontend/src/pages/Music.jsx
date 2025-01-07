@@ -1,26 +1,23 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAppContext } from "../context/AppContext"; // Assuming you have AppContext for user data
+import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
-
 const MusicSelectionForm = () => {
-  const { userId, isAuthenticated,addToShoppingCard} = useAppContext(); // Get userId and auth status from context
+  const { userId, isAuthenticated,addToShoppingCard} = useAppContext();
   const navigate = useNavigate(); // Navigation hook
 
   const [musicOptions, setMusicOptions] = useState([]);
   const [userSelection, setUserSelection] = useState(null); // Store user data from the database
   const [hours, setHours] = useState({}); // Track hours for each music option
   const [customRequest, setCustomRequest] = useState("");
-  const [isEditMode, setIsEditMode] = useState(false); // Track edit mode
+  const [isEditMode, setIsEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hoveredOption, setHoveredOption] = useState(null);
 
-  // Redirect unauthenticated users
   useEffect(() => {
     if (!isAuthenticated) {
       toast.warn("You must sign in to access this page.");
@@ -34,22 +31,18 @@ const MusicSelectionForm = () => {
 
     const fetchData = async () => {
       try {
-
         // Fetch music options
         const optionsResponse = await axios.get("http://localhost:3001/musicoptions");
         console.log("Fetched Music Options:", optionsResponse.data);
         setMusicOptions(optionsResponse.data);
-
         const userResponse = await axios.get(`http://localhost:3001/musics?userID=${userId}`);
         console.log("Fetched User Data:", userResponse.data); // Debugging
-
         if (userResponse.data) {
           // Map fetched selections to hours for pre-filling
           const mappedHours = userResponse.data.selections.reduce((acc, selection) => {
             acc[selection.optionID._id] = selection.hours; // Use optionID._id as the key
             return acc;
           }, {});
-
           // Map selections to hours state
           setHours(mappedHours); // Pre-fill hours
           setUserSelection(userResponse.data); // Store user data
@@ -109,10 +102,8 @@ const MusicSelectionForm = () => {
           hours: parseInt(hours[option._id], 10),
           totalPrice: parseInt(hours[option._id], 10) * option.pricePerHour,
         }));
-  
       // Calculate total cost
       const totalCost = selections.reduce((total, selection) => total + selection.totalPrice, 0);
-  
       // Prepare data for music selection
       const musicSelectionData = {
         userID: userId,
@@ -124,7 +115,6 @@ const MusicSelectionForm = () => {
       // Add or update music selection
       const musicUrl = `http://localhost:3001/musics${isEditMode ? `/${userSelection._id}` : ""}`;
       const musicMethod = isEditMode ? "PUT" : "POST";
-  
       await axios({
         method: musicMethod,
         url: musicUrl,
@@ -139,7 +129,6 @@ const MusicSelectionForm = () => {
         serviceName: "Music",
         price: totalCost,
       };
-  
       await axios.post(shoppingCardUrl, shoppingCardData, {
         headers: { "Content-Type": "application/json" },
       });
@@ -160,25 +149,21 @@ const MusicSelectionForm = () => {
     <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
       {/* Overlay for controlling opacity */}
       <div className="absolute inset-0 bg-white/50"></div>
-
       {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}
-      <div className="relative mx-auto w-full max-w-[calc(100%-80px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+      <div className="relative mx-auto w-full max-w-[calc(70%-50px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
       <ToastContainer />
         <h2 className="text-2xl font-bold text-center text-BgFont mb-6">Select your Music bands</h2>
         <form onSubmit={handleSubmit}>
-          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour</h3>
-          <div className="grid grid-cols-3 gap-4">
-
+          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour!</h3>
+          <div className="grid grid-cols-4 gap-4">
             {musicOptions.map((option) => (
               <div
                 key={option._id}
                 onMouseEnter={() => setHoveredOption(option._id)}
                 onMouseLeave={() => setHoveredOption(null)}
-                className="relative border p-4 rounded-lg bg-gray-50"
-              >
-                <p className="font-semibold text-BgFont mb-2">{option.name}</p>
-
-                <p className="text-BgFont mb-2">Price: ${option.pricePerHour}/hour</p>
+                className="relative border p-4 rounded-lg bg-gray-50">
+                <p className="font-bold text-BgFont mb-2">{option.name}</p>
+                <p className="text-BgFont font-semibold mb-2">Price: {option.pricePerHour} €/hour</p>
                 <label className="block">
                   <input
                     type="number"
@@ -186,22 +171,16 @@ const MusicSelectionForm = () => {
                     placeholder="Hours"
                     value={hours[option._id] || ""}
                     onChange={(e) => handleHoursChange(option._id, e.target.value)}
-                    className="w-full p-2 border rounded"
-                  />
+                    className="w-full p-2 border border-BgPinkDark rounded hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"/>
                 </label>
-
                 {hoveredOption === option._id && (
-              <div className="absolute top-2 left-full ml-4 p-8 bg-red-100 border rounded shadow-lg w-96 z-10">
+              <div className="absolute top-2 left-full ml-4 p-8 bg-customBg1 border rounded shadow-lg w-96 z-10">
               <p className="text-xl text-BgFont font-semibold">{option.description}</p>
             </div>
               )}
-
-
-
               </div>
             ))}
           </div>
-
           <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
           <div className="flex gap-2">
             <textarea
@@ -209,14 +188,12 @@ const MusicSelectionForm = () => {
               placeholder="Enter a custom request"
               value={customRequest}
               onChange={(e) => setCustomRequest(e.target.value)}
-              className="flex-1 p-2 border rounded"
+              className="flex-1 p-2 border border-BgPinkDark rounded text-BgFont hover:border-BgPinkDark hover:border-2 focus:outline-none focus:ring focus:ring-BgPinkDark"
             />
             <button
               type="button"
               onClick={addCustomRequest}
-              className="p-2 bg-BgPinkMiddle text-BgFont font-bold rounded hover:bg-BgPinkDark"
-            >
-              Add Request
+              className="p-2 bg-BgPinkMiddle text-BgFont font-bold rounded hover:bg-BgPinkDark"> Add Request
             </button>
           </div>
           <ul className="mt-4 list-disc pl-6 text-BgFont">
@@ -224,15 +201,13 @@ const MusicSelectionForm = () => {
               <li key={index}>{request.description}</li>
             ))}
           </ul>
-
           <h3 className="text-2xl font-bold text-center text-BgFont mt-6">
             Total Cost: <span className="text-BgFont">{userSelection?.totalCost || 0} €</span>
           </h3>
           <button
             type="submit"
             className="block w-full mt-6 p-3 bg-BgPinkMiddle text-BgFont font-bold rounded-lg hover:bg-BgPinkDark"
-            disabled={loading}
-          >
+            disabled={loading}>
             {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
           </button>
         </form>

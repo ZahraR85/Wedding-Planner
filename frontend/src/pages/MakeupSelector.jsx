@@ -192,7 +192,7 @@ console.log (shoppingCartData);
               id={feature.id}
               checked={selectedFeatures[feature.id]?.selected || false}
               onChange={() => handleCheckboxChange(feature.id)}
-              className="mr-2 w-6 h-6" // Larger checkbox
+              className="mr-2 w-5 h-5" // Larger checkbox
             />
             <label htmlFor={feature.id} className="text-lg font-bold">
               {feature.label} ({feature.price} €)

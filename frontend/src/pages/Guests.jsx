@@ -205,7 +205,7 @@ function Guest() {
                 value={formData.guestName}
                 onChange={handleChange}
                 placeholder="Guest Name"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
               <input
@@ -214,7 +214,7 @@ function Guest() {
                 value={formData.numberOfPersons}
                 onChange={handleChange}
                 placeholder="Number of Persons"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
               <input
@@ -223,7 +223,7 @@ function Guest() {
                 value={formData.email || ''}
                 onChange={handleChange}
                 placeholder="Email"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
               <input
@@ -232,7 +232,7 @@ function Guest() {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Phone"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
             </div>
@@ -242,7 +242,7 @@ function Guest() {
               value={formData.address}
               onChange={handleChange}
               placeholder="Address of Guests"
-              className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+              className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
               required
             />
             <div className="flex items-center justify-between">
@@ -252,7 +252,7 @@ function Guest() {
                   name="answerStatus"
                   value={formData.answerStatus || ''}
                   onChange={handleChange}
-                  className="custom-select px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki w-[calc(100%+20px)]"
+                  className="custom-select px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark w-[calc(100%+20px)]"
                   required
                 >
                   <option >select status </option>
@@ -271,17 +271,14 @@ function Guest() {
           </form>
           <div><hr /><br /></div>
           <div className="flex flex-col md:flex-row justify-between items-center mt-6">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Total Family with YES Answer: {totalYesGuests}
+            <h3 className="text-lg font-semibold text-BgFont">
+              YES Answer: {totalYesGuests}
             </h3>
-            <h3 className="text-lg font-semibold text-gray-700">
-              Total Guests with YES Answer: {totalYesPersons}
-            </h3>  
-            <h3 className="text-lg font-semibold text-gray-700">
-              Total Family with NO Answer: {totalNOGuests}
+            <h3 className="text-lg font-semibold text-BgFont">
+              NO Answer: {totalNOGuests}
             </h3>
-            <h3 className="text-lg font-semibold text-gray-700">
-              Total Family with NOT YET Answer: {totalNotyetGuests}
+            <h3 className="text-lg font-semibold text-BgFont">
+              NOT YET Answer: {totalNotyetGuests}
             </h3>
 
             </div>
@@ -339,8 +336,8 @@ function Guest() {
               <button
                 key={page + 1}
                 onClick={() => paginate(page + 1)}
-                className={`px-4 py-2 ${currentPage === page + 1 ? "bg-gray-500" : "bg-gray-300"
-                  } text-gray-700 rounded-md hover:bg-gray-400`}
+                className={`px-4 py-2 ${currentPage === page + 1 ? "bg-BgPinkMiddle" : "bg-BgPink"
+                  } text-BgFont font-bold rounded-md hover:bg-BgPinkDark`}
               >
                 {page + 1}
               </button>
