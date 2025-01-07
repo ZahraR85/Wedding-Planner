@@ -23,6 +23,7 @@ import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
 import Venue from "./components/searchvenues";
+import VenueDetail from "./components/venuedetail";
 import './index.css';
 
 function App() {
@@ -45,10 +46,13 @@ function App() {
             <Route path="/venues" element={<AdminVenuePage />} />
             {/*<Route path="/venues" element={<VenueList />} />*/}
             {/*<Route path="/venues/:id" element={<VenueCard />} />*/}
-            <Route path="/venues/:id" element={<VenueDetails />} />
+           
              {/* user Routes */}
             <Route path="/venueSelections" element={<VenueSelection />} />
             <Route path="/venueBooking/:venueId" element={<VenueBooking />} />
+
+            <Route path="/venues/:id" element={<VenueDetail />} />
+
             <Route path="/photography" element={<Photography />} />
             <Route path="/Makeup" element={<MakeupSelector />} />
             <Route path="/Makeup" element={<MakeupDescriptionBox />} />
@@ -56,6 +60,7 @@ function App() {
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
             <Route path="/searchvenues" element={<Venue />} />
+            <Route path="/:id" element={<VenueDetails />} />
           </Routes>
         </Layout>
       </Router>
