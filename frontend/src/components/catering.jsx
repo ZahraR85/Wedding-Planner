@@ -20,7 +20,11 @@ const UserSelections = () => {
         setUserSelections(response.data);
       } catch (err) {
         console.error("Error fetching user selections:", err);
-        setError(err);
+        if (err.response && err.response.status === 404) {
+          setError({ message: "It seems no Catering features were selected. Please feel free to choose your preferences!", isCustom: true });
+        } else {
+          setError({ message: err.message, isCustom: true });
+        }
       } finally {
         setLoading(false);
       }
@@ -28,6 +32,12 @@ const UserSelections = () => {
 
     fetchUserSelections();
   }, [userId]);
+
+
+  // Handle errors
+  if (error) {
+    return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
+  }
 
   if (loading) {
     return <p>Loading...</p>;

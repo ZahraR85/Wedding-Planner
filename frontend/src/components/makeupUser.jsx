@@ -16,7 +16,11 @@ const UserSelections = ({ userId }) => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError(err);
+        if (err.response && err.response.status === 404) {
+          setError({ message: "It seems no Makeup features were selected. Please feel free to choose your preferences!", isCustom: true });
+        } else {
+          setError({ message: err.message, isCustom: false });
+        }
         setLoading(false);
       }
     };
@@ -24,6 +28,10 @@ const UserSelections = ({ userId }) => {
     if (userId) fetchUserSelections();
   }, [userId]);
 
+    // Handle errors
+    if (error) {
+      return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
+    }
   // Handle loading state
   if (loading) {
     return <p>Loading...</p>;

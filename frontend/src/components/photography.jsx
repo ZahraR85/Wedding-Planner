@@ -15,8 +15,12 @@ const UserSelections = ({ userId }) => {
         const response = await axios.get(`http://localhost:3001/photographies/${userId}`);
         setUserSelections(response.data);
       } catch (err) {
-        console.error("Error fetching user selections:", err);
-        setError(err);
+        console.error("Error fetching data:", err);
+        if (err.response && err.response.status === 404) {
+          setError({ message: "It seems no Photography features were selected. Please feel free to choose your preferences!", isCustom: true });
+        } else {
+          setError({ message: err.message, isCustom: false });
+        }
       } finally {
         setLoading(false);
       }
@@ -24,6 +28,12 @@ const UserSelections = ({ userId }) => {
 
     fetchUserSelections();
   }, [userId]);
+
+
+    // Handle errors
+    if (error) {
+      return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
+    }
 
   if (loading) {
     return <p>Loading...</p>;

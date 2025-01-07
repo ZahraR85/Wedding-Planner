@@ -17,12 +17,23 @@ const UserSelections = ({ userId }) => {
         setUserSelections(response.data); // Update state with fetched data
         setLoading(false);
       } catch (err) {
-        setError(err);
+        console.error("Error fetching data:", err);
+        if (err.response && err.response.status === 404) {
+          setError({ message: "It seems no Music features were selected. Please feel free to choose your preferences!", isCustom: true });
+        } else {
+          setError({ message: err.message, isCustom: false });
+        }
         setLoading(false);
       }
     };
     if (userId) fetchUserSelections();
   }, [userId]);
+
+
+    // Handle errors
+    if (error) {
+      return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
+    }
 
   if (loading) {
     return <p>Loading...</p>;
