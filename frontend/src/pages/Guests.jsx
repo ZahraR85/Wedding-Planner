@@ -38,6 +38,8 @@ function Guest() {
   const [guestList, setGuestList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [guestsPerPage] = useState(5);
+  const [filterStatus, setFilterStatus] = useState('All');
+
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -133,10 +135,23 @@ function Guest() {
     fetchGuests();
   }, []);
 
+
+  const filteredGuests = filterStatus === 'All' 
+  ? guestList 
+  : guestList.filter(guest => guest.answerStatus === filterStatus);
+
+
   const indexOfLastGuest = currentPage * guestsPerPage;
   const indexOfFirstGuest = indexOfLastGuest - guestsPerPage;
-  const currentGuests = guestList.slice(indexOfFirstGuest, indexOfLastGuest);
+  const currentGuests = filteredGuests.slice(indexOfFirstGuest, indexOfLastGuest);
   const [updatingGuestId, setUpdatingGuestId] = useState(null);
+
+
+
+
+
+
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const totalYesGuests = guestList.filter(
@@ -154,6 +169,7 @@ function Guest() {
       await axios.delete(`http://localhost:3001/guests/${id}`);
       setGuestList(guestList.filter((guest) => guest._id !== id));
       toast.success("Guest deleted successfully!");
+      fetchYesPersonsCount();
     } catch (error) {
       console.error("Error deleting guest:", error.message);
       toast.error("Failed to delete guest.");
@@ -280,9 +296,22 @@ function Guest() {
             <h3 className="text-lg font-semibold text-BgFont">
               NOT YET Answer: {totalNotyetGuests}
             </h3>
-
-            </div>
-
+            <h3 className="text-lg font-semibold text-BgFont">
+              Total GUESTS with YES Answer: {totalYesPersons}
+            </h3>
+          </div>
+          <label htmlFor="filter">Filter by Answer Status: </label>
+            <select 
+              id="filter" 
+              value={filterStatus} 
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="custom-select px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
+            >
+              <option value="All">All</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Not yet">Not yet</option>
+            </select>
           <div className="overflow-x-auto">
             <table className="w-full border border-BgFont text-BgFont bg-customBg rounded-lg">
               <thead>
@@ -358,3 +387,8 @@ function Guest() {
 }
 
 export default Guest;
+
+
+
+
+
