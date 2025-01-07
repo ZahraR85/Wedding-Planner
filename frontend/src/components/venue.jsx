@@ -15,13 +15,22 @@ const UserSelections = ({ userId }) => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError(err);
+        if (err.response && err.response.status === 404) {
+          setError({ message: "It seems no Venue were selected. Please feel free to choose your preferences!", isCustom: true });
+        } else {
+          setError({ message: err.message, isCustom: false });
+        }
         setLoading(false);
       }
     };
 
     if (userId) fetchUserSelections();
   }, [userId]);
+
+  // Handle errors
+  if (error) {
+    return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -90,25 +99,3 @@ const UserSelections = ({ userId }) => {
 export default UserSelections;
 
 
-{/* <p>Address: {selection.venueId?.address}</p> */ }
-{/* <h3>{selection.venueId?.name || 'Unknown Venue'}</h3> */ }
-{/* <p>City: {selection.venueId?.city}</p> */ }
-{/* <p>Date: {new Date(selection.date).toLocaleDateString()}</p> */ }
-
-{/* // Display only the first image */ }
-
-{/* // Display all images */ }
-{/* <div>
-              {selection.venueId?.images?.length ? (
-                selection.venueId.images.map((img, index) => (
-                  <img
-                    key={index}
-                    src={formatImagePath(img)}
-                    alt="Venue"
-                    style={{ width: '200px', height: '150px', margin: '10px', borderRadius: '10px' }}
-                  />
-                ))
-              ) : (
-                <p>No images available</p>
-              )}
-            </div> */}
