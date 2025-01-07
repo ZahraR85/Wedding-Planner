@@ -11,7 +11,7 @@ const Footer = () => {
           <h3 className="text-3xl font-bold mb-6">MENU</h3>
           <ul className="space-y-3">
             <li><a href="/" className="hover:underline">Home</a></li>
-            <li><a href="#about" className="hover:underline">About Us</a></li>
+            <li><a href="/aboutus" className="hover:underline">About Us</a></li>
             <li><a href="#services" className="hover:underline">Gallery</a></li>
             <li><a href="#weddings" className="hover:underline">Features</a></li>
             <li><a href="#process" className="hover:underline">Our Process</a></li>
