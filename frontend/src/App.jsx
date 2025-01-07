@@ -24,6 +24,7 @@ import CategoryDetails from './components/CategoryDetails.jsx';
 import ShoppingCard from './pages/ShoppingCard.jsx';
 import Venue from "./components/searchvenues";
 import VenueDetail from "./components/venuedetail";
+import AboutUs from './Pages/AboutUs';
 import './index.css';
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
             <Route path="/Musics" element={<Musics />} />
             <Route path="/searchvenues" element={<Venue />} />
             <Route path="/:id" element={<VenueDetails />} />
+            <Route path="/aboutus" element={<AboutUs />} />
           </Routes>
         </Layout>
       </Router>

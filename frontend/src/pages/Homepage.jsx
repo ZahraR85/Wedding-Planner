@@ -5,6 +5,7 @@ import Header1 from '../components/Header1';
 //import GallerySlider1 from '../components/GallerySlider1';
 import Feedback from '../components/feedback';
 import Searchvenues from '../components/searchvenues';
+import Staff from "../components/Staff";
 
 const Homepage = () => {
   const searchVenuesRef = useRef(null);
@@ -20,7 +21,7 @@ const Homepage = () => {
       </div>
       <Feedback />
       <Features1 />
-
+      <Staff />
       {/*<Features />*/}
       {/* <GallerySlider /> */}
       {/* <GallerySlider1 /> */}
