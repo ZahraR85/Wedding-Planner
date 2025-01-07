@@ -86,7 +86,7 @@ const ShoppingCard = () => {
     <h2 className="text-3xl font-bold text-center text-BgFont mb-10">Your Shopping Card</h2>
     <ToastContainer />
     {shoppingCard.length === 0 ? (
-      <p className="text-xl text-center">Your shopping card is empty.</p>
+      <p className="text-xl text-BgFont text-center">Your shopping card is empty.</p>
     ) : (
       <div className="flex flex-col space-y-6">
         {shoppingCard.map((item) => (

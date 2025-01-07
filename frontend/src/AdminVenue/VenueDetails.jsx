@@ -120,7 +120,7 @@ const VenueDetails = () => {
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="border p-2 w-w-40% rounded"
+                className="border p-2 w-w-40% rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
               /> <span>$</span>
             </label>
             <label className="block text-lg font-bold text-BgFont my-4">
@@ -129,7 +129,7 @@ const VenueDetails = () => {
                 type="number"
                 value={discount}
                 onChange={(e) => setDiscount(e.target.value)}
-                className="border p-2 w-40% rounded"
+                className="border p-2 w-40% rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
               /> <span>%</span>
             </label>
             <label className="block text-lg font-bold text-BgFont my-4">
@@ -138,7 +138,7 @@ const VenueDetails = () => {
                 type="number"
                 value={totalPrice}
                 readOnly
-                className="border p-2 w-40% rounded bg-gray-200"
+                className="border p-2 w-40% rounded bg-gray-200 "
               /> <span>$</span>
             </label>
           </div>

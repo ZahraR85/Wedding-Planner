@@ -21,6 +21,7 @@ const VenueForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0); // State for total price
   //const [venues, setVenues] = useState([]);
 
   // Redirect unauthorized users
@@ -53,7 +54,13 @@ const VenueForm = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
-
+  // Update total price whenever price or discount changes
+  useEffect(() => {
+    const price = parseFloat(formData.price) || 0;
+    const discount = parseFloat(formData.discount) || 0;
+    const calculatedTotal = price - (price * discount) / 100;
+    setTotalPrice(calculatedTotal);
+  }, [formData.price, formData.discount]);
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setImageFiles((prevFiles) => [...prevFiles, ...files]);
@@ -115,7 +122,7 @@ const VenueForm = () => {
           onChange={handleChange}
           placeholder="Venue Name"
           required
-          className="input input-bordered w-full mb-2"
+          className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
         <input
           type="text"
@@ -124,7 +131,7 @@ const VenueForm = () => {
           onChange={handleChange}
           placeholder="City"
           required
-          className="input input-bordered w-full mb-2"
+          className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
         <input
           type="number"
@@ -133,7 +140,7 @@ const VenueForm = () => {
           onChange={handleChange}
           placeholder="Capacity"
           required
-          className="input input-bordered w-full mb-2"
+          className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         /></div> 
           <div className="w-1/2">  <input
           type="number"
@@ -142,7 +149,7 @@ const VenueForm = () => {
           onChange={handleChange}
           placeholder="Price"
           required
-          className="input input-bordered w-full mb-2"
+          className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
       <input
           type="number"
@@ -150,7 +157,7 @@ const VenueForm = () => {
           value={formData.discount}
           onChange={handleChange}
           placeholder="Discount (%)"
-          className="input input-bordered w-full mb-2"
+          className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
       <div className="flex gap-2"> Location:
           <input
@@ -160,7 +167,7 @@ const VenueForm = () => {
             onChange={handleChange}
             placeholder="Latitude"
             required
-            className="input input-bordered w-1/2 mb-2"
+            className="input input-bordered w-1/2 mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <input
             type="number"
@@ -169,7 +176,7 @@ const VenueForm = () => {
             onChange={handleChange}
             placeholder="Longitude"
             required
-            className="input input-bordered w-1/2 mb-2"
+            className="input input-bordered w-1/2 mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           /></div>
         </div>
         </div>
@@ -177,7 +184,7 @@ const VenueForm = () => {
           name="address"
           value={formData.address}
           onChange={handleChange}
-          className="border mx-2 p-2 rounded w-full h-20"
+          className="border mx-2 p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           rows={5}
           placeholder="address"
         />
@@ -185,14 +192,14 @@ const VenueForm = () => {
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="border mx-2 p-2 rounded w-full h-20"
+          className="border mx-2 p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           rows={5}
           placeholder="Description"
         />
         <div className="flex">
         <div>
           <input type="file" multiple onChange={handleFileChange}
-    className="border mx-2 p-2 rounded w-full h-20"/>
+    className="border mx-2 p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"/>
       {imageFiles.length > 0 && (
         <div className="flex flex-wrap gap-2">
         {imageFiles.map((file, index) => (
@@ -211,7 +218,7 @@ const VenueForm = () => {
   )}
 </div>
 
-        <span className="text-xl font-bold text-BgFont mt-5 pl-20">total price: $</span>
+        <span className="text-xl font-bold text-BgFont mt-5 pl-20">Total Price: ${totalPrice.toFixed(2)}</span>
       </div>
       <div className="">
       <button
