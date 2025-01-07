@@ -8,12 +8,7 @@ import { FaTrash } from 'react-icons/fa';
 import "../App.css";
 
 const ShoppingCard = () => {
-  const {
-    userId,
-    isAuthenticated,
-    shoppingCard,
-    setShoppingCard,
-  } = useAppContext();
+  const { userId, isAuthenticated, shoppingCard, setShoppingCard} = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 

@@ -7,12 +7,12 @@ import { FaHome,FaUser, FaShoppingCart, FaTimes, FaBars} from 'react-icons/fa';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut, shoppingCardCount} = useAppContext();
+  const { userId, isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut, shoppingCardCount} = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('isAuthenticated:', isAuthenticated, 'role:', role);
+    //console.log('isAuthenticated:', isAuthenticated, 'role:', role);
   }, [isAuthenticated, role]); // Log when these values change
 
   return (
@@ -80,7 +80,7 @@ const Navbar = () => {
           <span>Shopping Card</span>
           {/* Display the shopping cart count */}
           {shoppingCardCount > 0 && (
-            <span className="ml-2 text-sm text-red-600">{shoppingCardCount}</span>
+            <span className="ml-2 mb-4 text-lg text-red-600">{shoppingCardCount}</span>
           )}
         </Link>
           </li>

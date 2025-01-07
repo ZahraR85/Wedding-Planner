@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 
 // Create context for app state
 const AppContext = createContext();
@@ -13,6 +13,7 @@ const initialState = {
   isAuthenticated: false, // Tracks if the user is authenticated
   role: null, // Role of the authenticated user
   shoppingCard: [], // State for shopping card items
+  
 };
 
 // Define reducer function
@@ -87,23 +88,39 @@ export const AppProvider = ({ children }) => {
   const setHoveredDropdown = (dropdown) => dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: dropdown });
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
   const setDropdownOpen = (isOpen) => dispatch({ type: 'SET_DROPDOWN_OPEN', payload: isOpen });
-  const setAuth = (isAuthenticated, userId, role) =>
+
+  useEffect(() => {
+    const savedShoppingCard = JSON.parse(localStorage.getItem('shoppingCard')) || [];
+    dispatch({ type: 'SET_SHOPPING_CARD', payload: savedShoppingCard });
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('shoppingCard', JSON.stringify(state.shoppingCard));
+  }, [state.shoppingCard]);
+
+  const setAuth = (isAuthenticated, userId, role) => {
+    if (isAuthenticated) {
+      const savedShoppingCard = JSON.parse(localStorage.getItem('shoppingCard')) || [];
+      dispatch({ type: 'SET_SHOPPING_CARD', payload: savedShoppingCard });
+    }
     dispatch({ type: 'SET_AUTH', payload: { isAuthenticated, userId, role } });
-  const signOut = () => dispatch({ type: 'SIGN_OUT' });
-  const addToShoppingCard = (item) => {
-    const uniqueItem = { ...item, id: item.serviceName + '-' + new Date().getTime() };
-    dispatch({ type: 'ADD_TO_SHOPPING_CARD', payload: uniqueItem });
-  };
-  const removeFromShoppingCard = (itemId) => {
-    dispatch({ type: 'REMOVE_FROM_SHOPPING_CARD', payload: { id: itemId } });
   };
 
-  // New method to replace the shopping card
-  const setShoppingCard = (shoppingCard) => {
+  const setShoppingCard = (shoppingCard) =>
     dispatch({ type: 'SET_SHOPPING_CARD', payload: shoppingCard });
-  };
+
+  const addToShoppingCard = (item) =>
+    dispatch({
+      type: 'ADD_TO_SHOPPING_CARD',
+      payload: { ...item, id: item.serviceName + '-' + Date.now() },
+    });
+
+  const removeFromShoppingCard = (itemId) =>
+    dispatch({ type: 'REMOVE_FROM_SHOPPING_CARD', payload: { id: itemId } });
 
   const shoppingCardCount = state.shoppingCard.length;
+  
+  const signOut = () => dispatch({ type: 'SIGN_OUT' });
 
   return (
     <AppContext.Provider
