@@ -178,7 +178,7 @@ const Photography = () => {
             )}
           </label>
         ))}
-        <h2 className="text-lg font-bold text-BgFont text-center">Total Price: ${total}</h2>
+        <h2 className="text-lg font-bold text-BgFont text-center">Total Price: {total} €</h2>
         <button
           onClick={handleSubmit}
           className="bg-BgPinkMiddle text-BgFont text-lg font-bold hover:bg-BgPinkDark w-full px-4 py-2 rounded"

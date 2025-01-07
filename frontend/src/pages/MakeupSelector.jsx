@@ -95,6 +95,7 @@ const MakeupSelector = () => {
             shoes: existingData.shoes || { selected: false, price: 100 },
             special: existingData.special || { selected: false, price: 300 },
           });
+          setIsEditMode(true);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -172,50 +173,56 @@ console.log (shoppingCartData);
       <ToastContainer />
 
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
-        {/* Overlay for controlling opacity */}
-        <div className="absolute inset-0 bg-white/50"></div>
-        <div className="relative mx-auto w-full max-w-[calc(60%-250px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-              {/* <div className="flex justify-center items-start pt-20 min-h-screen bg-customBg">*/}
-      {/*<div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">*/}
-        <h1 className="text-2xl font-bold text-BgFont m-10">select services that you need:</h1>
-        <DescriptionBox description={currentDescription} />
-        <form className="space-y-4 font-bold">
-          {features.map((feature) => (
-            <div key={feature.id} className="flex items-center text-BgFont justify-between">
-              <div
-                onMouseEnter={() => setCurrentDescription(feature.description)}
-                onMouseLeave={() => setCurrentDescription("")}
-                className="cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  id={feature.id}
-                  checked={selectedFeatures[feature.id]?.selected || false}
-                  onChange={() => handleCheckboxChange(feature.id)}
-                  className="mr-2"
-                />
-                <label htmlFor={feature.id} className="text-lg font-bold">
-                  {feature.label} (${feature.price})
-                </label>
-              </div>
-            </div>
-          ))}
-        </form>
-        <div className="text-center text-xl text-BgFont mt-4 font-bold">Total: ${total}</div>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="w-full bg-BgPinkMiddle text-BgFont py-2 px-4 rounded hover:bg-BgPinkDark"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
-        </button>
-      </div>
-    </div>
-    </div>
+  {/* Overlay for controlling opacity */}
+  <div className="absolute inset-0 bg-white/50"></div>
+  <div className="relative mx-auto w-full max-w-[calc(60%-250px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+    <h1 className="text-2xl font-bold text-BgFont m-10">Select services that you need:</h1>
 
+    {/* Feature Selection */}
+    <form className="space-y-4 font-bold">
+      {features.map((feature) => (
+        <div key={feature.id} className="flex items-center text-BgFont justify-between">
+          <div
+            onMouseEnter={() => setCurrentDescription(feature.description)}
+            onMouseLeave={() => setCurrentDescription("")}
+            className="cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              id={feature.id}
+              checked={selectedFeatures[feature.id]?.selected || false}
+              onChange={() => handleCheckboxChange(feature.id)}
+              className="mr-2 w-6 h-6" // Larger checkbox
+            />
+            <label htmlFor={feature.id} className="text-lg font-bold">
+              {feature.label} ({feature.price} €)
+            </label>
+          </div>
+        </div>
+      ))}
+    </form>
 
+    {/* Total Price */}
+    <div className="text-center text-xl text-BgFont mt-4 font-bold">Total: {total} €</div>
 
+    {/* Submit Button */}
+    <button
+      type="button"
+      onClick={handleSubmit}
+      className="w-full bg-BgPinkMiddle text-BgFont font-bold py-2 px-4 rounded hover:bg-BgPinkDark"
+      disabled={loading}
+    >
+      {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+    </button>
+  </div>
+
+  {/* Fixed Description Box */}
+  <div className="absolute top-20 right-20 bg-white shadow-lg p-5 w-96 rounded-lg">
+    <h2 className="text-xl font-bold text-BgFont mb-2">Feature Description:</h2>
+    <p className="text-BgFont font-semibold">{currentDescription || "You can hover over a feature to see its details!"}</p>
+  </div>
+</div>
+</div>
   );
 };
 

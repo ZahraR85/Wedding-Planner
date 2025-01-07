@@ -122,7 +122,7 @@ const ShoppingCard = () => {
     {shoppingCard.length > 0 && (
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="bg-BgPink text-BgFont text-3xl font-bold p-4 rounded-lg shadow-lg">
-          Total: {totalPrice.toFixed(2)} $
+          Total: {totalPrice.toFixed(2)} €
         </div>
       </div>
     )}

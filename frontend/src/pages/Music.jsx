@@ -164,9 +164,9 @@ const MusicSelectionForm = () => {
       {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}
       <div className="relative mx-auto w-full max-w-[calc(100%-80px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
       <ToastContainer />
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Select your Music bands</h2>
+        <h2 className="text-2xl font-bold text-center text-BgFont mb-6">Select your Music bands</h2>
         <form onSubmit={handleSubmit}>
-          <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour</h3>
+          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour</h3>
           <div className="grid grid-cols-3 gap-4">
 
             {musicOptions.map((option) => (
@@ -176,9 +176,9 @@ const MusicSelectionForm = () => {
                 onMouseLeave={() => setHoveredOption(null)}
                 className="relative border p-4 rounded-lg bg-gray-50"
               >
-                <p className="font-semibold mb-2">{option.name}</p>
+                <p className="font-semibold text-BgFont mb-2">{option.name}</p>
 
-                <p className="text-gray-600 mb-2">Price: ${option.pricePerHour}/hour</p>
+                <p className="text-BgFont mb-2">Price: ${option.pricePerHour}/hour</p>
                 <label className="block">
                   <input
                     type="number"
@@ -192,7 +192,7 @@ const MusicSelectionForm = () => {
 
                 {hoveredOption === option._id && (
               <div className="absolute top-2 left-full ml-4 p-8 bg-red-100 border rounded shadow-lg w-96 z-10">
-              <p className="text-xl font-semibold">{option.description}</p>
+              <p className="text-xl text-BgFont font-semibold">{option.description}</p>
             </div>
               )}
 
@@ -226,7 +226,7 @@ const MusicSelectionForm = () => {
           </ul>
 
           <h3 className="text-2xl font-bold text-center text-BgFont mt-6">
-            Total Cost: <span className="text-BgFont">${userSelection?.totalCost || 0}</span>
+            Total Cost: <span className="text-BgFont">{userSelection?.totalCost || 0} €</span>
           </h3>
           <button
             type="submit"
