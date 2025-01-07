@@ -2,6 +2,45 @@ import Guest from "../models/guest.js";
 import nodemailer from "nodemailer";
 import UserInfo from '../models/userInfo.js';
 
+import mongoose from "mongoose";
+
+export const countYesGuests = async (req, res) => {
+  try {
+    const { userID } = req.query;
+
+    if (!userID) {
+      return res.status(400).json({ message: "UserID is required." });
+    }
+
+    // Convert userID to ObjectId using "new"
+    const objectId = new mongoose.Types.ObjectId(userID);
+
+    console.log("UserID received as ObjectId:", objectId);
+
+    const result = await Guest.aggregate([
+      {
+        $match: {
+          userID: objectId, // Match ObjectId
+          answerStatus: "Yes",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalPersons: { $sum: "$numberOfPersons" },
+        },
+      },
+    ]);
+
+    console.log("Aggregation result:", result);
+
+    const totalPersons = result[0]?.totalPersons || 0;
+    res.status(200).json({ totalPersons });
+  } catch (error) {
+    console.error("Error in countYesGuests:", error.message, error.stack);
+    res.status(500).json({ message: "Error counting guests", error: error.message });
+  }
+};
 
 
 
@@ -96,7 +135,7 @@ export const sendInvitation = async (req, res) => {
 export const createGuest = async (req, res) => {
   try {
     const { userID, guestName, numberOfPersons, phone, address, answerStatus, email } = req.body;
-    console.log(req.body);
+    
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });

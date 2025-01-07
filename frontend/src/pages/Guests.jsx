@@ -9,6 +9,23 @@ import "../App.css";
 function Guest() {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
+  const [totalYesPersons, setTotalYesPersons] = useState(0);
+  const fetchYesPersonsCount = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/guests/count-yes?userID=${userId}`);
+      setTotalYesPersons(response.data.totalPersons || 0);
+    } catch (error) {
+      console.error("Error fetching totalYesPersons:", error.message);
+      toast.error("Failed to fetch Yes count.");
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchYesPersonsCount();
+    }
+  }, [isAuthenticated]);
+
   const [formData, setFormData] = useState({
     guestName: '',
     numberOfPersons: '',
@@ -88,6 +105,8 @@ function Guest() {
         answerStatus: "",
         email: "",
       });
+
+      fetchYesPersonsCount();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         toast.error(error.response.data.message || "Validation error occurred.");
@@ -158,7 +177,7 @@ function Guest() {
 
   const handleSendInvitation = async (email) => {
     try {
-      const response = await axios.post("http://localhost:3001/guests/send-invitation", {userId, email });
+      const response = await axios.post("http://localhost:3001/guests/send-invitation", { userId, email });
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error sending invitation:", error.response?.data?.message || error.message);
@@ -256,12 +275,16 @@ function Guest() {
               Total Family with YES Answer: {totalYesGuests}
             </h3>
             <h3 className="text-lg font-semibold text-gray-700">
+              Total Guests with YES Answer: {totalYesPersons}
+            </h3>  
+            <h3 className="text-lg font-semibold text-gray-700">
               Total Family with NO Answer: {totalNOGuests}
             </h3>
             <h3 className="text-lg font-semibold text-gray-700">
               Total Family with NOT YET Answer: {totalNotyetGuests}
             </h3>
-          </div>
+
+            </div>
 
           <div className="overflow-x-auto">
             <table className="w-full border border-BgFont text-BgFont bg-customBg rounded-lg">
