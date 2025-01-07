@@ -168,14 +168,14 @@ const ReceptionSelector = () => {
     <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-cover bg-center">
       <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
       <ToastContainer />
-        <p className=" text-2xl text-BgFont  font-bold m-10 text-center mb-8">{description}</p>
-        <h1 className="text-3xl   font-bold m-10">Reception Features</h1>
-        <table className="table-auto w-full border-collapse border border-gray-300">
+        <p className=" text-2xl text-BgFont font-bold m-10 text-center mb-8">{description}</p>
+        <h1 className="text-3xl text-BgFont font-bold m-10">Reception Features</h1>
+        <table className="table-auto text-BgFont w-full border-collapse border border-BgFont">
           <thead>
             <tr>
-              <th className="border border-gray-300 px-4 py-2">Feature</th>
-              <th className="border border-gray-300 px-4 py-2">Price ($/person)</th>
-              <th className="border border-gray-300 px-4 py-2">Guests</th>
+              <th className="border border-BgFont px-4 py-2">Feature</th>
+              <th className="border border-BgFont px-4 py-2">Price (€/person)</th>
+              <th className="border border-BgFont px-4 py-2">Guests</th>
             </tr>
           </thead>
           <tbody>
@@ -187,24 +187,24 @@ const ReceptionSelector = () => {
                 className="hover:bg-gray-100"
               >
                 <td className="border border-gray-300 px-4 py-2">{feature.name}</td>
-                <td className="border border-gray-300 px-4 py-2">${feature.price}</td>
+                <td className="border border-gray-300 px-4 py-2">{feature.price} €</td>
                 <td className="border border-gray-300 px-4 py-2">
                   <input
                     type="number"
                     min="0"
                     value={formData[feature.name] || 0}
                     onChange={(e) => handleChange(e, feature.name)}
-                    className="w-full p-2 border border-gray-300 rounded"
+                    className="w-full p-2 border border-gray-300 rounded hover:border-BgPinkDark hover:border-2"
                   />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <h2 className="text-lg font-bold mt-6">Total Price: ${total}</h2>
+        <h2 className="text-lg text-BgFont font-bold mt-6">Total Price: {total} €</h2>
         <button
           onClick={handleSubmit}
-          className="w-full bg-BgPinkMiddle text-BgFont py-2 px-4 rounded hover:bg-BgPinkDark"
+          className="w-full bg-BgPinkMiddle text-BgFont font-bold py-2 px-4 rounded hover:bg-BgPinkDark"
         >
           {isEditMode ? "Update" : "Submit"}
         </button>

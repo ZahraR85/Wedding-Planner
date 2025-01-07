@@ -82,7 +82,7 @@ const VenueSelectionPage = () => {
               />
               <h3 className="text-lg text-BgFont font-bold mt-2">{venue.name}</h3>
               <p className="text-m text-BgFont font-semibold mt-2">Capacity: {venue.capacity}</p>
-              <p className="text-m text-BgFont font-semibold mt-2">Price: ${venue.price} </p>
+              <p className="text-m text-BgFont font-semibold mt-2">Price: {venue.price} €</p>
             </div>
           ))}
         </div>
