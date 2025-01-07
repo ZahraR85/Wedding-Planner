@@ -103,7 +103,7 @@ const UserInfoForm = () => {
                 value={formData.brideName}
                 onChange={handleChange}
                 placeholder="Bride Name"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
             </div>
@@ -116,7 +116,7 @@ const UserInfoForm = () => {
                 value={formData.groomName}
                 onChange={handleChange}
                 placeholder="Groom Name"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
             </div>
@@ -129,7 +129,7 @@ const UserInfoForm = () => {
                 value={formData.weddingDate}
                 onChange={handleChange}
                 placeholder="Wedding Date"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 required
               />
             </div>
@@ -142,7 +142,7 @@ const UserInfoForm = () => {
                 value={formData.brideBirthday}
                 onChange={handleChange}
                 placeholder="Bride Birthday"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
               />
             </div>
 
@@ -154,7 +154,7 @@ const UserInfoForm = () => {
                 value={formData.groomBirthday}
                 onChange={handleChange}
                 placeholder="Groom Birthday"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
               />
             </div>
 
@@ -168,7 +168,7 @@ const UserInfoForm = () => {
                 value={formData.story}
                 onChange={handleChange}
                 placeholder="Our story"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded hover:border-BgPinkDark hover:border-2 focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 rows="8"
               ></textarea>
             </div>
@@ -180,7 +180,7 @@ const UserInfoForm = () => {
                 value={formData.feedback}
                 onChange={handleChange}
                 placeholder="Feedback"
-                className="w-full px-4 py-2 border border-BgFont rounded-lg focus:outline-none focus:ring focus:ring-BgKhaki focus:border-BgKhaki"
+                className="w-full px-4 py-2 border border-BgPinkDark rounded hover:border-BgPinkDark hover:border-2 focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
                 rows="8"
               ></textarea>
             </div>
