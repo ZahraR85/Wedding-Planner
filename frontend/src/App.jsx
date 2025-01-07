@@ -24,7 +24,8 @@ import CategoryDetails from './components/CategoryDetails.jsx';
 import ShoppingCard from './pages/ShoppingCard.jsx';
 import Venue from "./components/searchvenues";
 import VenueDetail from "./components/venuedetail";
-import AboutUs from './Pages/AboutUs';
+import AboutUs from './Pages/AboutUs.jsx';
+import FAQ from "./pages/FAQ.jsx"
 import './index.css';
 
 function App() {
@@ -47,7 +48,6 @@ function App() {
             <Route path="/venues" element={<AdminVenuePage />} />
             {/*<Route path="/venues" element={<VenueList />} />*/}
             {/*<Route path="/venues/:id" element={<VenueCard />} />*/}
-           
              {/* user Routes */}
             <Route path="/venueSelections" element={<VenueSelection />} />
             <Route path="/venueBooking/:venueId" element={<VenueBooking />} />
@@ -63,6 +63,7 @@ function App() {
             <Route path="/searchvenues" element={<Venue />} />
             <Route path="/:id" element={<VenueDetails />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/FAQ" element={<FAQ />} />
           </Routes>
         </Layout>
       </Router>

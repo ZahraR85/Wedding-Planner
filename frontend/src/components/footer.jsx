@@ -12,10 +12,10 @@ const Footer = () => {
           <ul className="space-y-3">
             <li><a href="/" className="hover:underline">Home</a></li>
             <li><a href="/aboutus" className="hover:underline">About Us</a></li>
-            <li><a href="#services" className="hover:underline">Gallery</a></li>
+            <li><a href="/Gallery" className="hover:underline">Gallery</a></li>
             <li><a href="#weddings" className="hover:underline">Features</a></li>
             <li><a href="#process" className="hover:underline">Our Process</a></li>
-            <li><a href="#faq" className="hover:underline">FAQ</a></li>
+            <li><a href="/FAQ" className="hover:underline">FAQ</a></li>
           </ul>
         </div>
 
