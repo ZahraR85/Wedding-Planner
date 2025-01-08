@@ -37,8 +37,8 @@ const Gallery = () => {
 
   return (
     <div className="container mx-auto m-12 text-center">
-      <h1 className="text-2xl font-bold text-BgFont mb-12">You can see all picture from our Gallery about different Categories you need!</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <h1 className="text-m lg:text-2xl font-bold text-BgFont mb-12">You can see all picture from our Gallery about different Categories you need!</h1>
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map(([category, photos]) => (
           <div
             key={category}
@@ -51,7 +51,7 @@ const Gallery = () => {
               alt={category}
               className="w-full h-72 object-cover rounded"
             />
-            <p className="text-gray-600 mt-2">{photos.length} photos</p>
+            <p className="text-BgFont mt-2">{photos.length} photos</p>
           </div>
         ))}
       </div>
