@@ -45,13 +45,13 @@ const Gallery = () => {
             className="card bg-gray-100 shadow-lg p-4 cursor-pointer hover:shadow-2xl transition"
             onClick={() => handleCategoryClick(category)}
           >
-            <h2 className="text-xl font-semibold text-BgFont mb-4">{category}</h2>
+            <h2 className="text-m lg:text-xl font-semibold text-BgFont mb-4">{category}</h2>
             <img
               src={`http://localhost:3001${photos[0].imagePath}`}
               alt={category}
               className="w-full h-72 object-cover rounded"
             />
-            <p className="text-BgFont mt-2">{photos.length} photos</p>
+            <p className="text-sm lg:text-m text-BgFont mt-2">{photos.length} photos</p>
           </div>
         ))}
       </div>
