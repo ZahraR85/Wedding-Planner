@@ -16,7 +16,7 @@ const Homepage = () => {
   return (
     <div>
       <Header1 onScrollToSearchVenues={scrollToSearchVenues} />
-      <div ref={searchVenuesRef}> {/* Attach ref to SearchVenues */}
+      <div ref={searchVenuesRef} > {/* Attach ref to SearchVenues */}
         <SearchVenues />
       </div>
       <Feedback />
