@@ -35,18 +35,18 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link to="/dashboard" className="hover:underline">
-                Dashboard
-              </Link>
-            </li>
-            <li>
               <Link to="/Gallery" className="hover:underline">
                 Gallery
               </Link>
             </li>
+            <li>
+              <Link to="/dashboard" className="hover:underline hidden lg:block">
+                Dashboard
+              </Link>
+            </li>
           </ul>
         </div>
-        <Link to="/" className="block">
+        <Link to="/" className="hidden lg:block">
           <img src={logo} alt="Logo" className="h-16" />
         </Link>
         <ul className="flex font-bold text-BgFont items-center space-x-12">
@@ -54,7 +54,7 @@ const Navbar = () => {
             <li className="relative">
               <button
                 onClick={() => setDropdownOpen(!isDropdownOpen)}
-                className="hover:underline focus:outline-none"
+                className="hidden lg:block hover:underline focus:outline-none"
               >
                 Admin Panel {isDropdownOpen ? "▲" : "▼"}
               </button>
@@ -78,7 +78,7 @@ const Navbar = () => {
               className="flex items-center space-x-1 hover:underline"
             >
               <FaShoppingCart className="text-xl" />
-              <span>Shopping Card</span>
+              <span className="text-sm md:text-base whitespace-nowrap">Shopping Card</span>
               {shoppingCardCount > 0 && (
                 <span className="ml-2 mb-4 text-lg text-red-600">
                   {shoppingCardCount}
@@ -88,11 +88,11 @@ const Navbar = () => {
           </li>
           <li>
             {isAuthenticated ? (
-              <button onClick={signOut}>Sign Out</button>
+              <button className= "hidden lg:block " onClick={signOut}>Sign Out</button>
             ) : (
               <Link
                 to="/signin"
-                className="flex items-center space-x-1 hover:underline focus:outline-none"
+                className="hidden lg:flex items-center space-x-1 hover:underline focus:outline-none"
               >
                 <FaUser className="text-xl" />
                 <span>Signin | Register</span>
@@ -104,7 +104,7 @@ const Navbar = () => {
 
       {/* Second Row */}
       <div className="hidden text-BgFont items-center justify-around bg-gray-100 px-4 py-2 text-sm md:flex">
-        <ul className="flex font-bold items-center justify-around space-x-12">
+        <ul className="flex font-bold items-center justify-around space-x-12 text-sm">
           <li className="hover:underline">
             <Link to="/userinfo">User Information</Link>
           </li>
@@ -144,6 +144,9 @@ const Navbar = () => {
             </div>
             <hr />
             <div className="flex flex-col gap-4 p-6">
+              <Link to="/dashboard" className="text-BgFont hover:text-red-500 hover:underline">
+              Dashboard
+              </Link>
               <Link to="/userinfo" className="text-BgFont hover:text-red-500 hover:underline">
                 User Information
               </Link>
