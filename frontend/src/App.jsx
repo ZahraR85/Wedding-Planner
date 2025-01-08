@@ -56,7 +56,6 @@ function App() {
 
             <Route path="/photography" element={<Photography />} />
             <Route path="/Makeup" element={<MakeupSelector />} />
-            
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />

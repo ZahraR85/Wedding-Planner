@@ -161,16 +161,12 @@ const VenueBooking = () => {
       setLoading(false);
     }
   };  
-
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-BgPink">
-     <ToastContainer />
-
-    {/* <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">*/}
+    <div className="relative min-h-screen bg-cover bg-center p-4 md:p-20 bg-BgPink">
+      <ToastContainer />
       <div className="absolute inset-0 bg-white/50"></div>
-      <div className="relative mx-auto w-full max-w-[calc(100%-100px)] bg-customBg shadow-md rounded-lg p-5 space-y-4">
-        <h1 className="text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
-        <ToastContainer />
+      <div className="relative mx-auto w-full max-w-full md:max-w-[calc(100%-100px)] bg-customBg shadow-md rounded-lg p-4 md:p-5 space-y-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
         <div className="relative">
           <img
             src={`http://localhost:3001/${venue?.images[currentIndex]}`}
@@ -186,18 +182,18 @@ const VenueBooking = () => {
             </button>
           </div>
         </div>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <div className="flex-1 my-4">
-            <p className="text-m font-bold text-BgFont my-4">City: {venue?.city}</p>
-            <p className="text-m font-bold text-BgFont my-4">Capacity: {venue?.capacity}</p>
-            <p className="text-m font-bold text-BgFont my-4">Price: {venue?.price} €</p>
-            <p className="text-m font-bold text-BgFont my-4">Discount: {venue?.discount} %</p>
-            <p className="text-m font-bold text-BgFont my-4">Total price: {venue?.total} €</p>
-            <p className="text-m font-bold text-BgFont my-4">Address: {venue?.address}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">City: {venue?.city}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Capacity: {venue?.capacity}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Price: {venue?.price} €</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Discount: {venue?.discount} %</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Total price: {venue?.total} €</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Address: {venue?.address}</p>
           </div>
           <div className="flex-1 my-4">
-            <p className="text-m font-bold text-BgFont my-4">{venue?.description}</p>
-            <label className="text-m font-bold text-BgFont my-4">Select Day:
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">{venue?.description}</p>
+            <label className="text-sm md:text-base font-bold text-BgFont my-4">Select Day:
               <input
                 type="date"
                 value={day}

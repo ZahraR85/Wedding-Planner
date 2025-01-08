@@ -44,7 +44,7 @@ const CategoryDetails = () => {
 
   return (
     <div className="container mx-auto my-8 text-center">
-      <h1 className="text-2xl font-bold text-gray-700 mb-4">{category} Photos</h1>
+      <h1 className="text-2xl font-bold text-BgFont mb-4">{category} Photos</h1>
 
       {selectedPhoto ? (
         // Single photo view
