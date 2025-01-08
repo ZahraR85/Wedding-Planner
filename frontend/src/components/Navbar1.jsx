@@ -134,7 +134,7 @@ const Navbar = () => {
         <div className="fixed inset-0 z-50 flex">
           <div className="w-64 bg-BgKhaki shadow-lg">
             <div className="flex items-center justify-between p-4">
-              <span className="text-xl font-semibold">I Said Yes!</span>
+              <span className="text-BgFont text-xl font-semibold">I Said Yes!</span>
               <button
                 className="text-lg font-semibold text-BgFont focus:outline-none"
                 onClick={() => setMenuOpen(false)}
@@ -144,29 +144,44 @@ const Navbar = () => {
             </div>
             <hr />
             <div className="flex flex-col gap-4 p-6">
-              <Link to="/userinfo" className="hover:text-red-500 hover:underline">
+              <Link to="/userinfo" className="text-BgFont hover:text-red-500 hover:underline">
                 User Information
               </Link>
-              <Link to="/Guests" className="hover:text-red-500 hover:underline">
+              <Link to="/Guests" className="text-BgFont hover:text-red-500 hover:underline">
                 Invitation of Guests
               </Link>
-              <Link to="/VenueSelections" className="hover:text-red-500 hover:underline">
+              <Link to="/VenueSelections" className="text-BgFont hover:text-red-500 hover:underline">
                 Book your Venue
               </Link>
-              <Link to="/Catering" className="hover:text-red-500 hover:underline">
+              <Link to="/Catering" className="text-BgFont hover:text-red-500 hover:underline">
                 Catering
               </Link>
-              <Link to="/photography" className="hover:text-red-500 hover:underline">
+              <Link to="/photography" className="text-BgFont hover:text-red-500 hover:underline">
                 Photography
               </Link>
-              <Link to="/Makeup" className="hover:text-red-500 hover:underline">
+              <Link to="/Makeup" className="text-BgFont hover:text-red-500 hover:underline">
                 Makeup, Wedding Dress
               </Link>
-              <Link to="/Musics" className="hover:text-red-500 hover:underline">
+              <Link to="/Musics" className="text-BgFont hover:text-red-500 hover:underline">
                 Music Band
               </Link>
             </div>
+            <hr />
+            <br />
+            {isAuthenticated ? (
+              <button className="flex ml-4 text-BgFont items-center space-x-1 hover:text-red-500 hover:underline focus:outline-none" onClick={signOut}>Sign Out</button>
+            ) : (
+              <Link
+                to="/signin"
+                className="flex ml-4 text-BgFont items-center space-x-1 hover:text-red-500 hover:underline focus:outline-none"
+              >
+                <FaUser className="text-xl text-BgFont" />
+                <span>Signin | Register</span>
+              </Link>
+            )}
+
           </div>
+          
           <div
             className="flex-1 bg-black opacity-50"
             onClick={() => setMenuOpen(false)}
