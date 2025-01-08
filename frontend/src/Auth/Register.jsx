@@ -50,9 +50,9 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-customBg">
+    <div className="flex flex-col md:flex-row min-h-screen bg-customBg">
       {/* Left Section: Form */}
-      <div className="relative w-1/2 flex items-center justify-center min-h-screen bg-cover bg-center bg-[url('https://i.postimg.cc/4N3pY4S6/userinfo2.png')]">
+      <div className="relative w-full md:w-1/2 flex items-center justify-center min-h-screen bg-cover bg-center bg-[url('https://i.postimg.cc/4N3pY4S6/userinfo2.png')]">
         {/* Overlay for controlling opacity */}
         <div className="absolute inset-0 bg-white/50"></div>
         
@@ -112,7 +112,7 @@ const Register = () => {
       </div>
     </div>
           {/* Right Section: Picture */}
-          <div className="w-1/2 flex justify-center items-center bg-cover bg-center" 
+          <div className="w-full md:w-1/2 flex justify-center items-center bg-cover bg-center" 
           style={{ backgroundImage: "url('https://i.postimg.cc/9Qd0dqss/s2.jpg')" }}>
         {/* You can replace the URL with your desired image */}
         <div className="w-full h-full"></div>
