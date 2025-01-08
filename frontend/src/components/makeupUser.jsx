@@ -11,7 +11,7 @@ const UserSelections = ({ userId }) => {
       try {
         const x = userId;
         const response = await axios.get(`http://localhost:3001/makeups?userID=${x}`);
-        console.log("API Response:", response.data); // Log API response
+        
         setUserSelections(response.data);
         setLoading(false);
       } catch (err) {
@@ -51,7 +51,7 @@ const UserSelections = ({ userId }) => {
   return (
     <div className="user-selections">
 
-      <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80   space-y-4 p-4  ">
+      <div className="mx-auto  max-w-[calc((6)0%-130px)] text-BgFont bg-opacity-80   space-y-4 p-4  ">
         <ul className="pl-5 space-y-2">
           <li>
             {userSelections.makeup?.selected ? "✔️" : "❌"}

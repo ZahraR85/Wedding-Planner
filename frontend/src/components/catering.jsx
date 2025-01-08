@@ -65,7 +65,7 @@ const UserSelections = () => {
   }
 
   return (
-    <div className="user-selections mx-auto max-w-xl bg-opacity-80 space-y-4 p-4">
+    <div className="user-selections mx-auto max-w-xl text-BgFont space-y-4 p-4">
 
       <div className="space-y-2">
         {items.map((item, index) => (

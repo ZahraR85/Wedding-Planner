@@ -15,7 +15,7 @@ export const countYesGuests = async (req, res) => {
     // Convert userID to ObjectId using "new"
     const objectId = new mongoose.Types.ObjectId(userID);
 
-    console.log("UserID received as ObjectId:", objectId);
+    // console.log("UserID received as ObjectId:", objectId);
 
     const result = await Guest.aggregate([
       {
@@ -32,7 +32,7 @@ export const countYesGuests = async (req, res) => {
       },
     ]);
 
-    console.log("Aggregation result:", result);
+    // console.log("Aggregation result:", result);
 
     const totalPersons = result[0]?.totalPersons || 0;
     res.status(200).json({ totalPersons });
@@ -64,7 +64,7 @@ export const sendEmail = async (to, subject, text, html) => {
       html, // HTML email content
     });
 
-    console.log("Email sent successfully:", info.messageId);
+    // console.log("Email sent successfully:", info.messageId);
   } catch (error) {
     console.error("Error in sendEmail function:", error.message);
     throw error;
@@ -76,7 +76,7 @@ export const sendInvitation = async (req, res) => {
   try {
 
     const { userId, email } = req.body;
-    console.log( req.body);
+    // console.log( req.body);
 
     if (!userId) {
       return res.status(400).json({ message: "UserID is required." });
@@ -84,10 +84,10 @@ export const sendInvitation = async (req, res) => {
     if (!email || !/.+@.+\..+/.test(email)) {
       return res.status(400).json({ message: "Invalid email format." });
     }
-    console.log("Received userId:", userId);
+    // console.log("Received userId:", userId);
      // Fetch user info dynamically
      const userInfo = await UserInfo.findOne({ userID: userId }, { _id: 0 });
-     console.log(userInfo);
+    //  console.log(userInfo);
 
      if (!userInfo) {
        return res.status(404).json({ message: "User info not found for this user." });
