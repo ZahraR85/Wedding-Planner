@@ -4,7 +4,7 @@ import Header1 from '../components/Header1';
 //import GallerySlider from '../components/GallerySlider';
 //import GallerySlider1 from '../components/GallerySlider1';
 import Feedback from '../components/feedback';
-import Searchvenues from '../components/searchvenues';
+import SearchVenues from "../components/SearchVenues.jsx";
 import Staff from "../components/Staff";
 
 const Homepage = () => {
@@ -16,8 +16,8 @@ const Homepage = () => {
   return (
     <div>
       <Header1 onScrollToSearchVenues={scrollToSearchVenues} />
-      <div ref={searchVenuesRef}> {/* Attach ref to Searchvenues */}
-        <Searchvenues />
+      <div ref={searchVenuesRef}> {/* Attach ref to SearchVenues */}
+        <SearchVenues />
       </div>
       <Feedback />
       <Features1 />

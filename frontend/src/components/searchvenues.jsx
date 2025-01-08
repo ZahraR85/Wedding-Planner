@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
-
-
-function Venue() {
+function SearchVenues() {
   const { selectedCity } = useAppContext();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4; // Limit to 4 cards per page
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    console.log("Fetching venues for:", selectedCity);
     async function fetchVenues() {
       const url =
         selectedCity === "All Cities"
           ? "http://localhost:3001/venues"
           : `http://localhost:3001/venues?city=${selectedCity}`;
       try {
+        setLoading(true);
         const response = await axios.get(url);
         setVenues(response.data);
       } catch (error) {
         console.error("Error fetching venues:", error);
+        setError("Failed to fetch venues.");
+      } finally {
+        setLoading(false);
       }
     }
     fetchVenues();
@@ -51,14 +48,15 @@ function Venue() {
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20">
+    <div className="relative min-h-screen bg-cover bg-center p-10">
       <div className="absolute inset-0 bg-white/50"></div>
-      <div className="relative mx-auto w-full max-w-[calc(98%-50px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
+      <div className="relative mx-auto w-full max-w-[calc(100%-20px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4">
         {loading && <p>Loading venues...</p>}
         {error && <p>{error}</p>}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {venues.map((venue) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {currentItems.map((venue) => (
             <div
               key={venue._id}
               className="p-4 border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
@@ -105,10 +103,9 @@ function Venue() {
             Next
           </button>
         </div>
-
       </div>
     </div>
   );
 }
 
-export default Venue;
+export default SearchVenues;
