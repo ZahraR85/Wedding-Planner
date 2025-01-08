@@ -52,7 +52,7 @@ const Todolist = ({ userId }) => {
     };
 
     return (
-        <div className="user-selections">
+        <div className="user-selections text-BgFont">
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             {/* Vertical Table */}
