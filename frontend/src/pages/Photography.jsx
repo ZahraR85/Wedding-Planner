@@ -31,8 +31,10 @@ const Photography = () => {
   // Redirect unauthenticated users to SignIn
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("You must sign in to access this page.");
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
 
@@ -136,8 +138,10 @@ const Photography = () => {
       addToShoppingCard(shoppingCartData);
 
       toast.success("Catering data and total price added to shopping cart successfully!");
-      navigate("/shoppingCard");
-      
+      setTimeout(() => {
+        navigate("/shoppingCard");
+      }, 3000); 
+
     } else {
       toast.error("Failed to save data!");
     }

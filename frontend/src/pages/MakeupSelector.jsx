@@ -70,10 +70,10 @@ const MakeupSelector = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
 
@@ -157,7 +157,9 @@ console.log (shoppingCartData);
     addToShoppingCard(shoppingCartData);
 
     toast.success("Makeup data and total price added to shopping cart successfully!");
-    navigate("/shoppingCard");
+    setTimeout(() => {
+      navigate("/shoppingCard");
+    }, 3000); 
   } catch (error) {
     console.error("Failed to save makeup data or add to shopping cart.", error);
     toast.error("Error saving data or adding to shopping cart.");

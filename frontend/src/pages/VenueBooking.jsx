@@ -20,8 +20,10 @@ const VenueBooking = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.");
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
 
@@ -47,7 +49,7 @@ const VenueBooking = () => {
   
     const handleMissingUserInfo = () => {
       if (!toastShown.current) { // Ensure the toast is only shown once
-        toast.error(
+        toast.warn(
           "User information not found. Please fill out the form on the User Information page before selecting a venue.",
           { position: "top-center", autoClose: 3000 }
         );

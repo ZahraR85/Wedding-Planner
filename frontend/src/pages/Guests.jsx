@@ -125,7 +125,7 @@ function Guest() {
       );
       setGuestList(response.data);
     } catch (error) {
-      console.error("Error fetching guests:", error.response.data.message);
+      //console.error("Error fetching guests:", error.response.data.message);
       //toast.error("Failed to fetch guests.");
     }
   };

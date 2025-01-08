@@ -16,10 +16,10 @@ const VenueSelectionPage = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.");
+      toast.warn("You must sign in to access this page.");
       setTimeout(() => {
         navigate("/signin");
-      }, 4000); 
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
 
