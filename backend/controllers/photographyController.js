@@ -67,7 +67,7 @@ export const getPhotographyByQuery = async (req, res) => {
       if (!userId) {
           return res.status(400).json({ message: "UserId is required." });
       }
-      console.log("UserIdddddlog:", userId);
+      // console.log("UserIdddddlog:", userId);
       const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userId) }).populate("userID", "name email");
 
       if (!entry) {

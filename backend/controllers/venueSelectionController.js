@@ -29,7 +29,7 @@ export const createOrUpdateVenueSelection = async (req, res) => {
     existingBooking.date = date;
     const updatedBooking = await existingBooking.save();
 
-    console.log("Booking updated:", updatedBooking);
+    // console.log("Booking updated:", updatedBooking);
     return res
       .status(200)
       .json({ message: "Booking updated successfully.", data: updatedBooking });
@@ -39,7 +39,7 @@ export const createOrUpdateVenueSelection = async (req, res) => {
   const newBooking = new VenueSelection({ userId, venueId, date });
   const savedBooking = await newBooking.save();
 
-  console.log("Booking created:", savedBooking);
+  // console.log("Booking created:", savedBooking);
   return res
     .status(201)
     .json({ message: "Booking created successfully.", data: savedBooking });
@@ -56,11 +56,11 @@ export const createOrUpdateVenueSelection = async (req, res) => {
 export const getVenueSelectionsByUserId = async (req, res) => {
   const { userId } = req.params;
 
-  console.log("Fetching bookings for userId:", userId); // Log the userId to verify
+  // console.log("Fetching bookings for userId:", userId); // Log the userId to verify
 
   try {
     const bookings = await VenueSelection.find({ userId }).populate('venueId');
-    console.log("Bookings retrieved:", bookings);
+    // console.log("Bookings retrieved:", bookings);
 
     if (!bookings.length) {
       return res.status(404).json({ message: "No bookings found for this user." });
