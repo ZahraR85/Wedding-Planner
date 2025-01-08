@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import DescriptionBox from "../components/MakeupDescriptionBox";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";

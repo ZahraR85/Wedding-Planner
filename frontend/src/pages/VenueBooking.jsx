@@ -20,7 +20,7 @@ const VenueBooking = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("You must sign in to access this page.");
+      toast.error("You must sign in to access this page.");
       navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
@@ -119,14 +119,14 @@ const VenueBooking = () => {
     }
   
     if (bookingConflict) {
-      alert("This venue is already booked on the selected date. Please choose another date.");
+      toast.error("This venue is already booked on the selected date. Please choose another date.");
       return;
     }
   
     try {
       const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
       if (!isValidDate) {
-        alert("Invalid date format. Please use YYYY-MM-DD.");
+        toast.error("Invalid date format. Please use YYYY-MM-DD.");
         return;
       }
   
@@ -153,7 +153,9 @@ const VenueBooking = () => {
   
       addToShoppingCard(shoppingCartData);
       toast.success("Venue booking successfully completed!");
-      navigate("/shoppingCard");
+      setTimeout(() => {
+        navigate("/shoppingCard");
+      }, 3000); 
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
@@ -165,9 +167,12 @@ const VenueBooking = () => {
   };  
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-BgPink">
+     <ToastContainer position="bottom-center" autoClose={3000} />
+
+    {/* <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">*/}
       <div className="absolute inset-0 bg-white/50"></div>
-      <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
+      <div className="relative mx-auto w-full max-w-[calc(100%-100px)] bg-customBg shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
         <ToastContainer />
         <div className="relative">
