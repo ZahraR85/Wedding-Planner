@@ -67,12 +67,12 @@ const weddingProfessionals = [
 
 const Staff = () => {
   return (
-    <div className="relative min-h-screen bg-cover bg-center bg-customBg">
+    <div className="relative min-h-screen bg-cover bg-center">
     {/* Overlay for controlling opacity */}
     {/* <div className="absolute inset-0 bg-white/50"></div>*/}
-    <div className="relative mx-auto w-full max-w-[calc(100%-100px)] bg-opacity-90 shadow-md rounded-lg p-5 space-y-4 bg-customBg1">
-      <h2 className="text-3xl font-semibold text-BgFont mb-12">Meet Our Team</h2>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="relative mx-auto w-full shadow-md rounded-lg p-5 space-y-4 bg-customBg1">
+      <h2 className="text-lg lg:text-3xl font-bold text-BgFont mb-12">Meet Our Team</h2>
+        <div className="grid gap-8 text-sm lg:text-lg sm:grid-cols-2 lg:grid-cols-3">
           {weddingProfessionals.map((professional, index) => (
             <div
               key={index}
