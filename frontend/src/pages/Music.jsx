@@ -21,7 +21,9 @@ const MusicSelectionForm = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       toast.warn("You must sign in to access this page.");
-      navigate("/signin");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
 
@@ -147,6 +149,7 @@ const MusicSelectionForm = () => {
 
   return (
     <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
+        <ToastContainer />
       {/* Overlay for controlling opacity */}
       <div className="absolute inset-0 bg-white/50"></div>
       {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}

@@ -13,17 +13,19 @@ const ShoppingCard = () => {
   const navigate = useNavigate();
 
   // Redirect unauthenticated users to the sign-in page
-  useEffect(() => {
+  /*useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.");
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
-
+*/
   // Fetch shopping card items from the backend
   const fetchShoppingCard = async () => {
     if (!userId) {
-      toast.error('User not authenticated. Please sign in.');
+      toast.warn('User not authenticated. Please sign in.');
       return;
     }
 
@@ -55,7 +57,7 @@ const ShoppingCard = () => {
       setShoppingCard(updatedCard);
       setTotalPrice(updatedCard.reduce((sum, item) => sum + item.price, 0));
 
-      toast.success('Service removed!');
+      toast.success('Service removed completely!');
     } catch (error) {
       console.error('Failed to remove service:', error);
       toast.error('Failed to remove service!');
@@ -76,6 +78,7 @@ const ShoppingCard = () => {
 
   return (
 <div className="relative min-h-screen flex bg-customBg1">
+  <ToastContainer />
   {/* Left Side: Shopping Card */}
   <div className="flex-1 p-10">
     <h2 className="text-3xl font-bold text-center text-BgFont mb-10">Your Shopping Card</h2>

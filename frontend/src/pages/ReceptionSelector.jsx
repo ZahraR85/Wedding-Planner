@@ -79,11 +79,12 @@ const ReceptionSelector = () => {
   // Redirect to SignIn if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.warn("Please sign in to access this page.");
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
-
   // Fetch existing data for the user
   useEffect(() => {
     if (userId) {
@@ -100,7 +101,7 @@ const ReceptionSelector = () => {
           }
         } catch (error) {
           console.error("Error fetching reception data:", error);
-          toast.error("please add your entertain");
+          //toast.warn("please add your entertain");
         }
       };
       fetchReceptionData();
@@ -153,7 +154,9 @@ const ReceptionSelector = () => {
       addToShoppingCard(shoppingCartData);
 
       toast.success("Catering data and total price added to shopping cart successfully!");
-      navigate("/shoppingCard");
+      setTimeout(() => {
+        navigate("/shoppingCard");
+      }, 3000); 
       
     } else {
       toast.error("Failed to save data!");
@@ -166,8 +169,8 @@ const ReceptionSelector = () => {
   
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-cover bg-center">
+       <ToastContainer />
       <div className="max-w-5xl w-3/5 p-8 bg-customBg1 shadow-lg rounded-lg space-y-5">
-      <ToastContainer />
       <h1 className="text-3xl text-center text-BgFont font-bold m-10">Select your Catering features:</h1>
         <p className=" text-m text-BgFont font-semibold m-10 text-center mb-8">{description}</p>
 

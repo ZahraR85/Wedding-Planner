@@ -21,6 +21,15 @@ function Guest() {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 4000); 
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
     if (isAuthenticated) {
       fetchYesPersonsCount();
     }
@@ -39,16 +48,6 @@ function Guest() {
   const [currentPage, setCurrentPage] = useState(1);
   const [guestsPerPage] = useState(5);
   const [filterStatus, setFilterStatus] = useState('All');
-
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.", {
-        position: "top-center",
-      });
-      navigate("/signin");
-    }
-  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,15 +125,14 @@ function Guest() {
       );
       setGuestList(response.data);
     } catch (error) {
-      console.error("Error fetching guests:", error.response.data.message);
-      toast.error("Failed to fetch guests.");
+      //console.error("Error fetching guests:", error.response.data.message);
+      //toast.error("Failed to fetch guests.");
     }
   };
 
   useEffect(() => {
     fetchGuests();
   }, []);
-
 
   const filteredGuests = filterStatus === 'All' 
   ? guestList 
@@ -145,12 +143,6 @@ function Guest() {
   const indexOfFirstGuest = indexOfLastGuest - guestsPerPage;
   const currentGuests = filteredGuests.slice(indexOfFirstGuest, indexOfLastGuest);
   const [updatingGuestId, setUpdatingGuestId] = useState(null);
-
-
-
-
-
-
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

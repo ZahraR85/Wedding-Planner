@@ -11,7 +11,7 @@ import VenueSelection from './pages/VenueSelection.jsx';
 import VenueBooking from './pages/VenueBooking.jsx';
 import Photography from './pages/Photography.jsx';
 import MakeupSelector from './pages/MakeupSelector.jsx';
-import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
+//import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
 import ReceptionSelector from './pages/ReceptionSelector.jsx';
 import Guests from './pages/Guests.jsx';
 import Musics from './pages/Music.jsx';
@@ -56,7 +56,7 @@ function App() {
 
             <Route path="/photography" element={<Photography />} />
             <Route path="/Makeup" element={<MakeupSelector />} />
-            <Route path="/Makeup" element={<MakeupDescriptionBox />} />
+            
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
