@@ -9,7 +9,7 @@ function SearchVenues() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // Limit to 4 cards per page
+  const itemsPerPage = 8; // Limit to 8 cards per page
   const navigate = useNavigate();
 
   useEffect(() => {
