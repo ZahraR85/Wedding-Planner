@@ -25,10 +25,10 @@ const SignIn = () => {
   
       if (response.ok) {
         const data = await response.json();
-      // Set authentication context and store user info in localStorage
-      setAuth(true, data.userId, data.role);  // Set authentication context
-      localStorage.setItem('role', data.role);  // Store user role
-      localStorage.setItem('token', data.token);  // Store token
+        // Set authentication context and store user info in localStorage
+        setAuth(true, data.userId, data.role);  // Set authentication context
+        localStorage.setItem('role', data.role);  // Store user role
+        localStorage.setItem('token', data.token);  // Store token
         navigate('/');
       } else {
         const message = await response.text();
@@ -41,15 +41,15 @@ const SignIn = () => {
   };
   
   return (
-    <div className="flex min-h-screen bg-customBg">
+    <div className="flex flex-col md:flex-row min-h-screen bg-customBg">
       {/* Left Section: Form */}
-      <div className="relative w-1/2 flex items-center justify-center min-h-screen bg-cover bg-center bg-[url('https://i.postimg.cc/RVhWxyrV/userinfo3.png')]">
+      <div className="relative w-full md:w-1/2 flex items-center justify-center min-h-screen bg-cover bg-center bg-[url('https://i.postimg.cc/RVhWxyrV/userinfo3.png')]">
         {/* Overlay for controlling opacity */}
         <div className="absolute inset-0 bg-white/50"></div>
         
         {/* Centered Form */}
         <div className="relative w-4/5 max-w-md bg-opacity-80 rounded-lg p-5 ml-14 mb-14 space-y-4">
-    {/*  <div className="w-1/2 flex justify-center items-center bg-customBg1">*/}
+              {/*  <div className="w-1/2 flex justify-center items-center bg-customBg1">*/}
     {/*  <div className="max-w-5xl w-4/5 p-16 bg-customBg shadow-lg rounded-lg space-y-5">*/}
           <h2 className="text-3xl text-BgFont font-bold mb-10 text-center">Please Login!</h2>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
@@ -85,7 +85,7 @@ const SignIn = () => {
       </div>
 
       {/* Right Section: Picture */}
-      <div className="w-1/2 flex justify-center items-center bg-cover bg-center" 
+      <div className="w-full md:w-1/2 flex justify-center items-center bg-cover bg-center" 
           style={{ backgroundImage: "url('https://i.postimg.cc/rpd0tvnh/S.jpg')" }}>
         {/* You can replace the URL with your desired image */}
         <div className="w-full h-full"></div>
@@ -93,6 +93,5 @@ const SignIn = () => {
     </div>
   );
 };
-
 
 export default SignIn;
