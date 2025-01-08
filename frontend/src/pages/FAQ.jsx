@@ -113,21 +113,21 @@ const FAQ = () => {
   return (
     <div className="relative min-h-screen bg-customBg py-16 px-6">
       <div className="max-w-5xl mx-auto bg-customBg2 rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8 text-BgFont">
+        <h2 className="text-xl lg:text-3xl font-bold text-center mb-8 text-BgFont">
           Frequently Asked Questions
         </h2>
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           {faqs.map((faq, index) => (
             <div
               key={index}
               className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
             >
               <button
-                className="w-full flex justify-between items-center px-6 py-4 text-left text-gray-800 font-medium bg-gray-100 hover:bg-gray-200 focus:outline-none"
+                className="w-full flex justify-between items-center px-6 py-4 text-left text-BgFont font-medium bg-gray-100 hover:bg-gray-200 focus:outline-none"
                 onClick={() => toggleFAQ(index)}
               >
-                <span>{faq.question}</span>
-                <span>
+                <span className="text-m lg:text-xl">{faq.question}</span>
+                <span className="text-m lg:text-xl">
                   {activeIndex === index ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +162,7 @@ const FAQ = () => {
                 </span>
               </button>
               {activeIndex === index && (
-                <div className="px-6 py-4 bg-white text-gray-600">
+                <div className="px-6 py-4 bg-white text-BgFont text-sm lg:text-lg">
                   {faq.answer}
                 </div>
               )}
