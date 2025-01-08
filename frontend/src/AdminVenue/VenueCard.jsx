@@ -25,15 +25,15 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
         )}
       </div>
       <div className="mt-4">
-        <h2 className="text-xl font-bold">{venue.name}</h2>
-        <p className="text-sm text-gray-600">{venue.city}</p>
-        <p className="text-sm text-gray-600">Capacity: {venue.capacity}</p>
-        <p className="text-sm text-gray-600">Price: ${venue.price}</p>
+        <h2 className="text-xl font-bold text-BgFont">{venue.name}</h2>
+        <p className="text-sm lg:text-m font-semibold text-BgFont">City: {venue.city}</p>
+        <p className="text-sm lg:text-m font-semibold text-BgFont">Capacity: {venue.capacity}</p>
+        <p className="text-sm lg:text-m font-semibold text-BgFont">Price: ${venue.price}</p>
       </div>
       <div className="mt-4 flex justify-between">
         <button
           onClick={handleViewDetails}
-          className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark px-4 py-2"
+          className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
         >
           View Details
         </button>

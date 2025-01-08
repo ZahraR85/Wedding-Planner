@@ -109,11 +109,11 @@ const VenueForm = () => {
   };
   
   return (
-    <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
+    <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
     {/* Overlay for controlling opacity */}
     <div className="absolute inset-0 bg-white/50 "></div>
-    <div className="relative mx-auto w-full max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-    <h1 className="text-2xl font-bold m-5 text-center text-BgFont">Add New Venue by Admin</h1>
+    <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+    <h1 className="text-xl lg:text-3xl font-bold m-5 text-center text-BgFont">Add New Venue by Admin</h1>
     <div className="flex">
       <div className="w-1/2 pr-8"><input
           type="text"
@@ -218,12 +218,12 @@ const VenueForm = () => {
   )}
 </div>
 
-        <span className="text-xl font-bold text-BgFont mt-5 pl-20">Total Price: ${totalPrice.toFixed(2)}</span>
+        <span className="text-m lg:text-xl font-bold text-BgFont mt-5 pl-20">Total Price: ${totalPrice.toFixed(2)}</span>
       </div>
       <div className="">
       <button
         onClick={handleSubmit}
-        className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
+        className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
         disabled={loading}
       >
         {loading ? "Processing..." : "Add Venue"}

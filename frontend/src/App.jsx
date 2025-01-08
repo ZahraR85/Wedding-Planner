@@ -22,7 +22,7 @@ import GalleryManagement from './AdminVenue/GalleryManagement.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
-import Venue from "./components/searchvenues";
+import Searchvenues from './components/searchvenues.jsx'
 import VenueDetail from "./components/venuedetail";
 import AboutUs from './Pages/AboutUs.jsx';
 import FAQ from "./pages/FAQ.jsx"
@@ -59,7 +59,7 @@ function App() {
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
-            <Route path="/searchvenues" element={<Venue />} />
+            <Route path="/searchvenues" element={<Searchvenues />} />
             <Route path="/:id" element={<VenueDetails />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/FAQ" element={<FAQ />} />
