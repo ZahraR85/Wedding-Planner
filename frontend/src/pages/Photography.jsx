@@ -157,11 +157,11 @@ const Photography = () => {
     <div className="relative min-h-screen bg-cover bg-center p-4 sm:p-8 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
       <div className="absolute inset-0 bg-white/60"></div>
       <div className="relative mx-auto w-full max-w-[calc(100%-40px)] sm:max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-4 sm:p-8 space-y-5">
-        <h1 className="text-xl sm:text-2xl font-bold text-center text-BgFont mt-5 sm:mt-8">Photography Services</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-center text-BgFont my-4 lg:my-16">Photography Services</h1>
         <ToastContainer />
         {features.map((feature) => (
           <div key={feature.id} className="flex items-center justify-between mb-4">
-            <span className="text-sm sm:text-m font-semibold text-BgFont w-1/2">{feature.label}:</span>
+            <span className="text-sm lg:text-lg font-semibold lg:font-bold text-BgFont w-1/2">{feature.label}:</span>
             {feature.id === "physicalAlbum" ? (
               <input
                 type="checkbox"
