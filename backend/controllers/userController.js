@@ -124,7 +124,7 @@ export const getUsers = async (req, res) => {
 export const getUserRole = async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log('Incoming userId:', userId);
+    // console.log('Incoming userId:', userId);
 
     // Validate userId format
     if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -133,7 +133,7 @@ export const getUserRole = async (req, res) => {
 
     const user = await User.findById(userId, 'role');
     if (!user) {
-      console.log('No user found for ID:', userId);
+      // console.log('No user found for ID:', userId);
       return res.status(404).json({ error: 'User not found' });
     }
 
