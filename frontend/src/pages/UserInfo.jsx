@@ -25,7 +25,9 @@ const UserInfoForm = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       toast.error("You must sign in to access this page.");
-      navigate("/signin");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 4000); 
     } else {
       checkExistingForm();
     }

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SearchCity from "../components/SearchCity";
 
 const VenueSelectionPage = () => {
@@ -11,6 +13,15 @@ const VenueSelectionPage = () => {
   const [error, setError] = useState('');
   const { userId, isAuthenticated, selectedCity, setSelectedCity } = useAppContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 4000); 
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +45,7 @@ const VenueSelectionPage = () => {
 
   const handleVenueClick = (venueId) => {
     if (!isAuthenticated) {
-      alert('Please log in to book a venue.');
+      toast.error('Please log in to book a venue.');
       navigate('/login');
       return;
     }
@@ -51,7 +62,8 @@ const VenueSelectionPage = () => {
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-BgPink">
-          {/*<div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/6pvSZ6gb/venueformat.png')]">*/}
+        <ToastContainer />
+        {/*<div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/6pvSZ6gb/venueformat.png')]">*/}
       {/* Overlay for controlling opacity */}
       <div className="absolute inset-0 bg-white/40"></div>
       <div className="relative mx-auto w-full max-w-[calc(100%-10px)] bg-customBg shadow-md rounded-lg p-5 space-y-4">

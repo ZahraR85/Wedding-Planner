@@ -112,12 +112,6 @@ const VenueBooking = () => {
   };
 
   const handleSubmit = async () => {
-    if (!isAuthenticated) {
-      toast.error("Please log in to book a venue.");
-      navigate("/signin");
-      return;
-    }
-  
     if (bookingConflict) {
       toast.error("This venue is already booked on the selected date. Please choose another date.");
       return;
@@ -168,7 +162,7 @@ const VenueBooking = () => {
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-BgPink">
-     <ToastContainer position="bottom-center" autoClose={3000} />
+     <ToastContainer />
 
     {/* <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">*/}
       <div className="absolute inset-0 bg-white/50"></div>
