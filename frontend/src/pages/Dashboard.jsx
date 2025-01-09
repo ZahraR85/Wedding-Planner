@@ -8,7 +8,7 @@ import MakeupUser from "../components/makeupUser";
 import UserInformation from "../components/userinformation";
 import Todolist from "../components/todolist";
 import Catering from "../components/catering";
-import Photography from "../components/photography";
+import PhotographyUserSelection from "../components/PhotographyUserSelection";
 import Venue from "../components/venue";
 import Story from "../components/userstory";
 import { toast, ToastContainer } from "react-toastify";
@@ -107,7 +107,7 @@ const Dashboard = () => {
         <div className="flex flex-col items-center">
           <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Photography</h2>
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#d5c0b5] w-[370px] h-[600px]">
-            <Photography userId={userId} />
+            <PhotographyUserSelection userId={userId} />
           </div>
         </div>
       </div>
