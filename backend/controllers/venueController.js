@@ -58,7 +58,7 @@ export const getAllVenues = async (req, res) => {
   }
 };
 // Update a price of venue
-/*export const updateVenue = async (req, res) => {
+export const updateVenuePrice = async (req, res) => {
   try {
     const { venueId } = req.params;
     const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
@@ -67,7 +67,7 @@ export const getAllVenues = async (req, res) => {
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
-*/
+
 // Update a venue
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
@@ -128,7 +129,7 @@ const VenueForm = ({ venue, onCancel }) => {
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
       {/* Overlay for controlling opacity */}
       <div className="absolute inset-0 bg-white/50 "></div>
-      <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+      <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-140px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-xl lg:text-3xl font-bold m-5 text-center text-BgFont">
           {venue ? "Edit Venue" : "Add New Venue"}
         </h1>
@@ -160,7 +161,7 @@ const VenueForm = ({ venue, onCancel }) => {
           onChange={handleChange}
           placeholder="Capacity"
           required
-          className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+          className="input input-bordered w-full  border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         /></div> 
           <div className="w-1/2">  <input
           type="number"
@@ -179,7 +180,7 @@ const VenueForm = ({ venue, onCancel }) => {
           placeholder="Discount (%)"
           className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
-      <div className="flex gap-2"> Location:
+      <div className="flex gap-2 text-sm font-semibold text-BgFont lg:text-lg "> Location:
           <input
             type="number"
             name="x"
@@ -187,7 +188,7 @@ const VenueForm = ({ venue, onCancel }) => {
             onChange={handleChange}
             placeholder="Latitude"
             required
-            className="input input-bordered w-1/2 mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+            className="input input-bordered w-1/2  border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <input
             type="number"
@@ -196,7 +197,7 @@ const VenueForm = ({ venue, onCancel }) => {
             onChange={handleChange}
             placeholder="Longitude"
             required
-            className="input input-bordered w-1/2 mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+            className="input input-bordered w-1/2  border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
           /></div>
         </div>
         </div>
@@ -204,7 +205,7 @@ const VenueForm = ({ venue, onCancel }) => {
           name="address"
           value={formData.address}
           onChange={handleChange}
-          className="border mx-2 p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+          className="border  p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           rows={5}
           placeholder="address"
         />
@@ -212,14 +213,14 @@ const VenueForm = ({ venue, onCancel }) => {
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="border mx-2 p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+          className="border p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           rows={5}
           placeholder="Description"
         />
 
         {/* Existing Images */}
         <div>
-          <h3 className="text-lg font-bold">Existing Images</h3>
+          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">Existing Images</h3>
           <div className="flex flex-wrap gap-2">
             {existingImages.length > 0 ? (
               existingImages.map((img, index) => (
@@ -239,17 +240,17 @@ const VenueForm = ({ venue, onCancel }) => {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500">No existing images found.</p>
+              <p className="text-BgFont">No existing images found.</p>
             )}
           </div>
 
           {/* New Images */}
-          <h3 className="text-lg font-bold mt-4">New Images</h3>
+          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">New Images</h3>
           <input
             type="file"
             multiple
             onChange={handleFileChange}
-            className="border mx-2 p-2 rounded w-full border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+            className="border mx-2 p-2 rounded w-full text-BgFont border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {newImageFiles.map((file, index) => (
@@ -257,7 +258,7 @@ const VenueForm = ({ venue, onCancel }) => {
                 <img
                   src={URL.createObjectURL(file)}
                   alt="Preview"
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-16 h-16 object-cover rounded "
                 />
                 <button
                   type="button"
@@ -272,6 +273,7 @@ const VenueForm = ({ venue, onCancel }) => {
         </div>
 
         {/* Submit Button */}
+        <div className="flex flex-row gap-4">
         <button
           onClick={handleSubmit}
           className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
@@ -281,12 +283,13 @@ const VenueForm = ({ venue, onCancel }) => {
         {venue && (
           <button
             onClick={onCancel}
-            className="bg-gray-300 text-gray-700 text-m lg:text-xl font-bold w-full p-4 mt-4 rounded"
+            className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
           >
             Cancel
           </button>
 
         )}
+        </div>
       </div>
 
     </div>

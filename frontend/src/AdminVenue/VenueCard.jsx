@@ -9,7 +9,7 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="card bg-white shadow-lg p-4 rounded-md hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out">
+    <div className="card p-4 border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out">
       <div className="flex overflow-x-scroll space-x-2">
         {venue.images?.length > 0 ? (
           venue.images.map((image, index) => (
@@ -17,7 +17,7 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
               key={index}
               src={`http://localhost:3001/${image}`} // Make sure this path is correct
               alt={`Venue ${index + 1}`}
-              className="h-48 w-48 object-cover rounded-md"
+              className="h-48 w-48 object-cover rounded"
             />
           ))
         ) : (
@@ -25,10 +25,10 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
         )}
       </div>
       <div className="mt-4">
-        <h2 className="text-xl font-bold text-BgFont">{venue.name}</h2>
-        <p className="text-sm lg:text-m font-semibold text-BgFont">City: {venue.city}</p>
-        <p className="text-sm lg:text-m font-semibold text-BgFont">Capacity: {venue.capacity}</p>
-        <p className="text-sm lg:text-m font-semibold text-BgFont">Price: ${venue.price}</p>
+        <h2 className="text-xl font-bold text-BgFont ">{venue.name}</h2>
+        <p className="text-sm lg:text-m font-semibold text-BgFont mt-2">City: {venue.city}</p>
+        <p className="text-sm lg:text-m font-semibold text-BgFont mt-2">Capacity: {venue.capacity}</p>
+        <p className="text-sm lg:text-m font-semibold text-BgFont mt-2">Price: ${venue.price}</p>
       </div>
       <div className="mt-4 flex justify-between">
         <button

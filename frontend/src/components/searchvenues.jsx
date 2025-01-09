@@ -69,9 +69,9 @@ function SearchVenues() {
                 onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
               />
               <h3 className="text-xl text-BgFont font-bold mt-2">{venue.name}</h3>
-              <p className="text-m text-BgFont font-semibold mt-1">Capacity: {venue.capacity}</p>
-              <p className="text-m text-BgFont font-semibold mt-1">Price: ${venue.price}</p>
-              <p className="text-m text-BgFont font-semibold mt-1">City: {venue.city}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2">Capacity: {venue.capacity}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2">Price: ${venue.price}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2">City: {venue.city}</p>
             </div>
           ))}
         </div>
