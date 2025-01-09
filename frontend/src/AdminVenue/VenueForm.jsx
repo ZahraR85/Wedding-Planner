@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
+import axios from "axios";
+
+const VenueForm = ({ venue, onCancel }) => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -11,10 +13,11 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
     price: "",
     discount: "",
     address: "",
-    location: { x: "", y: "" },
+    latitude: "",
+    longitude: "",
     images: [],
     description: "",
-  });
+  });  
   const [loading, setLoading] = useState(false);
   const [newImageFiles, setNewImageFiles] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
@@ -31,26 +34,17 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
     if (venue) {
       setFormData({
         ...venue,
-        location: {
-          x: venue.latitude || "",
-          y: venue.longitude || "",
-        },
+        latitude: venue.latitude || "",
+        longitude: venue.longitude || "",
       });
-      setExistingImages(venue.images || []); // Set existing images
+      setExistingImages(venue.images || []);
     }
   }, [venue]);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "x" || name === "y") {
-      setFormData({
-        ...formData,
-        location: { ...formData.location, [name]: value },
-      });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+    setFormData({ ...formData, [name]: value });
+  };  
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -109,7 +103,8 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
         price: "",
         discount: "",
         address: "",
-        location: { x: "", y: "" },
+        latitude: "" ,
+        longitude: "",
         images: [],
         description: "",
       });
@@ -181,7 +176,7 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
           <input
             type="number"
             name="x"
-            value={formData.location.x}
+            value={formData.latitude}
             onChange={handleChange}
             placeholder="Latitude"
             required
@@ -190,7 +185,7 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
           <input
             type="number"
             name="y"
-            value={formData.location.y}
+            value={formData.longitude}
             onChange={handleChange}
             placeholder="Longitude"
             required
