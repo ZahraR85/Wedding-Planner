@@ -1,5 +1,6 @@
 import Venue from "../models/venue.js";
-
+import fs from 'fs';
+import path from 'path';
 
 
 
@@ -68,6 +69,8 @@ export const getAllVenues = async (req, res) => {
 };
 */
 // Update a venue
+
+
 export const updateVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
@@ -101,7 +104,20 @@ export const updateVenue = async (req, res) => {
 
     // Handle image removal if specified
     if (req.body.removeImages && Array.isArray(req.body.removeImages)) {
-      venue.images = venue.images.filter((image) => !req.body.removeImages.includes(image));
+      const removeImages = req.body.removeImages;
+
+      // Remove the images from the array
+      venue.images = venue.images.filter((image) => !removeImages.includes(image));
+
+      // Optionally delete the files from the file system
+      removeImages.forEach((imagePath) => {
+        const filePath = path.join(__dirname, '..', imagePath); // Ensure path to file is correct
+        if (fs.existsSync(filePath)) {
+          fs.unlink(filePath, (err) => {
+            if (err) console.error(`Error deleting file: ${filePath}`, err);
+          });
+        }
+      });
     }
 
     // Save the updated venue

@@ -70,7 +70,6 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Prepare form data
       const uploadFormData = new FormData();
       Array.from(newImageFiles).forEach((file) => uploadFormData.append("images", file));
       Object.entries(formData).forEach(([key, value]) => {
@@ -78,12 +77,20 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
       });
       uploadFormData.append("userId", userId);
   
-      // Upload to backend
-      const response = await axios.post("http://localhost:3001/venues", uploadFormData, {
+      // Check if the venue exists to determine if it's an update or create
+      const url = venue ? `http://localhost:3001/venues/${venue._id}` : "http://localhost:3001/venues";
+  
+      // Use PUT for updating and POST for adding new venues
+      const method = venue ? "put" : "post";
+  
+      const response = await axios({
+        method,
+        url,
+        data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
   
-      alert(response.data.message || "Venue added successfully!");
+      alert(response.data.message || (venue ? "Venue updated successfully!" : "Venue added successfully!"));
       setFormData({
         name: "",
         city: "",
@@ -96,14 +103,14 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
         description: "",
       });
       setNewImageFiles([]);
+      setExistingImages([]);
     } catch (error) {
-      console.error("Error adding venue:", error);
-      alert("Failed to add venue.");
+      console.error("Error adding or updating venue:", error);
+      alert(venue ? "Failed to update venue." : "Failed to add venue.");
     } finally {
       setLoading(false);
     }
-  };
-  
+  };  
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
