@@ -7,11 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
 const features = [
-  { id: "photography", label: "Photography 300€(per 3 hours)", price: 300 },
-  { id: "videography", label: "Videography 300€(per 3 hours)", price: 300 },
-  { id: "clipConstruction", label: "Clip Construction 300€(per 3 minutes)", price: 200 },
-  { id: "physicalAlbum", label: "Physical Album 500€ (with 20 photos)", price: 500 },
-  { id: "giftImageSize", label: "Gift Image for guests 10€ (Size 15x18)", price: 10 },
+  { id: "photography", label: "Photography 300€", price: 300, description: "This Price is per each 3 hours. Capturing memorable moments with precision and creativity." },
+  { id: "videography", label: "Videography 300€", price: 300, description: "This Price is per each 3 hours. creating cinematic wedding videos to cherish forever." },
+  { id: "clipConstruction", label: "Clip Construction 300€", price: 200, description: "This Price is per each 3 Minutes. Custom video clips tailored to your preferences." },
+  { id: "physicalAlbum", label: "Physical Album 500€", price: 500, description: " Beautifully crafted physical albums featuring 20 premium-quality photographs." },
+  { id: "giftImageSize", label: "Gift Image for guests 10€", price: 10, description: "Personalized gift-sized ( 15x18) images for guests, ideal as keepsakes." },
 ];
 
 const Photography = () => {
@@ -27,7 +27,7 @@ const Photography = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-
+  const [currentDescription, setCurrentDescription] = useState("");
   // Redirect unauthenticated users to SignIn
   useEffect(() => {
     if (!isAuthenticated) {
@@ -151,48 +151,69 @@ const Photography = () => {
       setLoading(false);
     }
   };
+  const handleMouseEnter = (description) => {
+    setCurrentDescription(description);
+  };
 
-  return (
-    <div className="relative min-h-screen bg-cover bg-center p-4 sm:p-8 bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
-      <div className="absolute inset-0 bg-white/60"></div>
-      <div className="relative mx-auto w-full max-w-[calc(100%-40px)] sm:max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-4 sm:p-8 space-y-5">
-        <h1 className="text-xl sm:text-2xl font-bold text-center text-BgFont my-4 lg:my-16">Photography Services</h1>
-        <ToastContainer />
-        {features.map((feature) => (
-          <div key={feature.id} className="flex items-center justify-between mb-4">
-            <span className="text-sm lg:text-lg font-semibold lg:font-bold text-BgFont w-1/2">{feature.label}:</span>
-            {feature.id === "physicalAlbum" ? (
-              <input
-                type="checkbox"
-                name="selected"
-                data-category={feature.id}
-                checked={formData[feature.id]?.selected || false}
-                onChange={handleChange}
-                className="text-center w-5 h-5"
-              />
-            ) : (
-              <input
-                type="number"
-                name="number"
-                data-category={feature.id}
-                value={formData[feature.id]?.number || 0}
-                onChange={handleChange}
-                className="border p-2 rounded w-1/3 sm:w-1/4 border-BgPinkDark hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"
-              />
-            )}
+  const handleMouseLeave = () => {
+    setCurrentDescription("");
+  };
+    return (
+      <div className="relative min-h-screen bg-cover bg-center p-4  bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
+        <div className="absolute inset-0 bg-white/60"></div>
+        <div className="relative mx-auto w-full max-w-[calc(100%-40px)] sm:max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-4 sm:p-8 space-y-5">
+          <h1 className="text-xl sm:text-2xl font-bold text-center text-BgFont my-4 lg:my-16">Photography Services</h1>
+          <ToastContainer />
+           {/* Hover Description */}
+            <div className="mt-4 text-BgFont bg-BgPink p-2 rounded">
+            <h2 className="font-bold">Description:</h2>
+            <p>{currentDescription || "Hover over an option to see details."}</p>
           </div>
-        ))}
-        <h2 className="text-lg sm:text-xl font-bold text-BgFont text-center py-4 sm:py-6">Total Price: {total} €</h2>
-        <button
-          onClick={handleSubmit}
-          className="bg-BgPinkMiddle text-BgFont text-lg font-bold hover:bg-BgPinkDark w-full px-4 py-2 rounded"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
-        </button>
+          {features.map((feature) => (
+            <div
+              key={feature.id}
+              className="flex items-center justify-between mb-4"
+              onMouseEnter={() => handleMouseEnter(feature.description)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <span className="text-sm lg:text-lg font-semibold lg:font-bold text-BgFont w-1/2">
+                {feature.label}:
+              </span>
+              {feature.id === "physicalAlbum" ? (
+                <input
+                  type="checkbox"
+                  name="selected"
+                  data-category={feature.id}
+                  checked={formData[feature.id]?.selected || false}
+                  onChange={handleChange}
+                  className="text-center w-5 h-5"
+                />
+              ) : (
+                <input
+                  type="number"
+                  name="number"
+                  data-category={feature.id}
+                  value={formData[feature.id]?.number || 0}
+                  onChange={handleChange}
+                  className="border p-2 rounded w-1/3 sm:w-1/4 border-BgPinkDark hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"
+                />
+              )}
+            </div>
+          ))}
+          <h2 className="text-lg sm:text-xl font-bold text-BgFont text-center py-4 sm:py-6">
+            Total Price: {total} €
+          </h2>
+          <button
+            onClick={handleSubmit}
+            className="bg-BgPinkMiddle text-BgFont text-lg font-bold hover:bg-BgPinkDark w-full px-4 py-2 rounded"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+          </button>
+        
+        </div>
       </div>
-    </div>
-  );  
-};  
-
-export default Photography;
+    );
+  };
+  
+  export default Photography;
