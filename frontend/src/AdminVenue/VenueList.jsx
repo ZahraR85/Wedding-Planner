@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import VenueCard from './VenueCard';
 
 const VenueList = ({ venues, onEdit, onDelete }) => {
