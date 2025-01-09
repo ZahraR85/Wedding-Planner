@@ -70,10 +70,10 @@ function Venue() {
                 className="w-full h-40 object-cover rounded-lg"
                 onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
               />
-              <h3 className="text-lg font-bold mt-2">{venue.name}</h3>
-              <p className="text-m font-semibold mt-2">Capacity: {venue.capacity}</p>
-              <p className="text-m font-semibold mt-2">Price: ${venue.price}</p>
-              <p className="text-m font-semibold mt-2">City: {venue.city}</p>
+              <h3 className="text-xl font-bold mt-2">{venue.name}</h3>
+              <p className="text-sm lg:text-m font-semibold mt-2">Capacity: {venue.capacity}</p>
+              <p className="text-sm lg:text-m font-semibold mt-2">Price: ${venue.price}</p>
+              <p className="text-sm lg:text-m font-semibold mt-2">City: {venue.city}</p>
             </div>
           ))}
         </div>

@@ -2,7 +2,8 @@ import VenueCard from './VenueCard';
 
 const VenueList = ({ venues, onEdit, onDelete }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className=" min-h-screen bg-cover bg-center p-5 lg:p-10 bg-customBg1">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
       {venues.map((venue) => (
         <VenueCard
           key={venue._id}
@@ -11,6 +12,7 @@ const VenueList = ({ venues, onEdit, onDelete }) => {
           onDelete={onDelete}
         />
       ))}
+    </div>
     </div>
   );
 };
