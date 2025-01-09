@@ -11,8 +11,8 @@ import Catering from "../components/catering";
 import Photography from "../components/photography";
 import Venue from "../components/venue";
 import Story from "../components/userstory";
-
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const { userId, isAuthenticated } = useAppContext();
@@ -21,13 +21,23 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [weddingDate, setWeddingDate] = useState(null);
-
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
+    }
+  }, [isAuthenticated, navigate]);
+  
   useEffect(() => {
     const checkUserInfo = async () => {
       try {
         if (!isAuthenticated) {
-          alert("You must sign in to access this page.");
-          navigate("/signin");
+          toast.warn("You must sign in to access this page.");
+          setTimeout(() => {
+            navigate("/signin");
+          }, 3000); 
           return;
         }
 
@@ -55,6 +65,7 @@ const Dashboard = () => {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-4 bg-neutral-200">
+      <ToastContainer />
       {/* User Information as Header */}
       <div className="flex justify-center items-center p-4 bg-[#e8dfcf] shadow-2xl rounded-lg">
         <UserInformation userId={userId} setWeddingDate={setWeddingDate} />
@@ -113,13 +124,7 @@ const Dashboard = () => {
             <Story userId={userId} setWeddingDate={setWeddingDate} />
           </div>
         </div>
-
-
       </div>
-
-
-
-
     </div>
   );
 };

@@ -46,9 +46,9 @@ export const getPhotographyByUserId = async (req, res) => {
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
     }
-    console.log("UserIddddd:", userID);
+    // console.log("UserIddddd:", userID);
     const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userID) }).populate("userID", "name email");
-    console.log("Database Query Result:", entry);
+    // console.log("Database Query Result:", entry);
     if (!entry) {
       return res.status(404).json({ message: "No information has been documented yet!" });
     }
@@ -67,7 +67,7 @@ export const getPhotographyByQuery = async (req, res) => {
       if (!userId) {
           return res.status(400).json({ message: "UserId is required." });
       }
-      console.log("UserIdddddlog:", userId);
+      // console.log("UserIdddddlog:", userId);
       const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userId) }).populate("userID", "name email");
 
       if (!entry) {

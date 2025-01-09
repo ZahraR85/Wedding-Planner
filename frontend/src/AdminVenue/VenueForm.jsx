@@ -285,8 +285,10 @@ const VenueForm = ({ venue, onCancel }) => {
           >
             Cancel
           </button>
+
         )}
       </div>
+
     </div>
   );
 };

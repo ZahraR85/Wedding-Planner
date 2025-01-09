@@ -11,7 +11,7 @@ import VenueSelection from './pages/VenueSelection.jsx';
 import VenueBooking from './pages/VenueBooking.jsx';
 import Photography from './pages/Photography.jsx';
 import MakeupSelector from './pages/MakeupSelector.jsx';
-import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
+//import MakeupDescriptionBox from './components/MakeupDescriptionBox.jsx';
 import ReceptionSelector from './pages/ReceptionSelector.jsx';
 import Guests from './pages/Guests.jsx';
 import Musics from './pages/Music.jsx';
@@ -22,8 +22,10 @@ import GalleryManagement from './AdminVenue/GalleryManagement.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
-import Venue from "./components/searchvenues";
+import Searchvenues from './components/searchvenues.jsx'
 import VenueDetail from "./components/venuedetail";
+import AboutUs from './Pages/AboutUs.jsx';
+import FAQ from "./pages/FAQ.jsx"
 import './index.css';
 
 function App() {
@@ -46,7 +48,6 @@ function App() {
             <Route path="/venues" element={<AdminVenuePage />} />
             {/*<Route path="/venues" element={<VenueList />} />*/}
             {/*<Route path="/venues/:id" element={<VenueCard />} />*/}
-           
              {/* user Routes */}
             <Route path="/venueSelections" element={<VenueSelection />} />
             <Route path="/venueBooking/:venueId" element={<VenueBooking />} />
@@ -55,12 +56,13 @@ function App() {
 
             <Route path="/photography" element={<Photography />} />
             <Route path="/Makeup" element={<MakeupSelector />} />
-            <Route path="/Makeup" element={<MakeupDescriptionBox />} />
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
-            <Route path="/searchvenues" element={<Venue />} />
+            <Route path="/searchvenues" element={<Searchvenues />} />
             <Route path="/:id" element={<VenueDetails />} />
+            <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/FAQ" element={<FAQ />} />
           </Routes>
         </Layout>
       </Router>
