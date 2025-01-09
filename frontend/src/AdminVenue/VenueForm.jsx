@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const VenueForm = ({ venue, onCancel }) => {
   const { userId, isAuthenticated } = useAppContext();
@@ -24,11 +27,13 @@ const VenueForm = ({ venue, onCancel }) => {
   const [existingImages, setExistingImages] = useState([]);
   const [removedImages, setRemovedImages] = useState([]);
 
-  // Redirect unauthorized users
+  // Redirect unauthenticated users to SignIn
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("You are not authorized to access this page.");
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     }
   }, [isAuthenticated, navigate]);
 
@@ -128,6 +133,7 @@ const VenueForm = ({ venue, onCancel }) => {
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
       {/* Overlay for controlling opacity */}
+      <ToastContainer />
       <div className="absolute inset-0 bg-white/50 "></div>
       <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-140px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-xl lg:text-3xl font-bold m-5 text-center text-BgFont">
