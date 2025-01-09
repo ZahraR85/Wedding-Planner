@@ -65,7 +65,7 @@ const VenueForm = ({ venue, onCancel }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const uploadFormData = new FormData(); // Defined here
+      const uploadFormData = new FormData();
   
       // Append new image files
       newImageFiles.forEach((file) => {
@@ -77,11 +77,10 @@ const VenueForm = ({ venue, onCancel }) => {
         if (key !== "images") uploadFormData.append(key, value);
       });
   
-      // Include removed images in the request
-      uploadFormData.append(
-        "removeImages",
-        JSON.stringify(existingImages.filter((img, index) => removedImages.includes(index)))
-      );
+      // Send images to remove
+      if (existingImages.length > 0) {
+        uploadFormData.append("removeImages", JSON.stringify(existingImages.filter((img, index) => !newImageFiles.some(file => file.name === img))));
+      }
   
       uploadFormData.append("userId", userId);
   
@@ -97,7 +96,7 @@ const VenueForm = ({ venue, onCancel }) => {
         data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log("New image files:", newImageFiles);
+  
       alert(
         response.data.message ||
           (venue ? "Venue updated successfully!" : "Venue added successfully!")
@@ -123,7 +122,7 @@ const VenueForm = ({ venue, onCancel }) => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
   
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
