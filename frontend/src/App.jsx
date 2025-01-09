@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard.jsx';
 import UserInfo from './pages/UserInfo.jsx';
 import AdminVenuePage from './AdminVenue/AdminVenuePage.jsx';
 //import VenueList from './pages/AdminVenue/VenueList.jsx';
-import VenueDetails from './AdminVenue/VenueDetails.jsx';
+import VenueDetialsAdmin from './AdminVenue/VenueDetialsAdmin.jsx';
 //import VenueCard from './AdminVenue/VenueCard.jsx';
 import VenueSelection from './pages/VenueSelection.jsx';
 import VenueBooking from './pages/VenueBooking.jsx';
@@ -60,7 +60,7 @@ function App() {
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
             <Route path="/searchvenues" element={<Venue />} />
-            <Route path="/:id" element={<VenueDetails />} />
+            <Route path="/:id" element={<VenueDetialsAdmin />} />
           </Routes>
         </Layout>
       </Router>

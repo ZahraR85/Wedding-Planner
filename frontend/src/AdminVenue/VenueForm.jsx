@@ -180,7 +180,7 @@ const VenueForm = ({ venue, onCancel }) => {
           placeholder="Discount (%)"
           className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
         />
-      <div className="flex gap-2"> Location:
+      <div className="flex gap-2 text-sm font-semibold text-BgFont lg:text-lg "> Location:
           <input
             type="number"
             name="x"
@@ -220,7 +220,7 @@ const VenueForm = ({ venue, onCancel }) => {
 
         {/* Existing Images */}
         <div>
-          <h3 className="text-lg font-bold">Existing Images</h3>
+          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">Existing Images</h3>
           <div className="flex flex-wrap gap-2">
             {existingImages.length > 0 ? (
               existingImages.map((img, index) => (
@@ -240,17 +240,17 @@ const VenueForm = ({ venue, onCancel }) => {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500">No existing images found.</p>
+              <p className="text-BgFont">No existing images found.</p>
             )}
           </div>
 
           {/* New Images */}
-          <h3 className="text-lg font-bold mt-4">New Images</h3>
+          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">New Images</h3>
           <input
             type="file"
             multiple
             onChange={handleFileChange}
-            className="border mx-2 p-2 rounded w-full border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+            className="border mx-2 p-2 rounded w-full text-BgFont border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {newImageFiles.map((file, index) => (
@@ -258,7 +258,7 @@ const VenueForm = ({ venue, onCancel }) => {
                 <img
                   src={URL.createObjectURL(file)}
                   alt="Preview"
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-16 h-16 object-cover rounded "
                 />
                 <button
                   type="button"

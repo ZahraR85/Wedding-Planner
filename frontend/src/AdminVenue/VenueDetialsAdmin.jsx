@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getVenues, updateVenue, deleteVenue } from "./venue";
 
-const VenueDetails = () => {
+const VenueDetailsAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [venue, setVenue] = useState(null);
@@ -180,4 +180,4 @@ const VenueDetails = () => {
   );
 };
 
-export default VenueDetails;
+export default VenueDetailsAdmin;
