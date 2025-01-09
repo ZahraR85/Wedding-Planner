@@ -101,6 +101,9 @@ export const updateVenue = async (req, res) => {
       const newImages = req.files.map((file) => file.path); // Collect new image paths
       venue.images = [...venue.images, ...newImages]; // Append new images to existing ones
     }
+    console.log("Request body:", req.body);
+    console.log("Request files:", req.files);
+    
 
     // Handle image removal if specified
     if (req.body.removeImages && Array.isArray(req.body.removeImages)) {

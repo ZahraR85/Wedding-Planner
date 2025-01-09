@@ -66,21 +66,27 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
     const updatedNewImages = newImageFiles.filter((_, i) => i !== index);
     setNewImageFiles(updatedNewImages);
   };
-
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const uploadFormData = new FormData();
-      Array.from(newImageFiles).forEach((file) => uploadFormData.append("images", file));
+      const uploadFormData = new FormData(); // Defined here
+  
+      // Append new image files
+      newImageFiles.forEach((file) => {
+        uploadFormData.append("images", file);
+      });
+  
+      // Append other form data
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== "images") uploadFormData.append(key, value);
       });
+  
       uploadFormData.append("userId", userId);
   
-      // Check if the venue exists to determine if it's an update or create
-      const url = venue ? `http://localhost:3001/venues/${venue._id}` : "http://localhost:3001/venues";
-  
-      // Use PUT for updating and POST for adding new venues
+      // Send POST/PUT request
+      const url = venue
+        ? `http://localhost:3001/venues/${venue._id}`
+        : "http://localhost:3001/venues";
       const method = venue ? "put" : "post";
   
       const response = await axios({
@@ -89,8 +95,13 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
         data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log("New image files:", newImageFiles);
+      alert(
+        response.data.message ||
+          (venue ? "Venue updated successfully!" : "Venue added successfully!")
+      );
   
-      alert(response.data.message || (venue ? "Venue updated successfully!" : "Venue added successfully!"));
+      // Reset form
       setFormData({
         name: "",
         city: "",
@@ -103,14 +114,13 @@ import axios from "axios";const VenueForm = ({ onSubmit, venue, onCancel }) => {
         description: "",
       });
       setNewImageFiles([]);
-      setExistingImages([]);
     } catch (error) {
-      console.error("Error adding or updating venue:", error);
-      alert(venue ? "Failed to update venue." : "Failed to add venue.");
+      console.error("Error updating venue:", error);
+      alert("Failed to add or update venue.");
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
