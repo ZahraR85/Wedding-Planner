@@ -12,7 +12,7 @@ router.get("/cities", getUniqueCities);
 router.get("/", getAllVenues);
 
 // PUT: Update a venue
-router.put("/:venueId", updateVenue);
+router.put('/:venueId', upload.array('images'), updateVenue);
 
 // DELETE: Delete a venue
 router.delete("/:venueId", deleteVenue);

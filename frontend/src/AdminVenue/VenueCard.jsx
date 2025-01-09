@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom';
 
-const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
+const VenueCard = ({ venue, onEdit, onDelete }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
@@ -37,22 +37,20 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
         >
           View Details
         </button>
-        {isAdmin && (
-          <>
+
             <button
               onClick={() => onEdit(venue)}
-              className="btn btn-primary text-white"
+              className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete(venue._id)}
-              className="btn btn-danger text-white"
+              className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
             >
               Delete
             </button>
-          </>
-        )}
+
       </div>
     </div>
     

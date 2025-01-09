@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
 
-const VenueForm = () => {
+const VenueForm = ({ venue, onCancel }) => {
   const { userId, isAuthenticated } = useAppContext();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     name: "",
     city: "",
@@ -14,15 +13,15 @@ const VenueForm = () => {
     price: "",
     discount: "",
     address: "",
-    location: { x: "", y: "" },
+    latitude: "",
+    longitude: "",
     images: [],
     description: "",
-  });
-
+  });  
   const [loading, setLoading] = useState(false);
-  const [imageFiles, setImageFiles] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0); // State for total price
-  //const [venues, setVenues] = useState([]);
+  const [newImageFiles, setNewImageFiles] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [removedImages, setRemovedImages] = useState([]);
 
   // Redirect unauthorized users
   useEffect(() => {
@@ -32,62 +31,78 @@ const VenueForm = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  // Fetch all venues
- /* useEffect(() => {
-    const fetchVenues = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/venues`);
-        setVenues(response.data);
-      } catch (error) {
-        console.error("Error fetching venues:", error);
-      }
-    };
-    fetchVenues();
-  }, []);
-*/
-  // Handle form input changes
+  useEffect(() => {
+    if (venue) {
+      setFormData({
+        ...venue,
+        latitude: venue.latitude || "",
+        longitude: venue.longitude || "",
+      });
+      setExistingImages(venue.images || []);
+    }
+  }, [venue]);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "x" || name === "y") {
-      setFormData({ ...formData, location: { ...formData.location, [name]: value } });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-  // Update total price whenever price or discount changes
-  useEffect(() => {
-    const price = parseFloat(formData.price) || 0;
-    const discount = parseFloat(formData.discount) || 0;
-    const calculatedTotal = price - (price * discount) / 100;
-    setTotalPrice(calculatedTotal);
-  }, [formData.price, formData.discount]);
+    setFormData({ ...formData, [name]: value });
+  };  
+
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    setImageFiles((prevFiles) => [...prevFiles, ...files]);
+    setNewImageFiles([...newImageFiles, ...files]);
   };
-  
-  const removeImage = (index) => {
-    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-  
 
+  const removeExistingImage = (index) => {
+    const updatedImages = existingImages.filter((_, i) => i !== index);
+    setExistingImages(updatedImages);
+    setRemovedImages([...removedImages, index]); // Track the removed image index
+  };
+  
+  const removeNewImage = (index) => {
+    const updatedNewImages = newImageFiles.filter((_, i) => i !== index);
+    setNewImageFiles(updatedNewImages);
+  };
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Prepare form data
       const uploadFormData = new FormData();
-      Array.from(imageFiles).forEach((file) => uploadFormData.append("images", file));
+  
+      // Append new image files
+      newImageFiles.forEach((file) => {
+        uploadFormData.append("images", file);
+      });
+  
+      // Append other form data
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== "images") uploadFormData.append(key, value);
       });
+  
+      // Send images to remove
+      if (existingImages.length > 0) {
+        uploadFormData.append("removeImages", JSON.stringify(existingImages.filter((img, index) => !newImageFiles.some(file => file.name === img))));
+      }
+  
       uploadFormData.append("userId", userId);
   
-      // Upload to backend
-      const response = await axios.post("http://localhost:3001/venues", uploadFormData, {
+      // Send POST/PUT request
+      const url = venue
+        ? `http://localhost:3001/venues/${venue._id}`
+        : "http://localhost:3001/venues";
+      const method = venue ? "put" : "post";
+  
+      const response = await axios({
+        method,
+        url,
+        data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
   
-      alert(response.data.message || "Venue added successfully!");
+      alert(
+        response.data.message ||
+          (venue ? "Venue updated successfully!" : "Venue added successfully!")
+      );
+  
+      // Reset form
       setFormData({
         name: "",
         city: "",
@@ -95,26 +110,31 @@ const VenueForm = () => {
         price: "",
         discount: "",
         address: "",
-        location: { x: "", y: "" },
+        latitude: "",
+        longitude: "",
         images: [],
         description: "",
       });
-      setImageFiles([]);
+      setNewImageFiles([]);
     } catch (error) {
-      console.error("Error adding venue:", error);
-      alert("Failed to add venue.");
+      console.error("Error updating venue:", error);
+      alert("Failed to add or update venue.");
     } finally {
       setLoading(false);
     }
-  };
+  };  
   
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
-    {/* Overlay for controlling opacity */}
-    <div className="absolute inset-0 bg-white/50 "></div>
-    <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-    <h1 className="text-xl lg:text-3xl font-bold m-5 text-center text-BgFont">Add New Venue by Admin</h1>
-    <div className="flex">
+      {/* Overlay for controlling opacity */}
+      <div className="absolute inset-0 bg-white/50 "></div>
+      <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
+        <h1 className="text-xl lg:text-3xl font-bold m-5 text-center text-BgFont">
+          {venue ? "Edit Venue" : "Add New Venue"}
+        </h1>
+
+        {/* Form fields */}
+        <div className="flex">
       <div className="w-1/2 pr-8"><input
           type="text"
           name="name"
@@ -163,7 +183,7 @@ const VenueForm = () => {
           <input
             type="number"
             name="x"
-            value={formData.location.x}
+            value={formData.latitude}
             onChange={handleChange}
             placeholder="Latitude"
             required
@@ -172,7 +192,7 @@ const VenueForm = () => {
           <input
             type="number"
             name="y"
-            value={formData.location.y}
+            value={formData.longitude}
             onChange={handleChange}
             placeholder="Longitude"
             required
@@ -196,46 +216,81 @@ const VenueForm = () => {
           rows={5}
           placeholder="Description"
         />
-        <div className="flex">
+
+        {/* Existing Images */}
         <div>
-          <input type="file" multiple onChange={handleFileChange}
-    className="border mx-2 p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"/>
-      {imageFiles.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-        {imageFiles.map((file, index) => (
-          <div key={index} className="relative">
-            <img src={URL.createObjectURL(file)} alt="Preview" className="w-16 h-16 object-cover rounded"/>
-          <button
-            type="button"
-            onClick={() => removeImage(index)}
-            className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
-          >
-            &times;
-          </button>
+          <h3 className="text-lg font-bold">Existing Images</h3>
+          <div className="flex flex-wrap gap-2">
+            {existingImages.length > 0 ? (
+              existingImages.map((img, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={img} // Make sure this is a valid image URL
+                    alt="Venue"
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeExistingImage(index)}
+                    className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No existing images found.</p>
+            )}
+          </div>
+
+          {/* New Images */}
+          <h3 className="text-lg font-bold mt-4">New Images</h3>
+          <input
+            type="file"
+            multiple
+            onChange={handleFileChange}
+            className="border mx-2 p-2 rounded w-full border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+          />
+          <div className="flex flex-wrap gap-2 mt-2">
+            {newImageFiles.map((file, index) => (
+              <div key={index} className="relative">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="Preview"
+                  className="w-16 h-16 object-cover rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeNewImage(index)}
+                  className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  )}
-</div>
 
-        <span className="text-m lg:text-xl font-bold text-BgFont mt-5 pl-20">Total Price: ${totalPrice.toFixed(2)}</span>
+        {/* Submit Button */}
+        <button
+          onClick={handleSubmit}
+          className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
+        >
+          {venue ? "Update Venue" : "Add Venue"}
+        </button>
+        {venue && (
+          <button
+            onClick={onCancel}
+            className="bg-gray-300 text-gray-700 text-m lg:text-xl font-bold w-full p-4 mt-4 rounded"
+          >
+            Cancel
+          </button>
+
+        )}
       </div>
-      <div className="">
-      <button
-        onClick={handleSubmit}
-        className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
-        disabled={loading}
-      >
-        {loading ? "Processing..." : "Add Venue"}
-      </button>
-      </div>
-      {/* <h2 className="text-lg font-bold mt-5">List of our Venues</h2><ul className="space-y-3">{venues.map((venue, index) => (<li key={index} className="border p-4 rounded">*/}
-      {/*<h3 className="font-bold">{venue.name}</h3><p>City: {venue.city}</p><p>Capacity: {venue.capacity}</p><p>Price: ${venue.price}/day</p></li>))  }
-</ul>*/}
 
     </div>
-  </div>
-);
+  );
 };
 
 export default VenueForm;

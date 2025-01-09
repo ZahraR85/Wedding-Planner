@@ -1,16 +1,16 @@
-/* eslint-disable react/prop-types */
 import VenueCard from './VenueCard';
 
-const VenueList = ({ venues }) => {
+const VenueList = ({ venues, onEdit, onDelete }) => {
   return (
-    <div className="flex justify-center items-start min-h-screen bg-customBg">
-      <div className="w-[98%] p-6 bg-customBg1 shadow-lg rounded-lg space-y-5 ">
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {venues.map((venue) => (
-        <VenueCard key={venue._id} venue={venue} />
+        <VenueCard
+          key={venue._id}
+          venue={venue}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       ))}
-    </div>
-    </div>
     </div>
   );
 };
