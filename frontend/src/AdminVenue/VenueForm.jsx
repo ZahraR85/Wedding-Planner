@@ -21,6 +21,7 @@ const VenueForm = ({ venue, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [newImageFiles, setNewImageFiles] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
+  const [removedImages, setRemovedImages] = useState([]);
 
   // Redirect unauthorized users
   useEffect(() => {
@@ -54,8 +55,9 @@ const VenueForm = ({ venue, onCancel }) => {
   const removeExistingImage = (index) => {
     const updatedImages = existingImages.filter((_, i) => i !== index);
     setExistingImages(updatedImages);
+    setRemovedImages([...removedImages, index]); // Track the removed image index
   };
-
+  
   const removeNewImage = (index) => {
     const updatedNewImages = newImageFiles.filter((_, i) => i !== index);
     setNewImageFiles(updatedNewImages);
@@ -74,6 +76,12 @@ const VenueForm = ({ venue, onCancel }) => {
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== "images") uploadFormData.append(key, value);
       });
+  
+      // Include removed images in the request
+      uploadFormData.append(
+        "removeImages",
+        JSON.stringify(existingImages.filter((img, index) => removedImages.includes(index)))
+      );
   
       uploadFormData.append("userId", userId);
   
@@ -103,7 +111,7 @@ const VenueForm = ({ venue, onCancel }) => {
         price: "",
         discount: "",
         address: "",
-        latitude: "" ,
+        latitude: "",
         longitude: "",
         images: [],
         description: "",
@@ -116,7 +124,7 @@ const VenueForm = ({ venue, onCancel }) => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
       {/* Overlay for controlling opacity */}
