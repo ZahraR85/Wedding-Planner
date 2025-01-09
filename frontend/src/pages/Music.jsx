@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
 const MusicSelectionForm = () => {
-  const { userId, isAuthenticated,addToShoppingCard} = useAppContext();
+  const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate(); // Navigation hook
 
   const [musicOptions, setMusicOptions] = useState([]);
@@ -21,7 +21,9 @@ const MusicSelectionForm = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       toast.warn("You must sign in to access this page.");
-      navigate("/signin");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000);
     }
   }, [isAuthenticated, navigate]);
 
@@ -92,7 +94,7 @@ const MusicSelectionForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
       // Prepare selections based on user input
       const selections = musicOptions
@@ -111,7 +113,7 @@ const MusicSelectionForm = () => {
         customRequests: userSelection?.customRequests || [],
         totalCost,
       };
-  
+
       // Add or update music selection
       const musicUrl = `http://localhost:3001/musics${isEditMode ? `/${userSelection._id}` : ""}`;
       const musicMethod = isEditMode ? "PUT" : "POST";
@@ -121,7 +123,7 @@ const MusicSelectionForm = () => {
         data: musicSelectionData,
         headers: { "Content-Type": "application/json" },
       });
-  
+
       // Add or update shopping card entry
       const shoppingCardUrl = `http://localhost:3001/shoppingcards`;
       const shoppingCardData = {
@@ -132,10 +134,10 @@ const MusicSelectionForm = () => {
       await axios.post(shoppingCardUrl, shoppingCardData, {
         headers: { "Content-Type": "application/json" },
       });
-  
+
       // Optionally update frontend context
       addToShoppingCard(shoppingCardData);
-  
+
       toast.success(`Music selection ${isEditMode ? "updated" : "created"} successfully!`);
     } catch (error) {
       console.error("Error saving music selection:", error);
@@ -143,19 +145,20 @@ const MusicSelectionForm = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
-    <div className="relative min-h-screen bg-cover bg-center px-20 py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
+    <div className="relative min-h-screen bg-cover bg-center px-4 lg:px-20 py-6 lg:py-10 bg-[url('https://i.postimg.cc/mgjJ2Qjw/music1.png')]">
+      <ToastContainer />
       {/* Overlay for controlling opacity */}
       <div className="absolute inset-0 bg-white/50"></div>
-      {/*<div className="relative container mx-auto bg-BgGray bg-opacity-80 shadow-md rounded-lg p-8 space-y-6">*/}
-      <div className="relative mx-auto w-full max-w-[calc(70%-50px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-      <ToastContainer />
-        <h2 className="text-2xl font-bold text-center text-BgFont mb-6">Select your Music bands</h2>
+      <div className="relative mx-auto w-full max-w-full lg:max-w-[calc(70%-100px)] bg-opacity-80 shadow-md rounded-lg p-4 space-y-6">
+        <h2 className="text-2xl font-bold text-center text-BgFont mb-4">Select your Music bands</h2>
         <form onSubmit={handleSubmit}>
-          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mb-4">You can choose several Music instrument, bands, Dj and etc. Price is counted per hour!</h3>
-          <div className="grid grid-cols-4 gap-4">
+          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mb-4">
+            You can choose several Music instrument, bands, DJ and etc. Price is counted per hour!
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {musicOptions.map((option) => (
               <div
                 key={option._id}
@@ -171,17 +174,18 @@ const MusicSelectionForm = () => {
                     placeholder="Hours"
                     value={hours[option._id] || ""}
                     onChange={(e) => handleHoursChange(option._id, e.target.value)}
-                    className="w-full p-2 border border-BgPinkDark rounded hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"/>
+                    className="w-full p-2 border border-BgPinkDark rounded hover:border-BgPinkDark hover:border-2 focus:outline-none focus:border-BgPinkDark"
+                  />
                 </label>
                 {hoveredOption === option._id && (
-              <div className="absolute top-2 left-full ml-4 p-8 bg-customBg1 border rounded shadow-lg w-96 z-10">
-              <p className="text-xl text-BgFont font-semibold">{option.description}</p>
-            </div>
-              )}
+                  <div className="absolute top-2 left-full ml-4 p-8 bg-customBg1 border rounded shadow-lg w-96 z-10">
+                    <p className="text-xl text-BgFont font-semibold">{option.description}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
-          <h3 className="text-lg font-semibold text-BgFont border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
+          <h3 className="text-m lg:text-lg font-bold text-BgFont border-b pb-2 mt-6 mb-4">Add Custom Requests</h3>
           <div className="flex gap-2">
             <textarea
               type="text"
@@ -193,7 +197,8 @@ const MusicSelectionForm = () => {
             <button
               type="button"
               onClick={addCustomRequest}
-              className="p-2 bg-BgPinkMiddle text-BgFont font-bold rounded hover:bg-BgPinkDark"> Add Request
+              className="p-2 bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold rounded hover:bg-BgPinkDark">
+              Add Request
             </button>
           </div>
           <ul className="mt-4 list-disc pl-6 text-BgFont">
@@ -201,12 +206,12 @@ const MusicSelectionForm = () => {
               <li key={index}>{request.description}</li>
             ))}
           </ul>
-          <h3 className="text-2xl font-bold text-center text-BgFont mt-6">
+          <h3 className="text-lg lg:text-2xl font-semibold lg:font-bold text-center text-BgFont mt-6">
             Total Cost: <span className="text-BgFont">{userSelection?.totalCost || 0} €</span>
           </h3>
           <button
             type="submit"
-            className="block w-full mt-6 p-3 bg-BgPinkMiddle text-BgFont font-bold rounded-lg hover:bg-BgPinkDark"
+            className="block w-full mt-6 p-3 bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold rounded-lg hover:bg-BgPinkDark"
             disabled={loading}>
             {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
           </button>
@@ -217,11 +222,3 @@ const MusicSelectionForm = () => {
 };
 
 export default MusicSelectionForm;
-
-
-
-
-
-
-
-

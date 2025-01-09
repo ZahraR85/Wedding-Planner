@@ -51,7 +51,7 @@ const UserSelections = ({ userId }) => {
     <div className="user-selections">
 
 
-      <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80 space-y-4 p-4">
+      <div className="mx-auto  max-w-[calc((6)0%-130px)] text-BgFont space-y-4 p-4">
         {userSelections.selections.map((item, idx) => (
           <div key={idx} className="mb-4 p-2 bg-white rounded shadow">
             <div className="flex items-center space-x-4">

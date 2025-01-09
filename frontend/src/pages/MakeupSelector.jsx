@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import DescriptionBox from "../components/MakeupDescriptionBox";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -53,7 +52,7 @@ const features = [
 ];
 
 const MakeupSelector = () => {
-  const { userId, isAuthenticated, addToShoppingCard} = useAppContext();
+  const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate();
   const [selectedFeatures, setSelectedFeatures] = useState({
     makeup: { selected: false, price: 400 },
@@ -67,14 +66,13 @@ const MakeupSelector = () => {
   const [currentDescription, setCurrentDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  //const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000);
     }
   }, [isAuthenticated, navigate]);
 
@@ -82,11 +80,8 @@ const MakeupSelector = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/makeups?userID=${userId}`);
-        //console.log("API Response:", response.data); // Log the response
-  
         if (response.data) {
           const existingData = response.data;
-  
           setSelectedFeatures({
             makeup: existingData.makeup || { selected: false, price: 400 },
             dress: existingData.dress || { selected: false, price: 500 },
@@ -102,12 +97,12 @@ const MakeupSelector = () => {
         toast.error("Failed to fetch data. Please try again later.");
       }
     };
-  
+
     if (userId) {
       fetchUserData();
     }
   }, [userId]);
-  
+
   // Calculate the total dynamically
   useEffect(() => {
     const calculatedTotal = Object.keys(selectedFeatures).reduce((sum, key) => {
@@ -138,91 +133,90 @@ const MakeupSelector = () => {
         shoes: selectedFeatures.shoes?.selected || false,
         special: selectedFeatures.special?.selected || false,
       };
-  
+
       await axios.post(makeupUrl, requestData, {
         headers: { "Content-Type": "application/json" },
       });
 
-     // Save shopping cart data
-    const shoppingCartData = {
-      userID: userId,
-      serviceName: 'Makeup',
-      price: total,
-    };
-console.log (shoppingCartData);
-    await axios.post(shoppingCartUrl, shoppingCartData, {
-      headers: { "Content-Type": "application/json" },
-    });
+      // Save shopping cart data
+      const shoppingCartData = {
+        userID: userId,
+        serviceName: 'Makeup',
+        price: total,
+      };
+      console.log(shoppingCartData);
+      await axios.post(shoppingCartUrl, shoppingCartData, {
+        headers: { "Content-Type": "application/json" },
+      });
 
-    // Frontend-only addition (optional if the backend handles the cart data)
-    addToShoppingCard(shoppingCartData);
+      // Frontend-only addition (optional if the backend handles the cart data)
+      addToShoppingCard(shoppingCartData);
 
-    toast.success("Makeup data and total price added to shopping cart successfully!");
-    navigate("/shoppingCard");
-  } catch (error) {
-    console.error("Failed to save makeup data or add to shopping cart.", error);
-    toast.error("Error saving data or adding to shopping cart.");
-  } finally {
-    setLoading(false);
-  }
-};
+      toast.success("Makeup data and total price added to shopping cart successfully!");
+      setTimeout(() => {
+        navigate("/shoppingCard");
+      }, 3000);
+    } catch (error) {
+      console.error("Failed to save makeup data or add to shopping cart.", error);
+      toast.error("Error saving data or adding to shopping cart.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-
     <div>
       <ToastContainer />
+      <div className="relative min-h-screen bg-cover bg-center lg:pt-20 sm:p-6 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
+        <div className="absolute inset-0 bg-white/50"></div>
+        <div className="relative mx-auto w-full lg:max-w-[calc(60%-250px)] sm:max-w-[calc(100%-40px)] bg-opacity-80 shadow-md rounded-lg p-4 sm:p-6 space-y-3">
+          <h1 className="text-xl lg:text-2xl font-bold text-BgFont mt-4 lg:m-10 text-center">Select services that you need:</h1>
 
-      <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/TwNqd9Bm/makeup2.jpg')]">
-  {/* Overlay for controlling opacity */}
-  <div className="absolute inset-0 bg-white/50"></div>
-  <div className="relative mx-auto w-full max-w-[calc(60%-250px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-    <h1 className="text-2xl font-bold text-BgFont m-10">Select services that you need:</h1>
+          {/* Feature Selection */}
+          <form className="space-y-3 font-bold">
+            {features.map((feature) => (
+              <div key={feature.id} className="flex items-center justify-between text-BgFont">
+                <div
+                  onMouseEnter={() => setCurrentDescription(feature.description)}
+                  onMouseLeave={() => setCurrentDescription("")}
+                  className="cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    id={feature.id}
+                    checked={selectedFeatures[feature.id]?.selected || false}
+                    onChange={() => handleCheckboxChange(feature.id)}
+                    className="mr-2 w-5 h-5"
+                  />
+                  <label htmlFor={feature.id} className="text-sm lg:text-lg font-semibold lg:font-bold">
+                    {feature.label} ({feature.price} €)
+                  </label>
+                </div>
+              </div>
+            ))}
+          </form>
 
-    {/* Feature Selection */}
-    <form className="space-y-4 font-bold">
-      {features.map((feature) => (
-        <div key={feature.id} className="flex items-center text-BgFont justify-between">
-          <div
-            onMouseEnter={() => setCurrentDescription(feature.description)}
-            onMouseLeave={() => setCurrentDescription("")}
-            className="cursor-pointer"
+          {/* Total Price */}
+          <div className="text-center text-lg lg:text-xl text-BgFont mt-4 font-semibold lg:font-bold">Total: {total} €</div>
+
+          {/* Submit Button */}
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full bg-BgPinkMiddle text-m lg:text-lg text-BgFont font-semibold lg:font-bold py-2 px-4 rounded hover:bg-BgPinkDark"
+            disabled={loading}
           >
-            <input
-              type="checkbox"
-              id={feature.id}
-              checked={selectedFeatures[feature.id]?.selected || false}
-              onChange={() => handleCheckboxChange(feature.id)}
-              className="mr-2 w-5 h-5" // Larger checkbox
-            />
-            <label htmlFor={feature.id} className="text-lg font-bold">
-              {feature.label} ({feature.price} €)
-            </label>
-          </div>
+            {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
+          </button>
         </div>
-      ))}
-    </form>
 
-    {/* Total Price */}
-    <div className="text-center text-xl text-BgFont mt-4 font-bold">Total: {total} €</div>
-
-    {/* Submit Button */}
-    <button
-      type="button"
-      onClick={handleSubmit}
-      className="w-full bg-BgPinkMiddle text-BgFont font-bold py-2 px-4 rounded hover:bg-BgPinkDark"
-      disabled={loading}
-    >
-      {loading ? "Processing..." : isEditMode ? "Update" : "Submit"}
-    </button>
-  </div>
-
-  {/* Fixed Description Box */}
-  <div className="absolute top-20 right-20 bg-white shadow-lg p-5 w-96 rounded-lg">
-    <h2 className="text-xl font-bold text-BgFont mb-2">Feature Description:</h2>
-    <p className="text-BgFont font-semibold">{currentDescription || "You can hover over a feature to see its details!"}</p>
-  </div>
-</div>
-</div>
+        {/* Fixed Description Box */}
+        <div className="absolute top-20 right-2 lg:right-20 bg-white shadow-lg p-3 lg:p-5 w-80 lg:w-96 rounded-lg">
+          <h2 className="text-m lg:text-lg font-bold text-BgFont mb-2">Feature Description:</h2>
+          <p className="text-BgFont text-sm sm:text-base">{currentDescription || "Hover over a feature to see its details!"}</p>
+        </div>
+      </div>
+    </div>
   );
 };
 

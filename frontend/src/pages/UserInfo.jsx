@@ -24,8 +24,10 @@ const UserInfoForm = () => {
   // Redirect unauthenticated users
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("You must sign in to access this page.");
-      navigate("/signin");
+      toast.warn("You must sign in to access this page.");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000); 
     } else {
       checkExistingForm();
     }
@@ -86,8 +88,6 @@ const UserInfoForm = () => {
   return (
     <div >
       <ToastContainer />
-
-
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/sg98vGsB/Screenshot-2024-12-30-171841.png')]">
         <h2 className="text-3xl font-bold text-center text-BgFont ">{isUpdating ? "Update Your Information" : "Create Your Information"}</h2>
         <br />   <br />
