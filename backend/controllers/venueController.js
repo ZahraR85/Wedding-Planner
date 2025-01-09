@@ -57,12 +57,59 @@ export const getAllVenues = async (req, res) => {
   }
 };
 // Update a price of venue
-export const updateVenue = async (req, res) => {
+/*export const updateVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
     const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
     res.status(200).json(updatedVenue);
   } catch (error) {
+    res.status(500).json({ message: "Error updating venue", error });
+  }
+};
+*/
+// Update a venue
+export const updateVenue = async (req, res) => {
+  try {
+    const { venueId } = req.params;
+
+    // Extract existing data from the request body
+    const { name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
+
+    // Find the venue by its ID
+    const venue = await Venue.findById(venueId);
+
+    if (!venue) {
+      return res.status(404).json({ message: "Venue not found" });
+    }
+
+    // Update venue fields
+    venue.name = name || venue.name;
+    venue.city = city || venue.city;
+    venue.capacity = capacity || venue.capacity;
+    venue.price = price || venue.price;
+    venue.discount = discount || venue.discount;
+    venue.address = address || venue.address;
+    venue.description = description || venue.description;
+    venue.latitude = latitude || venue.latitude;
+    venue.longitude = longitude || venue.longitude;
+
+    // Handle image updates
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map((file) => file.path); // Collect new image paths
+      venue.images = [...venue.images, ...newImages]; // Append new images to existing ones
+    }
+
+    // Handle image removal if specified
+    if (req.body.removeImages && Array.isArray(req.body.removeImages)) {
+      venue.images = venue.images.filter((image) => !req.body.removeImages.includes(image));
+    }
+
+    // Save the updated venue
+    const updatedVenue = await venue.save();
+
+    res.status(200).json({ message: "Venue updated successfully!", updatedVenue });
+  } catch (error) {
+    console.error("Error updating venue:", error);
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
@@ -100,7 +147,27 @@ export const getVenueByVenueId = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch venue.", error });
   }
 };
+/*export const getVenueByVenueId = async (req, res) => {
+  try {
+    const { venueId } = req.params;
 
+    const venue = await Venue.findById(venueId);
+
+    if (!venue) return res.status(404).json({ message: "Venue not found." });
+
+    // Convert image paths to URLs if needed
+    const updatedVenue = {
+      ...venue._doc,
+      images: venue.images.map((image) => `${process.env.BASE_URL}/${image}`),
+    };
+
+    res.status(200).json(updatedVenue);
+  } catch (error) {
+    console.error("Error fetching venue:", error);
+    res.status(500).json({ message: "Failed to fetch venue.", error });
+  }
+};
+*/
 // Get venues by user ID
 export const getVenuesByUserId = async (req, res) => {
   try {

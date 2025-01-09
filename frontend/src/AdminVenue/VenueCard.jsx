@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom';
 
-const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
+const VenueCard = ({ venue, onEdit, onDelete }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
@@ -37,8 +37,7 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
         >
           View Details
         </button>
-        {isAdmin && (
-          <>
+
             <button
               onClick={() => onEdit(venue)}
               className="btn btn-primary text-white"
@@ -51,8 +50,7 @@ const VenueCard = ({ venue, onEdit, onDelete, isAdmin }) => {
             >
               Delete
             </button>
-          </>
-        )}
+
       </div>
     </div>
     

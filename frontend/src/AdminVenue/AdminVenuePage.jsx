@@ -17,9 +17,10 @@ const AdminVenuePage = () => {
     });
   };
 
-  const handleUpdateVenue = (venueId, updatedData) => {
-    updateVenue(venueId, updatedData).then((updatedVenue) => {
-      setVenues(venues.map((v) => (v._id === venueId ? updatedVenue : v)));
+  const handleUpdateVenue = (venueData) => {
+    updateVenue(editVenue._id, venueData).then((updatedVenue) => {
+      setVenues(venues.map((v) => (v._id === editVenue._id ? updatedVenue : v)));
+      setEditVenue(null); // Reset form to Add mode
     });
   };
 
@@ -38,7 +39,6 @@ const AdminVenuePage = () => {
       />
       <VenueList
         venues={venues}
-        isAdmin
         onEdit={setEditVenue}
         onDelete={handleDeleteVenue}
       />
