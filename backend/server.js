@@ -22,6 +22,19 @@ import galleryRouter from './routes/galleryRouter.js';
 import todolistRouter  from './routes/todolist.js';
 import shoppingCardRouter from './routes/shoppingCardRouter.js';
 
+
+
+import audioRouter from './routes/audioRouter.js'; // Corrected path
+import chatRouter from './routes/chatRouter.js'; // Corrected path
+import imageRouter from './routes/imageRouter.js'; // Corrected path
+
+// import errorHandler from './middlewares/errorHandler.js';
+// import validateProvider from './middlewares/validateProvider.js';
+// import validateMode from './middlewares/validateMode.js';
+
+
+
+
 dotenv.config(); // Load environment variables
 
 // Ensure 'uploads' directory exists
@@ -43,6 +56,13 @@ app.use(
     credentials: true, // Allow sending cookies if needed
   })
 ); 
+
+
+
+
+// app.use(cors({ origin: '*' }), express.json(), validateProvider, validateMode);
+
+
 // Setup file upload with Multer
 const upload = multer({
   dest: uploadsDir,  // Directory to store images temporarily
@@ -75,6 +95,13 @@ app.use("/todolist", todolistRouter);
 app.use("/shoppingcards", shoppingCardRouter);
 
 
+
+app.use('/v1/audio/speech', audioRouter);
+app.use('/v1/chat/completions', chatRouter);
+app.use('/v1/images/generations', imageRouter);
+// app.use(errorHandler);
+
+
 app.get("/", (req, res) => {
   console.log(`Unhandled request: ${req.method} ${req.url}`);
   res.status(404).send("Not found");
@@ -83,3 +110,6 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server with Database is listening on http://localhost:${PORT}`);
 });
+
+
+
