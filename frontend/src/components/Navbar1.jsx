@@ -1,27 +1,33 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAppContext } from '../context/AppContext';
-import Navbar from "./Navbar";
-import logo from '../images/logo8.jpg';
-import { FaHome, FaUser, FaShoppingCart, FaTimes, FaBars} from 'react-icons/fa'; 
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
+import logo from "../images/logo8.jpg";
+import { FaHome, FaUser, FaShoppingCart, FaTimes, FaBars } from "react-icons/fa";
 
 const Navbar1 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { userId, isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut, shoppingCardCount, setHoveredDropdown, clearHoveredDropdown } = useAppContext();
+  const { 
+    userId, 
+    hoveredDropdown, 
+    setHoveredDropdown, 
+    isAuthenticated, 
+    role, 
+    signOut, 
+    shoppingCardCount 
+  } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Log changes for debugging
     console.log("isAuthenticated:", isAuthenticated, "role:", role);
   }, [isAuthenticated, role]);
 
   const handleMouseEnter = () => {
-    setHoveredDropdown("adminPanel"); // Set the hovered dropdown when the user hovers over it
+    setHoveredDropdown("adminPanel");
   };
 
   const handleMouseLeave = () => {
-    clearHoveredDropdown(); // Clear the hovered dropdown when the user stops hovering
+    setHoveredDropdown(null);
   };
 
   return (
@@ -52,45 +58,41 @@ const Navbar1 = () => {
                 Dashboard
               </Link>
             </li>
+            {isAuthenticated && role === "admin" && (
+  <li className="relative group">
+    <span className="hidden lg:block hover:underline">Admin Panel</span>
+    {/* Dropdown */}
+    <div className="absolute top-full left-0 w-[400px] max-w-[50vw] bg-BgKhaki text-BgFont shadow-lg mt-2 p-4 opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300">
+      <ul className="flex flex-col items-start space-y-4">
+        <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
+          <Link to="/GalleryManagement">Manage Gallery</Link>
+        </li>
+        <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
+          <Link to="/Admin/Venue">Manage Venue</Link>
+        </li>
+      </ul>
+    </div>
+  </li>
+)}
           </ul>
         </div>
         <Link to="/" className="hidden lg:block">
           <img src={logo} alt="Logo" className="h-16" />
         </Link>
         <ul className="flex font-bold text-BgFont items-center space-x-12">
-          {isAuthenticated && role === "admin" && (
-            <li
-              className="relative"
-              onMouseEnter={handleMouseEnter} // Trigger on hover
-              onMouseLeave={handleMouseLeave} // Clear hover when mouse leaves
-            >
-              <button
-                onClick={() => setDropdownOpen(!isDropdownOpen)}
-                className="hidden lg:block hover:underline focus:outline-none"
-              >
-                Admin Panel {isDropdownOpen ? "▲" : "▼"}
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute top-full left-0 w-[200px] bg-white text-black shadow-lg mt-2">
-                  <ul className="flex flex-col items-start space-y-2">
-                    <li className="hover:underline">
-                      <Link to="/GalleryManagement">Manage Gallery</Link>
-                    </li>
-                    <li className="hover:underline">
-                      <Link to="/Admin/Venue">Manage Venue</Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </li>
-          )}
+
+
+
+
           <li>
             <Link
               to="/ShoppingCard"
               className="flex items-center space-x-1 hover:underline"
             >
               <FaShoppingCart className="text-xl" />
-              <span className="text-sm md:text-base whitespace-nowrap">Shopping Card</span>
+              <span className="text-sm md:text-base whitespace-nowrap">
+                Shopping Card
+              </span>
               {shoppingCardCount > 0 && (
                 <span className="ml-2 mb-4 text-lg text-red-600">
                   {shoppingCardCount}
@@ -100,43 +102,18 @@ const Navbar1 = () => {
           </li>
           <li>
             {isAuthenticated ? (
-              <button className= "hidden lg:block " onClick={signOut}>Sign Out</button>
+              <button className="hidden lg:block" onClick={signOut}>
+                Sign Out
+              </button>
             ) : (
               <Link
                 to="/signin"
-                className="hidden lg:flex items-center space-x-1 hover:underline focus:outline-none"
+                className="hidden lg:flex items-center space-x-1 hover:underline"
               >
                 <FaUser className="text-xl" />
                 <span>Signin | Register</span>
               </Link>
             )}
-          </li>
-        </ul>
-      </div>
-
-      {/* Second Row */}
-      <div className="hidden text-BgFont items-center justify-around bg-gray-100 px-4 py-2 text-sm md:flex">
-        <ul className="flex font-bold items-center justify-around space-x-12 text-sm">
-          <li className="hover:underline">
-            <Link to="/userinfo">User Information</Link>
-          </li>
-          <li className="hover:underline">
-            <Link to="/Guests">Invitation of Guests</Link>
-          </li>
-          <li className="hover:underline">
-            <Link to="/VenueSelections">Book your Venue</Link>
-          </li>
-          <li className="hover:underline">
-            <Link to="/Catering">Catering</Link>
-          </li>
-          <li className="hover:underline">
-            <Link to="/photography">Photography</Link>
-          </li>
-          <li className="hover:underline">
-            <Link to="/Makeup">Makeup, Wedding Dress</Link>
-          </li>
-          <li className="hover:underline">
-            <Link to="/Musics">Music Band</Link>
           </li>
         </ul>
       </div>
@@ -156,47 +133,47 @@ const Navbar1 = () => {
             </div>
             <hr />
             <div className="flex flex-col gap-4 p-6">
-              <Link to="/dashboard" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/dashboard" className="text-BgFont hover:underline">
                 Dashboard
               </Link>
-              <Link to="/userinfo" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/userinfo" className="text-BgFont hover:underline">
                 User Information
               </Link>
-              <Link to="/Guests" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/Guests" className="text-BgFont hover:underline">
                 Invitation of Guests
               </Link>
-              <Link to="/VenueSelections" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/VenueSelections" className="text-BgFont hover:underline">
                 Book your Venue
               </Link>
-              <Link to="/Catering" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/Catering" className="text-BgFont hover:underline">
                 Catering
               </Link>
-              <Link to="/photography" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/photography" className="text-BgFont hover:underline">
                 Photography
               </Link>
-              <Link to="/Makeup" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/Makeup" className="text-BgFont hover:underline">
                 Makeup, Wedding Dress
               </Link>
-              <Link to="/Musics" className="text-BgFont hover:text-red-500 hover:underline">
+              <Link to="/Musics" className="text-BgFont hover:underline">
                 Music Band
               </Link>
             </div>
             <hr />
             <br />
             {isAuthenticated ? (
-              <button className="flex ml-4 text-BgFont items-center space-x-1 hover:text-red-500 hover:underline focus:outline-none" onClick={signOut}>Sign Out</button>
-            ) : (
-              <Link
-                to="/signin"
-                className="flex ml-4 text-BgFont items-center space-x-1 hover:text-red-500 hover:underline focus:outline-none"
+              <button
+                className="ml-4 text-BgFont hover:underline"
+                onClick={signOut}
               >
+                Sign Out
+              </button>
+            ) : (
+              <Link to="/signin" className="ml-4 text-BgFont hover:underline">
                 <FaUser className="text-xl text-BgFont" />
                 <span>Signin | Register</span>
               </Link>
             )}
-
           </div>
-          
           <div
             className="flex-1 bg-black opacity-50"
             onClick={() => setMenuOpen(false)}
@@ -206,7 +183,5 @@ const Navbar1 = () => {
     </nav>
   );
 };
-
-<Navbar />
 
 export default Navbar1;
