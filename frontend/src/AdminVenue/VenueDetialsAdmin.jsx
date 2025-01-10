@@ -99,15 +99,15 @@ const VenueDetailsAdmin = () => {
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
       <div className="absolute inset-0 bg-white/50"></div>
-      <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
-        <h1 className="text-3xl font-bold text-center text-BgFont my-4">{venue.name}</h1>
+      <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg py-5 space-y-4">
+        <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
         <div className="relative">
           <div className="overflow-hidden">
             <img
               src={`http://localhost:3001/${venue.images[currentIndex]}`}
               alt={`Venue ${currentIndex}`}
               className="w-full h-auto object-cover rounded-md"
-              style={{ padding: 0 }}
+             // style={{ padding: 0 , margin: 0}}
             />
           </div>
           <div className="absolute top-1/2 left-0 right-0 flex justify-between">

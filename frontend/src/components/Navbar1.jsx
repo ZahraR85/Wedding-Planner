@@ -1,11 +1,11 @@
-import { useState } from "react";
-import {useEffect} from 'react';
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import Navbar from "./Navbar";
 import logo from '../images/logo8.jpg';
 import { FaHome, FaUser, FaShoppingCart, FaTimes, FaBars} from 'react-icons/fa'; 
 
-const Navbar = () => {
+const Navbar1 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { userId, isDropdownOpen, setDropdownOpen, isAuthenticated, role, signOut, shoppingCardCount} = useAppContext();
   const location = useLocation();
@@ -17,7 +17,7 @@ const Navbar = () => {
   }, [isAuthenticated, role]);
 
   return (
-    <nav className="border-b bg-BgKhaki shadow-md">
+    <nav className="border-b bg-BgKhaki shadow-md sticky top-0 z-50">
       {/* First Row */}
       <div className="flex items-center text-BgFont justify-between px-4 py-2 md:px-8">
         <button
@@ -192,7 +192,10 @@ const Navbar = () => {
         </div>
       )}
     </nav>
+    
   );
-};
 
-export default Navbar;
+};
+<Navbar />
+
+export default Navbar1;
