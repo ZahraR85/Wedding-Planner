@@ -30,10 +30,10 @@ const UserSelections = ({ userId }) => {
   }, [userId]);
 
 
-    // Handle errors
-    if (error) {
-      return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
-    }
+  // Handle errors
+  if (error) {
+    return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -48,33 +48,33 @@ const UserSelections = ({ userId }) => {
   }
 
   const items = Object.entries(userSelections)
-  .filter(([key, value]) => {
-    // Include all items with 'number' and 'price', or the special case for 'physicalAlbum'
-    return (value?.number !== undefined && value?.price !== undefined) || key === "physicalAlbum";
-  })
-  .map(([key, value]) => {
-    if (key === "physicalAlbum") {
+    .filter(([key, value]) => {
+      // Include all items with 'number' and 'price', or the special case for 'physicalAlbum'
+      return (value?.number !== undefined && value?.price !== undefined) || key === "physicalAlbum";
+    })
+    .map(([key, value]) => {
+      if (key === "physicalAlbum") {
+        return {
+          name: key,
+          quantity: value.selected ? 1 : 0, // Treat 'selected' as a boolean toggle
+          price: value.price,
+        };
+      }
       return {
         name: key,
-        quantity: value.selected ? 1 : 0, // Treat 'selected' as a boolean toggle
+        quantity: value.number,
         price: value.price,
       };
-    }
-    return {
-      name: key,
-      quantity: value.number,
-      price: value.price,
-    };
-  });
+    });
   return (
-    <div className="user-selections mx-auto max-w-xl text-BgFont  space-y-4 p-4">
+    <div className="user-selections mx-auto max-w-xl text-xl text-BgFont  space-y-4 p-4">
       <div className="space-y-2">
         {items.map((item, index) => (
           <div key={index} className="text-lg">
             {item.quantity > 0 ? (
               <>
                 ✔ {item.name}:{" "}
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-BgFont ">
                   ${item.price} for {item.quantity} hour(s) Total: ${item.price * item.quantity}
                 </span>
               </>
@@ -87,8 +87,10 @@ const UserSelections = ({ userId }) => {
           </div>
         ))}
       </div>
-      <p className="font-semibold">Total Cost: ${userSelections.total || 0}</p>
-      <p className="mt-4 text-sm text-gray-500">
+      <br />
+      <br />
+      <p style={{ fontSize: "16px", color: "#555", fontWeight: "bold" }}>Total Cost: ${userSelections.total || 0}</p>
+      <p style={{ fontSize: "0.8rem", color: "#555" }}>
         Last Updated: {userSelections.updatedAt ? new Date(userSelections.updatedAt).toLocaleString() : "No Update Info"}
       </p>
     </div>

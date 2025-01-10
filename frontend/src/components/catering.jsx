@@ -65,7 +65,7 @@ const UserSelections = () => {
   }
 
   return (
-    <div className="user-selections mx-auto max-w-xl text-BgFont space-y-4 p-4">
+    <div className="user-selections mx-auto max-w-xl text-xl text-BgFont space-y-4 p-4">
 
       <div className="space-y-2">
         {items.map((item, index) => (
@@ -86,8 +86,9 @@ const UserSelections = () => {
           </div>
         ))}
       </div>
-      <p className="font-semibold">Total Cost: ${userSelections.total || 0}</p>
-      <p className="mt-4 text-sm text-gray-500">
+      <br /><br />
+      <p style={{ fontSize: "16px", color: "#555" , fontWeight: "bold" }}>Total Cost: ${userSelections.total || 0}</p>
+      <p style={{ fontSize: "0.8rem", color: "#555"  }}>
         Last Updated: {userSelections.updatedAt ? new Date(userSelections.updatedAt).toLocaleString() : "No Update Info"}
       </p>
     </div>

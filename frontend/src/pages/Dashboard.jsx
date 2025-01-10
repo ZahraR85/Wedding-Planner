@@ -82,30 +82,30 @@ const Dashboard = () => {
       </div>
 
       {/* Header */}
-      <h2 className="text-4xl font-bold text-BgFont text-center mt-6 mb-4 bg-[#e8dfcf] p-6 rounded-lg shadow-md">Dashboard Overview</h2>
+      <h2 className="text-4xl font-bold text-BgFont text-center mt-6 mb-4 bg-[#e8dfcf] p-6 font-serif rounded-lg shadow-md">Dashboard Overview</h2>
 
       {/* Rest of the components in one row */}
       <div className="grid grid-cols-4 gap-4">
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Music</h2>
+          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full font-serif shadow">Music</h2>
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#f5d0cb] w-[350px] h-[600px]">
             <Music userId={userId} />
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Catering</h2>
+          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full font-serif shadow">Catering</h2>
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#e8dfcf] bg-gradient-to-br w-[350px] h-[600px]">
             <Catering userId={userId} />
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Makeup</h2>
+          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full font-serif shadow">Makeup</h2>
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#fff2f4] w-[350px] h-[600px]">
             <MakeupUser userId={userId} />
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Photography</h2>
+          <h2 className="text-3xl font-bold text-BgFont text-center mb-4 bg-[#e8dfcf] p-2 rounded-full font-serif shadow">Photography</h2>
           <div className="flex justify-center items-center p-4 rounded-3xl shadow bg-[#d5c0b5] w-[370px] h-[600px]">
             <PhotographyUserSelection userId={userId} />
           </div>
