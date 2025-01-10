@@ -11,9 +11,10 @@ const router = express.Router();
 
 // Routes
 router.post("/", createOrUpdatePhotography); // Create or update a photography entry
-router.get("/", getAllPhotographyEntries); // Get all photography entries
-router.get("/:id", getPhotographyByUserId); // Get photography entry by user ID
-router.get("/", getPhotographyByQuery); // Add this route for query parameter support
-//router.delete("/:id", deletePhotographyEntry); // Delete a photography entry by ID
+
+
+router.get("/", getPhotographyByQuery);      // Handle query-based fetching
+router.get("/all", getAllPhotographyEntries); // Fetch all entries explicitly
+router.get("/:id", getPhotographyByUserId);  // Fetch a single entry by ID
 
 export default router;
