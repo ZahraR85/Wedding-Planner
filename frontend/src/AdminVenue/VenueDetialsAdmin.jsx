@@ -126,40 +126,18 @@ const VenueDetailsAdmin = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="flex-1">
-            <p className="text-lg font-bold text-BgFont my-4">City: {venue.city}</p>
-            <p className="text-lg font-bold text-BgFont my-4">Address: {venue.address}</p>
-            <label className="block text-lg font-bold text-BgFont my-4">
-              Price:  
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="border p-2 w-w-40% rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
-              /> <span>$</span>
-            </label>
-            <label className="block text-lg font-bold text-BgFont my-4">
-              Discount:   
-              <input
-                type="number"
-                value={discount}
-                onChange={(e) => setDiscount(e.target.value)}
-                className="border p-2 w-40% rounded border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
-              /> <span>%</span>
-            </label>
-            <label className="block text-lg font-bold text-BgFont my-4">
-              Total Price:   
-              <input
-                type="number"
-                value={totalPrice}
-                readOnly
-                className="border p-2 w-40% rounded bg-gray-200"
-              /> <span>$</span>
-            </label>
+          <div className="flex-1 m-4">
+            <p className="text-m font-bold text-BgFont my-4">City: {venue.city || "N/A"}</p>
+            <p className="text-m font-bold text-BgFont my-4">Capacity: {venue.capacity || "N/A"}</p>
+            <p className="text-m font-bold text-BgFont my-4">Price: {venue.price ? `${venue.price} €` : "N/A"}</p>
+            <p className="text-m font-bold text-BgFont my-4">Discount: {venue.discount ? `${venue.discount} %` : "N/A"}</p>
+            <p className="text-m font-bold text-BgFont my-4">Total price: {venue.total ? `${venue.total} €` : "N/A"}</p>
+            <p className="text-m font-bold text-BgFont my-4">Address: {venue.address || "N/A"}</p>
           </div>
+
           <div className="flex-1">
-            <p className="text-m text-BgFont my-4">Description: {venue.description}</p>
-            <p className="text-lg text-BgFont my-4">Location: {venue.latitude}, {venue.longitude}</p>
+            <p className="text-m font-semibold text-BgFont my-4">Description: {venue.description}</p>
+            <p className="text-lg font-bold text-BgFont my-4">Location: {venue.latitude}, {venue.longitude}</p>
             <a
               className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 inline-block"
               target="_blank"
@@ -191,7 +169,7 @@ const VenueDetailsAdmin = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 
