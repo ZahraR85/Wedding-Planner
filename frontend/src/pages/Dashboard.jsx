@@ -11,6 +11,7 @@ import Catering from "../components/catering";
 import PhotographyUserSelection from "../components/PhotographyUserSelection";
 import Venue from "../components/venue";
 import Story from "../components/userstory";
+import AI from "../components/DashboardAI";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -26,10 +27,10 @@ const Dashboard = () => {
       toast.warn("You must sign in to access this page.");
       setTimeout(() => {
         navigate("/signin");
-      }, 3000); 
+      }, 3000);
     }
   }, [isAuthenticated, navigate]);
-  
+
   useEffect(() => {
     const checkUserInfo = async () => {
       try {
@@ -37,7 +38,7 @@ const Dashboard = () => {
           toast.warn("You must sign in to access this page.");
           setTimeout(() => {
             navigate("/signin");
-          }, 3000); 
+          }, 3000);
           return;
         }
 
@@ -115,8 +116,8 @@ const Dashboard = () => {
         <div className="flex flex-col items-center">
           {/* <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">Venue</h2> */}
           <div className="flex justify-center items-center p-4 rounded-full shadow-2xl bg-[#fff2f4] h-[400px] w-[400px]">
-  <Venue userId={userId} />
-</div>
+            <Venue userId={userId} />
+          </div>
         </div>
         <div className="flex flex-col items-center">
           {/* <h2 className="text-3xl font-bold text-center mb-4 bg-[#e8dfcf] p-2 rounded-full shadow">story</h2> */}
@@ -125,6 +126,12 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+  
+  
+      <AI/>
+   
+
     </div>
   );
 };

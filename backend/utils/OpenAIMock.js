@@ -52,10 +52,20 @@ class ChatMock {
 
       const text = (() => {
         const userMessage = messages[messages.length - 1]?.content.toLowerCase();
+        if (userMessage.includes('guests answered')) return 'You can view guest responses in the dashboard under the "Guest List" section.';
+        if (userMessage.includes('how many guests are coming')) return 'Currently, 75 guests have confirmed their attendance.';
+        if (userMessage.includes('weather')) return 'The forecast for your wedding day is sunny with a high of 25°C.';
+        if (userMessage.includes('can i pay by loan')) return 'Yes, we offer flexible payment options, including loans. Please contact us for more details.';
+        if (userMessage.includes('makeup artist')) return 'You can choose your preferred makeup artist from our vendor list in the "Services" section.';
+        if (userMessage.includes('venue to city center')) return 'The venue is approximately 20 minutes by car from the city center.';
+        if (userMessage.includes('catering options')) return 'We provide a variety of catering options, including vegetarian, vegan, and gluten-free menus.';
+        if (userMessage.includes('photography packages')) return 'Our photography packages include pre-wedding shoots, wedding day coverage, and post-event albums.';
+        if (userMessage.includes('wedding dress options')) return 'We partner with leading bridal shops to offer you a selection of wedding dresses. Visit the "Dress" section for more.';
+        if (userMessage.includes('music band')) return 'Our platform features several music bands. You can listen to samples and book them directly in the "Music" section.';
+        if (userMessage.includes('payment conditions')) return 'We require a 50% deposit upfront, with the balance due two weeks before the event.';
         if (userMessage.includes('hello')) return 'Hi there! How can I assist you today?';
-        if (userMessage.includes('how are you')) return 'I am just a mock assistant, but I am here to help!';
-        if (userMessage.includes('weather')) return 'The weather is sunny with a chance of code!';
-        return 'I am sorry, I am just a mock model and may not have a real answer to your question.';
+        if (userMessage.includes('how are you')) return 'I am good, and you?';
+        return 'I am sorry, I may not have a real answer to your question. For better assistance, please call us.';
       })();
       if (stream) {
         return new StreamMock(text.split(' '));
