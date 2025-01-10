@@ -46,7 +46,7 @@ export const getPhotographyByUserId = async (req, res) => {
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
     }
-    // console.log("UserIddddd:", userID);
+    console.log("getPhotographyByUserId:", userID);
     const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userID) }).populate("userID", "name email");
     // console.log("Database Query Result:", entry);
     if (!entry) {
@@ -62,21 +62,37 @@ export const getPhotographyByUserId = async (req, res) => {
 
 
 export const getPhotographyByQuery = async (req, res) => {
-  const { userID } = req.query; // Fetch userId from query parameters
+  const { userID } = req.query;
+
   try {
-      if (!userID) {
-          return res.status(400).json({ message: "UserId is required." });
-      }
-      // console.log("UserIdddddlog:", userId);
-      const entry = await Photography.findOne({ userID: new mongoose.Types.ObjectId(userID) }).populate("userID", "name email");
+    console.log("Received userID:", userID);
 
-      if (!entry) {
-          return res.status(404).json({ message: "No information has been documented yet!" });
-      }
+    // Validate userID format
+    if (!userID || !mongoose.Types.ObjectId.isValid(userID)) {
+      console.error("Invalid userID format:", userID);
+      return res.status(400).json({ 
+        message: "Invalid userID. Must be a valid 24-character hexadecimal string." 
+      });
+    }
 
-      res.status(200).json(entry);
+    // Convert to ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userID);
+    console.log("Converted ObjectId:", userObjectId);
+
+    // Query the database
+    const entry = await Photography.findOne({ userID: userObjectId }).populate("userID", "name email");
+    console.log("Database query criteria:", { userID: userObjectId });
+    console.log("Database query result:", entry);
+
+    if (!entry) {
+      console.log("No entry found for userID:", userObjectId);
+      return res.status(404).json({ message: "No information has been documented yet!" });
+    }
+
+    res.status(200).json(entry);
   } catch (error) {
-      res.status(500).json({ message: "Failed to fetch photography data", error: error.message });
+    console.error("Error during getPhotographyByQuery:", error);
+    res.status(500).json({ message: "Failed to fetch photography data", error: error.message });
   }
 };
 

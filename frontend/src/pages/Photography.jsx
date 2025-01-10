@@ -41,30 +41,27 @@ const Photography = () => {
   // Fetch data if the userId is available
   useEffect(() => {
     if (userId) {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/photographies?userID=${userId}`);
-        if (response.data && response.data.length > 0) {
-         const existingData = response.data[0]; // Access the first
-       // if (response.data) {
-         //const existingData = response.data; // Access the first object in the array
-          const updatedFormData = {
-            photography: existingData.photography || { number: 0, price: 300 },
-            videography: existingData.videography || { number: 0, price: 300 },
-            clipConstruction: existingData.clipConstruction || { number: 0, price: 200 },
-            physicalAlbum: existingData.physicalAlbum || { selected: false, price: 500 },
-            giftImageSize: existingData.giftImageSize || { number: 0, price: 10 },
-          };
-          setFormData(updatedFormData);
-          setIsEditMode(true);
-        } else {
-          console.log("No data found for this user. Initializing with defaults.");
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3001/photographies?userID=${userId}`);
+          if (response.data) {
+            // Update to work with either array or object
+            const existingData = Array.isArray(response.data) ? response.data[0] : response.data;
+            const updatedFormData = {
+              photography: existingData.photography || { number: 0, price: 300 },
+              videography: existingData.videography || { number: 0, price: 300 },
+              clipConstruction: existingData.clipConstruction || { number: 0, price: 200 },
+              physicalAlbum: existingData.physicalAlbum || { selected: false, price: 500 },
+              giftImageSize: existingData.giftImageSize || { number: 0, price: 10 },
+            };
+            setFormData(updatedFormData);
+            setIsEditMode(true);
+          }
+        } catch (error) {
+          console.error("Error fetching photography data:", error);
+          toast.error("Failed to fetch photography data!");
         }
-      } catch (error) {
-        console.error("Error fetching photography data:", error);
-        toast.error("please add your selection for photography!");
-      }
-    };
+      };
     fetchData();
     }
   }, [userId]);
