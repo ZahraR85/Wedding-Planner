@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Features1 from '../components/feature1';
+import Features2 from '../components/Feature2';
 import Header1 from '../components/Header1';
 import Feedback from '../components/feedback';
 import SearchVenues from "../components/SearchVenues.jsx";
@@ -27,7 +27,7 @@ const Homepage = () => {
         <SearchVenues />
       </div>
       <Feedback />
-      <Features1 />
+      <Features2 />
       <Staff />
       <ToastContainer />
        

@@ -19,7 +19,7 @@ function FeedbackCards() {
 
     return (
         <div>
-          <h1 className="text-5xl font-extrabold text-center mb-16" style={{ color: '#624e40' }}>
+          <h1 className="text-2xl lg:text-4xl text-BgFont font-bold text-left mb-5 pl-6" style={{ color: '#624e40' }}>
                 Feedbacks
             </h1>
 
