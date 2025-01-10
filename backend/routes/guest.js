@@ -7,6 +7,7 @@ import {
   deleteGuest,
   sendInvitation,
   countYesGuests,
+  sendToAllNotYetGuests,
 } from "../controllers/guestController.js";
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.route("/").get(getGuests).post(createGuest);
 router.route("/:id").get(getGuestById).put(updateGuest).delete(deleteGuest); // Dynamic route for guest by ID
 
 router.post("/send-invitation", sendInvitation);
+router.post("/send-to-all", sendToAllNotYetGuests);
 
 export default router;
