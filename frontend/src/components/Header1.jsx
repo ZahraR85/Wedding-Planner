@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import Navbar from "./Navbar";
 import SearchCity from "./SearchCity";
@@ -36,6 +36,15 @@ const Header1 = ({ onScrollToSearchVenues }) => {
   const handleSearch = (city) => {
     console.log("Search for:", city);
   };
+
+  // Automatically change images every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   return (
     <header className="relative h-screen overflow-hidden">

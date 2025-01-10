@@ -9,7 +9,7 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="card p-4 border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out">
+    <div className="card border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out">
       <div className="flex overflow-x-scroll space-x-2">
         {venue.images?.length > 0 ? (
           venue.images.map((image, index) => (
@@ -25,12 +25,12 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
         )}
       </div>
       <div className="mt-4">
-        <h2 className="text-xl font-bold text-BgFont ">{venue.name}</h2>
-        <p className="text-sm lg:text-m font-semibold text-BgFont mt-2">City: {venue.city}</p>
-        <p className="text-sm lg:text-m font-semibold text-BgFont mt-2">Capacity: {venue.capacity}</p>
-        <p className="text-sm lg:text-m font-semibold text-BgFont mt-2">Price: ${venue.price}</p>
+      <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
+      <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
+      <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
+      <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
       </div>
-      <div className="mt-4 flex justify-between">
+      <div className="p-4 flex justify-between">
         <button
           onClick={handleViewDetails}
           className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"

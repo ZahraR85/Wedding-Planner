@@ -59,7 +59,7 @@ function SearchVenues() {
           {currentItems.map((venue) => (
             <div
               key={venue._id}
-              className="p-4 border bg-customBg border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:border-2 hover:border-BgPinkDark hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
+              className=" border bg-customBg border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:border-2 hover:border-BgPinkDark hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
               onClick={() => navigate(`/venues/${venue._id}`)}
             >
               <img
@@ -68,10 +68,10 @@ function SearchVenues() {
                 className="w-full h-32 object-cover rounded-lg" 
                 onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
               />
-              <h3 className="text-xl text-BgFont font-bold mt-2">{venue.name}</h3>
-              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2">Capacity: {venue.capacity}</p>
-              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2">Price: ${venue.price}</p>
-              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2">City: {venue.city}</p>
+              <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
             </div>
           ))}
         </div>

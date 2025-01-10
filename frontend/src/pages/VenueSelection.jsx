@@ -84,19 +84,19 @@ const VenueSelectionPage = () => {
           {filteredVenues.map((venue) => (
             <div
               key={venue._id}
-              className="p-4 border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
+              className=" border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
               onClick={() => handleVenueClick(venue._id)}
             >              
-            <h3 className="text-xl text-BgFont font-bold mb-2">{venue.name}</h3>
               <img
                 src={`http://localhost:3001/${venue.images?.[0]}`}
                 alt={venue.name}
                 className="w-full h-40 object-cover rounded-lg"
                 onError={(e) => (e.target.src = "https://via.placeholder.com/150")} // Fallback for missing images
               />
-              <p className="text-m text-BgFont font-semibold mt-2">City: {venue.city}</p>
-              <p className="text-m text-BgFont font-semibold mt-2">Capacity: {venue.capacity}</p>
-              <p className="text-m text-BgFont font-semibold mt-2">Price: {venue.price} €</p>
+              <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
             </div>
           ))}
         </div>
