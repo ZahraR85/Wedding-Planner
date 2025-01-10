@@ -21,7 +21,7 @@ import venueSelectionRouter from './routes/venueSelectionRouter.js';
 import galleryRouter from './routes/galleryRouter.js';
 import todolistRouter  from './routes/todolist.js';
 import shoppingCardRouter from './routes/shoppingCardRouter.js';
-
+import paymentRoutes from './routes/PaymentRoutes.js';
 
 
 import audioRouter from './routes/audioRouter.js'; // Corrected path
@@ -105,7 +105,7 @@ app.use("/venueSelections", venueSelectionRouter);
 app.use("/galleries", galleryRouter);
 app.use("/todolist", todolistRouter);
 app.use("/shoppingcards", shoppingCardRouter);
-
+app.use('/payment', paymentRoutes);
 
 
 app.use('/v1/audio/speech', audioRouter);

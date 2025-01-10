@@ -12,7 +12,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe('pk_test_51QfqZ64ZILbzFClJqUkwY');  // Replace with your actual public key
+const stripePromise = loadStripe('pk_test_51QfqZ64ZILbzFClJqUkwY9tPX9JKuN6HtAlpNxZ4VVZhMMqgnU8oRAvsNjbxfTct2qhvUascmYkgb966bqwEajnT00UXpFmhTm');  // Replace with your actual public key
 
 const ShoppingCard = () => {
   const { userId, isAuthenticated, shoppingCard, setShoppingCard } = useAppContext();
@@ -69,23 +69,28 @@ const ShoppingCard = () => {
       toast.error("Stripe.js has not loaded yet.");
       return;
     }
-
-    // Prepare checkout data
-    const response = await axios.post('http://localhost:3001/create-checkout-session', { items: shoppingCard });
-
-    if (response.data.sessionId) {
-      const { sessionId } = response.data;
-
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({ sessionId });
-
-      if (error) {
-        console.error(error);
-        toast.error("There was an issue with the payment process.");
+  
+    try {
+      // Send the items to the backend for session creation
+      const response = await axios.post('http://localhost:3001/payment/create-checkout-session', { items: shoppingCard });
+  
+      if (response.data.sessionId) {
+        const { sessionId } = response.data;
+  
+        // Redirect to Stripe Checkout
+        const { error } = await stripe.redirectToCheckout({ sessionId });
+  
+        if (error) {
+          console.error(error);
+          toast.error("There was an issue with the payment process.");
+        }
       }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error("Failed to initiate checkout. Please try again.");
     }
   };
-
+  
   // Fetch shopping card when the component mounts or userId changes
   useEffect(() => {
     if (userId) {
