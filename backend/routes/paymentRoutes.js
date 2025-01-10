@@ -2,8 +2,9 @@ import { Router } from 'express';
 import Stripe from 'stripe'; 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const router = Router();
+
 router.post('/create-checkout-session', async (req, res) => {
-  const { items } = req.body; // Get the cart items sent from the frontend
+  const { items } = req.body;  // Get the cart items sent from the frontend
   
   // Format the items to fit Stripe's expected format
   const line_items = items.map(item => ({
@@ -11,9 +12,9 @@ router.post('/create-checkout-session', async (req, res) => {
       currency: 'usd', // Or the currency you want to use
       product_data: {
         name: item.name,
-        images: [item.image], // URL of product image
+        images: [item.image],  // URL of product image
       },
-      unit_amount: item.price * 100, // Convert price to cents
+      unit_amount: item.price * 100,  // Convert price to cents
     },
     quantity: item.quantity,
   }));

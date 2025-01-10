@@ -70,15 +70,23 @@ const ShoppingCard = () => {
       return;
     }
   
+    // Prepare a simplified list of items for simulation
+    const itemsForCheckout = shoppingCard.map((item) => ({
+      name: item.serviceName,  // Name of the service
+      price: item.price,       // Price of the service
+      quantity: 1,             // Set to 1 for now
+      image: item.image || '', // If you have images
+    }));
+  
     try {
       // Send the items to the backend for session creation
-      const response = await axios.post('http://localhost:3001/payment/create-checkout-session', { items: shoppingCard });
+      const response = await axios.post('http://localhost:3001/payment/create-checkout-session', { items: itemsForCheckout });
   
-      if (response.data.sessionId) {
-        const { sessionId } = response.data;
+      if (response.data.id) {
+        const { id } = response.data;
   
         // Redirect to Stripe Checkout
-        const { error } = await stripe.redirectToCheckout({ sessionId });
+        const { error } = await stripe.redirectToCheckout({ sessionId: id });
   
         if (error) {
           console.error(error);
@@ -89,7 +97,7 @@ const ShoppingCard = () => {
       console.error("Checkout error:", error);
       toast.error("Failed to initiate checkout. Please try again.");
     }
-  };
+  };  
   
   // Fetch shopping card when the component mounts or userId changes
   useEffect(() => {
