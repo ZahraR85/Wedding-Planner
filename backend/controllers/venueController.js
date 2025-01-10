@@ -72,22 +72,20 @@ export const updateVenue = async (req, res) => {
       description,
       latitude,
       longitude,
-      removeImages, // Extract removeImages from request body
+      removeImages,
     } = req.body;
 
-    // Parse removeImages if it's passed as a JSON string
     let removeImagesArray = [];
     if (removeImages) {
       try {
-        removeImagesArray = JSON.parse(removeImages); // Parse to ensure it's an array
+        removeImagesArray = JSON.parse(removeImages);
       } catch (err) {
         console.error("Error parsing removeImages:", err);
       }
     }
 
-    // Find the venue by ID
+    // Find the venue to update
     const venue = await Venue.findById(venueId);
-
     if (!venue) {
       return res.status(404).json({ message: "Venue not found" });
     }
@@ -103,34 +101,34 @@ export const updateVenue = async (req, res) => {
     venue.latitude = latitude || venue.latitude;
     venue.longitude = longitude || venue.longitude;
 
-    // Handle image removals
+    // Handle image removals (unlink images from disk)
     if (removeImagesArray.length > 0) {
       removeImagesArray.forEach((index) => {
         const imageToRemove = venue.images[index];
         if (imageToRemove) {
-          const imagePath = path.join(__dirname, "../uploads", imageToRemove); // Ensure this is the correct path
-          console.log("Removing image at path:", imagePath); // Log the path for debugging
-
-          // Assuming images are stored in the uploads directory
+          const imagePath = path.join(__dirname, "../uploads", imageToRemove);
           try {
-            fs.unlinkSync(imagePath);
+            fs.unlinkSync(imagePath); // Delete file from the filesystem
           } catch (err) {
             console.error("Error removing image:", err);
           }
         }
       });
 
-      // Remove images from the venue's image array
+      // Remove images from the venue's images array
       venue.images = venue.images.filter((_, index) => !removeImagesArray.includes(index));
     }
 
-    // Save updated venue
-    await venue.save();
+    // Handle new file uploads
+    const newImages = req.files.map((file) => file.path); // New images uploaded
+    venue.images.push(...newImages); // Add new images to the venue's images array
 
-    res.status(200).json({ message: "Venue updated successfully" });
+    // Save the updated venue
+    await venue.save();
+    res.status(200).json({ message: "Venue updated successfully", venue });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error updating venue:", error);
+    res.status(500).json({ message: "Error updating venue", error });
   }
 };
 
@@ -168,27 +166,7 @@ export const getVenueByVenueId = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch venue.", error });
   }
 };
-/*export const getVenueByVenueId = async (req, res) => {
-  try {
-    const { venueId } = req.params;
 
-    const venue = await Venue.findById(venueId);
-
-    if (!venue) return res.status(404).json({ message: "Venue not found." });
-
-    // Convert image paths to URLs if needed
-    const updatedVenue = {
-      ...venue._doc,
-      images: venue.images.map((image) => `${process.env.BASE_URL}/${image}`),
-    };
-
-    res.status(200).json(updatedVenue);
-  } catch (error) {
-    console.error("Error fetching venue:", error);
-    res.status(500).json({ message: "Failed to fetch venue.", error });
-  }
-};
-*/
 // Get venues by user ID
 export const getVenuesByUserId = async (req, res) => {
   try {
