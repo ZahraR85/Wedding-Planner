@@ -7,20 +7,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaTrash } from 'react-icons/fa';
 import "../App.css";
 
+// Stripe imports
+import { loadStripe } from '@stripe/stripe-js';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+
+// Load Stripe with your publishable key
+const stripePromise = loadStripe('pk_test_51QfqZ64ZILbzFClJqUkwY');  // Replace with your actual public key
+
 const ShoppingCard = () => {
   const { userId, isAuthenticated, shoppingCard, setShoppingCard } = useAppContext();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-  // Redirect unauthenticated users to the sign-in page
-  /*useEffect(() => {
-    if (!isAuthenticated) {
-      toast.warn("You must sign in to access this page.");
-      setTimeout(() => {
-        navigate("/signin");
-      }, 3000); 
-    }
-  }, [isAuthenticated, navigate]);
-*/
+  const stripe = useStripe();
+  const elements = useElements();
+
   // Fetch shopping card items from the backend
   const fetchShoppingCard = async () => {
     if (!userId) {
@@ -60,6 +60,29 @@ const ShoppingCard = () => {
     } catch (error) {
       console.error('Failed to remove service:', error);
       toast.error('Failed to remove service!');
+    }
+  };
+
+  // Handle checkout (Stripe)
+  const handleCheckout = async () => {
+    if (!stripe || !elements) {
+      toast.error("Stripe.js has not loaded yet.");
+      return;
+    }
+
+    // Prepare checkout data
+    const response = await axios.post('http://localhost:3001/create-checkout-session', { items: shoppingCard });
+
+    if (response.data.sessionId) {
+      const { sessionId } = response.data;
+
+      // Redirect to Stripe Checkout
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        console.error(error);
+        toast.error("There was an issue with the payment process.");
+      }
     }
   };
 
@@ -105,11 +128,6 @@ const ShoppingCard = () => {
             ))}
           </div>
         )}
-        {shoppingCard.length > 0 && (
-          <div className="mt-8 text-center">
-            {/* <div className="text-xl font-semibold">Total: ${totalPrice.toFixed(2)}</div>*/}
-          </div>
-        )}
       </div>
 
       {/* Right Side: Background Image */}
@@ -119,10 +137,22 @@ const ShoppingCard = () => {
       >
         {/* Centered Total Price */}
         {shoppingCard.length > 0 && (
-          <div className="absolute inset-0 flex items-center justify-center ">
+          <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-BgPink text-BgFont text-xl md:text-3xl font-bold p-4 mb-10 rounded-lg shadow-lg">
               Total: {totalPrice.toFixed(2)} €
             </div>
+          </div>
+        )}
+
+        {/* Checkout Button */}
+        {shoppingCard.length > 0 && (
+          <div className="absolute inset-x-0 bottom-10 flex items-center justify-center">
+            <button
+              onClick={handleCheckout}  // Trigger checkout when clicked
+              className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600"
+            >
+              Proceed to Checkout
+            </button>
           </div>
         )}
       </div>

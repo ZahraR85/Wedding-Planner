@@ -24,7 +24,8 @@
     "nodemailer": "^6.9.16",
     "openai": "^4.78.0",
     "path": "^0.12.7",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "stripe": "^17.5.0"
   },
   "devDependencies": {
     "eslint": "^9.16.0",
