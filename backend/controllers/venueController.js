@@ -58,7 +58,7 @@ export const getAllVenues = async (req, res) => {
   }
 };
 // Update a price of venue
-export const updateVenuePrice = async (req, res) => {
+/*export const updateVenuePrice = async (req, res) => {
   try {
     const { venueId } = req.params;
     const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
@@ -66,22 +66,46 @@ export const updateVenuePrice = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error updating venue", error });
   }
-};
+};*/
+import { fileURLToPath } from 'url';
 
-// Update a venue
+// Get the current file path and directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export const updateVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
+    const {
+      name,
+      city,
+      capacity,
+      price,
+      discount,
+      address,
+      description,
+      latitude,
+      longitude,
+      removeImages, // Extract removeImages from request body
+    } = req.body;
 
-    // Extract existing data from the request body
-    const { name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
+    // Parse removeImages if it's passed as a JSON string
+    let removeImagesArray = [];
+    if (removeImages) {
+      try {
+        removeImagesArray = JSON.parse(removeImages); // Parse to ensure it's an array
+      } catch (err) {
+        console.error("Error parsing removeImages:", err);
+      }
+    }
 
-    // Find the venue by its ID
+    // Find the venue by ID
     const venue = await Venue.findById(venueId);
 
     if (!venue) {
       return res.status(404).json({ message: "Venue not found" });
     }
+
     // Update venue fields
     venue.name = name || venue.name;
     venue.city = city || venue.city;
@@ -93,39 +117,37 @@ export const updateVenue = async (req, res) => {
     venue.latitude = latitude || venue.latitude;
     venue.longitude = longitude || venue.longitude;
 
-    // Handle image updates
-    if (req.files && req.files.length > 0) {
-      const newImages = req.files.map((file) => file.path); // Collect new image paths
-      venue.images = [...venue.images, ...newImages]; // Append new images to existing ones
-    }
-    console.log("Request body:", req.body);
-    console.log("Request files:", req.files);
-    // Handle image removal if specified
-    
-    if (req.body.removeImages && Array.isArray(req.body.removeImages)) {
-      const removeImages = req.body.removeImages;
-      // Remove the images from the array
-      venue.images = venue.images.filter((image) => !removeImages.includes(image));
-      // Optionally delete the files from the file system
-      removeImages.forEach((imagePath) => {
-        const filePath = path.join(__dirname, '..', imagePath); // Ensure path to file is correct
-        if (fs.existsSync(filePath)) {
-          fs.unlink(filePath, (err) => {
-            if (err) console.error(`Error deleting file: ${filePath}`, err);
-          });
+    // Handle image removals
+    if (removeImagesArray.length > 0) {
+      removeImagesArray.forEach((index) => {
+        const imageToRemove = venue.images[index];
+        if (imageToRemove) {
+          const imagePath = path.join(__dirname, "../uploads", imageToRemove); // Ensure this is the correct path
+          console.log("Removing image at path:", imagePath); // Log the path for debugging
+
+          // Assuming images are stored in the uploads directory
+          try {
+            fs.unlinkSync(imagePath);
+          } catch (err) {
+            console.error("Error removing image:", err);
+          }
         }
       });
+
+      // Remove images from the venue's image array
+      venue.images = venue.images.filter((_, index) => !removeImagesArray.includes(index));
     }
 
-    // Save the updated venue
-    const updatedVenue = await venue.save();
+    // Save updated venue
+    await venue.save();
 
-    res.status(200).json({ message: "Venue updated successfully!", updatedVenue });
+    res.status(200).json({ message: "Venue updated successfully" });
   } catch (error) {
-    console.error("Error updating venue:", error);
-    res.status(500).json({ message: "Error updating venue", error });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Delete a venue
 export const deleteVenue = async (req, res) => {
