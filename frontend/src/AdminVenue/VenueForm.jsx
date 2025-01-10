@@ -124,7 +124,8 @@ const VenueForm = ({ venue, onCancel }) => {
         description: "",
       });
       setNewImageFiles([]);
-      setRemovedImages([]); // Reset removed images after submission
+      setRemovedImages([]); 
+      setExistingImages([]);
     } catch (error) {
       console.error("Error updating venue:", error);
       alert("Failed to add or update venue.");
