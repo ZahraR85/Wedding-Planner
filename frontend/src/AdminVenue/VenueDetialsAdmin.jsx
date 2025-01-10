@@ -182,7 +182,7 @@ const VenueDetailsAdmin = () => {
                 Delete Venue
               </button>
               <button
-                onClick={() => navigate("/Venues")}
+                onClick={() => navigate("/Admin/Venue")}
                 className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
               >
                 Back

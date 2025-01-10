@@ -65,7 +65,7 @@ const Navbar = () => {
                       <Link to="/GalleryManagement">Manage Gallery</Link>
                     </li>
                     <li className="hover:underline">
-                      <Link to="/venues">Manage Venue</Link>
+                      <Link to="/Admin/Venue">Manage Venue</Link>
                     </li>
                   </ul>
                 </div>
