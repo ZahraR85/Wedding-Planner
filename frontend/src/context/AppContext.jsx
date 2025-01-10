@@ -6,6 +6,8 @@ const AppContext = createContext();
 // Initial state
 const initialState = {
   selectedCity: 'All Cities',
+  selectedCapacity: 'All Capacities',
+  selectedPrice: 'All Prices',
   searchTerm: '',
   hoveredDropdown: null,
   isDropdownOpen: false,
@@ -21,6 +23,10 @@ const appReducer = (state, action) => {
   switch (action.type) {
     case "SET_SELECTED_CITY":
       return { ...state, selectedCity: action.payload };
+      case "SET_SELECTED_CAPACITY": // Action for setting selected capacity
+      return { ...state, selectedCapacity: action.payload };
+      case "SET_SELECTED_PRICE": // Action for setting selected capacity
+      return { ...state, selectedPrice: action.payload };
     case 'SET_SEARCH_TERM':
       return { ...state, searchTerm: action.payload };
     case 'SET_HOVERED_DROPDOWN':
@@ -82,8 +88,9 @@ const appReducer = (state, action) => {
 // AppProvider component
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
- 
   const setSelectedCity = (city) => dispatch({ type: "SET_SELECTED_CITY", payload: city });
+  const setSelectedCapacity = (capacity) => dispatch({ type: 'SET_SELECTED_CAPACITY', payload: capacity }); 
+  const setSelectedPrice = (price) => dispatch({ type: 'SET_SELECTED_CAPACITY', payload: price }); 
   const setSearchTerm = (term) => dispatch({ type: 'SET_SEARCH_TERM', payload: term });
   const setHoveredDropdown = (dropdown) => dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: dropdown });
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });
@@ -127,6 +134,8 @@ export const AppProvider = ({ children }) => {
       value={{
         ...state,
         setSelectedCity,
+        setSelectedCapacity,
+        setSelectedPrice,
         setSearchTerm,
         setHoveredDropdown,
         clearHoveredDropdown,
