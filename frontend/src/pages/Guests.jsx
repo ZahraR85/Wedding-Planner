@@ -25,7 +25,7 @@ function Guest() {
       toast.error("You must sign in to access this page.");
       setTimeout(() => {
         navigate("/signin");
-      }, 4000); 
+      }, 4000);
     }
   }, [isAuthenticated, navigate]);
 
@@ -134,9 +134,9 @@ function Guest() {
     fetchGuests();
   }, []);
 
-  const filteredGuests = filterStatus === 'All' 
-  ? guestList 
-  : guestList.filter(guest => guest.answerStatus === filterStatus);
+  const filteredGuests = filterStatus === 'All'
+    ? guestList
+    : guestList.filter(guest => guest.answerStatus === filterStatus);
 
 
   const indexOfLastGuest = currentPage * guestsPerPage;
@@ -190,6 +190,16 @@ function Guest() {
     } catch (error) {
       console.error("Error sending invitation:", error.response?.data?.message || error.message);
       toast.error("Failed to send invitation.");
+    }
+  };
+
+  const handleSendToAll = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/guests/send-to-all", { userId });
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error sending to all:", error.response?.data?.message || error.message);
+      toast.error("Failed to send emails to all.");
     }
   };
 
@@ -291,11 +301,14 @@ function Guest() {
             <h3 className="text-lg font-semibold text-BgFont">
               Total GUESTS with YES Answer: {totalYesPersons}
             </h3>
+
           </div>
-          <label htmlFor="filter">Filter by Answer Status: </label>
-            <select 
-              id="filter" 
-              value={filterStatus} 
+          <div className="flex flex-col md:flex-row justify-between items-center mt-6">
+          <div>
+              <label htmlFor="filter">Filter by Answer Status: </label>
+            <select
+              id="filter"
+              value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               className="custom-select px-4 py-2 border border-BgPinkDark rounded-lg focus:outline-none focus:ring focus:ring-BgPinkDark focus:border-BgPinkDark"
             >
@@ -304,6 +317,18 @@ function Guest() {
               <option value="No">No</option>
               <option value="Not yet">Not yet</option>
             </select>
+          </div>
+          
+
+
+            <button onClick={handleSendToAll}  className="w-full md:w-1/2 bg-BgPinkMiddle text-BgFont font-bold py-4 px-4 rounded-lg hover:bg-BgPinkDark">
+            Send Email to all Guests Who Have Not Responded
+            </button>
+          </div>
+
+
+
+
           <div className="overflow-x-auto">
             <table className="w-full border border-BgFont text-BgFont bg-customBg rounded-lg">
               <thead>
