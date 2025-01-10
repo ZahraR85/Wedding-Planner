@@ -118,6 +118,33 @@ const Navbar1 = () => {
         </ul>
       </div>
 
+      {/* Second Row */}
+      <div className="hidden text-BgFont items-center justify-around bg-gray-100 px-4 py-2 text-sm md:flex">
+        <ul className="flex font-bold items-center justify-around space-x-12 text-sm">
+          <li className="hover:underline">
+            <Link to="/userinfo">User Information</Link>
+          </li>
+          <li className="hover:underline">
+            <Link to="/Guests">Invitation of Guests</Link>
+          </li>
+          <li className="hover:underline">
+            <Link to="/VenueSelections">Book your Venue</Link>
+          </li>
+          <li className="hover:underline">
+            <Link to="/Catering">Catering</Link>
+          </li>
+          <li className="hover:underline">
+            <Link to="/photography">Photography</Link>
+          </li>
+          <li className="hover:underline">
+            <Link to="/Makeup">Makeup, Wedding Dress</Link>
+          </li>
+          <li className="hover:underline">
+            <Link to="/Musics">Music Band</Link>
+          </li>
+        </ul>
+      </div>
+
       {/* Side Menu for Mobile */}
       {menuOpen && (
         <div className="fixed inset-0 z-50 flex">
