@@ -30,22 +30,34 @@ const VenueDetailsAdmin = () => {
     fetchVenue();
   }, [id]);
 
+  useEffect(() => {
+    if (venue?.images?.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex === venue.images.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 5000); // Change image every 5 seconds
+
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
+  }, [venue]);
+
   const handleUpdate = async () => {
     try {
       const updatedData = {
         price,
         discount,
-        total: price - (price * discount) / 100, // Calculate total here
+        total: price - (price * discount) / 100,
       };
       const updatedVenue = await updateVenue(id, updatedData);
       setVenue(updatedVenue);
-      setTotal(updatedVenue.total); // Update the total in the state
+      setTotal(updatedVenue.total);
       alert("Venue updated successfully!");
     } catch (error) {
       console.error("Error updating venue:", error);
       alert("Failed to update venue.");
     }
-  };  
+  };
 
   const handleDelete = async () => {
     try {
@@ -90,11 +102,14 @@ const VenueDetailsAdmin = () => {
       <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
         <h1 className="text-3xl font-bold text-center text-BgFont my-4">{venue.name}</h1>
         <div className="relative">
-          <img
-            src={`http://localhost:3001/${venue.images[currentIndex]}`}
-            alt={`Venue ${currentIndex}`}
-            className="w-full h-auto object-cover rounded-md"
-          />
+          <div className="overflow-hidden">
+            <img
+              src={`http://localhost:3001/${venue.images[currentIndex]}`}
+              alt={`Venue ${currentIndex}`}
+              className="w-full h-auto object-cover rounded-md"
+              style={{ padding: 0 }}
+            />
+          </div>
           <div className="absolute top-1/2 left-0 right-0 flex justify-between">
             <button
               onClick={handlePrevImage}
@@ -138,7 +153,7 @@ const VenueDetailsAdmin = () => {
                 type="number"
                 value={totalPrice}
                 readOnly
-                className="border p-2 w-40% rounded bg-gray-200 "
+                className="border p-2 w-40% rounded bg-gray-200"
               /> <span>$</span>
             </label>
           </div>

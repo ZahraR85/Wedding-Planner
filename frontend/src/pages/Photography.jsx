@@ -45,9 +45,9 @@ const Photography = () => {
       try {
         const response = await axios.get(`http://localhost:3001/photographies?userID=${userId}`);
         if (response.data && response.data.length > 0) {
-        //   const existingData = response.data[0]; // Access the first
+         const existingData = response.data[0]; // Access the first
        // if (response.data) {
-         const existingData = response.data; // Access the first object in the array
+         //const existingData = response.data; // Access the first object in the array
           const updatedFormData = {
             photography: existingData.photography || { number: 0, price: 300 },
             videography: existingData.videography || { number: 0, price: 300 },
