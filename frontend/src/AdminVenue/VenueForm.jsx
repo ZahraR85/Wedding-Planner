@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
 const VenueForm = ({ venue, onCancel }) => {
-  const { userId, isAuthenticated } = useAppContext();
+  const { userId, isAuthenticated, role } = useAppContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -27,15 +27,14 @@ const VenueForm = ({ venue, onCancel }) => {
   const [existingImages, setExistingImages] = useState([]);
   const [removedImages, setRemovedImages] = useState([]);
 
-  // Redirect unauthenticated users to SignIn
   useEffect(() => {
-    if (!isAuthenticated) {
-      toast.warn("You must sign in to access this page.");
+    if (!isAuthenticated || role !== "admin") {
+      toast.warn("You must sign in as Admin to access this page."); // Show warning toast
       setTimeout(() => {
-        navigate("/signin");
-      }, 3000);
+        navigate("/signin"); // Delay navigation
+      }, 2000);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, role, navigate]);
 
   useEffect(() => {
     if (venue) {
