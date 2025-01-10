@@ -6,6 +6,22 @@ import { getVenues, addVenue, updateVenue, deleteVenue } from './venue';
 const AdminVenuePage = () => {
   const [venues, setVenues] = useState([]);
   const [editVenue, setEditVenue] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const VENUES_PER_PAGE = 8; // Number of venues per page
+
+  const totalPages = Math.ceil(venues.length / VENUES_PER_PAGE);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Calculate current venues to display based on the page
+  const currentVenues = venues.slice(
+    (currentPage - 1) * VENUES_PER_PAGE,
+    currentPage * VENUES_PER_PAGE
+  );
 
   useEffect(() => {
     // Fetch venues when the page loads
@@ -14,7 +30,7 @@ const AdminVenuePage = () => {
 
   const handleAddVenue = (venueData) => {
     addVenue(venueData).then((newVenue) => {
-      setVenues((prevVenues) => [...prevVenues, newVenue]); // Add new venue to the list
+      setVenues((prevVenues) => [...prevVenues, newVenue]);
     });
   };
 
@@ -24,14 +40,14 @@ const AdminVenuePage = () => {
         prevVenues.map((venue) =>
           venue._id === updatedVenue._id ? updatedVenue : venue
         )
-      ); // Update the specific venue
-      setEditVenue(null); // Reset form to Add mode
+      );
+      setEditVenue(null);
     });
   };
 
   const handleDeleteVenue = (venueId) => {
     deleteVenue(venueId).then(() => {
-      setVenues((prevVenues) => prevVenues.filter((venue) => venue._id !== venueId)); // Remove the deleted venue
+      setVenues((prevVenues) => prevVenues.filter((venue) => venue._id !== venueId));
     });
   };
 
@@ -43,9 +59,12 @@ const AdminVenuePage = () => {
         onCancel={() => setEditVenue(null)}
       />
       <VenueList
-        venues={venues}
+        venues={currentVenues} // Pass only the current page's venues
         onEdit={setEditVenue}
         onDelete={handleDeleteVenue}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
       />
     </div>
   );

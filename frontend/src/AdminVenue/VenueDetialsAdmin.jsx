@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getVenues, updateVenue, deleteVenue } from "./venue";
+import { useAppContext } from "../context/AppContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const VenueDetailsAdmin = () => {
   const { id } = useParams();
@@ -10,6 +14,16 @@ const VenueDetailsAdmin = () => {
   const [discount, setDiscount] = useState("");
   const [total, setTotal] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { isAuthenticated, role } = useAppContext();
+
+  useEffect(() => {
+    if (!isAuthenticated || role !== "admin") {
+      toast.warn("You must sign in as Admin to access this page."); // Show warning toast
+      setTimeout(() => {
+        navigate("/signin"); // Delay navigation
+      }, 2000);
+    }
+  }, [isAuthenticated, role, navigate]);
 
   useEffect(() => {
     const fetchVenue = async () => {
@@ -26,7 +40,6 @@ const VenueDetailsAdmin = () => {
         console.error("Error fetching venue:", error);
       }
     };
-
     fetchVenue();
   }, [id]);
 
@@ -36,7 +49,7 @@ const VenueDetailsAdmin = () => {
         setCurrentIndex((prevIndex) =>
           prevIndex === venue.images.length - 1 ? 0 : prevIndex + 1
         );
-      }, 5000); // Change image every 5 seconds
+      }, 3000); // Change image every 3 seconds
 
       return () => clearInterval(interval); // Cleanup on unmount
     }
@@ -89,8 +102,6 @@ const VenueDetailsAdmin = () => {
     return <div>Loading...</div>;
   }
 
-  const totalPrice = price - (price * discount) / 100;
-
   const googleMapsLink =
     venue.latitude && venue.longitude
       ? `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`
@@ -98,16 +109,16 @@ const VenueDetailsAdmin = () => {
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/526gbVgR/venueformat1.png')]">
+      <ToastContainer />
       <div className="absolute inset-0 bg-white/50"></div>
-      <div className="relative mx-auto w-full max-w-[calc(90%-100px)] bg-customBg1 shadow-md rounded-lg p-5 space-y-4">
-        <h1 className="text-3xl font-bold text-center text-BgFont my-4">{venue.name}</h1>
+      <div className="relative mx-auto w-full max-w-[calc(90%-50px)] bg-customBg1 shadow-md rounded-lg py-5 space-y-4">
+        <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
         <div className="relative">
           <div className="overflow-hidden">
             <img
               src={`http://localhost:3001/${venue.images[currentIndex]}`}
               alt={`Venue ${currentIndex}`}
               className="w-full h-auto object-cover rounded-md"
-              style={{ padding: 0 }}
             />
           </div>
           <div className="absolute top-1/2 left-0 right-0 flex justify-between">
@@ -149,19 +160,19 @@ const VenueDetailsAdmin = () => {
             <div className="mt-4 flex gap-4">
               <button
                 onClick={handleUpdate}
-                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
+                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded"
               >
                 Save Changes
               </button>
               <button
                 onClick={handleDelete}
-                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
+                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded"
               >
                 Delete Venue
               </button>
               <button
                 onClick={() => navigate("/Admin/Venue")}
-                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4"
+                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded"
               >
                 Back
               </button>
@@ -169,7 +180,7 @@ const VenueDetailsAdmin = () => {
           </div>
         </div>
       </div>
-      </div>
+    </div>
   );
 };
 

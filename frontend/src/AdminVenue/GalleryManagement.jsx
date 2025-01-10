@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from "../context/AppContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 const GalleryManagement = () => {
   const [allImages, setAllImages] = useState([]); // Store all fetched images
@@ -12,7 +16,17 @@ const GalleryManagement = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [editingImageId, setEditingImageId] = useState(null);
-  const { userId } = useAppContext();
+  const { userId, isAuthenticated, role } = useAppContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated || role !== "admin") {
+      toast.warn("You must sign in as Admin to access this page."); // Show warning toast
+      setTimeout(() => {
+        navigate("/signin"); // Delay navigation
+      }, 2000);
+    }
+  }, [isAuthenticated, role, navigate]);
 
   const fetchImages = async () => {
     try {
@@ -149,6 +163,7 @@ const GalleryManagement = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
+      <ToastContainer />
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/qMRwT2zF/gallery3.jpg')]">
         <div className="absolute inset-0 bg-white/50"></div>
         <div className="relative mx-auto w-full max-w-[calc(45%-100px)] bg-opacity-80 shadow-md rounded-lg p-5 mt-40 space-y-4">
@@ -215,7 +230,7 @@ const GalleryManagement = () => {
           {currentImages.map((image) => (
             <div
               key={image._id}
-              className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
+              className="bg-white shadow-md rounded-lg border-4 border-BgPinkDark cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
             >
               <img src={`http://localhost:3001${image.imagePath}`} alt={image.description} className="w-full h-48 object-cover" />
               <div className="p-4">

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
-import Navbar from "./Navbar";
 import SearchCity from "./SearchCity";
 
 const Header1 = ({ onScrollToSearchVenues }) => {
@@ -48,7 +47,7 @@ const Header1 = ({ onScrollToSearchVenues }) => {
 
   return (
     <header className="relative h-screen overflow-hidden">
-      <Navbar />
+
       <div className="relative h-full">
         <img
           src={sliderImages[currentIndex]}
