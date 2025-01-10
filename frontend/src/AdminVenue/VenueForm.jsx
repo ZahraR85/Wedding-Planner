@@ -87,7 +87,9 @@ const VenueForm = ({ venue, onCancel }) => {
       if (existingImages.length > 0) {
         uploadFormData.append("removeImages", JSON.stringify(existingImages.filter((img, index) => !newImageFiles.some(file => file.name === img))));
       }
-  
+      if (removedImages.length > 0) {
+        uploadFormData.append("removeImages", JSON.stringify(removedImages));
+      }
       uploadFormData.append("userId", userId);
   
       // Send POST/PUT request
@@ -232,7 +234,7 @@ const VenueForm = ({ venue, onCancel }) => {
               existingImages.map((img, index) => (
                 <div key={index} className="relative">
                   <img
-                    src={img} // Make sure this is a valid image URL
+                    src={`http://localhost:3001/${img}`} // Make sure this is a valid image URL
                     alt="Venue"
                     className="w-16 h-16 object-cover rounded"
                   />

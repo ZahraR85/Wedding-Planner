@@ -69,8 +69,6 @@ export const updateVenuePrice = async (req, res) => {
 };
 
 // Update a venue
-
-
 export const updateVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
@@ -84,7 +82,6 @@ export const updateVenue = async (req, res) => {
     if (!venue) {
       return res.status(404).json({ message: "Venue not found" });
     }
-
     // Update venue fields
     venue.name = name || venue.name;
     venue.city = city || venue.city;
@@ -103,15 +100,12 @@ export const updateVenue = async (req, res) => {
     }
     console.log("Request body:", req.body);
     console.log("Request files:", req.files);
-    
-
     // Handle image removal if specified
+    
     if (req.body.removeImages && Array.isArray(req.body.removeImages)) {
       const removeImages = req.body.removeImages;
-
       // Remove the images from the array
       venue.images = venue.images.filter((image) => !removeImages.includes(image));
-
       // Optionally delete the files from the file system
       removeImages.forEach((imagePath) => {
         const filePath = path.join(__dirname, '..', imagePath); // Ensure path to file is correct
