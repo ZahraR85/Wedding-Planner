@@ -45,7 +45,8 @@ function App() {
             <Route path="/signin" element={ <SignIn />} />
             <Route path="/register" element={<Register />} />
               {/* Admin Routes */}
-            <Route path="/venues" element={<AdminVenuePage />} />
+            <Route path="/Admin/Venue" element={<AdminVenuePage />} />
+            <Route path="/Admin/Venue/:id" element={<VenueDetialsAdmin />} />
             {/*<Route path="/venues" element={<VenueList />} />*/}
             {/*<Route path="/venues/:id" element={<VenueCard />} />*/}
              {/* user Routes */}
@@ -59,7 +60,6 @@ function App() {
             <Route path="/Catering" element={<ReceptionSelector />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
-            <Route path="/:id" element={<VenueDetialsAdmin />} />
             <Route path="/searchvenues" element={<Searchvenues />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/FAQ" element={<FAQ />} />

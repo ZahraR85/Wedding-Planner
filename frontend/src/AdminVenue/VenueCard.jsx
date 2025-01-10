@@ -5,7 +5,7 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
-    navigate(`/venues/${venue._id}`);
+    navigate(`/Admin/Venue/${venue._id}`);
   };
 
   return (

@@ -197,7 +197,7 @@ const VenueForm = ({ venue, onCancel }) => {
               Location:
               <input
                 type="number"
-                name="x"
+                name="latitude"
                 value={formData.latitude}
                 onChange={handleChange}
                 placeholder="Latitude"
@@ -206,7 +206,7 @@ const VenueForm = ({ venue, onCancel }) => {
               />
               <input
                 type="number"
-                name="y"
+                name="longitude"
                 value={formData.longitude}
                 onChange={handleChange}
                 placeholder="Longitude"
