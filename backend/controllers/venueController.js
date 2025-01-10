@@ -2,20 +2,6 @@ import Venue from "../models/venue.js";
 import fs from 'fs';
 import path from 'path';
 
-
-
-// Get unique cities
-export const getUniqueCities = async (req, res) => {
-  try {
-    const cities = await Venue.distinct("city"); // Fetch distinct cities
-    res.status(200).json(cities);
-  } catch (error) {
-    console.error("Error fetching cities:", error);
-    res.status(500).json({ message: "Error fetching cities", error });
-  }
-};
-
-
 export const createVenue = async (req, res) => {
   try {
     const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
@@ -216,5 +202,16 @@ export const getVenuesByUserId = async (req, res) => {
   } catch (error) {
     console.error("Error fetching venues by user:", error);
     res.status(500).json({ message: "Failed to fetch venues.", error });
+  }
+};
+
+// Get unique cities
+export const getUniqueCities = async (req, res) => {
+  try {
+    const cities = await Venue.distinct("city"); // Fetch distinct cities
+    res.status(200).json(cities);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    res.status(500).json({ message: "Error fetching cities", error });
   }
 };
