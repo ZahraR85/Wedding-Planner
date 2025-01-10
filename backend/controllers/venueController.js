@@ -2,20 +2,6 @@ import Venue from "../models/venue.js";
 import fs from 'fs';
 import path from 'path';
 
-
-
-// Get unique cities
-export const getUniqueCities = async (req, res) => {
-  try {
-    const cities = await Venue.distinct("city"); // Fetch distinct cities
-    res.status(200).json(cities);
-  } catch (error) {
-    console.error("Error fetching cities:", error);
-    res.status(500).json({ message: "Error fetching cities", error });
-  }
-};
-
-
 export const createVenue = async (req, res) => {
   try {
     const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
@@ -58,7 +44,7 @@ export const getAllVenues = async (req, res) => {
   }
 };
 // Update a price of venue
-export const updateVenuePrice = async (req, res) => {
+/*export const updateVenuePrice = async (req, res) => {
   try {
     const { venueId } = req.params;
     const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
@@ -66,21 +52,40 @@ export const updateVenuePrice = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error updating venue", error });
   }
-};
+};*/
+import { fileURLToPath } from 'url';
 
-// Update a venue
-
+// Get the current file path and directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const updateVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
+    const {
+      name,
+      city,
+      capacity,
+      price,
+      discount,
+      address,
+      description,
+      latitude,
+      longitude,
+      removeImages,
+    } = req.body;
 
-    // Extract existing data from the request body
-    const { name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
+    let removeImagesArray = [];
+    if (removeImages) {
+      try {
+        removeImagesArray = JSON.parse(removeImages);
+      } catch (err) {
+        console.error("Error parsing removeImages:", err);
+      }
+    }
 
-    // Find the venue by its ID
+    // Find the venue to update
     const venue = await Venue.findById(venueId);
-
     if (!venue) {
       return res.status(404).json({ message: "Venue not found" });
     }
@@ -96,42 +101,37 @@ export const updateVenue = async (req, res) => {
     venue.latitude = latitude || venue.latitude;
     venue.longitude = longitude || venue.longitude;
 
-    // Handle image updates
-    if (req.files && req.files.length > 0) {
-      const newImages = req.files.map((file) => file.path); // Collect new image paths
-      venue.images = [...venue.images, ...newImages]; // Append new images to existing ones
-    }
-    console.log("Request body:", req.body);
-    console.log("Request files:", req.files);
-    
-
-    // Handle image removal if specified
-    if (req.body.removeImages && Array.isArray(req.body.removeImages)) {
-      const removeImages = req.body.removeImages;
-
-      // Remove the images from the array
-      venue.images = venue.images.filter((image) => !removeImages.includes(image));
-
-      // Optionally delete the files from the file system
-      removeImages.forEach((imagePath) => {
-        const filePath = path.join(__dirname, '..', imagePath); // Ensure path to file is correct
-        if (fs.existsSync(filePath)) {
-          fs.unlink(filePath, (err) => {
-            if (err) console.error(`Error deleting file: ${filePath}`, err);
-          });
+    // Handle image removals (unlink images from disk)
+    if (removeImagesArray.length > 0) {
+      removeImagesArray.forEach((index) => {
+        const imageToRemove = venue.images[index];
+        if (imageToRemove) {
+          const imagePath = path.join(__dirname, "../uploads", imageToRemove);
+          try {
+            fs.unlinkSync(imagePath); // Delete file from the filesystem
+          } catch (err) {
+            console.error("Error removing image:", err);
+          }
         }
       });
+
+      // Remove images from the venue's images array
+      venue.images = venue.images.filter((_, index) => !removeImagesArray.includes(index));
     }
 
-    // Save the updated venue
-    const updatedVenue = await venue.save();
+    // Handle new file uploads
+    const newImages = req.files.map((file) => file.path); // New images uploaded
+    venue.images.push(...newImages); // Add new images to the venue's images array
 
-    res.status(200).json({ message: "Venue updated successfully!", updatedVenue });
+    // Save the updated venue
+    await venue.save();
+    res.status(200).json({ message: "Venue updated successfully", venue });
   } catch (error) {
     console.error("Error updating venue:", error);
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
+
 
 // Delete a venue
 export const deleteVenue = async (req, res) => {
@@ -166,27 +166,7 @@ export const getVenueByVenueId = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch venue.", error });
   }
 };
-/*export const getVenueByVenueId = async (req, res) => {
-  try {
-    const { venueId } = req.params;
 
-    const venue = await Venue.findById(venueId);
-
-    if (!venue) return res.status(404).json({ message: "Venue not found." });
-
-    // Convert image paths to URLs if needed
-    const updatedVenue = {
-      ...venue._doc,
-      images: venue.images.map((image) => `${process.env.BASE_URL}/${image}`),
-    };
-
-    res.status(200).json(updatedVenue);
-  } catch (error) {
-    console.error("Error fetching venue:", error);
-    res.status(500).json({ message: "Failed to fetch venue.", error });
-  }
-};
-*/
 // Get venues by user ID
 export const getVenuesByUserId = async (req, res) => {
   try {
@@ -200,5 +180,16 @@ export const getVenuesByUserId = async (req, res) => {
   } catch (error) {
     console.error("Error fetching venues by user:", error);
     res.status(500).json({ message: "Failed to fetch venues.", error });
+  }
+};
+
+// Get unique cities
+export const getUniqueCities = async (req, res) => {
+  try {
+    const cities = await Venue.distinct("city"); // Fetch distinct cities
+    res.status(200).json(cities);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    res.status(500).json({ message: "Error fetching cities", error });
   }
 };

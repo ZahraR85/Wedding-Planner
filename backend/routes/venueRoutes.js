@@ -1,5 +1,5 @@
 import express from "express";
-import { createVenue, getAllVenues, updateVenue, deleteVenue , getVenueByVenueId, getVenuesByUserId,getUniqueCities, updateVenuePrice} from "../controllers/venueController.js";
+import { createVenue, getAllVenues, updateVenue, deleteVenue , getVenueByVenueId, getVenuesByUserId,getUniqueCities} from "../controllers/venueController.js";
 import { upload } from "../middleware/uploadMiddleware.js"; // Middleware for handling file uploads.
 
 const router = express.Router();
@@ -12,9 +12,9 @@ router.get("/cities", getUniqueCities);
 router.get("/", getAllVenues);
 
 // PUT: Update a venue
-router.put('/:venueId', upload.array('images'), updateVenue);
+router.put('/:venueId', upload.array("images", 15), updateVenue);
 
-router.put('/:venueId', updateVenuePrice);
+//router.put('/:venueId', updateVenuePrice);
 
 // DELETE: Delete a venue
 router.delete("/:venueId", deleteVenue);

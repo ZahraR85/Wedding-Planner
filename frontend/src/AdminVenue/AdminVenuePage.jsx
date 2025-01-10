@@ -8,25 +8,30 @@ const AdminVenuePage = () => {
   const [editVenue, setEditVenue] = useState(null);
 
   useEffect(() => {
+    // Fetch venues when the page loads
     getVenues().then(setVenues);
   }, []);
 
   const handleAddVenue = (venueData) => {
     addVenue(venueData).then((newVenue) => {
-      setVenues([...venues, newVenue]);
+      setVenues((prevVenues) => [...prevVenues, newVenue]); // Add new venue to the list
     });
   };
 
   const handleUpdateVenue = (venueData) => {
     updateVenue(editVenue._id, venueData).then((updatedVenue) => {
-      setVenues(venues.map((v) => (v._id === editVenue._id ? updatedVenue : v)));
+      setVenues((prevVenues) =>
+        prevVenues.map((venue) =>
+          venue._id === updatedVenue._id ? updatedVenue : venue
+        )
+      ); // Update the specific venue
       setEditVenue(null); // Reset form to Add mode
     });
   };
 
   const handleDeleteVenue = (venueId) => {
     deleteVenue(venueId).then(() => {
-      setVenues(venues.filter((v) => v._id !== venueId));
+      setVenues((prevVenues) => prevVenues.filter((venue) => venue._id !== venueId)); // Remove the deleted venue
     });
   };
 
