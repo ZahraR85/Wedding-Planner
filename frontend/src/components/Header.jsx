@@ -28,7 +28,7 @@ const Header = () => {
 
       {/* Hero Section search */}
 
-      <div className="flex flex-col items-center justify-center h-full text-center text-white bg-black bg-opacity-50">
+      <div className=" flex flex-col items-center justify-center h-full text-center text-white bg-black bg-opacity-50">
         <p className="text-xl font-light mb-4">
           Welcome to our amazing platform! Explore everything we have to offer.
         </p>
