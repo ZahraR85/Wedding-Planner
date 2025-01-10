@@ -90,7 +90,7 @@ export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
   const setSelectedCity = (city) => dispatch({ type: "SET_SELECTED_CITY", payload: city });
   const setSelectedCapacity = (capacity) => dispatch({ type: 'SET_SELECTED_CAPACITY', payload: capacity }); 
-  const setSelectedPrice = (price) => dispatch({ type: 'SET_SELECTED_CAPACITY', payload: price }); 
+  const setSelectedPrice = (price) => dispatch({ type: 'SET_SELECTED_PRICE', payload: price }); 
   const setSearchTerm = (term) => dispatch({ type: 'SET_SEARCH_TERM', payload: term });
   const setHoveredDropdown = (dropdown) => dispatch({ type: 'SET_HOVERED_DROPDOWN', payload: dropdown });
   const clearHoveredDropdown = () => dispatch({ type: 'CLEAR_HOVERED_DROPDOWN' });

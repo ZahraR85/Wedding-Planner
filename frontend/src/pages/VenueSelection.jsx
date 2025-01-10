@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SearchCity from "../components/SearchCity";
 import SearchCapacity from "../components/SearchCapacity";
-import SearchPrice from '../components/SearchPrice';
+import SearchPrice from '../components/SearchPrice'; // Import SearchPrice
 
 const VenueSelectionPage = () => {
   const [venues, setVenues] = useState([]);
@@ -55,82 +55,106 @@ const VenueSelectionPage = () => {
     }
     navigate(`/venueBooking/${venueId}`);
   };
- // Filter venues based on the selected city
- const handleCitySearch = (city) => {
-  let filtered = venues;
-  if (city !== "All Cities") {
-    filtered = filtered.filter((venue) => venue.city === city);
-  }
-  if (selectedCapacity !== "All Capacities") {
-    const capacityRange = selectedCapacity.split('-');
-    if (capacityRange.length === 2) {
-      const [min, max] = capacityRange.map(Number);
-      filtered = filtered.filter((venue) => venue.capacity >= min && venue.capacity <= max);
-    } else {
-      const min = Number(capacityRange[0].replace("+", ""));
-      filtered = filtered.filter((venue) => venue.capacity >= min);
+
+  // Filter venues based on the selected city, capacity, and price
+  const handleCitySearch = (city) => {
+    let filtered = venues;
+    if (city !== "All Cities") {
+      filtered = filtered.filter((venue) => venue.city === city);
     }
-  }
-  setFilteredVenues(filtered);
-};
+    if (selectedCapacity !== "All Capacities") {
+      const capacityRange = selectedCapacity.split('-');
+      if (capacityRange.length === 2) {
+        const [min, max] = capacityRange.map(Number);
+        filtered = filtered.filter((venue) => venue.capacity >= min && venue.capacity <= max);
+      } else {
+        const min = Number(capacityRange[0].replace("+", ""));
+        filtered = filtered.filter((venue) => venue.capacity >= min);
+      }
+    }
+    if (selectedPrice !== "All Price") {
+      const priceRange = selectedPrice.split('-');
+      if (priceRange.length === 2) {
+        const [min, max] = priceRange.map(Number);
+        filtered = filtered.filter((venue) => venue.price >= min && venue.price <= max);
+      } else {
+        const min = Number(priceRange[0].replace("+", ""));
+        filtered = filtered.filter((venue) => venue.price >= min);
+      }
+    }
+    setFilteredVenues(filtered);
+  };
 
-// Handle capacity search
-const handleCapacitySearch = (capacity) => {
-  setSelectedCapacity(capacity);
-  handleCitySearch(selectedCity);
+  // Handle capacity and price search
+  const handleCapacitySearch = (capacity) => {
+    setSelectedCapacity(capacity);
+    handleCitySearch(selectedCity);
+  };
 
-};
+  const handlePriceSearch = (price) => {
+    setSelectedPrice(price);
+    handleCitySearch(selectedCity); // Reapply city filter after price update
+  };
 
-return (
-  <div className="relative min-h-screen bg-cover bg-center p-20 bg-BgPink">
-    <ToastContainer />
-    <div className="absolute inset-0 bg-white/40"></div>
-    <div className="relative mx-auto w-full max-w-[calc(100%-10px)] bg-customBg shadow-md rounded-lg p-5 space-y-4">
-      {loading && <p>Loading venues...</p>}
-      {error && <p>{error}</p>}
+  return (
+    <div className="relative min-h-screen bg-cover bg-center p-20 bg-BgPink">
+      <ToastContainer />
+      <div className="absolute inset-0 bg-white/40"></div>
+      <div className="relative mx-auto w-full max-w-[calc(100%-10px)] bg-customBg shadow-md rounded-lg p-5 space-y-4">
+        {loading && <p>Loading venues...</p>}
+        {error && <p>{error}</p>}
 
-      {/* SearchCity Component */}
-      <div className="mb-4">
-        <SearchCity
-          selectedCity={selectedCity}
-          setSelectedCity={setSelectedCity}
-          onSearch={handleCitySearch}
-        />
-      </div>
+        {/* SearchCity Component */}
+        <div className="mb-4">
+          <SearchCity
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            onSearch={handleCitySearch}
+          />
+        </div>
 
-      {/* SearchCapacity Component */}
-      <div className="mb-4">
-        <SearchCapacity
-          selectedCapacity={selectedCapacity}
-          setSelectedCapacity={setSelectedCapacity}
-          onSearch={handleCapacitySearch}
-        />
-      </div>
+        {/* SearchCapacity Component */}
+        <div className="mb-4">
+          <SearchCapacity
+            selectedCapacity={selectedCapacity}
+            setSelectedCapacity={setSelectedCapacity}
+            onSearch={handleCapacitySearch}
+          />
+        </div>
 
-      {/* Venue Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredVenues.map((venue) => (
-          <div
-            key={venue._id}
-            className="border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
-            onClick={() => handleVenueClick(venue._id)}
-          >
-            <img
-              src={`http://localhost:3001/${venue.images?.[0]}`}
-              alt={venue.name}
-              className="w-full h-40 object-cover rounded-lg"
-              onError={(e) => (e.target.src = "https://via.placeholder.com/150")} // Fallback for missing images
-            />
-            <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
-            <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
-            <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
-            <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
-          </div>
-        ))}
+        {/* SearchPrice Component */}
+        <div className="mb-4">
+          <SearchPrice
+            selectedPrice={selectedPrice}
+            setSelectedPrice={setSelectedPrice}
+            onSearch={handlePriceSearch} // Pass handlePriceSearch
+          />
+        </div>
+
+        {/* Venue Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredVenues.map((venue) => (
+            <div
+              key={venue._id}
+              className="border-4 border-BgPinkDark rounded-lg cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
+              onClick={() => handleVenueClick(venue._id)}
+            >
+              <img
+                src={`http://localhost:3001/${venue.images?.[0]}`}
+                alt={venue.name}
+                className="w-full h-40 object-cover rounded-lg"
+                onError={(e) => (e.target.src = "https://via.placeholder.com/150")} // Fallback for missing images
+              />
+              <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default VenueSelectionPage;
