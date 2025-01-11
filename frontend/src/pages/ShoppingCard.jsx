@@ -70,22 +70,24 @@ const ShoppingCard = () => {
       return;
     }
   
-    // Prepare a simplified list of items for simulation
+    // Prepare items for the checkout session
     const itemsForCheckout = shoppingCard.map((item) => ({
-      name: item.serviceName,  // Name of the service
-      price: item.price,       // Price of the service
-      quantity: 1,             // Set to 1 for now
+      name: item.serviceName,
+      price: item.price,
+      quantity: 1,
     }));
   
     try {
-      // Send the items to the backend for session creation
+      // Create a checkout session on the backend
       const response = await axios.post('http://localhost:3001/payment/create-checkout-session', { items: itemsForCheckout });
   
       if (response.data.id) {
         const { id } = response.data;
   
         // Redirect to Stripe Checkout
-        const { error } = await stripe.redirectToCheckout({ sessionId: id });
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: id,
+        });
   
         if (error) {
           console.error(error);

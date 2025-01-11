@@ -22,7 +22,7 @@ import galleryRouter from './routes/galleryRouter.js';
 import todolistRouter  from './routes/todolist.js';
 import shoppingCardRouter from './routes/shoppingCardRouter.js';
 import paymentRoutes from './routes/PaymentRoutes.js';
-
+import { removeAllFromShoppingCard } from './controllers/shoppingCardController.js'; 
 
 import audioRouter from './routes/audioRouter.js'; // Corrected path
 import chatRouter from './routes/chatRouter.js'; // Corrected path
@@ -110,11 +110,20 @@ app.use('/payment', paymentRoutes);
 app.get('/cancel', (req, res) => {
   res.send('Payment was canceled. Please try again.');
 });
-
-app.get('/success', (req, res) => {
+app.get('/success', async (req, res) => {
   const sessionId = req.query.session_id;
-  // Handle the session_id (e.g., confirm payment, store order, etc.)
-  res.send(`Payment successful, session ID: ${sessionId}`);
+  const userId = req.query.user_id;  // Assuming user_id is passed in the query to identify the user
+
+  try {
+    // Handle payment confirmation by checking the session ID (or any other logic you want to use)
+    // After successful payment, remove items from shopping card and related services
+    await removeAllFromShoppingCard({ userID: userId });
+
+    res.send(`Payment successful, session ID: ${sessionId}. Your services have been removed from the cart.`);
+  } catch (error) {
+    console.error('Error during success handler:', error);
+    res.status(500).send('Failed to clear shopping card and services after payment.');
+  }
 });
 
 

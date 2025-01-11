@@ -10,7 +10,7 @@ router.post('/create-checkout-session', async (req, res) => {
   // Format the items to fit Stripe's expected format
   const line_items = items.map(item => ({
     price_data: {
-      currency: 'usd', // Or the currency you want to use
+      currency: 'EUR',
       product_data: {
         name: item.name,
         // images: [item.image],  // URL of product image

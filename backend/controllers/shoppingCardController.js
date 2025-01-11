@@ -223,3 +223,38 @@ export const clearShoppingCard = async (req, res) => {
     res.status(500).json({ message: 'Failed to clear shopping card.', error: error.message });
   }
 };
+
+
+
+
+
+
+
+export const removeAllFromShoppingCard = async ({ userID }) => {
+  try {
+    if (!userID) {
+      throw new Error('UserID is required.');
+    }
+
+    // Step 1: Remove all services from the ShoppingCart
+    await ShoppingCard.deleteMany({ userID });
+
+    // Step 2: Remove services from related models (Makeup, Music, Catering, Photography, Venue)
+    const models = [
+      { model: Makeup, query: { userID } },
+      { model: Music, query: { userID } },
+      { model: Catering, query: { userID } },
+      { model: Photography, query: { userID } },
+      { model: Venue, query: { userId: userID } }
+    ];
+
+    for (const { model, query } of models) {
+      await model.deleteMany(query);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Failed to remove services:', error.message);
+    throw new Error('Failed to remove services after payment.');
+  }
+};
