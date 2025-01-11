@@ -3,16 +3,17 @@ import Stripe from 'stripe';
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const router = Router();
 
+// Route to create a checkout session
 router.post('/create-checkout-session', async (req, res) => {
   const { items } = req.body;  // Get the cart items sent from the frontend
-  
+
   // Format the items to fit Stripe's expected format
   const line_items = items.map(item => ({
     price_data: {
       currency: 'usd', // Or the currency you want to use
       product_data: {
         name: item.name,
-       // images: [item.image],  // URL of product image
+        // images: [item.image],  // URL of product image
       },
       unit_amount: item.price * 100,  // Convert price to cents
     },
@@ -36,4 +37,28 @@ router.post('/create-checkout-session', async (req, res) => {
   }
 });
 
+// Route to handle payment completion
+/*router.post('/complete-payment', async (req, res) => {
+  const { paymentMethodId, amount } = req.body;
+
+  try {
+    // Create the payment intent and confirm the payment
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,  // Amount in cents
+      currency: 'usd',  // Currency for payment
+      payment_method: paymentMethodId,
+      confirm: true,
+    });
+
+    if (paymentIntent.status === 'succeeded') {
+      res.send({ success: true });
+    } else {
+      res.send({ success: false });
+    }
+  } catch (error) {
+    console.error('Payment error:', error);
+    res.status(500).send({ success: false, message: 'Payment failed. Please try again.' });
+  }
+});
+*/
 export default router;
