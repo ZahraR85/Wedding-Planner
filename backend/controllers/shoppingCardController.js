@@ -143,66 +143,6 @@ export const removeFromShoppingCard = async (req, res) => {
 
 
 
-// export const removeFromShoppingCard = async (req, res) => {
-//   const { userID, serviceName } = req.body;
-
-//   try {
-//     if (!userID || !serviceName) {
-//       return res.status(400).json({ message: 'UserID and ServiceName are required.' });
-//     }
-
-//     // Step 1: Remove from ShoppingCard
-//     const deletedItem = await ShoppingCard.findOneAndDelete({ userID, serviceName });
-
-//     if (!deletedItem) {
-//       return res.status(404).json({ message: 'Service not found in the shopping card.' });
-//     }
-
-//     // Step 2: Remove from specific model based on serviceName
-//     let model;
-//     switch (serviceName) {
-//       case 'Makeup':
-//         model = Makeup;
-//         break;
-//         case 'Venue':
-//           model = Venue;
-//           break;
-//       case 'Music':
-//         model = Music;
-//         break;
-//       case 'Catering':
-//         model = Catering;
-//         break;
-//       case 'Photography':
-//         model = Photography;
-//         break;
-//       default:
-//         return res.status(400).json({ message: 'Invalid serviceName provided.' });
-//     }
-
-//     // Attempt to delete from the specific model
-//     const specificDeleted = await model.findOneAndDelete({ userID });
-//     if (!specificDeleted) {
-//       console.warn(`No matching record found in ${serviceName} model for userID: ${userID}`);
-//     }
-
-//     // Step 3: Fetch updated shopping card to calculate total price
-//     const cardItems = await ShoppingCard.find({ userID });
-//     const totalPrice = cardItems.reduce((sum, item) => sum + item.price, 0);
-
-//     return res.status(200).json({
-//       message: `Service '${serviceName}' removed successfully.`,
-//       cardItems,
-//       totalPrice,
-//     });
-//   } catch (error) {
-//     console.error('Error in removeFromShoppingCard:', error.message);
-//     return res.status(500).json({ message: 'Failed to remove service.', error: error.message });
-//   }
-// };
-
-
-
 
 
 
@@ -230,10 +170,12 @@ export const clearShoppingCard = async (req, res) => {
 
 
 
-export const removeAllFromShoppingCard = async ({ userID }) => {
+export const removeAllFromShoppingCard = async (req, res) => {
+  const { userID } = req.body; // Assuming the userID comes from the body
+
   try {
     if (!userID) {
-      throw new Error('UserID is required.');
+      return res.status(400).json({ message: 'UserID is required.' });
     }
 
     // Step 1: Remove all services from the ShoppingCart
@@ -245,16 +187,18 @@ export const removeAllFromShoppingCard = async ({ userID }) => {
       { model: Music, query: { userID } },
       { model: Catering, query: { userID } },
       { model: Photography, query: { userID } },
-      { model: Venue, query: { userId: userID } }
+      { model: Venue, query: { userId: userID } } // Handle userId for Venue model
     ];
 
+    // Delete from each model
     for (const { model, query } of models) {
       await model.deleteMany(query);
     }
 
-    return true;
+    // After deletion, you can return a success message or updated data if needed
+    return res.status(200).json({ message: 'All services removed from shopping cart and associated tables.' });
   } catch (error) {
     console.error('Failed to remove services:', error.message);
-    throw new Error('Failed to remove services after payment.');
+    return res.status(500).json({ message: 'Failed to remove all services from the shopping cart and tables.', error: error.message });
   }
 };

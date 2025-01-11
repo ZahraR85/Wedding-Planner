@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+//import { useNavigate } from "react-router-dom";
+import { useAppContext } from '../context/AppContext';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SuccessPage = () => {
+  const { userId, isAuthenticated } = useAppContext();
   const location = useLocation();
   const [sessionId, setSessionId] = useState(null);
+  useEffect(() => {
+    clearCartAndServices();
+  }, [userId]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -50,6 +57,20 @@ const SuccessPage = () => {
       </div>
     </div>
   );
+};
+
+const clearCartAndServices = async () => {
+  try {
+    const response = await fetch(`http://localhost:3001/shoppingcards/removeAllFromShoppingCart`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userID: userId }), // Assuming user.id is available
+    });
+    const data = await response.json();
+    console.log(data.message); // Show success message to the user
+  } catch (error) {
+    console.error('Error clearing cart and services:', error.message);
+  }
 };
 
 export default SuccessPage;
