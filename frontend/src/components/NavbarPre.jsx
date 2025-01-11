@@ -4,7 +4,7 @@ import { useAppContext } from "../context/AppContext";
 import logo from "../images/logo8.jpg";
 import { FaHome, FaUser, FaShoppingCart, FaTimes, FaBars } from "react-icons/fa";
 
-const Navbar1 = () => {
+const NavbarPre = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { 
     userId, 
@@ -58,12 +58,32 @@ const Navbar1 = () => {
                 Dashboard
               </Link>
             </li>
+            {isAuthenticated && role === "admin" && (
+  <li className="relative group">
+    <span className=" lg:block hover:underline">Admin Panel</span>
+    {/* Dropdown */}
+    <div className="absolute top-full left-0 w-[200px] max-w-[50vw] bg-BgKhaki text-BgFont shadow-lg mt-2 p-4 opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300">
+      <ul className="flex flex-col items-start space-y-4">
+        <li className="hover:underline hover:bg-BgKhaki px-2 rounded-md">
+          <Link to="/GalleryManagement">Manage Gallery</Link>
+        </li>
+        <li className="hover:underline hover:bg-BgKhaki px-2 rounded-md">
+          <Link to="/Admin/Venue">Manage Venue</Link>
+        </li>
+      </ul>
+    </div>
+  </li>
+)}
           </ul>
         </div>
         <Link to="/" className="hidden lg:block">
           <img src={logo} alt="Logo" className="h-16" />
         </Link>
         <ul className="flex font-bold text-BgFont items-center space-x-12">
+
+
+
+
           <li>
             <Link
               to="/ShoppingCard"
@@ -82,7 +102,7 @@ const Navbar1 = () => {
           </li>
           <li>
             {isAuthenticated ? (
-              <button className="hidden lg:block" onClick={signOut}>
+              <button className="hidden lg:block hover:underline" onClick={signOut}>
                 Sign Out
               </button>
             ) : (
@@ -101,31 +121,6 @@ const Navbar1 = () => {
       {/* Second Row */}
       <div className="hidden text-BgFont items-center justify-around bg-gray-100 px-4 py-2 text-sm md:flex">
         <ul className="flex font-bold items-center justify-around space-x-12 text-sm">
-          {/* Admin Panel dropdown moved here */}
-          {isAuthenticated && role === "admin" && (
-            <li className="relative group">
-              <span 
-                className="hover:underline"
-                onMouseEnter={handleMouseEnter} 
-                onMouseLeave={handleMouseLeave}
-              >
-                Admin Panel
-              </span>
-              {/* Dropdown */}
-              <div 
-                className="absolute top-full left-1/2 transform -translate-x-1/2 w-[200px] max-w-[50vw] bg-gray-100 text-BgFont shadow-lg mt-2 p-4 opacity-0 group-hover:opacity-100 
-                group-hover:visible group-hover:translate-y-0 transition-all duration-300" >
-                <ul className="flex flex-col items-start space-y-4">
-                  <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
-                    <Link to="/GalleryManagement">Manage Gallery</Link>
-                  </li>
-                  <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
-                    <Link to="/Admin/Venue">Manage Venue</Link>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          )}
           <li className="hover:underline">
             <Link to="/userinfo">User Information</Link>
           </li>
@@ -147,7 +142,6 @@ const Navbar1 = () => {
           <li className="hover:underline">
             <Link to="/Musics">Music Band</Link>
           </li>
-          
         </ul>
       </div>
 
@@ -220,5 +214,4 @@ const Navbar1 = () => {
   );
 };
 
-export default Navbar1;
-
+export default NavbarPre;
