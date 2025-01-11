@@ -180,6 +180,10 @@ function Guest() {
         email: guestToUpdate.email,
       });
       setUpdatingGuestId(id);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Smooth scrolling animation
+      });
     }
   };
 

@@ -76,7 +76,7 @@ export const sendInvitation = async (req, res) => {
   try {
 
     const { userId, email } = req.body;
-;
+    ;
 
     if (!userId) {
       return res.status(400).json({ message: "UserID is required." });
@@ -85,12 +85,12 @@ export const sendInvitation = async (req, res) => {
       return res.status(400).json({ message: "Invalid email format." });
     }
 
-     const userInfo = await UserInfo.findOne({ userID: userId }, { _id: 0 });
+    const userInfo = await UserInfo.findOne({ userID: userId }, { _id: 0 });
 
 
-     if (!userInfo) {
-       return res.status(404).json({ message: "User info not found for this user." });
-     }
+    if (!userInfo) {
+      return res.status(404).json({ message: "User info not found for this user." });
+    }
 
     const guest = await Guest.findOne({ email });
 
@@ -99,21 +99,51 @@ export const sendInvitation = async (req, res) => {
     }
     const guestName = guest.guestName;
     const htmlContent = `
-      <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-        <h1 style="color:rgb(175, 76, 139);">You're Invited!</h1>
-        <p>Dear ${guestName},</p>
-        <p>We are delighted to invite you to the wedding of <strong>${userInfo.brideName}</strong> and <strong>${userInfo.groomName}</strong>.</p>
-        <ul>
-          <li><strong>Date:</strong> ${new Date(userInfo.weddingDate).toLocaleDateString()}</li>
-          <li><strong>Time:</strong> 6:00 PM</li>
-          <li><strong>Venue:</strong> The Grand Hall, 123 Celebration Avenue</li>
-        </ul>
-        <p>${userInfo.story || "We look forward to celebrating with you!"}</p>
-        <p>Please respond to this email with your availability.</p>
-        <p>Best Regards,</p>
-        <p><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
+    <div style="font-family: 'Arial', sans-serif; background-image: url('https://i.postimg.cc/Mp56xJ1p/Untitled-design.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; padding: 40px; border-radius: 15px; width: 600px; margin: 50px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
+      <!-- Top text -->
+      <p style="font-size: 16px; color: #333; margin: 0;">You Are Invited To</p>
+      
+      <!-- Main title -->
+      <h1 style="font-family: 'Georgia', serif; font-size: 36px; color: #b99058; margin: 10px 0;">Wedding Party</h1>
+      
+      <!-- Names -->
+      <h2 style="font-size: 20px; color: #555; margin: 10px 0;">${userInfo.brideName} & ${userInfo.groomName}</h2>
+      
+      <!-- Date, time, and venue section -->
+      <div style="margin: 20px 0;">
+        <p style="font-size: 16px; font-weight: bold; margin: 0;">${new Date(userInfo.weddingDate).toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</p>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 10px 0;">
+          <p style="font-size: 14px; margin: 0;">${new Date(userInfo.weddingDate).toLocaleDateString('en-US', { month: 'long' }).toUpperCase()}</p>
+          <p style="font-size: 40px; color: #b99058; margin: 0;">${new Date(userInfo.weddingDate).getDate()}</p>
+          <p style="font-size: 14px; margin: 0;">AT 6:00 PM</p>
+        </div>
+        <p style="font-size: 16px; margin: 10px 0;">The Grand Hall, 123 Celebration Avenue</p>
       </div>
-    `;
+      
+      <!-- Story Section -->
+      <p style="text-align: justify; font-size: 10px; line-height: 1.6; padding: 0 10px;  border-radius: 10px; padding: 15px;">${userInfo.story || "We look forward to celebrating with you!"}</p>
+      
+      <!-- Closing -->
+      <p style="margin: 20px 0; font-weight: bold;">Best Regards,</p>
+      <p style="margin: 0;"><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
+    </div>
+  `;
+    // const htmlContent = `
+    //   <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+    //     <h1 style="color:rgb(175, 76, 139);">You're Invited!</h1>
+    //     <p>Dear ${guestName},</p>
+    //     <p>We are delighted to invite you to the wedding of <strong>${userInfo.brideName}</strong> and <strong>${userInfo.groomName}</strong>.</p>
+    //     <ul>
+    //       <li><strong>Date:</strong> ${new Date(userInfo.weddingDate).toLocaleDateString()}</li>
+    //       <li><strong>Time:</strong> 6:00 PM</li>
+    //       <li><strong>Venue:</strong> The Grand Hall, 123 Celebration Avenue</li>
+    //     </ul>
+    //     <p>${userInfo.story || "We look forward to celebrating with you!"}</p>
+    //     <p>Please respond to this email with your availability.</p>
+    //     <p>Best Regards,</p>
+    //     <p><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
+    //   </div>
+    // `;
 
     await sendEmail(email, "You're Invited!", "Please join us for the event!", htmlContent);
 
@@ -148,31 +178,61 @@ export const sendToAllNotYetGuests = async (req, res) => {
     const emailPromises = guests.map((guest) => {
       const guestName = guest.guestName;
       const htmlContent = `
-      <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-        <h1 style="color:rgb(175, 76, 139);">You're Invited!</h1>
-        <p>Dear ${guestName},</p>
-        <p>We are delighted to invite you to the wedding of <strong>${userInfo.brideName}</strong> and <strong>${userInfo.groomName}</strong>.</p>
-        <ul>
-          <li><strong>Date:</strong> ${new Date(userInfo.weddingDate).toLocaleDateString()}</li>
-          <li><strong>Time:</strong> 6:00 PM</li>
-          <li><strong>Venue:</strong> The Grand Hall, 123 Celebration Avenue</li>
-        </ul>
-        <p>${userInfo.story || "We look forward to celebrating with you!"}</p>
-        <p>Please respond to this email with your availability.</p>
-        <p>Best Regards,</p>
-        <p><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
+    <div style="font-family: 'Arial', sans-serif; background-image: url('https://i.postimg.cc/Mp56xJ1p/Untitled-design.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; padding: 40px; border-radius: 15px; width: 600px; margin: 50px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
+      <!-- Top text -->
+      <p style="font-size: 16px; color: #333; margin: 0;">You Are Invited To</p>
+      
+      <!-- Main title -->
+      <h1 style="font-family: 'Georgia', serif; font-size: 36px; color: #b99058; margin: 10px 0;">Wedding Party</h1>
+      
+      <!-- Names -->
+      <h2 style="font-size: 20px; color: #555; margin: 10px 0;">${userInfo.brideName} & ${userInfo.groomName}</h2>
+      
+      <!-- Date, time, and venue section -->
+      <div style="margin: 20px 0;">
+        <p style="font-size: 16px; font-weight: bold; margin: 0;">${new Date(userInfo.weddingDate).toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</p>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 10px 0;">
+          <p style="font-size: 14px; margin: 0;">${new Date(userInfo.weddingDate).toLocaleDateString('en-US', { month: 'long' }).toUpperCase()}</p>
+          <p style="font-size: 40px; color: #b99058; margin: 0;">${new Date(userInfo.weddingDate).getDate()}</p>
+          <p style="font-size: 14px; margin: 0;">AT 6:00 PM</p>
+        </div>
+        <p style="font-size: 16px; margin: 10px 0;">The Grand Hall, 123 Celebration Avenue</p>
       </div>
-    `;
+      
+      <!-- Story Section -->
+      <p style="text-align: justify; font-size: 10px; line-height: 1.6; padding: 0 10px;  border-radius: 10px; padding: 15px;">${userInfo.story || "We look forward to celebrating with you!"}</p>
+      
+      <!-- Closing -->
+      <p style="margin: 20px 0; font-weight: bold;">Best Regards,</p>
+      <p style="margin: 0;"><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
+    </div>
+  `;
+      //   const htmlContent = `
+      //   <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+      //     <h1 style="color:rgb(175, 76, 139);">You're Invited!</h1>
+      //     <p>Dear ${guestName},</p>
+      //     <p>We are delighted to invite you to the wedding of <strong>${userInfo.brideName}</strong> and <strong>${userInfo.groomName}</strong>.</p>
+      //     <ul>
+      //       <li><strong>Date:</strong> ${new Date(userInfo.weddingDate).toLocaleDateString()}</li>
+      //       <li><strong>Time:</strong> 6:00 PM</li>
+      //       <li><strong>Venue:</strong> The Grand Hall, 123 Celebration Avenue</li>
+      //     </ul>
+      //     <p>${userInfo.story || "We look forward to celebrating with you!"}</p>
+      //     <p>Please respond to this email with your availability.</p>
+      //     <p>Best Regards,</p>
+      //     <p><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
+      //   </div>
+      // `;
       return sendEmail(
-        guest.email, 
-        "Invitation Reminder", 
-        "Please RSVP to the invitation", 
+        guest.email,
+        "Invitation Reminder",
+        "Please RSVP to the invitation",
         htmlContent
       );
     });
 
 
-    
+
     await Promise.all(emailPromises);
 
     res.status(200).json({ message: "Emails sent successfully to all 'Not yet' guests!" });
@@ -189,7 +249,7 @@ export const sendToAllNotYetGuests = async (req, res) => {
 export const createGuest = async (req, res) => {
   try {
     const { userID, guestName, numberOfPersons, phone, address, answerStatus, email } = req.body;
-    
+
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
