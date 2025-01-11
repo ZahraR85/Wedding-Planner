@@ -75,7 +75,6 @@ const ShoppingCard = () => {
       name: item.serviceName,  // Name of the service
       price: item.price,       // Price of the service
       quantity: 1,             // Set to 1 for now
-      image: item.image || '', // If you have images
     }));
   
     try {

@@ -12,7 +12,7 @@ router.post('/create-checkout-session', async (req, res) => {
       currency: 'usd', // Or the currency you want to use
       product_data: {
         name: item.name,
-        images: [item.image],  // URL of product image
+       // images: [item.image],  // URL of product image
       },
       unit_amount: item.price * 100,  // Convert price to cents
     },
@@ -25,8 +25,8 @@ router.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items: line_items,
       mode: 'payment',
-      success_url: `${process.env.BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.BASE_URL}/cancel`,
+      success_url: 'http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: 'http://localhost:5173/cancel',
     });
 
     res.json({ id: session.id });

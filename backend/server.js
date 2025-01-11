@@ -107,6 +107,16 @@ app.use("/todolist", todolistRouter);
 app.use("/shoppingcards", shoppingCardRouter);
 app.use('/payment', paymentRoutes);
 
+app.get('/cancel', (req, res) => {
+  res.send('Payment was canceled. Please try again.');
+});
+
+app.get('/success', (req, res) => {
+  const sessionId = req.query.session_id;
+  // Handle the session_id (e.g., confirm payment, store order, etc.)
+  res.send(`Payment successful, session ID: ${sessionId}`);
+});
+
 
 app.use('/v1/audio/speech', audioRouter);
 app.use('/v1/chat/completions', chatRouter);
