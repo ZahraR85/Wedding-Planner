@@ -9,10 +9,10 @@ import "../App.css";
 const GalleryManagement = () => {
   const [allImages, setAllImages] = useState([]); // Store all fetched images
   const [currentPage, setCurrentPage] = useState(1);
-  const IMAGES_PER_PAGE = 10; // Number of images per page
+  const IMAGES_PER_PAGE = 15;
 
   const [imageName, setImageName] = useState('');
-  const [imagePath, setImagePath] = useState(null); // Track the uploaded image file
+  const [imagePath, setImagePath] = useState(null);
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [editingImageId, setEditingImageId] = useState(null);
@@ -21,9 +21,9 @@ const GalleryManagement = () => {
 
   useEffect(() => {
     if (!isAuthenticated || role !== "admin") {
-      toast.warn("You must sign in as Admin to access this page."); // Show warning toast
+      toast.warn("You must sign in as Admin to access this page.");
       setTimeout(() => {
-        navigate("/signin"); // Delay navigation
+        navigate("/signin");
       }, 2000);
     }
   }, [isAuthenticated, role, navigate]);
@@ -31,7 +31,7 @@ const GalleryManagement = () => {
   const fetchImages = async () => {
     try {
       const response = await axios.get('http://localhost:3001/galleries');
-      console.log('Fetched images:', response.data); // Log the fetched images
+      //console.log('Fetched images:', response.data); 
       setAllImages(response.data); // Update the state with the fetched images
     } catch (error) {
       console.error('Error fetching images:', error);
