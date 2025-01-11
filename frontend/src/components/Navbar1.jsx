@@ -82,7 +82,7 @@ const Navbar1 = () => {
           </li>
           <li>
             {isAuthenticated ? (
-              <button className="hidden lg:block" onClick={signOut}>
+              <button className="hidden lg:block hover:underline" onClick={signOut}>
                 Sign Out
               </button>
             ) : (
@@ -117,10 +117,10 @@ const Navbar1 = () => {
                 group-hover:visible group-hover:translate-y-0 transition-all duration-300" >
                 <ul className="flex flex-col items-start space-y-4">
                   <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
-                    <Link to="/GalleryManagement">Manage Gallery</Link>
+                    <Link to="/GalleryManagement">Gallery Management</Link>
                   </li>
                   <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
-                    <Link to="/Admin/Venue">Manage Venue</Link>
+                    <Link to="/Admin/Venue">Venue Management</Link>
                   </li>
                 </ul>
               </div>
