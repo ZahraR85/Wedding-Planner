@@ -2,7 +2,7 @@ import User from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-// i eddit something here
+
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.JWT_SECRET, { expiresIn: '60d' });
@@ -11,7 +11,7 @@ const generateToken = (userId, role) => {
 // Register User
 export const register = async (req, res) => {
   const { name, family, email, phone, password } = req.body;
-
+console.log(req.body);
   try {
     const newUser = new User({ name, family, email, phone, password });
     await newUser.save();
