@@ -9,7 +9,7 @@ const makeupSchema = new Schema(
     },
     makeup: {
       selected: { type: Boolean, default: false },
-      price: { type: Number, default: 400 },
+      price: { type: Number, default: 300 },
     },
     dress: {
       selected: { type: Boolean, default: false },
@@ -17,11 +17,11 @@ const makeupSchema = new Schema(
     },
     nail: {
       selected: { type: Boolean, default: false },
-      price: { type: Number, default: 200 },
+      price: { type: Number, default: 70 },
     },
     hairstyle: {
       selected: { type: Boolean, default: false },
-      price: { type: Number, default: 400 },
+      price: { type: Number, default: 200 },
     },
     shoes: {
       selected: { type: Boolean, default: false },
