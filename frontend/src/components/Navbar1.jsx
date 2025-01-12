@@ -58,6 +58,11 @@ const Navbar1 = () => {
                 Dashboard
               </Link>
             </li>
+            <li>
+              <Link to="/AdminMusicOption" className="hover:underline hidden lg:block">
+                Music Management
+              </Link>
+            </li>
           </ul>
         </div>
         <Link to="/" className="hidden lg:block">
