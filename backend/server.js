@@ -21,7 +21,7 @@ import venueSelectionRouter from './routes/venueSelectionRouter.js';
 import galleryRouter from './routes/galleryRouter.js';
 import todolistRouter  from './routes/todolist.js';
 import shoppingCardRouter from './routes/shoppingCardRouter.js';
-import paymentRoutes from './routes/PaymentRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 import { removeAllFromShoppingCard } from './controllers/shoppingCardController.js'; 
 
 import audioRouter from './routes/audioRouter.js'; // Corrected path
