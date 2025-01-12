@@ -128,12 +128,12 @@ const MusicOptionsPage = () => {
       {/* Background Section */}
       <div className="relative min-h-screen bg-cover bg-center p-20 bg-[url('https://i.postimg.cc/fytpMk46/music.png')]">
         <div className="absolute inset-0 bg-white/50"></div>
-        <div className="relative mx-auto w-full max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-10 mt-10 space-y-4">
-          <h2 className="text-2xl font-bold text-BgFont mb-12 text-center">
+        <div className="relative mx-auto w-full max-w-[calc(85%-100px)] lg:max-w-[calc(60%-100px)] bg-opacity-80 shadow-md rounded-lg p-10 mt-10 space-y-4">
+          <h2 className="text-lg lg:text-2xl font-bold text-BgFont mb-5 lg:mb-12 text-center">
             Add / Edit Music Options
           </h2>
           <form
-            className="space-y-4"
+            className="space-y-2 lg:space-y-4"
             onSubmit={isEditing ? handleUpdateOption : handleAddOption}
           >
             <input
@@ -181,7 +181,7 @@ const MusicOptionsPage = () => {
             />
             <button
               type="submit"
-              className="w-full bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark hover:text-xl p-4 rounded"
+              className="w-full bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark hover:text-xl p-2 lg:p-4 rounded"
             >
               {isEditing ? "Update Option" : "Add Option"}
             </button>
@@ -192,7 +192,7 @@ const MusicOptionsPage = () => {
       {/* Music Options List Section */}
       <div className="w-full p-6 bg-customBg1 shadow-lg rounded-lg space-y-5">
         <h2 className="text-2xl text-BgFont font-bold mb-4">Available Music Options</h2>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
           {musicOptions.map((option) => (
             <li
               key={option._id}
