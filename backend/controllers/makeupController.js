@@ -13,10 +13,10 @@ export const createOrUpdateMakeup = async (req, res) => {
 
     // Calculate the total price
     const total =
-      (makeup ? 400 : 0) +
+      (makeup ? 300 : 0) +
       (dress ? 500 : 0) +
-      (nail ? 200 : 0) +
-      (hairstyle ? 400 : 0) +
+      (nail ? 70 : 0) +
+      (hairstyle ? 200 : 0) +
       (shoes ? 100 : 0) +
       (special ? 300 : 0);
 
@@ -24,10 +24,10 @@ export const createOrUpdateMakeup = async (req, res) => {
 
     // Prepare the data to update
     const updateData = {
-      makeup: { selected: makeup || false, price: 400 },
+      makeup: { selected: makeup || false, price: 300 },
       dress: { selected: dress || false, price: 500 },
-      nail: { selected: nail || false, price: 200 },
-      hairstyle: { selected: hairstyle || false, price: 400 },
+      nail: { selected: nail || false, price: 70 },
+      hairstyle: { selected: hairstyle || false, price: 200 },
       shoes: { selected: shoes || false, price: 100 },
       special: { selected: special || false, price: 300 },
       total, // Include the calculated total
@@ -130,4 +130,4 @@ export const deleteMakeup = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error deleting makeup", error });
   }
-};
+};  
