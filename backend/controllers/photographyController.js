@@ -8,9 +8,9 @@ export const createOrUpdatePhotography = async (req, res) => {
       const userObjectId = new mongoose.Types.ObjectId(userID);
 
       const total =
-          (photography?.number || 0) * (photography?.price || 300) +
-          (videography?.number || 0) * (videography?.price || 300) +
-          (clipConstruction?.number || 0) * (clipConstruction?.price || 200) +
+          (photography?.number || 0) * (photography?.price || 150) +
+          (videography?.number || 0) * (videography?.price || 100) +
+          (clipConstruction?.number || 0) * (clipConstruction?.price || 100) +
           (physicalAlbum?.selected ? (physicalAlbum?.price || 500) : 0) +
           (giftImageSize?.number || 0) * (giftImageSize?.price || 10);
 
@@ -95,4 +95,3 @@ export const getPhotographyByQuery = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch photography data", error: error.message });
   }
 };
-
