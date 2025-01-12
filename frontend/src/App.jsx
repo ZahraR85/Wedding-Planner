@@ -26,6 +26,9 @@ import Searchvenues from './components/searchvenues.jsx'
 import VenueDetail from "./components/venuedetail";
 import AboutUs from './Pages/AboutUs.jsx';
 import FAQ from "./pages/FAQ.jsx"
+import SuccessPage from "./pages/SuccessPage.jsx";
+import CancelPage from "./pages/CancelPage.jsx";
+
 import './index.css';
 
 function App() {
@@ -63,6 +66,8 @@ function App() {
             <Route path="/searchvenues" element={<Searchvenues />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/Success" element={<SuccessPage />} />
+            <Route path="/Cancel" element={<CancelPage />} />
           </Routes>
         </Layout>
       </Router>
