@@ -19,6 +19,7 @@ import { AppProvider } from './context/AppContext';
 import SignIn from './Auth/SignIn.jsx';
 import Register from './Auth/Register.jsx';
 import GalleryManagement from './AdminVenue/GalleryManagement.jsx';
+import AdminMusicOption from './AdminVenue/AdminMusicOption.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
@@ -45,6 +46,7 @@ function App() {
             <Route path="/Gallery/:category" element={<CategoryDetails />} />
             <Route path="/UserInfo" element={ <UserInfo />} />
             <Route path="/GalleryManagement" element={ <GalleryManagement />} />
+            <Route path="/AdminMusicOption" element={ <AdminMusicOption />} />
             <Route path="/signin" element={ <SignIn />} />
             <Route path="/register" element={<Register />} />
               {/* Admin Routes */}
