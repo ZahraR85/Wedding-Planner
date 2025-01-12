@@ -149,27 +149,23 @@ const ShoppingCard = () => {
         className="relative flex-none w-full md:w-2/3 bg-cover bg-center"
         style={{ backgroundImage: `url('https://i.postimg.cc/XqYyy1GZ/shopping-Card1.jpg')` }}
       >
-        {/* Centered Total Price */}
-        {shoppingCard.length > 0 && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-BgPink text-BgFont text-xl md:text-3xl font-bold p-4 mb-10 rounded-lg shadow-lg">
-              Total: {totalPrice.toFixed(2)} €
-            </div>
-          </div>
-        )}
-
-        {/* Checkout Button */}
-        {shoppingCard.length > 0 && (
-          <div className="absolute inset-x-0 bottom-10 flex items-center justify-center">
-            <button
-              onClick={handleCheckout}  // Trigger checkout when clicked
-              className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600"
-            >
-              Proceed to Checkout
-            </button>
-          </div>
-        )}
+          {/* Centered Total Price and Checkout Button */}
+  {shoppingCard.length > 0 && (
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
+      <div className="bg-BgPink text-BgFont text-xl md:text-3xl font-bold p-4 rounded-lg shadow-lg">
+        Total: {totalPrice.toFixed(2)} €
       </div>
+      <div>
+        <button
+          onClick={handleCheckout}  // Trigger checkout when clicked
+          className="bg-BgPinkMiddle text-BgFont py-3 px-6 text-xl md:text-2xl font-bold rounded-lg shadow-lg hover:bg-BgPinkDark"
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  )}
+</div>
     </div>
   );
 };
