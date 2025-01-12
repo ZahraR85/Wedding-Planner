@@ -1,6 +1,6 @@
 import Guest from "../models/guest.js";
 import nodemailer from "nodemailer";
-import UserInfo from '../models/userInfo.js';
+import UserInfo from '../models/userinfo.js';
 
 import mongoose from "mongoose";
 
