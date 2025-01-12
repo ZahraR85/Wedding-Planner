@@ -173,7 +173,8 @@ return (
       <h1 className="text-2xl sm:text-3xl text-center text-BgFont font-bold m-4 sm:m-10">Select your Catering features:</h1>
       <p className="text-sm sm:text-m text-BgFont font-semibold text-center mb-4 sm:mb-8">{description}</p>
       <button onClick={() => navigate("/Menu")}
-      className="w-3/5 text-m lg:text-xl bg-BgPinkMiddle text-BgFont font-bold py-2 px-4 rounded hover:bg-BgPinkDark">Click here to See our Menu</button>
+      className="w-3/5 text-m lg:text-xl bg-BgPinkMiddle text-BgFont font-bold py-2 px-4 rounded hover:bg-BgPinkDark">Click here to See our Menu
+      </button>
 
       <table className="table-auto text-BgFont w-full border-collapse border border-BgFont">
         <thead>
