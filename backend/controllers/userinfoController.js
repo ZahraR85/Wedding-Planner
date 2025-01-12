@@ -15,6 +15,7 @@ export const createUserInfo = async (req, res) => {
 export const getAllUserInfo = async (req, res) => {
   try {
     const userInfo = await UserInfo.find();
+    console.log(userInfo);
     res.status(200).json(userInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
