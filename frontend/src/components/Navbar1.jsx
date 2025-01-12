@@ -166,6 +166,7 @@ const Navbar1 = () => {
             </div>
             <hr />
             <div className="flex flex-col gap-4 p-6">
+              
               <Link to="/dashboard" className="text-BgFont hover:underline">
                 Dashboard
               </Link>
@@ -190,6 +191,15 @@ const Navbar1 = () => {
               <Link to="/Musics" className="text-BgFont hover:underline">
                 Music Band
               </Link>
+              {/* Admin Panel dropdown moved here */}
+          {isAuthenticated && role === "admin" && (
+            <div className="flex flex-col gap-4">
+    
+            <br />
+            <Link to="/GalleryManagement" className="text-BgFont hover:underline">Gallery Management</Link>
+            <Link to="/Admin/Venue" className="text-BgFont hover:underline">Venue Management</Link>
+            </div>
+          )}
             </div>
             <hr />
             <br />
@@ -209,11 +219,13 @@ const Navbar1 = () => {
                 <span>Signin | Register</span>
               </Link>
             )}
+
           </div>
           <div
             className="flex-1 bg-black opacity-50"
             onClick={() => setMenuOpen(false)}
           ></div>
+          
         </div>
       )}
     </nav>
