@@ -82,7 +82,7 @@ const GalleryManagement = () => {
         },
       });
   
-      alert('Image added successfully');
+      toast.success('Image added successfully');
       fetchImages();
       setImageName('');
       setImagePath(null);
@@ -90,7 +90,7 @@ const GalleryManagement = () => {
       setCategory('');
     } catch (error) {
       console.error('Error adding image:', error);
-      alert('Failed to add image');
+      toast.alert('Failed to add image');
     }
   };
   
@@ -125,7 +125,7 @@ const GalleryManagement = () => {
         },
       });
   
-      alert('Image updated successfully');
+      toast.success('Image updated successfully');
       fetchImages(); // Reload images after updating
       setImageName('');
       setImagePath(null);
@@ -134,7 +134,7 @@ const GalleryManagement = () => {
       setEditingImageId(null); // Clear editing state
     } catch (error) {
       console.error('Error updating image:', error);
-      alert('Failed to update image');
+      toast.alert('Failed to update image');
     }
   };  
   
@@ -147,9 +147,10 @@ const GalleryManagement = () => {
         },
       });
       fetchImages(); // Reload images after deleting
+      toast.success('Image deleted successfully');
     } catch (error) {
       console.error('Error deleting image:', error);
-      alert('Failed to delete image');
+      toast.alert('Failed to delete image');
     }
   };
 

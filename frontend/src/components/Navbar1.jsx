@@ -58,11 +58,6 @@ const Navbar1 = () => {
                 Dashboard
               </Link>
             </li>
-            <li>
-              <Link to="/AdminMusicOption" className="hover:underline hidden lg:block">
-                Music Management
-              </Link>
-            </li>
           </ul>
         </div>
         <Link to="/" className="hidden lg:block">
@@ -126,6 +121,11 @@ const Navbar1 = () => {
                   </li>
                   <li className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
                     <Link to="/Admin/Venue">Venue Management</Link>
+                  </li>
+                  <li>
+                    <Link to="/AdminMusicOption" className="hover:underline hover:bg-BgKhaki p-2 rounded-md">
+                    Music Management
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -203,6 +203,7 @@ const Navbar1 = () => {
             <br />
             <Link to="/GalleryManagement" className="text-BgFont hover:underline">Gallery Management</Link>
             <Link to="/Admin/Venue" className="text-BgFont hover:underline">Venue Management</Link>
+            <Link to="/AdminMusicOption" className="text-BgFont hover:underline">Music Management</Link>
             </div>
           )}
             </div>
