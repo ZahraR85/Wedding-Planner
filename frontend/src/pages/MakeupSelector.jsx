@@ -10,7 +10,7 @@ const features = [
   {
     id: "makeup",
     label: "Makeup",
-    price: 400,
+    price: 300,
     description:
       "Professional makeup for the bride and groom, including high-definition airbrush techniques, contouring, and personalized palettes tailored to skin tone and style. Includes trials and touch-ups throughout the day.",
   },
@@ -19,26 +19,26 @@ const features = [
     label: "Shoes",
     price: 100,
     description:
-      "Elegant shoes for the perfect look, available in custom designs and a variety of styles including stilettos, flats, and classic formal shoes. Comfort and style ensured for all-day wear.",
+      "Elegant shoes for the perfect look, available in custom designs and a variety of styles including stilettos, flats, and classic formal shoes. Comfort and style ensured for all-day wear. Set by your dress and style!",
   },
   {
     id: "dress",
-    label: "Dress",
+    label: "Dress Rental ",
     price: 500,
     description:
-      "Designer dress for the big day, with options for traditional gowns, modern silhouettes, and custom-made designs. Includes fitting sessions and fabric customization for a flawless fit.",
+      "Designer dress for the big day for 24 hours with options for traditional gowns, modern silhouettes, and custom-made designs. Includes fitting sessions and fabric customization for a flawless fit.",
   },
   {
     id: "nail",
     label: "Nail",
-    price: 200,
+    price: 70,
     description:
       "Beautiful nail art for the bride, offering services like gel extensions, intricate designs, and a wide range of colors to complement the wedding theme. Includes a consultation for unique styling.",
   },
   {
     id: "hairstyle",
     label: "Hairstyle",
-    price: 400,
+    price: 200,
     description:
       "Stunning hairstyles for the bride and groom, including updos, curls, and sleek styles. Each style is customized based on face shape, outfit, and personal preference. Includes pre-event trials.",
   },
@@ -55,10 +55,10 @@ const MakeupSelector = () => {
   const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate();
   const [selectedFeatures, setSelectedFeatures] = useState({
-    makeup: { selected: false, price: 400 },
+    makeup: { selected: false, price: 300 },
     dress: { selected: false, price: 500 },
-    nail: { selected: false, price: 200 },
-    hairstyle: { selected: false, price: 400 },
+    nail: { selected: false, price: 70 },
+    hairstyle: { selected: false, price: 200 },
     shoes: { selected: false, price: 100 },
     special: { selected: false, price: 300 },
   });
@@ -83,10 +83,10 @@ const MakeupSelector = () => {
         if (response.data) {
           const existingData = response.data;
           setSelectedFeatures({
-            makeup: existingData.makeup || { selected: false, price: 400 },
+            makeup: existingData.makeup || { selected: false, price: 300 },
             dress: existingData.dress || { selected: false, price: 500 },
-            nail: existingData.nail || { selected: false, price: 200 },
-            hairstyle: existingData.hairstyle || { selected: false, price: 400 },
+            nail: existingData.nail || { selected: false, price: 70 },
+            hairstyle: existingData.hairstyle || { selected: false, price: 200 },
             shoes: existingData.shoes || { selected: false, price: 100 },
             special: existingData.special || { selected: false, price: 300 },
           });

@@ -7,20 +7,20 @@ import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
 const features = [
-  { id: "photography", label: "Photography 300€", price: 300, description: "This Price is per each 3 hours. Capturing memorable moments with precision and creativity." },
-  { id: "videography", label: "Videography 300€", price: 300, description: "This Price is per each 3 hours. creating cinematic wedding videos to cherish forever." },
-  { id: "clipConstruction", label: "Clip Construction 300€", price: 200, description: "This Price is per each 3 Minutes. Custom video clips tailored to your preferences." },
+  { id: "photography", label: "Photography 150€", price: 150, description: "This Price is per each one hours. Capturing memorable moments with precision and creativity." },
+  { id: "videography", label: "Videography 100€", price: 100, description: "This Price is per each one hours. creating cinematic wedding videos to cherish forever." },
+  { id: "clipConstruction", label: "Clip Construction 100€", price: 100, description: "This Price is per each one Minutes. Custom video clips tailored to your preferences." },
   { id: "physicalAlbum", label: "Physical Album 500€", price: 500, description: " Beautifully crafted physical albums featuring 20 premium-quality photographs." },
-  { id: "giftImageSize", label: "Gift Image for guests 10€", price: 10, description: "Personalized gift-sized ( 15x18) images for guests, ideal as keepsakes." },
+  { id: "giftImageSize", label: "Gift Image for guests 10€", price: 10, description: "Personalized gift-sized ( 10 x 15) images for guests on Wood." },
 ];
 
 const Photography = () => {
   const { userId, isAuthenticated, addToShoppingCard } = useAppContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    photography: { number: 0, price: 300 },
-    videography: { number: 0, price: 300 },
-    clipConstruction: { number: 0, price: 200 },
+    photography: { number: 0, price: 150 },
+    videography: { number: 0, price: 100 },
+    clipConstruction: { number: 0, price: 100 },
     physicalAlbum: { selected: false, price: 500 },
     giftImageSize: { number: 0, price: 10 },
   });
@@ -48,9 +48,9 @@ const Photography = () => {
             // Update to work with either array or object
             const existingData = Array.isArray(response.data) ? response.data[0] : response.data;
             const updatedFormData = {
-              photography: existingData.photography || { number: 0, price: 300 },
-              videography: existingData.videography || { number: 0, price: 300 },
-              clipConstruction: existingData.clipConstruction || { number: 0, price: 200 },
+              photography: existingData.photography || { number: 0, price: 150 },
+              videography: existingData.videography || { number: 0, price: 100 },
+              clipConstruction: existingData.clipConstruction || { number: 0, price: 100 },
               physicalAlbum: existingData.physicalAlbum || { selected: false, price: 500 },
               giftImageSize: existingData.giftImageSize || { number: 0, price: 10 },
             };
@@ -59,7 +59,7 @@ const Photography = () => {
           }
         } catch (error) {
           console.error("Error fetching photography data:", error);
-          toast.error("Failed to fetch photography data!");
+          //toast.error("Failed to fetch photography data!");
         }
       };
     fetchData();
@@ -160,7 +160,7 @@ const Photography = () => {
     return (
       <div className="relative min-h-screen bg-cover bg-center p-4  bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
         <div className="absolute inset-0 bg-white/60"></div>
-        <div className="relative mx-auto w-full max-w-[calc(100%-40px)] sm:max-w-[calc(60%-130px)] bg-opacity-80 shadow-md rounded-lg p-4 sm:p-8 space-y-5">
+        <div className="relative mx-auto w-full max-w-[calc(100%-40px)] sm:max-w-[calc(60%-180px)] bg-opacity-80 shadow-md rounded-lg p-4 sm:p-8 space-y-5">
           <h1 className="text-xl sm:text-2xl font-bold text-center text-BgFont my-4 lg:my-16">Photography Services</h1>
           <ToastContainer />
            {/* Hover Description */}
