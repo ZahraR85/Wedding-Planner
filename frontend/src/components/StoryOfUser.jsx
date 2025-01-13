@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserInformation = ({ userId, setWeddingDate }) => {
+const StoryOfUser = ({ userId, setWeddingDate }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,4 +59,4 @@ const UserInformation = ({ userId, setWeddingDate }) => {
   );
 };
 
-export default UserInformation;
+export default StoryOfUser;

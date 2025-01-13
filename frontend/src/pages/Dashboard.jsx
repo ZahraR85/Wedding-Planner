@@ -10,7 +10,7 @@ import Countdown from "../components/DownCount";
 import Catering from "../components/UserCatering";
 import PhotographyUserSelection from "../components/PhotographyUserSelection";
 import Venue from "../components/venue";
-import Story from "../components/UserStory";
+import Story from "../components/StoryOfUser";
 import AI from "../components/DashboardAI";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
