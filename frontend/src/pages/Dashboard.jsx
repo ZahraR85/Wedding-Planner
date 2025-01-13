@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import Music from "../components/MusicComponent";
-import MakeupUser from "../components/MakeupUser";
+import MakeupUser from "../components/UserMakeup";
 import UserInformation from "../components/UserInformation";
 import Todolist from "../components/ToDoList";
 import Countdown from "../components/Countdown";
