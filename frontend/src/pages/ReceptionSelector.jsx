@@ -90,7 +90,7 @@ const ReceptionSelector = () => {
     if (userId) {
       const fetchReceptionData = async () => {
         try {
-          const response = await axios.get(`http://localhost:3001/receptions?userID=${userId}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/receptions?userID=${userId}`);
           if (response.data) {
             const normalizedData = features.reduce((acc, feature) => {
               acc[feature.name] = response.data[feature.name]?.Number || 0;
@@ -125,7 +125,7 @@ const ReceptionSelector = () => {
   // Handle form submission
   const handleSubmit = async () => {
     try {
-      const url = `http://localhost:3001/receptions`; // Same URL for both create and update
+      const url = `${import.meta.env.VITE_API_URL}/receptions`; // Same URL for both create and update
       const response = await axios({
         method: "POST", // Always use POST for both actions
         url,
@@ -138,7 +138,7 @@ const ReceptionSelector = () => {
         if (!isEditMode) {
           setIsEditMode(true); // Switch to edit mode after creating
         }
-        const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+        const shoppingCartUrl = `${import.meta.env.VITE_API_URL}/shoppingcards`;
      // Save shopping cart data
         const shoppingCartData = {
           userID: userId,

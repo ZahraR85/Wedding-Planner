@@ -116,7 +116,7 @@ const VenueDetailsAdmin = () => {
         <div className="relative">
           <div className="overflow-hidden">
             <img
-              src={`http://localhost:3001/${venue.images[currentIndex]}`}
+              src={`${import.meta.env.VITE_API_URL}/${venue.images[currentIndex]}`}
               alt={`Venue ${currentIndex}`}
               className="w-full h-auto object-cover rounded-md"
             />

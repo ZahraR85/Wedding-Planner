@@ -24,7 +24,7 @@ const SuccessPage = () => {
   // Function to clear cart and services
   const clearCartAndServices = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/shoppingcards/removeAllFromShoppingCart`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/shoppingcards/removeAllFromShoppingCart`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userID: userId }), // Pass userId here

@@ -43,7 +43,8 @@ const Photography = () => {
     if (userId) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`http://localhost:3001/photographies?userID=${userId}`);
+          //const response = await axios.get(`http://localhost:3001/photographies?userID=${userId}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/photographies?userID=${userId}`);
           if (response.data) {
             // Update to work with either array or object
             const existingData = Array.isArray(response.data) ? response.data[0] : response.data;
@@ -100,7 +101,8 @@ const Photography = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const url = "http://localhost:3001/photographies";
+      // const response = await axios.get(`http://localhost:3001/photographies?userID=${userId}`);
+      const url = `${import.meta.env.VITE_API_URL}/photographies`;
       const requestData = {
         userID: userId,
         photography: formData.photography,
@@ -120,7 +122,7 @@ const Photography = () => {
         if (!isEditMode) {
           setIsEditMode(true); // Switch to edit mode after creating
         }
-        const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+        const shoppingCartUrl = `${import.meta.env.VITE_API_URL}/shoppingcards`;
      // Save shopping cart data
         const shoppingCartData = {
           userID: userId,

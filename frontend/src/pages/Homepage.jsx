@@ -1,6 +1,4 @@
-
-
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Features2 from '../components/Feature2';
@@ -9,13 +7,8 @@ import Feedback from '../components/feedback';
 import SearchVenue from "../components/SearchVenue.jsx";
 import Staff from "../components/Staff";
 
-
-
-
-
 const Homepage = () => {
   const searchVenuesRef = useRef(null);
-
 
   const scrollToSearchVenues = () => {
     searchVenuesRef.current.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
@@ -30,7 +23,7 @@ const Homepage = () => {
       <Features2 />
       <Staff />
       <ToastContainer />
-       
+      
     </div>
   );
 };

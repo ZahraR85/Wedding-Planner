@@ -29,7 +29,7 @@ const ShoppingCard = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:3001/shoppingcards?userID=${userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/shoppingcards?userID=${userId}`);
       const { cardItems } = response.data;
       setShoppingCard(cardItems); // Update state with fetched data
     } catch (error) {
@@ -47,7 +47,7 @@ const ShoppingCard = () => {
   // Remove a service from the shopping card
   const removeService = async (serviceName) => {
     try {
-      await axios.delete(`http://localhost:3001/shoppingcards`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/shoppingcards`, {
         data: { userID: userId, serviceName },
       });
 
@@ -79,7 +79,7 @@ const ShoppingCard = () => {
   
     try {
       // Create a checkout session on the backend
-      const response = await axios.post('http://localhost:3001/payment/create-checkout-session', { items: itemsForCheckout });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/payment/create-checkout-session`, { items: itemsForCheckout });
   
       if (response.data.id) {
         const { id } = response.data;

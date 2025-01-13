@@ -30,7 +30,7 @@ const GalleryManagement = () => {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/galleries');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/galleries`);
       //console.log('Fetched images:', response.data); 
       setAllImages(response.data); // Update the state with the fetched images
     } catch (error) {
@@ -75,7 +75,7 @@ const GalleryManagement = () => {
       formData.append('category', category);
       formData.append('userId', userId);
   
-      await axios.post('http://localhost:3001/galleries', formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/galleries`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -118,7 +118,7 @@ const GalleryManagement = () => {
         formData.append('keepExistingImage', true); // Tell backend to keep the current image
       }
   
-      await axios.put(`http://localhost:3001/galleries/${editingImageId}`, formData, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/galleries/${editingImageId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -141,7 +141,7 @@ const GalleryManagement = () => {
   const handleDeleteImage = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3001/galleries/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/galleries/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -233,7 +233,7 @@ const GalleryManagement = () => {
               key={image._id}
               className="bg-white shadow-md rounded-lg border-4 border-BgPinkDark cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
             >
-              <img src={`http://localhost:3001${image.imagePath}`} alt={image.description} className="w-full h-48 object-cover" />
+              <img src={`${import.meta.env.VITE_API_URL}${image.imagePath}`} alt={image.description} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <p className="text-BgFont font-bold">{image.imageName}</p>
                 <p className="text-BgFont">{image.description}</p>

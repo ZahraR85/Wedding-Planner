@@ -37,7 +37,7 @@ const UserInfoForm = () => {
   // const response = await axios.get('http://localhost:3001/userinfoes');
   const checkExistingForm = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/userinfoes');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/userinfoes`);
       const existingData = response.data.find((entry) => entry.userID === userId);
 
       if (existingData) {
@@ -73,10 +73,10 @@ const UserInfoForm = () => {
       const payload = { ...formData, userID: userId };
 
       if (isUpdating) {
-        await axios.put(`http://localhost:3001/userinfoes/${formData._id}`, payload);
+        await axios.put(`${import.meta.env.VITE_API_URL}/userinfoes/${formData._id}`, payload);
         toast.success("Form updated successfully.");
       } else {
-        await axios.post("http://localhost:3001/userinfoes", payload);
+        await axios.post(`${import.meta.env.VITE_API_URL}/userinfoes`, payload);
         toast.success("Form created successfully.");
       }
     } catch (error) {
