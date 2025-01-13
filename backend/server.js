@@ -52,10 +52,20 @@ app.use(morgan("dev"));
 // Enable CORS for frontend requests
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from your frontend
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        "http://localhost:5173", // Local development frontend
+        "https://wedding-planner-2-7htl.onrender.com", // Deployed frontend
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS not allowed for origin: ${origin}`));
+      }
+    },
     credentials: true, // Allow sending cookies if needed
   })
-); 
+);
 
 
 
