@@ -101,6 +101,11 @@ const VenueBooking = () => {
     }
   }, [day]);
 
+  const googleMapsLink =
+  venue && venue.latitude && venue.longitude
+    ? `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`
+    : null;
+
   const handlePrevImage = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? venue.images.length - 1 : prevIndex - 1
@@ -189,11 +194,21 @@ const VenueBooking = () => {
             <p className="text-sm md:text-base font-bold text-BgFont my-4">Price: {venue?.price} €</p>
             <p className="text-sm md:text-base font-bold text-BgFont my-4">Discount: {venue?.discount} %</p>
             <p className="text-sm md:text-base font-bold text-BgFont my-4">Total price: {venue?.total} €</p>
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Address: {venue?.address}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Description: {venue?.description}</p>
           </div>
           <div className="flex-1 my-4">
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">{venue?.description}</p>
-            <label className="text-sm md:text-base font-bold text-BgFont my-4">Select Day:
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">Address: {venue?.address}</p>
+
+            <p className="text-sm md:text-base font-bold text-BgFont my-4 mr-4 inline-block">Location: {venue?.latitude}, {venue?.longitude}</p>
+            <a
+              className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 "
+              target="_blank"
+              rel="noopener noreferrer"
+              href={googleMapsLink}
+            >
+              See it on Google Maps
+            </a>
+            <label className="text-sm md:text-base font-bold text-BgFont my-4 block">Select Day:
               <input
                 type="date"
                 value={day}

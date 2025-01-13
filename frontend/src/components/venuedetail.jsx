@@ -82,7 +82,7 @@ function VenueDetail() {
             <p className="text-m font-bold text-BgFont my-4">Price: {venue.price ? `${venue.price} €` : "N/A"}</p>
             <p className="text-m font-bold text-BgFont my-4">Discount: {venue.discount ? `${venue.discount} %` : "N/A"}</p>
             <p className="text-m font-bold text-BgFont my-4">Total price: {venue.total ? `${venue.total} €` : "N/A"}</p>
-            <p className="text-m font-bold text-BgFont my-4">Address: {venue.address || "N/A"}</p>
+           {/* <p className="text-m font-bold text-BgFont my-4">Address: {venue.address || "N/A"}</p>*/}
           </div>
           <div className="flex-1 my-4">
             <p className="text-m font-bold text-BgFont my-4">{venue.description || "No description available"}</p>
