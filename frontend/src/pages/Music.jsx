@@ -34,10 +34,11 @@ const MusicSelectionForm = () => {
     const fetchData = async () => {
       try {
         // Fetch music options
-        const optionsResponse = await axios.get("http://localhost:3001/musicoptions");
+       
+        const optionsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/musicoptions`);
         console.log("Fetched Music Options:", optionsResponse.data);
         setMusicOptions(optionsResponse.data);
-        const userResponse = await axios.get(`http://localhost:3001/musics?userID=${userId}`);
+        const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}/musics?userID=${userId}`);
         console.log("Fetched User Data:", userResponse.data); // Debugging
         if (userResponse.data) {
           // Map fetched selections to hours for pre-filling
@@ -115,7 +116,7 @@ const MusicSelectionForm = () => {
       };
 
       // Add or update music selection
-      const musicUrl = `http://localhost:3001/musics${isEditMode ? `/${userSelection._id}` : ""}`;
+      const musicUrl = `${import.meta.env.VITE_API_URL}/musics${isEditMode ? `/${userSelection._id}` : ""}`;
       const musicMethod = isEditMode ? "PUT" : "POST";
       await axios({
         method: musicMethod,
@@ -125,7 +126,7 @@ const MusicSelectionForm = () => {
       });
 
       // Add or update shopping card entry
-      const shoppingCardUrl = `http://localhost:3001/shoppingcards`;
+      const shoppingCardUrl = `${import.meta.env.VITE_API_URL}/shoppingcards`;
       const shoppingCardData = {
         userID: userId,
         serviceName: "Music",

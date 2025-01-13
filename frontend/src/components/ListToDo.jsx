@@ -22,7 +22,7 @@ const Todolist = ({ userId }) => {
 
         const fetchProgressData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/todolist/progress/${userId}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/todolist/progress/${userId}`);
                 setProgressData(response.data);
             } catch (err) {
                 console.error('Error fetching progress data:', err.message);

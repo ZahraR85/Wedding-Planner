@@ -12,7 +12,7 @@ const UserSelections = ({ userId }) => {
         if (!userId) {
           throw new Error("User ID is missing");
         }
-        const response = await axios.get(`http://localhost:3001/photographies/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/photographies/${userId}`);
         setUserSelections(response.data);
       } catch (err) {
         console.error("Error fetching data:", err);

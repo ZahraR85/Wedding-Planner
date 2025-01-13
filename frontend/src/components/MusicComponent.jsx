@@ -13,7 +13,7 @@ const UserSelections = ({ userId }) => {
     const fetchUserSelections = async () => {
       try {
         const x = userId;
-        const response = await axios.get(`http://localhost:3001/musics?userID=${x}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/musics?userID=${x}`);
         setUserSelections(response.data); // Update state with fetched data
         setLoading(false);
       } catch (err) {

@@ -11,13 +11,13 @@ function SearchVenue() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // Limit to 8 cards per page
   const navigate = useNavigate();
-
+  // const response = await axios.get(`${import.meta.env.VITE_API_URL}/galleries`); 
   useEffect(() => {
     async function fetchVenues() {
       const url =
         selectedCity === "All Cities"
-          ? "http://localhost:3001/venues"
-          : `http://localhost:3001/venues?city=${selectedCity}`;
+          ? `${import.meta.env.VITE_API_URL}/venues`
+          : `${import.meta.env.VITE_API_URL}/venues?city=${selectedCity}`;
       try {
         setLoading(true);
         const response = await axios.get(url);
@@ -63,7 +63,7 @@ function SearchVenue() {
               onClick={() => navigate(`/venues/${venue._id}`)}
             >
               <img
-                src={`http://localhost:3001/${venue.images?.[0]}`}
+                src={`${import.meta.env.VITE_API_URL}/${venue.images?.[0]}`}
                 alt={venue.name}
                 className="w-full h-32 object-cover rounded-lg" 
                 onError={(e) => (e.target.src = "https://via.placeholder.com/150")}

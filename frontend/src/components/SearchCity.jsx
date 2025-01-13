@@ -8,7 +8,8 @@ const SearchCity = ({ selectedCity, setSelectedCity, onSearch }) => {
   useEffect(() => {
     async function fetchCities() {
       try {
-        const response = await axios.get("http://localhost:3001/venues/cities");
+
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/venues/cities`);
         setCities(response.data);
       } catch (error) {
         console.error("Error fetching cities:", error);

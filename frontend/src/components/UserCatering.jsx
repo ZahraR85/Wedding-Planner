@@ -15,7 +15,7 @@ const UserSelections = () => {
           throw new Error("User ID is missing");
         }
 
-        const response = await axios.get(`http://localhost:3001/receptions?userID=${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/receptions?userID=${userId}`);
         console.log("API Response:", response.data); // Debug: Log API response
         setUserSelections(response.data);
       } catch (err) {

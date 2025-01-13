@@ -14,7 +14,7 @@ const CategoryDetails = () => {
     const fetchCategoryPhotos = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/galleries/category/${category}` // Backend endpoint
+          `${import.meta.env.VITE_API_URL}/galleries/category/${category}` // Backend endpoint
         );
         setPhotos(response.data); // Update photos state
       } catch (error) {
@@ -51,7 +51,8 @@ const CategoryDetails = () => {
         <div>
           <div className="flex justify-center mb-6">
             <img
-              src={`http://localhost:3001${selectedPhoto.imagePath}`}
+              // src={`http://localhost:3001${selectedPhoto.imagePath}`}
+              src={`${import.meta.env.VITE_API_URL}${selectedPhoto.imagePath}`}
               alt={selectedPhoto.imageName}
               className="w-[90%] h-112 object-cover rounded"
             />
@@ -71,7 +72,7 @@ const CategoryDetails = () => {
               currentPhotos.map((photo) => (
                 <img
                   key={photo._id}
-                  src={`http://localhost:3001${photo.imagePath}`}
+                  src={`${import.meta.env.VITE_API_URL}${photo.imagePath}`}
                   alt={photo.imageName}
                   onClick={() => handlePhotoClick(photo)}
                   className="w-full h-72 object-cover rounded cursor-pointer hover:opacity-75"
