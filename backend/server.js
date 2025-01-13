@@ -57,8 +57,8 @@ app.use(
     origin: (origin, callback) => {
       const allowedOrigins = [
         "http://localhost:5173", // Local development frontend
-        // "https://wedding-planner-2-7htl.onrender.com", // Deployed frontend
-        "https://wedding-planner-1-5n78.onrender.com", // Deployed frontend
+        "https://wedding-planner-2-7htl.onrender.com", // shabnam 
+        "https://wedding-planner-1-5n78.onrender.com", // Azadeh
       ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
