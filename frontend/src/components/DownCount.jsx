@@ -1,8 +1,8 @@
 
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-const Countdown = ({ weddingDate }) => {
+const DownCount = ({ weddingDate }) => {
   const calculateTimeLeft = () => {
     const targetDate = new Date(weddingDate); // Use weddingDate from props
     const now = new Date();
@@ -67,4 +67,4 @@ const Countdown = ({ weddingDate }) => {
   );
 };
 
-export default Countdown;
+export default DownCount;

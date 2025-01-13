@@ -6,7 +6,7 @@ import Music from "../components/MusicComponent";
 import InformationUser from "../components/InformationUser";
 import MakeupUser from "../components/UserMakeup";
 import Todolist from "../components/ListToDo";
-import Countdown from "../components/Countdown";
+import Countdown from "../components/DownCount";
 import Catering from "../components/Catering";
 import PhotographyUserSelection from "../components/PhotographyUserSelection";
 import Venue from "../components/venue";
