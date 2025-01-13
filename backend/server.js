@@ -46,6 +46,11 @@ if (!fs.existsSync(uploadsDir)) {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+
+
+
+
+
 //app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
@@ -89,6 +94,19 @@ const upload = multer({
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+// Serve static files from the frontend build directory
+const frontendDir = path.join(__dirname, "../frontend/dist");
+app.use(express.static(frontendDir));
+
+// Serve frontend for all unmatched routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendDir, 'index.html'));
+});
+
+
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
