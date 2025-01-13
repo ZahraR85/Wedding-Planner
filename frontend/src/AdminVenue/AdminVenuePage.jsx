@@ -29,11 +29,13 @@ const AdminVenuePage = () => {
   }, []);
 
   const handleAddVenue = (venueData) => {
-    addVenue(venueData).then((newVenue) => {
-      setVenues((prevVenues) => [...prevVenues, newVenue]);
+    addVenue(venueData).then(() => {
+      getVenues().then((updatedVenues) => {
+        setVenues(updatedVenues);
+        setCurrentPage(1); // Reset to the first page
+      });
     });
   };
-
   const handleUpdateVenue = (venueData) => {
     updateVenue(editVenue._id, venueData).then((updatedVenue) => {
       setVenues((prevVenues) =>
