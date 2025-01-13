@@ -1,4 +1,4 @@
-import Chat from './chat-temp';
+import Chat from './Chat-temp';
 import RequestForm from './RequestForm';
 import ChatApp from './ChatApp'; // Add ChatApp here
 
