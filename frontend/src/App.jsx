@@ -25,7 +25,7 @@ import CategoryDetails from './components/CategoryDetails.jsx';
 import ShoppingCard from './pages/ShoppingCard.jsx';
 import SearchVenue from './components/SearchVenue.jsx';
 import VenueDetail from "./components/VenueDetail.jsx";
-import AboutUs from './Pages/AboutUs.jsx';
+import AboutUs from './pages/AboutUs.jsx';
 import FAQ from "./pages/FAQ.jsx"
 import SuccessPage from "./pages/SuccessPage.jsx";
 import CancelPage from "./pages/CancelPage.jsx";
