@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Features2 from '../components/Feature2';
 import Header1 from '../components/Header1';
 import Feedback from '../components/feedback';
-import SearchVenues from "../components/Searchvenues.jsx";
+import SearchVenues from "../components/SearchVenues.jsx";
 import Staff from "../components/Staff";
 
 
