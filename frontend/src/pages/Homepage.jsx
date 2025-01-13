@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Features2 from '../components/Feature2';
 import Header1 from '../components/Header1';
 import Feedback from '../components/feedback';
-import SearchVenues from "../components/SearchVenues.jsx";
+import SearchVenue from "../components/SearchVenue.jsx";
 import Staff from "../components/Staff";
 
 
@@ -24,7 +24,7 @@ const Homepage = () => {
     <div>
       <Header1 onScrollToSearchVenues={scrollToSearchVenues} />
       <div ref={searchVenuesRef}>
-        <SearchVenues />
+        <SearchVenue />
       </div>
       <Feedback />
       <Features2 />

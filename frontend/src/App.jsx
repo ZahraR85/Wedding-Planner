@@ -23,7 +23,7 @@ import AdminMusicOption from './AdminVenue/AdminMusicOption.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
-import SearchVenues from './components/SearchVenues.jsx';
+import SearchVenue from './components/SearchVenue.jsx';
 import VenueDetail from "./components/VenueDetail.jsx";
 import AboutUs from './Pages/AboutUs.jsx';
 import FAQ from "./pages/FAQ.jsx"
@@ -66,7 +66,7 @@ function App() {
             <Route path="/Menu" element={<Menu />} />
             <Route path="/Guests" element={<Guests />} />
             <Route path="/Musics" element={<Musics />} />
-            <Route path="/searchvenues" element={<SearchVenues />} />
+            <Route path="/searchvenues" element={<SearchVenue />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/FAQ" element={<FAQ />} />
             <Route path="/Success" element={<SuccessPage />} />
