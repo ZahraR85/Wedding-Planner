@@ -7,7 +7,7 @@ import InformationUser from "../components/InformationUser";
 import MakeupUser from "../components/UserMakeup";
 import Todolist from "../components/ListToDo";
 import Countdown from "../components/DownCount";
-import Catering from "../components/Catering";
+import Catering from "../components/UserCatering";
 import PhotographyUserSelection from "../components/PhotographyUserSelection";
 import Venue from "../components/venue";
 import Story from "../components/UserStory";
