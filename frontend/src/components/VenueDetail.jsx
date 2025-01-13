@@ -61,7 +61,7 @@ function VenueDetail() {
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name || "Venue Name"}</h1>
         <div className="relative">
           <img
-            src={`http://localhost:3001/${venue?.images?.[currentIndex] || "placeholder.jpg"}`}
+            src={`${import.meta.env.VITE_API_URL}/${venue?.images?.[currentIndex] || "placeholder.jpg"}`}
             alt={`Venue ${currentIndex}`}
             className="w-full h-96 object-cover rounded-md"
             style={{ padding: 0 }}
@@ -85,7 +85,7 @@ function VenueDetail() {
            {/* <p className="text-m font-bold text-BgFont my-4">Address: {venue.address || "N/A"}</p>*/}
           </div>
           <div className="flex-1 my-4">
-            <p className="text-m font-bold text-BgFont my-4">{venue.description || "No description available"}</p>
+            <p className="text-sm font-semibold  text-BgFont my-4">{venue.description || "No description available"}</p>
             <button
               onClick={() => navigate("/")}
               className="bg-BgPinkMiddle text-lg text-BgFont font-bold rounded hover:bg-BgPinkDark py-2 px-4"
