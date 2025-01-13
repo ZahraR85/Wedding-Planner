@@ -12,7 +12,8 @@ function Guest() {
   const [totalYesPersons, setTotalYesPersons] = useState(0);
   const fetchYesPersonsCount = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/guests/count-yes?userID=${userId}`);
+      //const response = await axios.get(`http://localhost:3001/guests/count-yes?userID=${userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/guests/count-yes?userID=${userId}`);
       setTotalYesPersons(response.data.totalPersons || 0);
     } catch (error) {
       console.error("Error fetching totalYesPersons:", error.message);
@@ -73,7 +74,7 @@ function Guest() {
 
       if (updatingGuestId) {
         const response = await axios.put(
-          `http://localhost:3001/guests/${updatingGuestId}`,
+          `${import.meta.env.VITE_API_URL}/guests/${updatingGuestId}`,
           requestData
         );
         setGuestList(
@@ -85,7 +86,7 @@ function Guest() {
         toast.success("Guest updated successfully!");
       } else {
         const response = await axios.post(
-          "http://localhost:3001/guests",
+          `${import.meta.env.VITE_API_URL}/guests`,
           requestData
         );
         // setGuestList([...guestList, response.data.feature]);
@@ -121,7 +122,7 @@ function Guest() {
   const fetchGuests = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/guests?userID=${userId}`
+        `${import.meta.env.VITE_API_URL}/guests?userID=${userId}`
       );
       setGuestList(response.data);
     } catch (error) {
@@ -158,7 +159,7 @@ function Guest() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/guests/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/guests/${id}`);
       setGuestList(guestList.filter((guest) => guest._id !== id));
       toast.success("Guest deleted successfully!");
       fetchYesPersonsCount();
@@ -189,7 +190,7 @@ function Guest() {
 
   const handleSendInvitation = async (email) => {
     try {
-      const response = await axios.post("http://localhost:3001/guests/send-invitation", { userId, email });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/guests/send-invitation`, { userId, email });
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error sending invitation:", error.response?.data?.message || error.message);
@@ -199,7 +200,7 @@ function Guest() {
 
   const handleSendToAll = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/guests/send-to-all", { userId });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/guests/send-to-all`, { userId });
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error sending to all:", error.response?.data?.message || error.message);

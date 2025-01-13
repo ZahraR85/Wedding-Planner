@@ -41,9 +41,9 @@ const Dashboard = () => {
           }, 3000);
           return;
         }
-
         const response = await axios.get(
-          `http://localhost:3001/userinfoes/check/${userId}`
+         // `http://localhost:3001/userinfoes/check/${userId}`
+          `${import.meta.env.VITE_API_URL}/userinfoes/check/${userId}`
         );
 
         if (response.data.exists === false) {
@@ -305,26 +305,3 @@ export default Dashboard;
 // };
 
 // export default Dashboard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
