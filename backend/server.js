@@ -50,12 +50,15 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 app.use(morgan("dev"));
 // Enable CORS for frontend requests
+
+
 app.use(
   cors({
     origin: (origin, callback) => {
       const allowedOrigins = [
         "http://localhost:5173", // Local development frontend
-        "https://wedding-planner-2-7htl.onrender.com", // Deployed frontend
+        // "https://wedding-planner-2-7htl.onrender.com", // Deployed frontend
+        "https://wedding-planner-1-5n78.onrender.com", // Deployed frontend
       ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
