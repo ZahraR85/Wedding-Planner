@@ -8,13 +8,12 @@
   "description": "cd Wedding-Planner/frontend\r npm i",
   "main": "index.js",
   "scripts": {
-"test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "install:all": "npm install",
     "start:backend": "npm --prefix backend start",
     "start:frontend": "npm --prefix frontend start",
     "build:frontend": "npm --prefix frontend run build",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
-  
   },
   "keywords": [],
   "author": "",
@@ -25,6 +24,7 @@
     "react-router-dom": "^7.0.2"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "rollup": "^4.30.1"
   }
 }
