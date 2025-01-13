@@ -9,7 +9,7 @@ const UserSelections = ({ userId }) => {
   useEffect(() => {
     const fetchUserSelections = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/venueSelections/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/venueSelections/${userId}`);
         console.log("API Response:", response.data);
         setUserSelections(response.data);
         setLoading(false);
@@ -44,7 +44,7 @@ const UserSelections = ({ userId }) => {
     return <p>No venues selected for this user.</p>;
   }
 
-  const formatImagePath = (path) => `http://localhost:3001/${path.replace(/\\/g, '/')}`;
+  const formatImagePath = (path) => `${import.meta.env.VITE_API_URL}/${path.replace(/\\/g, '/')}`;
 
   return (
     <div>

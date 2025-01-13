@@ -12,7 +12,7 @@ const StoryOfUser = ({ userId, setWeddingDate }) => {
       try {
         if (!userId) throw new Error("User ID is not provided.");
 
-        const response = await axios.get(`http://localhost:3001/userinfoes/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/userinfoes/${userId}`);
         const data = response.data;
 
         if (data && data.weddingDate) {

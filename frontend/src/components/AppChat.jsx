@@ -10,7 +10,10 @@ const ChatApp = () => {
   const sendMessage = async (userMessage) => {
     try {
       // Send user message to the backend
-      const response = await fetch('http://localhost:3001/v1/chat/completions', {
+     
+      // const response = await fetch('http://localhost:3001/v1/chat/completions', {
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

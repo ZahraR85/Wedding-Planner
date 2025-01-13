@@ -9,7 +9,7 @@ const GallerySlider = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/galleries'); // Backend endpoint
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/galleries`); 
         const allPhotos = response.data;
         setPhotos(allPhotos);
       } catch (error) {
