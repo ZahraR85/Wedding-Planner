@@ -23,7 +23,7 @@ import AdminMusicOption from './AdminVenue/AdminMusicOption.jsx';
 import Gallery from './pages/Gallery.jsx';
 import CategoryDetails from './components/CategoryDetails.jsx'; 
 import ShoppingCard from './pages/ShoppingCard.jsx';
-import Searchvenues from './components/searchvenues.jsx'
+import Searchvenues from './components/Searchvenues.jsx'
 import VenueDetail from "./components/venuedetail";
 import AboutUs from './pages/AboutUs.jsx';
 import FAQ from "./pages/FAQ.jsx"

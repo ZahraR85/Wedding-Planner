@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Chat from './chat-temp'; // Import your existing Chat component
+import Chat from './Chat-temp'; // Import your existing Chat component
 import React from 'react';
 
 const ChatApp = () => {
