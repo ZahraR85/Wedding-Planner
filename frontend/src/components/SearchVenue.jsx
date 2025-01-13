@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function SearchVenues() {
+function SearchVenue() {
   const { selectedCity } = useAppContext();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -106,4 +106,4 @@ function SearchVenues() {
   );
 }
 
-export default SearchVenues;
+export default SearchVenue;
