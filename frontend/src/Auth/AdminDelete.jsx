@@ -1,7 +1,7 @@
 const AdminDelete = () => {
   const handleDeleteUser = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
         method: 'DELETE',
         credentials: 'include',
       });

@@ -84,17 +84,17 @@ const VenueForm = ({ venue, onCancel }) => {
       });
   
       // Send images to remove (ensure only one array of removed images)
-      const imagesToRemove = [...removedImages]; // Make sure it's an array of indices
+      const imagesToRemove = [...removedImages];
       if (imagesToRemove.length > 0) {
-        uploadFormData.append("removeImages", JSON.stringify(imagesToRemove)); // Sending removed images as a JSON string
+        uploadFormData.append("removeImages", JSON.stringify(imagesToRemove)); 
       }
   
-      uploadFormData.append("userId", userId); // Attach userId
+      uploadFormData.append("userId", userId); 
   
       // Send POST/PUT request to add or update venue
       const url = venue
-        ? `http://localhost:3001/venues/${venue._id}` // Update the venue if it already exists
-        : "http://localhost:3001/venues"; // Create a new venue if no existing venue
+        ? `${import.meta.env.VITE_API_URL}/venues/${venue._id}` // Update the venue if it already exists
+        : `${import.meta.env.VITE_API_URL}/venues`; // Create a new venue if no existing venue
       const method = venue ? "put" : "post"; // Choose PUT for update or POST for creation
   
       const response = await axios({
@@ -240,7 +240,7 @@ const VenueForm = ({ venue, onCancel }) => {
               existingImages.map((img, index) => (
                 <div key={index} className="relative">
                   <img
-                    src={`http://localhost:3001/${img}`} // Make sure this is a valid image URL
+                    src={`${import.meta.env.VITE_API_URL}/${img}`} // Make sure this is a valid image URL
                     alt="Venue"
                     className="w-16 h-16 object-cover rounded"
                   />

@@ -30,7 +30,7 @@ const VenueBooking = () => {
   useEffect(() => {
     const fetchWeddingDate = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/userinfoes/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/userinfoes/${userId}`);
         if (response.data?.weddingDate) {
           setDay(response.data.weddingDate.split("T")[0]); // Set formatted date (YYYY-MM-DD)
         } else {
@@ -67,7 +67,7 @@ const VenueBooking = () => {
     const fetchVenueDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:3001/venues/${venueId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/venues/${venueId}`);
         setVenue(response.data);
         setImages(response.data.images || []);
       } catch (error) {
@@ -86,7 +86,7 @@ const VenueBooking = () => {
   const checkBookingConflict = async (selectedDate) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/venueSelections/venue/${venueId}/date/${selectedDate}`
+        `${import.meta.env.VITE_API_URL}/venueSelections/venue/${venueId}/date/${selectedDate}`
       );
       setBookingConflict(response.data.length > 0);
     } catch (error) {
@@ -134,7 +134,7 @@ const VenueBooking = () => {
       setLoading(true);
   
       // Send booking request to the backend
-      const response = await axios.post(`http://localhost:3001/venueSelections`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/venueSelections`, {
         userId,
         date: day,
         venueId,
@@ -148,7 +148,7 @@ const VenueBooking = () => {
         serviceName: "Venue",
         price: venue?.total,
       };
-      await axios.post("http://localhost:3001/shoppingcards", shoppingCartData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/shoppingcards`, shoppingCartData, {
         headers: { "Content-Type": "application/json" },
       });
   
@@ -174,7 +174,7 @@ const VenueBooking = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
         <div className="relative">
           <img
-            src={`http://localhost:3001/${venue?.images[currentIndex]}`}
+            src={`${import.meta.env.VITE_API_URL}/${venue?.images[currentIndex]}`}
             alt={`Venue ${currentIndex}`}
             className="w-full h-auto object-cover rounded-md"
           />

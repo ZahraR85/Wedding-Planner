@@ -11,7 +11,7 @@ const UpdatePassword = () => {
 
   const handleUpdatePassword = async () => {
     try {
-      const response = await fetch('http://localhost:3001/users/password', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/password`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

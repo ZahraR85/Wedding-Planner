@@ -6,8 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
-
-
 const features = [
   {
     id: "makeup",
@@ -81,7 +79,7 @@ const MakeupSelector = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/makeups?userID=${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/makeups?userID=${userId}`);
         if (response.data) {
           const existingData = response.data;
           setSelectedFeatures({
@@ -124,8 +122,8 @@ const MakeupSelector = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const makeupUrl = `http://localhost:3001/makeups`;
-      const shoppingCartUrl = `http://localhost:3001/shoppingcards`;
+      const makeupUrl = `${import.meta.env.VITE_API_URL}/makeups`;
+      const shoppingCartUrl = `${import.meta.env.VITE_API_URL}/shoppingcards`;
       const requestData = {
         userID: userId,
         makeup: selectedFeatures.makeup?.selected || false,

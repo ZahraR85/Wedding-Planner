@@ -26,7 +26,7 @@ const MusicOptionsPage = () => {
   // Function to fetch music options
   const fetchMusicOptions = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/musicoptions");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/musicoptions`);
       setMusicOptions(response.data);
     } catch (error) {
       console.error("Error fetching music options", error);
@@ -62,7 +62,7 @@ const MusicOptionsPage = () => {
   const handleAddOption = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3001/musicoptions", newOption);
+      await axios.post(`${import.meta.env.VITE_API_URL}/musicoptions`, newOption);
       setNewOption({
         category: "",
         name: "",
@@ -91,7 +91,7 @@ const MusicOptionsPage = () => {
   const handleUpdateOption = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/musicoptions/${editingId}`, newOption);
+      await axios.put(`${import.meta.env.VITE_API_URL}/musicoptions/${editingId}`, newOption);
       setIsEditing(false);
       setEditingId(null);
       setNewOption({
@@ -113,7 +113,7 @@ const MusicOptionsPage = () => {
   // Handle deleting a music option
   const handleDeleteOption = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/musicoptions/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/musicoptions/${id}`);
       toast.success('Music option deleted successfully');
       fetchMusicOptions(); // Refresh the list after deleting
     } catch (error) {
