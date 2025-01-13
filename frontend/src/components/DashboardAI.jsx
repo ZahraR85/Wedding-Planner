@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { ToastContainer } from "react-toastify";
 // import { Chat, RequestForm } from "@/components";
-import ChatApp from "../components/ChatApp";
+import ChatApp from "../components/AppChat";
 import RequestForm from '../components/RequestForm';
 import "react-toastify/dist/ReactToastify.css";
 
