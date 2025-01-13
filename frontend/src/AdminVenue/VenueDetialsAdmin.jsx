@@ -147,7 +147,7 @@ const VenueDetailsAdmin = () => {
           </div>
 
           <div className="flex-1">
-            <p className="text-m font-semibold text-BgFont my-4">Description: {venue.description}</p>
+            <p className="text-sm font-semibold text-BgFont my-4">Description: {venue.description}</p>
             <p className="text-lg font-bold text-BgFont my-4">Location: {venue.latitude}, {venue.longitude}</p>
             <a
               className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 inline-block"
