@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import Music from "../components/MusicComponent";
 import MakeupUser from "../components/MakeupUser";
-import UserInformation from "../components/UserInformation";
+import InformationUser from "../components/InformationUser";
 import Todolist from "../components/ToDoList";
 import Countdown from "../components/Countdown";
 import Catering from "../components/Catering";
@@ -69,7 +69,7 @@ const Dashboard = () => {
       <ToastContainer />
       {/* User Information as Header */}
       <div className="flex justify-center items-center p-4 bg-[#e8dfcf] shadow-2xl rounded-lg">
-        <UserInformation userId={userId} setWeddingDate={setWeddingDate} />
+        <InformationUser userId={userId} setWeddingDate={setWeddingDate} />
       </div>
 
       {/* Countdown and Todolist in one row */}

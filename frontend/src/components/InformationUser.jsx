@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserInformation = ({ userId, setWeddingDate }) => {
+const InformationUser = ({ userId, setWeddingDate }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -67,4 +67,4 @@ const UserInformation = ({ userId, setWeddingDate }) => {
   );
 };
 
-export default UserInformation;
+export default InformationUser;
