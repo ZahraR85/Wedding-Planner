@@ -9,8 +9,9 @@ const Gallery = () => {
   // Fetch photos from the backend and group by category
   useEffect(() => {
     const fetchGallery = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/galleries'); // Backend endpoint
+      try { 
+        //const response = await axios.get('http://localhost:3001/galleries'); 
+        const response = await axios.get( `${import.meta.env.VITE_API_URL}/galleries`);
         const photos = response.data;
 
         // Group photos by category
@@ -47,7 +48,7 @@ const Gallery = () => {
           >
             <h2 className="text-m lg:text-xl font-semibold text-BgFont mb-4">{category}</h2>
             <img
-              src={`http://localhost:3001${photos[0].imagePath}`}
+              src={`${import.meta.env.VITE_API_URL}${photos[0].imagePath}`}
               alt={category}
               className="w-full h-72 object-cover rounded"
             />
