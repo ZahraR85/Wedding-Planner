@@ -16,7 +16,7 @@ const UserSelections = () => {
         }
 
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/receptions?userID=${userId}`);
-        console.log("API Response:", response.data); // Debug: Log API response
+        
         setUserSelections(response.data);
       } catch (err) {
         console.error("Error fetching user selections:", err);

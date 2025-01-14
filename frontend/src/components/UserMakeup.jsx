@@ -28,21 +28,21 @@ const UserSelections = ({ userId }) => {
     if (userId) fetchUserSelections();
   }, [userId]);
 
-    // Handle errors
+ 
     if (error) {
       return <p>{error.isCustom ? error.message : `Error: ${error.message}`}</p>;
     }
-  // Handle loading state
+  
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  // Handle errors
+ 
   if (error) {
     return <p>Error: {error.message}</p>;
   }
 
-  // Handle case when no data is found
+  
   if (!userSelections) {
     return <p>No data found for this user.</p>;
   }

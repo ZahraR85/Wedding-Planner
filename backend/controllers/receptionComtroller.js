@@ -29,9 +29,7 @@ export const createOrUpdateReception = async (req, res) => {
     // Add the total price to the data
     updateData.total = totalPrice;
 
-    // Log userID and data to ensure correctness
-    // console.log('UserID:', userID);
-    // console.log('Update Data:', updateData);
+
 
     // Update or create the reception entry in the database
     const reception = await Reception.findOneAndUpdate(
@@ -42,11 +40,10 @@ export const createOrUpdateReception = async (req, res) => {
 
     // Check if the reception object was updated or created
     if (!reception) {
-      // console.log("No reception found or created");
       return res.status(404).json({ message: "Reception not found or created" });
     }
 
-    // console.log("Updated Reception:", reception);
+   
     res.status(200).json({ message: "Reception updated successfully", reception });
   } catch (error) {
     console.error("Error in createOrUpdateReception:", error);

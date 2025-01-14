@@ -6,8 +6,7 @@ function FeedbackCards() {
     useEffect(() => {
         async function fetchFeedback() {
             try {
-                // const response = await fetch('http://localhost:3001/userInfoes/feedback'); 
-                // const response = await axios.get(`${import.meta.env.VITE_API_URL}/galleries`); 
+
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/userInfoes/feedback`); 
                 const data = await response.json();
                 setFeedbackCards(data);

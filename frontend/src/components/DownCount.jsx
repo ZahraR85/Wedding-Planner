@@ -7,7 +7,7 @@ const DownCount = ({ weddingDate }) => {
     const targetDate = new Date(weddingDate); // Use weddingDate from props
     const now = new Date();
     const difference = targetDate - now;
-    // console.log("tariiikh:", weddingDate);
+   
     let timeLeft = {};
 
     if (difference > 0) {
