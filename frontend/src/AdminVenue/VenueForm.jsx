@@ -104,7 +104,7 @@ const VenueForm = ({ venue, onCancel }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
   
-      alert(
+      toast.success(
         response.data.message ||
           (venue ? "Venue updated successfully!" : "Venue added successfully!")
       );
@@ -130,7 +130,7 @@ const VenueForm = ({ venue, onCancel }) => {
       setExistingImages([]);
     } catch (error) {
       console.error("Error updating venue:", error);
-      alert("Failed to add or update venue.");
+      toast.alert("Failed to add or update venue.");
     } finally {
       setLoading(false);
     }
