@@ -2,6 +2,7 @@ import Venue from "../models/venue.js";
 //import fs from 'fs';
 //import path from 'path';
 
+
 import cloudinary from "../config/cloudinary.js";
 
 export const createVenue = async (req, res) => {
@@ -11,8 +12,8 @@ export const createVenue = async (req, res) => {
     // Upload images to Cloudinary
     const uploadedImages = await Promise.all(
       req.files.map(async (file) => {
-        const result = await cloudinary.uploader.upload_stream({
-          folder: "venues",
+        const result = await cloudinary.uploader.upload(file.buffer, {
+          folder: "venues", // Folder in Cloudinary to store images
         });
         return result.secure_url; // Store the secure URL from Cloudinary
       })
@@ -63,7 +64,7 @@ export const updateVenue = async (req, res) => {
     // Upload new images to Cloudinary
     const uploadedImages = await Promise.all(
       req.files.map(async (file) => {
-        const result = await cloudinary.uploader.upload_stream({
+        const result = await cloudinary.uploader.upload(file.buffer, {
           folder: "venues",
         });
         return result.secure_url;
@@ -88,6 +89,7 @@ export const updateVenue = async (req, res) => {
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
+
 
 
 
