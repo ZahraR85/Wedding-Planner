@@ -1,4 +1,4 @@
-import multer from "multer";
+/*import multer from "multer";
 import path from "path";
 
 const storage = multer.diskStorage({
@@ -18,4 +18,12 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-export const upload = multer({ storage, fileFilter });
+export const upload = multer({ storage, fileFilter }); */
+
+import multer from 'multer';
+
+const storage = multer.memoryStorage(); // Store files in memory for processing with Cloudinary
+const upload = multer({ storage });
+
+export { upload };
+
