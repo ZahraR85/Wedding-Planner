@@ -1,23 +1,14 @@
 import Venue from "../models/venue.js";
 //import fs from 'fs';
 //import path from 'path';
-
-
-import cloudinary from "../config/cloudinary.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const createVenue = async (req, res) => {
   try {
     const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
 
-    // Upload images to Cloudinary
-    const uploadedImages = await Promise.all(
-      req.files.map(async (file) => {
-        const result = await cloudinary.uploader.upload(file.buffer, {
-          folder: "venues", // Folder in Cloudinary to store images
-        });
-        return result.secure_url; // Store the secure URL from Cloudinary
-      })
-    );
+    // Extract Cloudinary URLs from req.files
+    const uploadedImages = req.files.map((file) => file.path);
 
     const venue = new Venue({
       userId,
@@ -30,7 +21,7 @@ export const createVenue = async (req, res) => {
       description,
       latitude,
       longitude,
-      images: uploadedImages, // Save Cloudinary URLs in the database
+      images: uploadedImages,
     });
 
     await venue.save();
@@ -51,36 +42,34 @@ export const updateVenue = async (req, res) => {
       return res.status(404).json({ message: "Venue not found" });
     }
 
-    // Remove specified images from Cloudinary
+    // Remove specified images from Cloudinary and venue record
     if (removeImages) {
       const removeImagesArray = JSON.parse(removeImages);
-      removeImagesArray.forEach(async (imageUrl) => {
-        const publicId = imageUrl.split("/").pop().split(".")[0]; // Extract public ID
-        await cloudinary.uploader.destroy(`venues/${publicId}`);
-        venue.images = venue.images.filter((img) => img !== imageUrl);
-      });
+      await Promise.all(
+        removeImagesArray.map(async (imageUrl) => {
+          const publicId = imageUrl.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(`venues/${publicId}`);
+          venue.images = venue.images.filter((img) => img !== imageUrl);
+        })
+      );
     }
 
-    // Upload new images to Cloudinary
-    const uploadedImages = await Promise.all(
-      req.files.map(async (file) => {
-        const result = await cloudinary.uploader.upload(file.buffer, {
-          folder: "venues",
-        });
-        return result.secure_url;
-      })
-    );
+    // Add new images from req.files
+    const newImages = req.files.map((file) => file.path);
+    venue.images.push(...newImages);
 
-    venue.images.push(...uploadedImages);
-    venue.name = name || venue.name;
-    venue.city = city || venue.city;
-    venue.capacity = capacity || venue.capacity;
-    venue.price = price || venue.price;
-    venue.discount = discount || venue.discount;
-    venue.address = address || venue.address;
-    venue.description = description || venue.description;
-    venue.latitude = latitude || venue.latitude;
-    venue.longitude = longitude || venue.longitude;
+    // Update other venue details
+    Object.assign(venue, {
+      name: name || venue.name,
+      city: city || venue.city,
+      capacity: capacity || venue.capacity,
+      price: price || venue.price,
+      discount: discount || venue.discount,
+      address: address || venue.address,
+      description: description || venue.description,
+      latitude: latitude || venue.latitude,
+      longitude: longitude || venue.longitude,
+    });
 
     await venue.save();
     res.status(200).json({ message: "Venue updated successfully", venue });
