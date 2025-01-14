@@ -1,4 +1,4 @@
-import { FaInstagram, FaFacebook, FaPinterest, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaFacebook, FaPinterest, FaLinkedin, Link} from "react-icons/fa";
 import logo from '../images/logo6.png';
 
 const Footer = () => {
@@ -9,12 +9,13 @@ const Footer = () => {
         <div>
           <h3 className="text-xl md:text-3xl font-bold mb-4 md:mb-6">MENU</h3>
           <ul className="space-y-2 md:space-y-3">
-            <li><a href="/" className="hover:underline">Home</a></li>
-            <li><a href="/aboutus" className="hover:underline">About Us</a></li>
-            <li className="hidden md:block"><a href="/Gallery" className="hover:underline">Gallery</a></li>
-            <li className="hidden md:block"><a href="#weddings" className="hover:underline">Features</a></li>
-            <li><a href="/Menu" className="hover:underline">Menu of Food</a></li>
-            <li><a href="/FAQ" className="hover:underline">FAQ</a></li>
+          <Link to="/Guests">Invitation of Guests</Link>
+            <li><Link to="/" className="hover:underline">Home</Link></li>
+            <li><Link to="/aboutus" className="hover:underline">About Us</Link></li>
+            <li className="hidden md:block"><Link to="/Gallery" className="hover:underline">Gallery</Link></li>
+
+            <li><Link to="/Menu" className="hover:underline">Menu of Food</Link></li>
+            <li><Link to="/FAQ" className="hover:underline">FAQ</Link></li>
           </ul>
         </div>
 
