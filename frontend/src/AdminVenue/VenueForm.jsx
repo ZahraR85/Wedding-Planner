@@ -110,8 +110,6 @@ const VenueForm = ({ venue, onCancel }) => {
       );
   
       // Reset form after submission
-      if (!venue) {
-        // Call the parent function to notify about the new venue
         setFormData({
           name: "",
           city: "",
@@ -124,7 +122,7 @@ const VenueForm = ({ venue, onCancel }) => {
           images: [],
           description: "",
         });
-      }
+      
       setNewImageFiles([]);
       setRemovedImages([]); 
       setExistingImages([]);
