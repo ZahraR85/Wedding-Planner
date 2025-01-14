@@ -17,7 +17,7 @@ router.get("/check/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
 
-    // Ensure userID is a valid ObjectId
+    
     if (!mongoose.Types.ObjectId.isValid(userID)) {
       return res.status(400).json({ message: "Invalid UserID format" });
     }

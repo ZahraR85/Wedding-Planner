@@ -5,7 +5,7 @@ export const createOrUpdateMakeup = async (req, res) => {
   try {
     const { userID, makeup, dress, nail, hairstyle, shoes, special } = req.body;
 
-    // console.log("Received Data:", req.body);
+ 
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
@@ -20,9 +20,9 @@ export const createOrUpdateMakeup = async (req, res) => {
       (shoes ? 100 : 0) +
       (special ? 300 : 0);
 
-    // console.log("Calculated Total:", total);
+   
 
-    // Prepare the data to update
+
     const updateData = {
       makeup: { selected: makeup || false, price: 300 },
       dress: { selected: dress || false, price: 500 },
@@ -30,7 +30,7 @@ export const createOrUpdateMakeup = async (req, res) => {
       hairstyle: { selected: hairstyle || false, price: 200 },
       shoes: { selected: shoes || false, price: 100 },
       special: { selected: special || false, price: 300 },
-      total, // Include the calculated total
+      total, 
     };
 
 
@@ -43,7 +43,7 @@ export const createOrUpdateMakeup = async (req, res) => {
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
-    // console.log("Updated Feature:", feature);
+  
     res.status(200).json({ message: "Makeup updated successfully", feature });
   } catch (error) {
     console.error("Error in createOrUpdateMakeup:", error);
@@ -56,7 +56,7 @@ export const createOrUpdateMakeup = async (req, res) => {
 
 export const getMakeups = async (req, res) => {
   try {
-    // Get userID from query parameters or request body
+   
     const userID = req.query.userID || req.body.userID;
 
     if (!userID) {
@@ -67,13 +67,13 @@ export const getMakeups = async (req, res) => {
     const music = await Makeup.findOne({ userID })
       .populate('userID', 'name family') // Populate user's name and family
 
-      // console.log(music);
+     
 
     if (!music) {
       return res.status(404).json({ message: "No selections found for this user" });
     }
 
-    // Return the entire user's music data
+ 
     res.status(200).json(music);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user selections", error });
@@ -104,7 +104,7 @@ export const updateMakeup = async (req, res) => {
     const updatedData = req.body;
 
     const makeup = await Makeup.findByIdAndUpdate(id, updatedData, { new: true });
-    // console.log("Received Data:", req.body);
+
     if (!makeup) {
       return res.status(404).json({ message: "Makeup not found" });
     }

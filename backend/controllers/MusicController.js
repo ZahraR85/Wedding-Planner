@@ -9,7 +9,7 @@ export const createOrUpdateMusic = async (req, res) => {
   try {
     const { userID, selections, customRequests } = req.body;
 
-    // console.log("Received Data:", req.body);
+   
 
     if (!userID) {
       return res.status(400).json({ message: "UserID is required." });
@@ -20,7 +20,7 @@ export const createOrUpdateMusic = async (req, res) => {
       return total + (selection.totalPrice || 0);
     }, 0);
 
-    // console.log("Calculated Total Cost:", totalCost);
+    
 
     // Prepare the data to update
     const updateData = {
@@ -29,16 +29,16 @@ export const createOrUpdateMusic = async (req, res) => {
       totalCost,
     };
 
-    // console.log("Data to Update:", updateData);
+    
 
     // Find and update the document or create a new one
     const musicRecord = await Music.findOneAndUpdate(
-      { userID: new mongoose.Types.ObjectId(userID) }, // Match by userID
+      { userID: new mongoose.Types.ObjectId(userID) }, 
       { $set: updateData },
       { new: true, upsert: true, setDefaultsOnInsert: true } // Update or insert with defaults
     );
 
-    // console.log("Updated Music Record:", musicRecord);
+
     res.status(200).json({ message: "Music updated successfully", musicRecord });
   } catch (error) {
     console.error("Error in createOrUpdateMusic:", error);
@@ -68,7 +68,7 @@ export const getUserSelectionById = async (req, res) => {
       return res.status(400).json({ message: "User ID is required." });
     }
 
-    // console.log("Fetching data for userID:", userID);
+ 
 
     // Debug: Check if userID is valid
     if (!mongoose.Types.ObjectId.isValid(userID)) {
@@ -87,7 +87,7 @@ export const getUserSelectionById = async (req, res) => {
       return res.status(404).json({ message: "No selections found for this user." });
     }
 
-    // console.log("Fetched Music Data:", JSON.stringify(music, null, 2));
+  
 
     res.status(200).json(music);
   } catch (error) {
