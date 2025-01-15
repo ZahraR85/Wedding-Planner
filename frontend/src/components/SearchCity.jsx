@@ -8,16 +8,33 @@ const SearchCity = ({ selectedCity, setSelectedCity, onSearch }) => {
   useEffect(() => {
     async function fetchCities() {
       try {
-
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/venues/cities`);
         setCities(response.data);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
+    
     }
 
     fetchCities();
   }, []);
+
+
+  // useEffect(() => {
+  //   async function fetchCities() {
+  //     try {
+
+  //       const response = await axios.get(process.env.REACT_APP_API_URL + '/venues/cities');
+       
+  //       setCities(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching cities:", error);
+  //     }
+  //   }
+
+  //   fetchCities();
+  // }, []);
+
 
   const handleSearch = () => {
     onSearch(selectedCity);

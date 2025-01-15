@@ -6,12 +6,17 @@ import {
   getVenueByVenueId,
   getVenuesByUserId,
   getAllVenues,
+  getUniqueCities,
 } from "../controllers/venueController.js";
 import fileUploader from "../middleware/multer.js";
 import cloudUploader from "../middleware/cloudinaryMultiple.js";
 
 
 const router = express.Router();
+
+
+
+router.get("/cities", getUniqueCities);
 
 // POST: Create a venue
 router.post("/", fileUploader.array("images", 15), cloudUploader, createVenue);
@@ -30,5 +35,7 @@ router.get("/:venueId", getVenueByVenueId);
 
 // GET: Get venues by user ID
 router.get("/user/:userId", getVenuesByUserId);
+
+
 
 export default router;
