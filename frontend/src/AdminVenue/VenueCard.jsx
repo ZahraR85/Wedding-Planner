@@ -15,7 +15,7 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
           venue.images.map((image, index) => (
             <img
               key={index}
-              src={`${import.meta.env.VITE_API_URL}/${image}`} // Make sure this path is correct
+              src={`${image}`} // Make sure this path is correct
               alt={`Venue ${index + 1}`}
               className="h-48 w-48 object-cover rounded"
             />

@@ -140,7 +140,7 @@ const VenueSelectionPage = () => {
               onClick={() => handleVenueClick(venue._id)}
             >
               <img
-                src={`${import.meta.env.VITE_API_URL}/${venue.images?.[0]}`}
+                src={`${venue.images?.[0]}`}
                 alt={venue.name}
                 className="w-full h-40 object-cover rounded-lg"
                 onError={(e) => (e.target.src = "https://via.placeholder.com/150")} // Fallback for missing images

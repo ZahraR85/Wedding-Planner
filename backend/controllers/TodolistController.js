@@ -1,7 +1,5 @@
 
 
-
-
 import Guest from '../models/guest.js';
 import Makeup from '../models/makeup.js';
 import Reception from '../models/reception.js';
@@ -43,13 +41,7 @@ export async function getUserProgress(userID) {
             } else {
                 progressData[name] = false; // Mark as not completed
             }
-            // const exists = await model.exists({ userID });
-            // if (exists) {
-            //     progressData[name] = true; // Mark as completed
-            //     completedCount++;
-            // } else {
-            //     progressData[name] = false; // Mark as not completed
-            // }
+           
         } catch (error) {
             console.error(`Error querying model ${name}:`, error.message);
             progressData[name] = false; // Mark as not completed if there's an error
@@ -58,8 +50,7 @@ export async function getUserProgress(userID) {
 
     const percentageDone = Math.round((completedCount / models.length) * 100);
 
-    // console.log("Progress Data:", progressData);
-    // console.log("Percentage Done:", percentageDone);
+
 
     return {
         completedCount,

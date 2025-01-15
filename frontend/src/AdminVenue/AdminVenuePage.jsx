@@ -28,14 +28,29 @@ const AdminVenuePage = () => {
     getVenues().then(setVenues);
   }, []);
 
-  const handleAddVenue = (venueData) => {
-    addVenue(venueData).then(() => {
-      getVenues().then((updatedVenues) => {
-        setVenues(updatedVenues);
-        setCurrentPage(1); // Reset to the first page
+  /*const handleAddVenue = (venueData) => {
+    addVenue(venueData).then((newVenue) => {
+      setVenues((prevVenues) => {
+        // Check if the current page is the first page, else add it correctly
+        const newVenues = [...prevVenues];
+        if (currentPage === 1) {
+          newVenues.unshift(newVenue); // Add at the top of the first page
+        } else {
+          newVenues.push(newVenue); // Add to the next page
+        }
+        return newVenues;
       });
+      setCurrentPage(1); // Optional: Reset to the first page
+    });
+  };*/
+  const handleAddVenue = (venueData) => {
+    addVenue(venueData).then((newVenue) => {
+      setVenues((prevVenues) => [newVenue, ...prevVenues]); // Immediately add to the list
+      setCurrentPage(1); // Optional: Reset to the first page
     });
   };
+  
+  
   const handleUpdateVenue = (venueData) => {
     updateVenue(editVenue._id, venueData).then((updatedVenue) => {
       setVenues((prevVenues) =>

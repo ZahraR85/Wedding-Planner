@@ -52,9 +52,9 @@ class ChatMock {
 
       const text = (() => {
         const userMessage = messages[messages.length - 1]?.content.toLowerCase();
-        if (userMessage.includes('guests answered')) return 'You can view guest responses in the dashboard under the "Guest List" section.';
-        if (userMessage.includes('how many guests are coming')) return 'Currently, 75 guests have confirmed their attendance.';
-        if (userMessage.includes('weather')) return 'The forecast for your wedding day is sunny with a high of 25°C.';
+        if (userMessage.includes('guests answered')) return 'You can view guest responses in the home page under the "Guest List" section.';
+        if (userMessage.includes('how many guests are coming')) return 'Currently, 7 guests have confirmed their attendance.';
+        if (userMessage.includes('weather')) return 'The forecast for your wedding day is sunny with a high of 5°C.';
         if (userMessage.includes('can i pay by loan')) return 'Yes, we offer flexible payment options, including loans. Please contact us for more details.';
         if (userMessage.includes('makeup artist')) return 'You can choose your preferred makeup artist from our vendor list in the "Services" section.';
         if (userMessage.includes('venue to city center')) return 'The venue is approximately 20 minutes by car from the city center.';
@@ -66,6 +66,7 @@ class ChatMock {
         if (userMessage.includes('hello')) return 'Hi there! How can I assist you today?';
         if (userMessage.includes('hi')) return 'Hello there! How can I assist you today?';
         if (userMessage.includes('how are you')) return 'I am good, and you?';
+        if (userMessage.includes('hi')) return 'I am good, and you?';
         return 'I am sorry, I may not have a real answer to your question. For better assistance, please call us.';
       })();
       if (stream) {

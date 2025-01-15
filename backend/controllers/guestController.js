@@ -12,15 +12,12 @@ export const countYesGuests = async (req, res) => {
       return res.status(400).json({ message: "UserID is required." });
     }
 
-    // Convert userID to ObjectId using "new"
     const objectId = new mongoose.Types.ObjectId(userID);
-
-    // console.log("UserID received as ObjectId:", objectId);
 
     const result = await Guest.aggregate([
       {
         $match: {
-          userID: objectId, // Match ObjectId
+          userID: objectId, 
           answerStatus: "Yes",
         },
       },
@@ -32,7 +29,6 @@ export const countYesGuests = async (req, res) => {
       },
     ]);
 
-    // console.log("Aggregation result:", result);
 
     const totalPersons = result[0]?.totalPersons || 0;
     res.status(200).json({ totalPersons });
@@ -58,13 +54,13 @@ export const sendEmail = async (to, subject, text, html) => {
 
     const info = await transporter.sendMail({
       from: process.env.EMAIL_USER, // Sender's email
-      to, // Recipient's email
-      subject, // Subject of the email
-      text, // Fallback text for non-HTML email clients
-      html, // HTML email content
+      to,
+      subject, 
+      text, 
+      html, 
     });
 
-    // console.log("Email sent successfully:", info.messageId);
+
   } catch (error) {
     console.error("Error in sendEmail function:", error.message);
     throw error;
@@ -101,7 +97,9 @@ export const sendInvitation = async (req, res) => {
     const htmlContent = `
     <div style="font-family: 'Arial', sans-serif; background-image: url('https://i.postimg.cc/Mp56xJ1p/Untitled-design.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; padding: 40px; border-radius: 15px; width: 600px; margin: 50px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
       <!-- Top text -->
+
       <p style="font-size: 18px; color: #333; margin: 0;">Dear ${guestName},</p>
+
       <p style="font-size: 12px; color: #333; margin: 0;">We are delighted to invite you to the</p>
       
       <!-- Main title -->
@@ -129,22 +127,7 @@ export const sendInvitation = async (req, res) => {
       <p style="margin: 0;"><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
     </div>
   `;
-    // const htmlContent = `
-    //   <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-    //     <h1 style="color:rgb(175, 76, 139);">You're Invited!</h1>
-    //     <p>Dear ${guestName},</p>
-    //     <p>We are delighted to invite you to the wedding of <strong>${userInfo.brideName}</strong> and <strong>${userInfo.groomName}</strong>.</p>
-    //     <ul>
-    //       <li><strong>Date:</strong> ${new Date(userInfo.weddingDate).toLocaleDateString()}</li>
-    //       <li><strong>Time:</strong> 6:00 PM</li>
-    //       <li><strong>Venue:</strong> The Grand Hall, 123 Celebration Avenue</li>
-    //     </ul>
-    //     <p>${userInfo.story || "We look forward to celebrating with you!"}</p>
-    //     <p>Please respond to this email with your availability.</p>
-    //     <p>Best Regards,</p>
-    //     <p><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
-    //   </div>
-    // `;
+
 
     await sendEmail(email, "You're Invited!", "Please join us for the event!", htmlContent);
 
@@ -181,7 +164,9 @@ export const sendToAllNotYetGuests = async (req, res) => {
       const htmlContent = `
     <div style="font-family: 'Arial', sans-serif; background-image: url('https://i.postimg.cc/Mp56xJ1p/Untitled-design.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; padding: 40px; border-radius: 15px; width: 600px; margin: 50px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
       <!-- Top text -->
+
        <p style="font-size: 18px; color: #333; margin: 0;">Dear ${guestName},</p>
+
       <p style="font-size: 12px; color: #333; margin: 0;">We are delighted to invite you to the</p>
       
       <!-- Main title -->
@@ -209,22 +194,7 @@ export const sendToAllNotYetGuests = async (req, res) => {
       <p style="margin: 0;"><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
     </div>
   `;
-      //   const htmlContent = `
-      //   <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-      //     <h1 style="color:rgb(175, 76, 139);">You're Invited!</h1>
-      //     <p>Dear ${guestName},</p>
-      //     <p>We are delighted to invite you to the wedding of <strong>${userInfo.brideName}</strong> and <strong>${userInfo.groomName}</strong>.</p>
-      //     <ul>
-      //       <li><strong>Date:</strong> ${new Date(userInfo.weddingDate).toLocaleDateString()}</li>
-      //       <li><strong>Time:</strong> 6:00 PM</li>
-      //       <li><strong>Venue:</strong> The Grand Hall, 123 Celebration Avenue</li>
-      //     </ul>
-      //     <p>${userInfo.story || "We look forward to celebrating with you!"}</p>
-      //     <p>Please respond to this email with your availability.</p>
-      //     <p>Best Regards,</p>
-      //     <p><strong>${userInfo.brideName} & ${userInfo.groomName}</strong></p>
-      //   </div>
-      // `;
+
       return sendEmail(
         guest.email,
         "Invitation Reminder",
