@@ -174,7 +174,7 @@ const VenueBooking = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
         <div className="relative">
           <img
-            src={`${import.meta.env.VITE_API_URL}/${venue?.images[currentIndex]}`}
+            src={`/${venue?.images[currentIndex]}`}
             alt={`Venue ${currentIndex}`}
             className="w-full h-auto object-cover rounded-md"
           />

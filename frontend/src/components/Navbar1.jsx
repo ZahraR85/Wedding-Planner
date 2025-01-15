@@ -15,11 +15,11 @@ const Navbar1 = () => {
     signOut, 
     shoppingCardCount 
   } = useAppContext();
-  const location = useLocation();
-  const navigate = useNavigate();
+  //const location = useLocation();
+  //const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("isAuthenticated:", isAuthenticated, "role:", role);
+    //console.log("isAuthenticated:", isAuthenticated, "role:", role);
   }, [isAuthenticated, role]);
 
   const handleMouseEnter = () => {

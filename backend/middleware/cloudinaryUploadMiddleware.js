@@ -1,21 +1,37 @@
-import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { Buffer } from 'node:buffer';
+import { v2 as cloudinary } from 'cloudinary';
+import ErrorResponse from '../utils/ErrorResponse.js';
 
-// Configure Cloudinary
+// Configuration
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure_url: true,
 });
 
-// Configure multer-storage-cloudinary
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "venues", // Define the folder in Cloudinary
-    allowed_formats: ["jpg", "jpeg", "png"], // Allowed file formats
-  },
-});
+// 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
 
-export const upload1 = multer({ storage });
+// Upload an image
+const cloudUploader = async (req, res, next) => {
+    try {
+        if (!req.file) throw new ErrorResponse('Please upload a file.', 400);
+
+        const b64 = Buffer.from(req.file.buffer).toString('base64');
+        const dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
+
+        const cloudinaryData = await cloudinary.uploader.upload(dataURI, {
+            resource_type: 'auto',
+        });
+
+        console.log(cloudinaryData);
+
+        req.cloudinaryURL = cloudinaryData.secure_url;
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export default cloudUploader;

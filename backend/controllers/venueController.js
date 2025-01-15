@@ -8,7 +8,7 @@ export const createVenue = async (req, res) => {
     const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
 
     // Extract Cloudinary URLs from req.files
-    const uploadedImages = req.files.map((file) => file.path);
+    const uploadedImages = req.cloudinaryURLs;
 
     const venue = new Venue({
       userId,
@@ -55,7 +55,7 @@ export const updateVenue = async (req, res) => {
     }
 
     // Add new images from req.files
-    const newImages = req.files.map((file) => file.path);
+    const newImages = req.cloudinaryURLs;
     venue.images.push(...newImages);
 
     // Update other venue details

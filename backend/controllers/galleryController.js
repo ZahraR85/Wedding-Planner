@@ -26,7 +26,7 @@ export const addGalleryImage = async (req, res) => {
     const newImage = new Gallery({
       userId: userId,
       imageName,
-      imagePath: `/uploads/${req.file.filename}`, // Store relative URL
+      imagePath: req.cloudinaryURL,
       description,
       category,
     });
@@ -66,7 +66,7 @@ export const updateGalleryImage = async (req, res) => {
   const updateData = { userId, imageName, description, category };
 
   if (keepExistingImage !== 'true' && req.file) {
-    updateData.imagePath = `/uploads/${req.file.filename}`;
+    updateData.imagePath = req.cloudinaryURL
   }
 
   try {
