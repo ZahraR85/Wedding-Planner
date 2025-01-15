@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const UserSelections = ({ userId }) => {
   const [userSelections, setUserSelections] = useState([]);
@@ -9,14 +9,20 @@ const UserSelections = ({ userId }) => {
   useEffect(() => {
     const fetchUserSelections = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/venueSelections/${userId}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/venueSelections/${userId}`
+        );
         console.log("API Response:", response.data);
         setUserSelections(response.data);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching data:", err);
         if (err.response && err.response.status === 404) {
-          setError({ message: "It seems no Venue were selected. Please feel free to choose your preferences!", isCustom: true });
+          setError({
+            message:
+              "It seems no Venue were selected. Please feel free to choose your preferences!",
+            isCustom: true,
+          });
         } else {
           setError({ message: err.message, isCustom: false });
         }
@@ -44,47 +50,55 @@ const UserSelections = ({ userId }) => {
     return <p>No venues selected for this user.</p>;
   }
 
-  const formatImagePath = (path) => `${import.meta.env.VITE_API_URL}/${path.replace(/\\/g, '/')}`;
+  const formatImagePath = (path) =>
+    `${import.meta.env.VITE_API_URL}/${path.replace(/\\/g, "/")}`;
 
   return (
     <div>
       <div className="mx-auto  max-w-[calc((6)0%-130px)] bg-opacity-80 pace-y-4 p-4  ">
         <ul>
           {userSelections.map((selection) => (
-          <li key={selection._id}
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%',}}
-        >
-          <div style={{width: '380px', height: '380px',
-              borderRadius: '50%', // Makes the container circular
-              overflow: 'hidden', // Ensures the image does not overflow the circular container
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'}}
+            <li
+              key={selection._id}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+              }}
             >
-            {selection.venueId?.images?.[0] ? (
-              <img
-                src={formatImagePath(selection.venueId.images[0])}
-                alt="Venue"
+              <div
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover', // Ensures the image fills the circle
+                  width: "380px",
+                  height: "380px",
+                  borderRadius: "50%", // Makes the container circular
+                  overflow: "hidden", // Ensures the image does not overflow the circular container
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-              />
-            ) : (
-              <p>No images available</p>
-            )}
-          </div>
-        </li>
+              >
+                {selection.venueId?.images?.[0] ? (
+                  <img
+                    src={selection.venueId.images[0]}
+                    alt="Venue"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover", // Ensures the image fills the circle
+                    }}
+                  />
+                ) : (
+                  <p>No images available</p>
+                )}
+              </div>
+            </li>
           ))}
         </ul>
       </div>
-
-
     </div>
   );
 };
 
 export default UserSelections;
-
-
