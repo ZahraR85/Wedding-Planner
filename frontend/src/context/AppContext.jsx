@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import axios from "axios";
 
 // Create context for app state
@@ -161,9 +161,9 @@ export const AppProvider = ({ children }) => {
   const shoppingCardCount = state.shoppingCard.length;
 
   const signOut = () => dispatch({ type: "SIGN_OUT" });
-  AppProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-  };
+  // AppProvider.propTypes = {
+  //   children: PropTypes.node.isRequired,
+  // };
 
   return (
     <AppContext.Provider
