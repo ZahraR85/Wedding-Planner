@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const CategoryDetails = () => {
   const { category } = useParams(); // Get category from the URL
@@ -18,7 +18,7 @@ const CategoryDetails = () => {
         );
         setPhotos(response.data); // Update photos state
       } catch (error) {
-        console.error('Error fetching category photos:', error);
+        console.error("Error fetching category photos:", error);
       }
     };
 
@@ -51,8 +51,7 @@ const CategoryDetails = () => {
         <div>
           <div className="flex justify-center mb-6">
             <img
-              // src={`http://localhost:3001${selectedPhoto.imagePath}`}
-              src={`${import.meta.env.VITE_API_URL}${selectedPhoto.imagePath}`}
+              src={`${selectedPhoto.imagePath}`}
               alt={selectedPhoto.imageName}
               className="w-[90%] h-112 object-cover rounded"
             />
@@ -72,14 +71,16 @@ const CategoryDetails = () => {
               currentPhotos.map((photo) => (
                 <img
                   key={photo._id}
-                  src={`${import.meta.env.VITE_API_URL}${photo.imagePath}`}
+                  src={`${photo.imagePath}`}
                   alt={photo.imageName}
                   onClick={() => handlePhotoClick(photo)}
                   className="w-full h-72 object-cover rounded cursor-pointer hover:opacity-75"
                 />
               ))
             ) : (
-              <p className="text-gray-500 text-center col-span-full">No photos found for this category.</p>
+              <p className="text-gray-500 text-center col-span-full">
+                No photos found for this category.
+              </p>
             )}
           </div>
           <div className="flex justify-center items-center mt-4">

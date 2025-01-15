@@ -83,8 +83,10 @@ export const GalleryCategory = async (req, res) => {
   try {
     const { category } = req.params;
     const photos = await Gallery.find({ category });
+    //console.log('Photos for category:', photos); // Debugging
     res.json(photos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
