@@ -23,14 +23,16 @@ const VenueBooking = () => {
       toast.warn("You must sign in to access this page.");
       setTimeout(() => {
         navigate("/signin");
-      }, 3000); 
+      }, 3000);
     }
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchWeddingDate = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/userinfoes/${userId}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/userinfoes/${userId}`
+        );
         if (response.data?.weddingDate) {
           setDay(response.data.weddingDate.split("T")[0]); // Set formatted date (YYYY-MM-DD)
         } else {
@@ -46,9 +48,10 @@ const VenueBooking = () => {
         }
       }
     };
-  
+
     const handleMissingUserInfo = () => {
-      if (!toastShown.current) { // Ensure the toast is only shown once
+      if (!toastShown.current) {
+        // Ensure the toast is only shown once
         toast.warn(
           "User information not found. Please fill out the form on the User Information page before selecting a venue.",
           { position: "top-center", autoClose: 3000 }
@@ -67,7 +70,9 @@ const VenueBooking = () => {
     const fetchVenueDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/venues/${venueId}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/venues/${venueId}`
+        );
         setVenue(response.data);
         setImages(response.data.images || []);
       } catch (error) {
@@ -86,7 +91,9 @@ const VenueBooking = () => {
   const checkBookingConflict = async (selectedDate) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/venueSelections/venue/${venueId}/date/${selectedDate}`
+        `${
+          import.meta.env.VITE_API_URL
+        }/venueSelections/venue/${venueId}/date/${selectedDate}`
       );
       setBookingConflict(response.data.length > 0);
     } catch (error) {
@@ -102,9 +109,9 @@ const VenueBooking = () => {
   }, [day]);
 
   const googleMapsLink =
-  venue && venue.latitude && venue.longitude
-    ? `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`
-    : null;
+    venue && venue.latitude && venue.longitude
+      ? `http://maps.google.com/maps?z=12&t=k&q=loc:${venue.latitude}+${venue.longitude}`
+      : null;
 
   const handlePrevImage = () => {
     setCurrentIndex((prevIndex) =>
@@ -120,43 +127,52 @@ const VenueBooking = () => {
 
   const handleSubmit = async () => {
     if (bookingConflict) {
-      toast.error("This venue is already booked on the selected date. Please choose another date.");
+      toast.error(
+        "This venue is already booked on the selected date. Please choose another date."
+      );
       return;
     }
-  
+
     try {
       const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(day);
       if (!isValidDate) {
         toast.error("Invalid date format. Please use YYYY-MM-DD.");
         return;
       }
-  
+
       setLoading(true);
-  
+
       // Send booking request to the backend
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/venueSelections`, {
-        userId,
-        date: day,
-        venueId,
-      });
-  
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/venueSelections`,
+        {
+          userId,
+          date: day,
+          venueId,
+        }
+      );
+
       toast.success(response.data.message); // Use the message from the backend
-  
+
       // Add to shopping cart
       const shoppingCartData = {
         userID: userId,
         serviceName: "Venue",
         price: venue?.total,
       };
-      await axios.post(`${import.meta.env.VITE_API_URL}/shoppingcards`, shoppingCartData, {
-        headers: { "Content-Type": "application/json" },
-      });
-  
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/shoppingcards`,
+        shoppingCartData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
       addToShoppingCard(shoppingCartData);
       toast.success("Venue booking successfully completed!");
       setTimeout(() => {
         navigate("/shoppingCard");
-      }, 3000); 
+      }, 3000);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
@@ -165,41 +181,65 @@ const VenueBooking = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
   return (
     <div className="relative min-h-screen bg-cover bg-center p-4 md:p-20 bg-BgPink">
       <ToastContainer />
       <div className="absolute inset-0 bg-white/50"></div>
       <div className="relative mx-auto w-full max-w-full md:max-w-[calc(100%-100px)] bg-customBg shadow-md rounded-lg p-4 md:p-5 space-y-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-center text-BgFont">{venue?.name}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-BgFont">
+          {venue?.name}
+        </h1>
         <div className="relative">
           <img
-            src={`/${venue?.images[currentIndex]}`}
+            src={`${venue?.images[currentIndex]}`}
             alt={`Venue ${currentIndex}`}
             className="w-full h-auto object-cover rounded-md"
           />
           <div className="absolute top-1/2 left-0 right-0 flex justify-between">
-            <button onClick={handlePrevImage} className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark">
+            <button
+              onClick={handlePrevImage}
+              className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark"
+            >
               Prev
             </button>
-            <button onClick={handleNextImage} className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark">
+            <button
+              onClick={handleNextImage}
+              className="bg-white p-2 rounded-full shadow-md hover:bg-BgPinkDark"
+            >
               Next
             </button>
           </div>
         </div>
         <div className="flex flex-col md:flex-row">
           <div className="flex-1 my-4">
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">City: {venue?.city}</p>
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Capacity: {venue?.capacity}</p>
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Price: {venue?.price} €</p>
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Discount: {venue?.discount} %</p>
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Total price: {venue?.total} €</p>
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Description: {venue?.description}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              City: {venue?.city}
+            </p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              Capacity: {venue?.capacity}
+            </p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              Price: {venue?.price} €
+            </p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              Discount: {venue?.discount} %
+            </p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              Total price: {venue?.total} €
+            </p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              Description: {venue?.description}
+            </p>
           </div>
           <div className="flex-1 my-4">
-            <p className="text-sm md:text-base font-bold text-BgFont my-4">Address: {venue?.address}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4">
+              Address: {venue?.address}
+            </p>
 
-            <p className="text-sm md:text-base font-bold text-BgFont my-4 mr-4 inline-block">Location: {venue?.latitude}, {venue?.longitude}</p>
+            <p className="text-sm md:text-base font-bold text-BgFont my-4 mr-4 inline-block">
+              Location: {venue?.latitude}, {venue?.longitude}
+            </p>
             <a
               className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 "
               target="_blank"
@@ -208,7 +248,8 @@ const VenueBooking = () => {
             >
               See it on Google Maps
             </a>
-            <label className="text-sm md:text-base font-bold text-BgFont my-4 block">Select Day:
+            <label className="text-sm md:text-base font-bold text-BgFont my-4 block">
+              Weeding Date:
               <input
                 type="date"
                 value={day}
@@ -217,7 +258,10 @@ const VenueBooking = () => {
               />
             </label>
             {bookingConflict && (
-              <p className="text-red-500 mt-2">This venue is already booked on the selected date. Please choose another date.</p>
+              <p className="text-red-500 mt-2">
+                This venue is already booked on the selected date. Please choose
+                another date.
+              </p>
             )}
             <button
               onClick={handleSubmit}
