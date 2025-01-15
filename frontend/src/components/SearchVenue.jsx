@@ -11,7 +11,7 @@ function SearchVenue() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // Limit to 8 cards per page
   const navigate = useNavigate();
-  // const response = await axios.get(`${import.meta.env.VITE_API_URL}/galleries`); 
+  // const response = await axios.get(`${import.meta.env.VITE_API_URL}/galleries`);
   useEffect(() => {
     async function fetchVenues() {
       const url =
@@ -55,7 +55,9 @@ function SearchVenue() {
       <div className="relative mx-auto w-full max-w-[calc(100%-20px)] bg-customBg2 shadow-md rounded-lg p-5 space-y-4">
         {loading && <p>Loading venues...</p>}
         {error && <p>{error}</p>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 "> {/* Adjusted gap */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
+          {" "}
+          {/* Adjusted gap */}
           {currentItems.map((venue) => (
             <div
               key={venue._id}
@@ -63,15 +65,25 @@ function SearchVenue() {
               onClick={() => navigate(`/venues/${venue._id}`)}
             >
               <img
-                src={`${import.meta.env.VITE_API_URL}/${venue.images?.[0]}`}
+                src={`${venue.images?.[0]}`}
                 alt={venue.name}
-                className="w-full h-32 object-cover rounded-lg" 
-                onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
+                className="w-full h-32 object-cover rounded-lg"
+                onError={(e) =>
+                  (e.target.src = "https://via.placeholder.com/150")
+                }
               />
-              <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
-              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
-              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
-              <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
+              <h3 className="text-xl text-BgFont font-bold mt-2 px-4">
+                {venue.name}
+              </h3>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">
+                Capacity: {venue.capacity}
+              </p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">
+                Price: ${venue.price}
+              </p>
+              <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">
+                City: {venue.city}
+              </p>
             </div>
           ))}
         </div>
@@ -80,7 +92,9 @@ function SearchVenue() {
           <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            className={`p-2 rounded ${currentPage === 1 ? "bg-gray-300" : "bg-BgPinkMiddle text-BgFont"}`}
+            className={`p-2 rounded ${
+              currentPage === 1 ? "bg-gray-300" : "bg-BgPinkMiddle text-BgFont"
+            }`}
           >
             Prev
           </button>
@@ -88,7 +102,11 @@ function SearchVenue() {
             <button
               key={index}
               onClick={() => handlePageClick(index + 1)}
-              className={`p-2 rounded ${currentPage === index + 1 ? "bg-BgPinkDark text-BgFont" : "bg-gray-200"}`}
+              className={`p-2 rounded ${
+                currentPage === index + 1
+                  ? "bg-BgPinkDark text-BgFont"
+                  : "bg-gray-200"
+              }`}
             >
               {index + 1}
             </button>
@@ -96,7 +114,11 @@ function SearchVenue() {
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className={`p-2 rounded ${currentPage === totalPages ? "bg-gray-300" : "bg-BgPinkMiddle text-BgFont"}`}
+            className={`p-2 rounded ${
+              currentPage === totalPages
+                ? "bg-gray-300"
+                : "bg-BgPinkMiddle text-BgFont"
+            }`}
           >
             Next
           </button>
