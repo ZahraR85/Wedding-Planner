@@ -34,7 +34,8 @@ const VenueDetailsAdmin = () => {
         setPrice(selectedVenue.price);
         setDiscount(selectedVenue.discount);
         setTotal(
-          selectedVenue.price - (selectedVenue.price * selectedVenue.discount) / 100
+          selectedVenue.price -
+            (selectedVenue.price * selectedVenue.discount) / 100
         );
       } catch (error) {
         console.error("Error fetching venue:", error);
@@ -112,7 +113,9 @@ const VenueDetailsAdmin = () => {
       <ToastContainer />
       <div className="absolute inset-0 bg-white/50"></div>
       <div className="relative mx-auto w-full max-w-[calc(90%-50px)] bg-customBg1 shadow-md rounded-lg py-5 space-y-4">
-        <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name}</h1>
+        <h1 className="text-3xl font-bold text-center text-BgFont">
+          {venue.name}
+        </h1>
         <div className="relative">
           <div className="overflow-hidden">
             <img
@@ -138,17 +141,33 @@ const VenueDetailsAdmin = () => {
         </div>
         <div className="flex">
           <div className="flex-1 m-4">
-            <p className="text-m font-bold text-BgFont my-4">City: {venue.city || "N/A"}</p>
-            <p className="text-m font-bold text-BgFont my-4">Capacity: {venue.capacity || "N/A"}</p>
-            <p className="text-m font-bold text-BgFont my-4">Price: {venue.price ? `${venue.price} €` : "N/A"}</p>
-            <p className="text-m font-bold text-BgFont my-4">Discount: {venue.discount ? `${venue.discount} %` : "N/A"}</p>
-            <p className="text-m font-bold text-BgFont my-4">Total price: {venue.total ? `${venue.total} €` : "N/A"}</p>
-            <p className="text-m font-bold text-BgFont my-4">Address: {venue.address || "N/A"}</p>
+            <p className="text-m font-bold text-BgFont my-4">
+              City: {venue.city || "N/A"}
+            </p>
+            <p className="text-m font-bold text-BgFont my-4">
+              Capacity: {venue.capacity || "N/A"}
+            </p>
+            <p className="text-m font-bold text-BgFont my-4">
+              Price: {venue.price ? `${venue.price} €` : "N/A"}
+            </p>
+            <p className="text-m font-bold text-BgFont my-4">
+              Discount: {venue.discount ? `${venue.discount} %` : "N/A"}
+            </p>
+            <p className="text-m font-bold text-BgFont my-4">
+              Total price: {venue.total ? `${venue.total} €` : "N/A"}
+            </p>
+            <p className="text-m font-bold text-BgFont my-4">
+              Address: {venue.address || "N/A"}
+            </p>
           </div>
 
           <div className="flex-1">
-            <p className="text-sm font-semibold text-BgFont my-4">Description: {venue.description}</p>
-            <p className="text-lg font-bold text-BgFont my-4">Location: {venue.latitude}, {venue.longitude}</p>
+            <p className="text-sm font-semibold text-BgFont my-4">
+              Description: {venue.description}
+            </p>
+            <p className="text-lg font-bold text-BgFont my-4">
+              Location: {venue.latitude}, {venue.longitude}
+            </p>
             <a
               className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded mt-4 inline-block"
               target="_blank"
@@ -158,18 +177,6 @@ const VenueDetailsAdmin = () => {
               See it on Google Maps
             </a>
             <div className="mt-4 flex gap-4">
-              <button
-                onClick={handleUpdate}
-                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded"
-              >
-                Save Changes
-              </button>
-              <button
-                onClick={handleDelete}
-                className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded"
-              >
-                Delete Venue
-              </button>
               <button
                 onClick={() => navigate("/Admin/Venue")}
                 className="bg-BgPinkMiddle text-BgFont font-bold hover:bg-BgPinkDark py-2 px-4 rounded"
