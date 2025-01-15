@@ -56,7 +56,9 @@ export const updateVenue = async (req, res) => {
 
     // Add new images from req.files
     const newImages = req.cloudinaryURLs;
-    venue.images.push(...newImages);
+    if (newImages.length> 0 ) { 
+      venue.images.push(...newImages);
+    }
 
     // Update other venue details
     Object.assign(venue, {

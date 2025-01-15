@@ -13,9 +13,8 @@ cloudinary.config({
 // Upload multiple images
 const cloudUploader = async (req, res, next) => {
     try {
-        if (!req.files || req.files.length === 0) throw new ErrorResponse('Please upload files.', 400);
-
-        const uploadPromises = req.files.map(async (file) => {
+        req.files = req.files || [];
+        const uploadPromises = req.files?.map(async (file) => {
             const b64 = Buffer.from(file.buffer).toString('base64');
             const dataURI = 'data:' + file.mimetype + ';base64,' + b64;
 
