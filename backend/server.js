@@ -78,28 +78,6 @@ app.use(
 
 // Setup file upload with Multer
 
-const upload = multer({
-  dest: 'uploads/', // Temporary directory
-  limits: { fileSize: 5 * 1024 * 1024 }, // File size limit of 5MB
-  fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Only image files are allowed.'));
-    }
-    cb(null, true);
-  },
-  // Renaming files when they are uploaded
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/'); // Store in the 'uploads' directory
-    },
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      const newName = `${Date.now()}${ext}`; // Create a unique name
-      cb(null, newName);
-    },
-  }),
-});
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -154,6 +132,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server with Database is listening on http://localhost:${PORT}`);
 });
-
-
-

@@ -241,7 +241,7 @@ const VenueForm = ({ venue, onCancel }) => {
               existingImages.map((img, index) => (
                 <div key={index} className="relative">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}/${img}`} // Make sure this is a valid image URL
+                    src={`${img}`} // Make sure this is a valid image URL
                     alt="Venue"
                     className="w-16 h-16 object-cover rounded"
                   />

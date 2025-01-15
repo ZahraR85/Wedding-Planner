@@ -233,7 +233,7 @@ const GalleryManagement = () => {
               key={image._id}
               className="bg-white shadow-md rounded-lg border-4 border-BgPinkDark cursor-pointer hover:scale-105 hover:shadow-2xl hover:shadow-primary transition-all duration-300 ease-out"
             >
-              <img src={`${import.meta.env.VITE_API_URL}${image.imagePath}`} alt={image.description} className="w-full h-48 object-cover" />
+              <img src={`${image.imagePath}`} alt={image.description} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <p className="text-BgFont font-bold">{image.imageName}</p>
                 <p className="text-BgFont">{image.description}</p>

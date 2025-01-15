@@ -61,7 +61,7 @@ function VenueDetail() {
         <h1 className="text-3xl font-bold text-center text-BgFont">{venue.name || "Venue Name"}</h1>
         <div className="relative">
           <img
-            src={`${import.meta.env.VITE_API_URL}/${venue?.images?.[currentIndex] || "placeholder.jpg"}`}
+            src={`${venue?.images?.[currentIndex] || "placeholder.jpg"}`}
             alt={`Venue ${currentIndex}`}
             className="w-full h-96 object-cover rounded-md"
             style={{ padding: 0 }}

@@ -48,7 +48,7 @@ const Gallery = () => {
           >
             <h2 className="text-m lg:text-xl font-semibold text-BgFont mb-4">{category}</h2>
             <img
-              src={`${import.meta.env.VITE_API_URL}${photos[0].imagePath}`}
+              src={`${photos[0].imagePath}`}
               alt={category}
               className="w-full h-72 object-cover rounded"
             />

@@ -1,13 +1,14 @@
 import Venue from "../models/venue.js";
-import fs from 'fs';
-import path from 'path';
+//import fs from 'fs';
+//import path from 'path';
+import { v2 as cloudinary } from "cloudinary";
 
 export const createVenue = async (req, res) => {
   try {
     const { userId, name, city, capacity, price, discount, address, description, latitude, longitude } = req.body;
 
-    // Collect uploaded image URLs
-    const images = req.files.map((file) => file.path);
+    // Extract Cloudinary URLs from req.files
+    const uploadedImages = req.cloudinaryURLs;
 
     const venue = new Venue({
       userId,
@@ -20,7 +21,7 @@ export const createVenue = async (req, res) => {
       description,
       latitude,
       longitude,
-      images,
+      images: uploadedImages,
     });
 
     await venue.save();
@@ -30,101 +31,48 @@ export const createVenue = async (req, res) => {
     res.status(500).json({ message: "Error creating venue", error });
   }
 };
-// Get all venues
-export const getAllVenues = async (req, res) => {
-  try {
-    const { city } = req.query; // Extract city from query parameters
-    const filter = city && city !== "All Cities" ? { city } : {}; // Build the filter object
-
-    const venues = await Venue.find(filter); // Apply filter when fetching venues
-    res.status(200).json(venues);
-  } catch (error) {
-    console.error("Error fetching venues:", error);
-    res.status(500).json({ message: "Error fetching venues", error });
-  }
-};
-// Update a price of venue
-export const updateVenuePrice = async (req, res) => {
-  try {
-    const { venueId } = req.params;
-    const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
-    res.status(200).json(updatedVenue);
-  } catch (error) {
-    res.status(500).json({ message: "Error updating venue", error });
-  }
-};
-
-import { fileURLToPath } from 'url';
-
-// Get the current file path and directory name
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export const updateVenue = async (req, res) => {
   try {
     const { venueId } = req.params;
-    const {
-      name,
-      city,
-      capacity,
-      price,
-      discount,
-      address,
-      description,
-      latitude,
-      longitude,
-      removeImages,
-    } = req.body;
+    const { name, city, capacity, price, discount, address, description, latitude, longitude, removeImages } = req.body;
 
-    let removeImagesArray = [];
-    if (removeImages) {
-      try {
-        removeImagesArray = JSON.parse(removeImages);
-      } catch (err) {
-        console.error("Error parsing removeImages:", err);
-      }
-    }
-
-    // Find the venue to update
     const venue = await Venue.findById(venueId);
     if (!venue) {
       return res.status(404).json({ message: "Venue not found" });
     }
 
-    // Update venue fields
-    venue.name = name || venue.name;
-    venue.city = city || venue.city;
-    venue.capacity = capacity || venue.capacity;
-    venue.price = price || venue.price;
-    venue.discount = discount || venue.discount;
-    venue.address = address || venue.address;
-    venue.description = description || venue.description;
-    venue.latitude = latitude || venue.latitude;
-    venue.longitude = longitude || venue.longitude;
-
-    // Handle image removals (unlink images from disk)
-    if (removeImagesArray.length > 0) {
-      removeImagesArray.forEach((index) => {
-        const imageToRemove = venue.images[index];
-        if (imageToRemove) {
-          const imagePath = path.join(__dirname, "../uploads", imageToRemove);
-          try {
-            fs.unlinkSync(imagePath); // Delete file from the filesystem
-          } catch (err) {
-            console.error("Error removing image:", err);
-          }
-        }
-      });
-
-      // Remove images from the venue's images array
-      venue.images = venue.images.filter((_, index) => !removeImagesArray.includes(index));
+    // Remove specified images from Cloudinary and venue record
+    if (removeImages) {
+      const removeImagesArray = JSON.parse(removeImages);
+      await Promise.all(
+        removeImagesArray.map(async (imageUrl) => {
+          const publicId = imageUrl.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(`venues/${publicId}`);
+          venue.images = venue.images.filter((img) => img !== imageUrl);
+        })
+      );
     }
 
-    // Handle new file uploads
-    const newImages = req.files.map((file) => file.path); // New images uploaded
-    venue.images.push(...newImages); // Add new images to the venue's images array
+    // Add new images from req.files
+    const newImages = req.cloudinaryURLs;
+    if (newImages.length> 0 ) { 
+      venue.images.push(...newImages);
+    }
 
-    // Save the updated venue
+    // Update other venue details
+    Object.assign(venue, {
+      name: name || venue.name,
+      city: city || venue.city,
+      capacity: capacity || venue.capacity,
+      price: price || venue.price,
+      discount: discount || venue.discount,
+      address: address || venue.address,
+      description: description || venue.description,
+      latitude: latitude || venue.latitude,
+      longitude: longitude || venue.longitude,
+    });
+
     await venue.save();
     res.status(200).json({ message: "Venue updated successfully", venue });
   } catch (error) {
@@ -132,6 +80,8 @@ export const updateVenue = async (req, res) => {
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
+
+
 
 
 // Delete a venue
@@ -194,3 +144,28 @@ export const getUniqueCities = async (req, res) => {
     res.status(500).json({ message: "Error fetching cities", error });
   }
 };
+
+// Get all venues
+export const getAllVenues = async (req, res) => {
+  try {
+    const { city } = req.query; // Extract city from query parameters
+    const filter = city && city !== "All Cities" ? { city } : {}; // Build the filter object
+
+    const venues = await Venue.find(filter); // Apply filter when fetching venues
+    res.status(200).json(venues);
+  } catch (error) {
+    console.error("Error fetching venues:", error);
+    res.status(500).json({ message: "Error fetching venues", error });
+  }
+};
+// Update a price of venue
+/*export const updateVenuePrice = async (req, res) => {
+  try {
+    const { venueId } = req.params;
+    const updatedVenue = await Venue.findByIdAndUpdate(venueId, req.body, { new: true });
+    res.status(200).json(updatedVenue);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating venue", error });
+  }
+};
+*/

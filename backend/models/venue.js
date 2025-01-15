@@ -4,7 +4,7 @@ const venueSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   name: { type: String, required: true },
   city: { type: String, required: true },
-  images: [{ type: String }], // Array of image URLs
+  images: [{ type: String }], // Array of image
   capacity: { type: Number, default: 0 },
   price: { type: Number, required: true },
   discount: { type: Number, default: 0 },
