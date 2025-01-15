@@ -101,7 +101,8 @@ export const sendInvitation = async (req, res) => {
     const htmlContent = `
     <div style="font-family: 'Arial', sans-serif; background-image: url('https://i.postimg.cc/Mp56xJ1p/Untitled-design.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; padding: 40px; border-radius: 15px; width: 600px; margin: 50px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
       <!-- Top text -->
-      <p style="font-size: 16px; color: #333; margin: 0;">You Are Invited To</p>
+      <p style="font-size: 18px; color: #333; margin: 0;">Dear ${guestName},</p>
+      <p style="font-size: 12px; color: #333; margin: 0;">We are delighted to invite you to the</p>
       
       <!-- Main title -->
       <h1 style="font-family: 'Georgia', serif; font-size: 36px; color: #b99058; margin: 10px 0;">Wedding Party</h1>
@@ -180,7 +181,8 @@ export const sendToAllNotYetGuests = async (req, res) => {
       const htmlContent = `
     <div style="font-family: 'Arial', sans-serif; background-image: url('https://i.postimg.cc/Mp56xJ1p/Untitled-design.png'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; padding: 40px; border-radius: 15px; width: 600px; margin: 50px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center;">
       <!-- Top text -->
-      <p style="font-size: 16px; color: #333; margin: 0;">You Are Invited To</p>
+       <p style="font-size: 18px; color: #333; margin: 0;">Dear ${guestName},</p>
+      <p style="font-size: 12px; color: #333; margin: 0;">We are delighted to invite you to the</p>
       
       <!-- Main title -->
       <h1 style="font-family: 'Georgia', serif; font-size: 36px; color: #b99058; margin: 10px 0;">Wedding Party</h1>
