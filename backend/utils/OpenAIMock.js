@@ -64,6 +64,7 @@ class ChatMock {
         if (userMessage.includes('music band')) return 'Our platform features several music bands. You can listen to samples and book them directly in the "Music" section.';
         if (userMessage.includes('payment conditions')) return 'We require a 50% deposit upfront, with the balance due two weeks before the event.';
         if (userMessage.includes('hello')) return 'Hi there! How can I assist you today?';
+        if (userMessage.includes('hi')) return 'Hello there! How can I assist you today?';
         if (userMessage.includes('how are you')) return 'I am good, and you?';
         if (userMessage.includes('hi')) return 'I am good, and you?';
         return 'I am sorry, I may not have a real answer to your question. For better assistance, please call us.';

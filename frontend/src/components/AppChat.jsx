@@ -89,7 +89,9 @@ const ChatApp = () => {
             <input
               type="text"
               className="w-full p-3 text-sm border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+
               placeholder="Ask your question here..."
+
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && e.target.value.trim()) {
                   handleSendMessage(e.target.value.trim());

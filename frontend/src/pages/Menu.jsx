@@ -322,7 +322,8 @@ const Menu = () => {
   return (
     <div className="flex justify-center items-start pt-20 min-h-screen bg-[url('./images/catering.png')] bg-contain bg-center ">
       <div className="max-w-full sm:max-w-5xl sm:w-3/5 w-full p-6 sm:p-10 bg-white shadow-2xl rounded-lg space-y-8 ">
-        <h1 className="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-purple-600">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-dark-brown" >
+
           Our Full Menu
         </h1>
         {menuItems.map((section, idx) => (

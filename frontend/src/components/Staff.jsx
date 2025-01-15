@@ -43,7 +43,7 @@ const weddingProfessionals = [
     link: "Elena Rossi Events",
     country: "Italy",
     flag: "🇮🇹",
-    image: "../imagess/profile.jpg",
+    image: "../imagess/profile1.jpg",
   },
   {
     name: "László Kovács",
