@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const VenueCard = ({ venue, onEdit, onDelete }) => {
   const navigate = useNavigate();
@@ -25,37 +25,42 @@ const VenueCard = ({ venue, onEdit, onDelete }) => {
         )}
       </div>
       <div className="mt-4">
-      <h3 className="text-xl text-BgFont font-bold mt-2 px-4">{venue.name}</h3>
-      <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Capacity: {venue.capacity}</p>
-      <p className="text-sm text-BgFont lg:text-m font-semibold mt-2 px-4">Price: ${venue.price}</p>
-      <p className="text-sm text-BgFont lg:text-m font-semibold my-2 px-4">City: {venue.city}</p>
+        <h3 className="text-lg lg:text-xl text-BgFont font-bold lg:mt-2 mt-1 px-4">
+          {venue.name}
+        </h3>
+        <p className="text-sm text-BgFont lg:text-m font-semibold lg:mt-2 mt-1 px-4">
+          Capacity: {venue.capacity}
+        </p>
+        <p className="text-sm text-BgFont lg:text-m font-semibold lg:mt-2 mt-1 px-4">
+          Price: ${venue.price}
+        </p>
+        <p className="text-sm text-BgFont lg:text-m font-semibold lg:mt-2 mt-1 px-4">
+          City: {venue.city}
+        </p>
       </div>
       <div className="p-4 flex justify-between">
         <button
           onClick={handleViewDetails}
-          className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
+          className="bg-BgPinkMiddle text-BgFont text-sm lg:text-m font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
         >
           View Details
         </button>
 
-            <button
-              onClick={() => onEdit(venue)}
-              className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => onDelete(venue._id)}
-              className="bg-BgPinkMiddle text-BgFont font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
-            >
-              Delete
-            </button>
-
+        <button
+          onClick={() => onEdit(venue)}
+          className="bg-BgPinkMiddle text-BgFont text-sm lg:text-m font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => onDelete(venue._id)}
+          className="bg-BgPinkMiddle text-BgFont text-sm lg:text-m font-semibold lg:font-bold hover:bg-BgPinkDark lg:px-4 px-2 lg:py-2 py-1 rounded"
+        >
+          Delete
+        </button>
       </div>
     </div>
-    
   );
-  
 };
 
 export default VenueCard;
