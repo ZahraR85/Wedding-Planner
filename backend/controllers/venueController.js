@@ -93,7 +93,6 @@ export const updateVenue = async (req, res) => {
   }
 };
 
-
 // Delete a venue
 export const deleteVenue = async (req, res) => {
   try {

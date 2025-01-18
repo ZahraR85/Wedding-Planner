@@ -59,8 +59,9 @@ const VenueForm = ({ venue, onCancel }) => {
 
   const removeExistingImage = (index) => {
     const updatedImages = existingImages.filter((_, i) => i !== index);
+    const removedImageUrl = existingImages[index];
     setExistingImages(updatedImages);
-    setRemovedImages([...removedImages, index]); // Track the removed image index
+    setRemovedImages([...removedImages, removedImageUrl]); // Track the removed image URL
   };
 
   const removeNewImage = (index) => {
@@ -72,59 +73,59 @@ const VenueForm = ({ venue, onCancel }) => {
     setLoading(true);
     try {
       const uploadFormData = new FormData();
-  
+
       // Append new image files
       newImageFiles.forEach((file) => {
         uploadFormData.append("images", file); // Appending the new images
       });
-  
+
       // Append other form data
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== "images") uploadFormData.append(key, value); // Appending other form fields
       });
-  
+
       // Send images to remove (ensure only one array of removed images)
       const imagesToRemove = [...removedImages];
       if (imagesToRemove.length > 0) {
-        uploadFormData.append("removeImages", JSON.stringify(imagesToRemove)); 
+        uploadFormData.append("removeImages", JSON.stringify(imagesToRemove));
       }
-  
-      uploadFormData.append("userId", userId); 
-  
+
+      uploadFormData.append("userId", userId);
+
       // Send POST/PUT request to add or update venue
       const url = venue
         ? `${import.meta.env.VITE_API_URL}/venues/${venue._id}` // Update the venue if it already exists
         : `${import.meta.env.VITE_API_URL}/venues`; // Create a new venue if no existing venue
       const method = venue ? "put" : "post"; // Choose PUT for update or POST for creation
-  
+
       const response = await axios({
         method,
         url,
         data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
       toast.success(
         response.data.message ||
           (venue ? "Venue updated successfully!" : "Venue added successfully!")
       );
-  
+
       // Reset form after submission
-        setFormData({
-          name: "",
-          city: "",
-          capacity: "",
-          price: "",
-          discount: "",
-          address: "",
-          latitude: "",
-          longitude: "",
-          images: [],
-          description: "",
-        });
-      
+      setFormData({
+        name: "",
+        city: "",
+        capacity: "",
+        price: "",
+        discount: "",
+        address: "",
+        latitude: "",
+        longitude: "",
+        images: [],
+        description: "",
+      });
+
       setNewImageFiles([]);
-      setRemovedImages([]); 
+      setRemovedImages([]);
       setExistingImages([]);
     } catch (error) {
       console.error("Error updating venue:", error);
@@ -132,7 +133,7 @@ const VenueForm = ({ venue, onCancel }) => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
@@ -235,7 +236,9 @@ const VenueForm = ({ venue, onCancel }) => {
 
         {/* Existing Images */}
         <div>
-          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">Existing Images</h3>
+          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">
+            Existing Images
+          </h3>
           <div className="flex flex-wrap gap-2">
             {existingImages.length > 0 ? (
               existingImages.map((img, index) => (
@@ -260,7 +263,9 @@ const VenueForm = ({ venue, onCancel }) => {
           </div>
 
           {/* New Images */}
-          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">New Images</h3>
+          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">
+            New Images
+          </h3>
           <input
             type="file"
             multiple
