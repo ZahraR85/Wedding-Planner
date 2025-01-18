@@ -44,19 +44,31 @@ export const updateVenue = async (req, res) => {
 
     // Remove specified images from Cloudinary and venue record
     if (removeImages) {
-      const removeImagesArray = JSON.parse(removeImages);
-      await Promise.all(
-        removeImagesArray.map(async (imageUrl) => {
-          const publicId = imageUrl.split("/").pop().split(".")[0];
-          await cloudinary.uploader.destroy(`venues/${publicId}`);
-          venue.images = venue.images.filter((img) => img !== imageUrl);
-        })
-      );
+      let removeImagesArray;
+      try {
+        removeImagesArray = JSON.parse(removeImages);
+      } catch (e) {
+        return res.status(400).json({ message: "Invalid removeImages format" });
+      }
+
+      if (Array.isArray(removeImagesArray)) {
+        await Promise.all(
+          removeImagesArray.map(async (imageUrl) => {
+            if (typeof imageUrl === 'string') {
+              const publicId = imageUrl.split('/').slice(-2).join('/').split('.')[0];
+              await cloudinary.uploader.destroy(publicId);
+              venue.images = venue.images.filter((img) => img !== imageUrl);
+            }
+          })
+        );
+      } else {
+        return res.status(400).json({ message: "removeImages should be an array of strings" });
+      }
     }
 
     // Add new images from req.files
     const newImages = req.cloudinaryURLs;
-    if (newImages.length> 0 ) { 
+    if (newImages && newImages.length > 0) {
       venue.images.push(...newImages);
     }
 
@@ -80,9 +92,6 @@ export const updateVenue = async (req, res) => {
     res.status(500).json({ message: "Error updating venue", error });
   }
 };
-
-
-
 
 // Delete a venue
 export const deleteVenue = async (req, res) => {

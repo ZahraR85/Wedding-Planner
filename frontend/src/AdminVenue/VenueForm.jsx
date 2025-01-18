@@ -59,8 +59,9 @@ const VenueForm = ({ venue, onCancel }) => {
 
   const removeExistingImage = (index) => {
     const updatedImages = existingImages.filter((_, i) => i !== index);
+    const removedImageUrl = existingImages[index];
     setExistingImages(updatedImages);
-    setRemovedImages([...removedImages, index]); // Track the removed image index
+    setRemovedImages([...removedImages, removedImageUrl]); // Track the removed image URL
   };
 
   const removeNewImage = (index) => {
@@ -72,59 +73,59 @@ const VenueForm = ({ venue, onCancel }) => {
     setLoading(true);
     try {
       const uploadFormData = new FormData();
-  
+
       // Append new image files
       newImageFiles.forEach((file) => {
         uploadFormData.append("images", file); // Appending the new images
       });
-  
+
       // Append other form data
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== "images") uploadFormData.append(key, value); // Appending other form fields
       });
-  
+
       // Send images to remove (ensure only one array of removed images)
       const imagesToRemove = [...removedImages];
       if (imagesToRemove.length > 0) {
-        uploadFormData.append("removeImages", JSON.stringify(imagesToRemove)); 
+        uploadFormData.append("removeImages", JSON.stringify(imagesToRemove));
       }
-  
-      uploadFormData.append("userId", userId); 
-  
+
+      uploadFormData.append("userId", userId);
+
       // Send POST/PUT request to add or update venue
       const url = venue
         ? `${import.meta.env.VITE_API_URL}/venues/${venue._id}` // Update the venue if it already exists
         : `${import.meta.env.VITE_API_URL}/venues`; // Create a new venue if no existing venue
       const method = venue ? "put" : "post"; // Choose PUT for update or POST for creation
-  
+
       const response = await axios({
         method,
         url,
         data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
       toast.success(
         response.data.message ||
           (venue ? "Venue updated successfully!" : "Venue added successfully!")
       );
-  
+
       // Reset form after submission
-        setFormData({
-          name: "",
-          city: "",
-          capacity: "",
-          price: "",
-          discount: "",
-          address: "",
-          latitude: "",
-          longitude: "",
-          images: [],
-          description: "",
-        });
-      
+      setFormData({
+        name: "",
+        city: "",
+        capacity: "",
+        price: "",
+        discount: "",
+        address: "",
+        latitude: "",
+        longitude: "",
+        images: [],
+        description: "",
+      });
+
       setNewImageFiles([]);
-      setRemovedImages([]); 
+      setRemovedImages([]);
       setExistingImages([]);
     } catch (error) {
       console.error("Error updating venue:", error);
@@ -132,7 +133,7 @@ const VenueForm = ({ venue, onCancel }) => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="relative min-h-screen bg-cover bg-center p-5 lg:p-20 bg-customBg1 lg:bg-[url('https://i.postimg.cc/Kv1WnL9Q/photography.png')]">
@@ -140,7 +141,7 @@ const VenueForm = ({ venue, onCancel }) => {
       <ToastContainer />
       <div className="absolute inset-0 bg-white/50 "></div>
       <div className="relative mx-auto w-full max-w-[calc(100%-10px)] lg:max-w-[calc(60%-140px)] bg-opacity-80 shadow-md rounded-lg p-5 space-y-4">
-        <h1 className="text-xl lg:text-3xl font-bold m-5 text-center text-BgFont">
+        <h1 className="text-xl lg:text-3xl font-bold lg:m-5 m-2 text-center text-BgFont">
           {venue ? "Edit Venue" : "Add New Venue"}
         </h1>
 
@@ -154,7 +155,7 @@ const VenueForm = ({ venue, onCancel }) => {
               onChange={handleChange}
               placeholder="Venue Name"
               required
-              className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+              className="input input-bordered w-full mb-2 text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
             />
             <input
               type="text"
@@ -163,7 +164,7 @@ const VenueForm = ({ venue, onCancel }) => {
               onChange={handleChange}
               placeholder="City"
               required
-              className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+              className="input input-bordered w-full mb-2 text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
             />
             <input
               type="number"
@@ -172,7 +173,7 @@ const VenueForm = ({ venue, onCancel }) => {
               onChange={handleChange}
               placeholder="Capacity"
               required
-              className="input input-bordered w-full border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+              className="input input-bordered w-full text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
             />
           </div>
           <div className="w-1/2">
@@ -183,7 +184,7 @@ const VenueForm = ({ venue, onCancel }) => {
               onChange={handleChange}
               placeholder="Price"
               required
-              className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+              className="input input-bordered w-full mb-2 text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
             />
             <input
               type="number"
@@ -191,7 +192,7 @@ const VenueForm = ({ venue, onCancel }) => {
               value={formData.discount}
               onChange={handleChange}
               placeholder="Discount (%)"
-              className="input input-bordered w-full mb-2 border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+              className="input input-bordered w-full mb-2 text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
             />
             <div className="flex gap-2 text-sm font-semibold text-BgFont lg:text-lg">
               Location:
@@ -202,7 +203,7 @@ const VenueForm = ({ venue, onCancel }) => {
                 onChange={handleChange}
                 placeholder="Latitude"
                 required
-                className="input input-bordered w-1/2  border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+                className="input input-bordered w-1/2 text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
               />
               <input
                 type="number"
@@ -211,7 +212,7 @@ const VenueForm = ({ venue, onCancel }) => {
                 onChange={handleChange}
                 placeholder="Longitude"
                 required
-                className="input input-bordered w-1/2  border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
+                className="input input-bordered w-1/2 text-sm lg:text-lg border-BgPinkDark rounded focus:outline-none focus:ring focus:ring-BgPinkDark"
               />
             </div>
           </div>
@@ -220,7 +221,7 @@ const VenueForm = ({ venue, onCancel }) => {
           name="address"
           value={formData.address}
           onChange={handleChange}
-          className="border p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+          className="border p-2 rounded w-full lg:h-20 h-10 text-sm lg:text-lg border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           rows={5}
           placeholder="address"
         />
@@ -228,14 +229,16 @@ const VenueForm = ({ venue, onCancel }) => {
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="border p-2 rounded w-full h-20 border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+          className="border p-2 rounded w-full lg:h-20 h-10 text-sm lg:text-lg border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           rows={5}
           placeholder="Description"
         />
 
         {/* Existing Images */}
         <div>
-          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">Existing Images</h3>
+          <h3 className="text-sm font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">
+            Existing Images
+          </h3>
           <div className="flex flex-wrap gap-2">
             {existingImages.length > 0 ? (
               existingImages.map((img, index) => (
@@ -248,24 +251,28 @@ const VenueForm = ({ venue, onCancel }) => {
                   <button
                     type="button"
                     onClick={() => removeExistingImage(index)}
-                    className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
+                    className="absolute top-0 right-0 text-white text-sm lg:text-lg bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
                   >
                     &times;
                   </button>
                 </div>
               ))
             ) : (
-              <p className="text-BgFont">No existing images found.</p>
+              <p className="text-BgFont text-sm lg:text-lg">
+                No existing images found.
+              </p>
             )}
           </div>
 
           {/* New Images */}
-          <h3 className="text-m font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">New Images</h3>
+          <h3 className="text-sm font-semibold text-BgFont lg:text-lg lg:font-bold mt-2">
+            New Images
+          </h3>
           <input
             type="file"
             multiple
             onChange={handleFileChange}
-            className="border mx-2 p-2 rounded w-full text-BgFont border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
+            className="border mx-2 p-2 text-sm lg:text-lg rounded w-full text-BgFont border-BgPinkDark focus:outline-none focus:ring focus:ring-BgPinkDark"
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {newImageFiles.map((file, index) => (
@@ -278,7 +285,7 @@ const VenueForm = ({ venue, onCancel }) => {
                 <button
                   type="button"
                   onClick={() => removeNewImage(index)}
-                  className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
+                  className="absolute top-0 right-0 text-sm lg:text-lg text-white bg-red-600 rounded-full w-6 h-6 flex items-center justify-center"
                 >
                   &times;
                 </button>
@@ -291,14 +298,14 @@ const VenueForm = ({ venue, onCancel }) => {
         <div className="flex flex-row gap-4">
           <button
             onClick={handleSubmit}
-            className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
+            className="bg-BgPinkMiddle text-BgFont text-sm lg:text-lg font-bold hover:bg-BgPinkDark lg:hover:text-xl hover:text-lg w-full lg:p-4 p-2 rounded"
           >
             {venue ? "Update Venue" : "Add Venue"}
           </button>
           {venue && (
             <button
               onClick={onCancel}
-              className="bg-BgPinkMiddle text-BgFont text-m lg:text-xl font-bold hover:bg-BgPinkDark hover:text-xl w-full p-4 rounded"
+              className="bg-BgPinkMiddle text-BgFont text-sm lg:text-lg font-bold hover:bg-BgPinkDark lg:hover:text-xl hover:text-lg w-full lg:p-4 p-2 rounded"
             >
               Cancel
             </button>
